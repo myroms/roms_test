@@ -1,0 +1,833 @@
+2004  0  :  year and starting year-day (use yearday<0, for no time label)
+
+
+Representer Matrix Array Modes along 37N
+State Variables
+4     NFIELDS: number of fields to plot. Line below, field(s) types:
+1,2,23,24      field identification: FLDID(1:NFIELDS).
+0     FRSTD  : first day (>0) or time record (<0) to plot
+0     LASTD  : last day (>0) or time record (<0) to plot
+0     DSKIP  : plot every other DSKIP days (see below)
+1     FINDX  : forecast record to process, if any (atmospheric files only).
+2     ISECPOS: section positions: [0] grid units, [1] Cartesian, [2] spherical
+-132  XSEC1  : starting section X-position (grid units, or km, or degrees).
+37    YSEC1  : starting section Y-position (grid units, or km, or degrees).
+-120  XSEC2  : ending section X-position (grid units, or km, or degrees).
+37    YSEC2  : ending section Y-position (grid units, or km, or degrees).
+1.0   DELS   : section horizontal grid spacing (km or degrees).
+0     SZTOP  : shallowest section depth to consider (meters).
+400   SZBOT  : deepest section depth to consider (meters).
+40    KMS    : number of refiment section levels between SZTOP and SZBOT.
+0     VINTRP : vertical interpolation: [0] linear, [1] cubic splines.
+0.0   PMIN   : field minimum value for color palette (0.0 for default).
+0.0   PMAX   : field maximum value for color palette (0.0 for default).
+0     ICNT   : draw contours between color bands: 0=no, 1=yes.
+0     IREF   : secondary or reference field option (see below).
+0     IDOVER : overlay field identification (for IREF=1,2 only).
+0.0   RMIN   : overlay field minimum value to consider (0.0 for default).
+0.0   RMAX   : overlay field maximum value to consider (0.0 for default).
+1     NPAGE  : number of plots per page (currently 1, 2, or 4).
+1     IFILL  : mask area below water column: [0] no, [1] yes.
+T     READGRD: logical switch to read in positions from grid NetCDF file.
+F     PLTLOGO: logical switch Logo.
+T     WRTHDR : logical switch to write out the plot header titles.
+T     WRTBLAB: logical switch to write out the plot bottom title.
+T     WRTRANG: logical switch to write out data range values and CI.
+F     WRTFNAM: logical switch to write out input primary filename.
+F     WRTDATE: logical switch to write out current date.
+~/ocean/repository/plot/Data/varid.dat
+~/ocean/repository/plot/Palettes/vivid2_90.pal
+default1.cnt
+../ARRAY_MODES/EX7/wc13_tlm_003.nc
+../ARRAY_MODES/EX7/wc13_tlm_003.nc
+../Data/wc13_grd.nc
+
+
+!svn $Id: csec_array_modes.in 1154 2023-02-17 20:52:30Z arango $
+!========================================================= Hernan G. Arango ===
+!  Copyright (c) 2002-2023 The ROMS/TOMS Group                              ===
+!    Licensed under a MIT/X style license                                   ===
+!    See License_ROMS.txt                                                   ===
+!==============================================================================
+!
+
+ *** Above FILENAMES:
+
+            1st line: input; variables ID file.
+            2nd line: input; color palette file.
+            3rd line: input; internal plotting parameters.
+            4th line: input; primary NetCDF file.
+            5th line: input; secondary NetCDF file.
+            6th line: input; grid NetCDF file.
+
+ *** DSKIP: Plotting frequency.
+
+            If zero, the data is plotted at their own time frequency.
+            Otherwise, if greater than zero, the data will be plotted
+            every other DSKIP days.
+
+ *** IREF:  Secondary or reference field option:
+            -1  Overlay ROMS terrain-following vertical level
+            0   no secondary or reference field to plot
+            1   plot field overlay from primary file
+            2   plot field overlay from secondary file
+            3   primary - secondary file (field subtraction)
+            4   Day0 - DayN (field subtraction)
+            5   primary +/- secondary (different field combination:
+                                       addition [+5] or subtraction [-5])
+            6   Mask OA fields by its maximum error variance tolerance
+                which is specified as fractional percentage in RMAX.
+
+ *** READGRID:  If activated, the spatial grid positions will be computed
+                from the specified grid or history file.  The free-surface
+                is assumed to be zero in the computation of the vertical
+                grids.  That is, there is not a time-varying grid.
+
+
+ Plotting Fields classification (* derived fields):
+
+ [000]  ??????    Generic Field
+ [001]  IDUTOT    Total U-velocity (cm/s)
+ [002]  IDVTOT    Total V-velocity (cm/s)
+*[003]  IDTVEC    Total Velocity Vectors (cm/s)
+*[004]  IDTMAG    Total Velocity Magnitude (cm/s)
+*[005]  IDTSTR    Total Velocity Streamlines
+*[006]  IDTBRB    Total Velocity Barbs
+ [007]  IDUCLI    Baroclinic U-velocity (cm/s)
+ [008]  IDVCLI    Baroclinic V-velocity (cm/s)
+*[009]  IDCVEC    Baroclinic Velocity Vectors (cm/s)
+*[010]  IDCMAG    Baroclinic Velocity Magnitude (cm/s)
+*[011]  IDCSTR    Baroclinic Velocity Streamlines
+*[012]  IDCBRB    Baroclinic Velocity Barbs
+ [013]  IDUBAR    Barotropic U-velocity (cm/s)
+ [014]  IDVBAR    Barotropic V-velocity (cm/s)
+*[015]  IDBVEC    Barotropic Velocity Vectors (cm/s)
+*[016]  IDBMAG    Barotropic Velocity Magnitude (cm/s)
+*[017]  IDBSTR    Barotropic Velocity Streamlines
+*[018]  IDBBRB    Barotropic Velocity Barbs
+ [019]  IDWVEL    Vertical Velocity (cm/day)
+ [020]  IDOMEG    Omega Vertical Velocity (cm/day)
+ [021]  IDZETA    Free-Surface (m)
+ [022]  IDTPSI    Transport Stream function (Sv)
+ [023]  IDTEMP    Potential Temperature (C)
+ [024]  IDSALT    Salinity (PSU)
+ [025]  IDDANO    Density Anomaly (kg/m3)
+*[026]  IDCDEN    Density Anomaly form T,S (kg/m3)
+ [027]  IDDBAR    Mean Density Anomaly (kg/m3)
+*[028]  IDSIGT    Sigma-t (kg/m3)
+*[029]  IDISOT    Isothermal Depths (m)
+*[030]  IDISOH    Isohaline Depths (m)
+*[031]  IDISOR    Isopycnal Depths (m), in situ density
+*[032]  IDISOD    Isopycnal Depths (m), sigma-0
+*[033]  IDISOS    Isopycnal Depths (m), sigma-theta
+*[034]  IDDPRS    Dynamic Pressure (Pa)
+ [035]  IDDYHT    Dynamic Height (dyn m)
+*[036]  IDBVFQ    Brunt-Vaisala Frequency (1/s2)
+*[037]  IDSNDS    Sound speed (m/s)
+ [038]  IDHSBL    Depth of Surface Boundary Layer (m)
+ [039]  IDHBBL    Depth of Bottom Boundary Layer (m)
+*[040]  IDRIGN    Gradient Richardson Number
+ [041]  IDAKVC    Vertical Viscosity (m2/s)
+ [042]  IDAKTC    Vertical T-Diffusion (m2/s)
+ [043]  IDAKSC    Vertical S-Diffusion (m2/s)
+ [044]  IDUICE    Ice U-velocity (cm/s)
+ [045]  IDVICE    Ice V-velocity (cm/s)
+*[046]  IDIVEC    Ice Velocity Vectors (cm/s)
+*[047]  IDIMAG    Ice Velocity Magnitude (cm/s)
+*[048]  IDISTR    Ice Velocity Streamlines
+*[049]  IDIBRB    Ice Velocity Barbs
+ [050]  IDAICE    Fraction of Cell Covered by Ice
+ [051]  IDHICE    Depth of Ice Cover (m)
+*[052]  IDIHOA    Ice thickness (m)
+ [053]  IDSNOW    Depth of Snow Cover (m)
+*[054]  IDSHOA    Snow thickness (m)
+ [055]  IDTICE    Temperature of Ice Surface (K)
+ [056]  IDANGL    Angle between XI-axis and EAST (deg)
+ [057]  IDDELX    Grid-spacing in XI-direction (km)
+ [058]  IDDELX    Grid-spacing in ETA-direction (km)
+ [059]  IDBTHR    Bathymetry at RHO-points (m)
+ [060]  IDBTHP    Bathymetry at PSI-points (m)
+*[061]  IDMHSL    Bathymetry Slope
+*[062]  IDMHRF    Bathymetry r-factor
+ [063]  IDHRAW    Raw Bathymetry at RHO-points (m)
+*[064]  IDRHSL    Raw Bathymetry Slope
+*[065]  IDRHRF    Raw Bathymetry r-factor
+ [066]  IDCORP    Coriolis Parameter (1/s)
+*[067]  IDFOHR    Coriolis/Depth Ratio (1/ms)
+ [068]  IDSMSX    U-wind Stress (Pa)
+ [069]  IDSMSY    V-wind Stress (Pa)
+*[070]  IDSMSV    Wind Stress Vectors (Pa)
+*[071]  IDSMSM    Wind Stress Magnitude (Pa)
+*[072]  IDSMSS    Wind Stress Streamlines
+*[073]  IDSMSB    Wind Stress Barbs
+*[074]  IDSMSC    Wind Stress Curl (m/s2)
+*[075]  IDSMEK    Surface Ekman Pumping (m/s)
+ [076]  IDBMSX    Bottom U-Stress (Pa)
+ [077]  IDBMSY    Bottom V-Stress (Pa)
+*[078]  IDBMSV    Bottom Stress Vectors (Pa)
+*[079]  IDBMSM    Bottom Stress Magnitude (Pa)
+*[080]  IDBMSS    Bottom Stress Streamlines
+*[081]  IDBMSB    Bottom Stress Barbs
+*[082]  IDBMSC    Bottom Stress Curl (m/s2)
+*[083]  IDBMEK    Bottom Ekman Pumping (m/s)
+ [084]  IDBWSX    Bed Wave U-Stress (Pa)
+ [085]  IDBWSY    Bed Wave V-Stress (Pa)
+*[086]  IDBWSV    Bed Wave Stress Vectors (Pa)
+*[087]  IDBWSM    Bed Wave Stress Magnitude (Pa)
+*[088]  IDBWSS    Bed Wave Stress Streamlines
+*[089]  IDBWSB    Bed Wave Stress Barbs
+*[090]  IDBWSC    Bed Wave Stress Curl (m/s2)
+*[091]  IDBWEK    Bed Wave Ekman Pumping (m/s)
+ [092]  IDSUWD    Surface U-Wind (m/s)
+ [093]  IDSVWD    Surface V-Wind (m/s)
+*[094]  IDSWDV    Surface Wind Vectors (m/s)
+*[095]  IDSWDM    Surface Wind Magnitude (m/s)
+*[096]  IDSWDS    Surface Wind Streamlines
+*[097]  IDSWDB    Surface Wind Barbs
+ [098]  IDABED    Bed Wave Excursion Amplitude (m)
+ [099]  IDUBED    Bed Wave Orbital U-Velocity (cm/s)
+
+ [100]  IDVBED    Bed Wave Orbital V-velocity (cm/s)
+*[101]  IDBEDV    Bed Wave Orbital Vectors (cm/s)
+*[102]  IDBEDM    Bed Wave Orbital Magnitude (cm/s)
+*[103]  IDBEDS    Bed Wave Orbital Streamlines
+*[104]  IDBEDB    Bed Wave Orbital Barbs
+ [105]  IDUBOT    Bottom U-velocity (cm/s)
+ [106]  IDVBOT    Bottom V-velocity (cm/s)
+*[107]  IDBOTV    Bottom Velocity Vectors (cm/s)
+*[108]  IDBOTM    Bottom Velocity Magnitude (cm/s)
+*[109]  IDBOTS    Bottom Velocity Streamlines
+*[110]  IDBOTB    Bottom Velocity Barbs
+ [111]  IDZNOT    Hydraulic Bottom Roughness (m)
+ [112]  IDZAPP    Apparent Hydraulic Bottom Roughness (m)
+ [113]  IDHRIP    Bed Ripple Height (m)
+ [114]  IDLRIP    Bed Ripple Length (m)
+ [115]  IDRELH    Relative Humidity (%)
+ [116]  IDCFRA    Cloud Fraction (%)
+ [117]  IDRAIN    Rain Fall Rate (cm/hour)
+ [118]  IDPAIR    Surface Air Pressure (mbar)
+ [119]  IDTAIR    Surface Air Temperature (K)
+ [120]  IDTDEW    Surface Dew-Point Temperature (K)
+ [121]  IDFSSH    Sea Surface Height (m)
+ [122]  IDFSST    Sea Surface Temperature (C)
+ [123]  IDDQDT    dQdT (Watts/m2/Celsius)
+ [124]  IDSHFX    Surface Net Heat Flux (W/m2)
+ [125]  IDSRAD    Shortwave Radiation Flux (W/m2)
+ [126]  IDLRAD    Longwave Radiation Flux (W/m2)
+ [127]  IDSLHF    Latent Heat Flux (W/m2)
+ [128]  IDSSHF    Sensible Heat Flux (W/m2)
+ [129]  IDSWFX    Surface Freshwater Flux, E-P (m/day)
+*[130]  IDKENG    Kinetic Energy (Watts)
+*[131]  IDPENG    Potential Energy (Watts)
+*[132]  IDPVOR    Potential Vorticity (1/s/m)
+*[133]  IDERPV    Ertel Potential Vorticity (1/s/m)
+*[134]  IDTVRV    Relative Vorticity (1/s)
+*[135]  IDBVRV    Barotropic Relative Vorticity (1/s)
+*[136]  IDCVRV    Baroclinic Relative Vorticity (1/s)
+*[137]  IDSWRV    Surface Wind Relative Vorticity (1/s)
+*[138]  IDTVHD    Total Divergence (1/s)
+*[139]  IDBVHD    Barotropic divergence (1/s)
+*[140]  IDBVHD    Baroclinic divergence (1/s)
+*[141]  IDSWHD    Surface Wind divergence (1/s)
+*[142]  IDRHUJ    Raw U-JEBAR (m2/s2)
+*[143]  IDRHVJ    Raw V-JEBAR (m2/s2)
+*[144]  IDRHJV    Raw JEBAR Vectors (m2/s2)
+*[145]  IDRHJM    Raw JEBAR Vector Magnitude (m2/s2)
+*[146]  IDRHJS    Raw JEBAR Vector Streamlines
+*[147]  IDRHJB    Raw JEBAR Vector Barbs
+*[148]  IDMHUJ    Model U-JEBAR (m2/s2)
+*[149]  IDMHVJ    Model V-JEBAR (m2/s2)
+*[150]  IDMHJV    Model JEBAR Vectors (m2/s2)
+*[151]  IDMHJM    Model JEBAR Vector Magnitude (m2/s2)
+*[152]  IDMHJS    Model JEBAR Vector Streamlines
+*[153]  IDMHJB    Model JEBAR Vector Barbs
+ [154]  IDUSUR    RADAR Surface U-velocity (cm/s)
+ [155]  IDVSUR    RADAR Surface V-velocity (cm/s)
+*[156]  IDSVEC    RADAR Surface Velocity Vectors (cm/s)
+*[157]  IDSURM    RADAR Surface Velocity Magnitude (cm/s)
+*[158]  IDSSTR    RADAR Surface Velocity Streamlines
+*[159]  IDSBRB    RADAR Surface Velocity Barbs
+*[160]  IDNPYT    Entropy Transport (Sv)
+*[161]  IDUNPY    Entropy U-velocity (cm/s)
+*[162]  IDVNPY    Entropy V-velocity (cm/s)
+*[163]  IDNPYV    Entropy Velocity Vectors (cm/s)
+*[164]  IDNPYM    Entropy Velocity Magnitude (cm/s)
+*[165]  IDNPYS    Entropy Velocity Streamlines
+*[166]  IDNPYB    Entropy Velocity Barbs
+*[167]  IDBERN    Bernoulli Function (Pa)
+ [168]  IDBN03    Nitrate (mmoles N/m3)
+ [169]  IDPHYT    Phytoplankton (mmoles N/m3)
+ [170]  IDZOOP    Zooplankton (mmoles N/m3)
+ [171]  IDBNH4    Ammonium (mmoles N/m3)
+ [172]  IDLDET    Large Fraction Detritus (mmoles N/m3)
+ [173]  IDLDET    Small Fraction Detritus (mmoles N/m3)
+ [174]  IDCPRA    Chlorophyll (mmoles N/m3)
+ [175]  IDENO3    Nitrate concentration (meter-3)
+ [176]  IDENH4    Ammonium concentration (meter-3)
+ [177]  IDEPO4    Phosphate concentration (meter-3)
+ [178]  IDEFeO    Iron concentration (meter-3)
+ [179]  IDESiO    Silica concentration (meter-3)
+ [180]  IDEDIC    DIC concentration (meter-3)
+ [181]  IDBaC1    Bacteria(1) Carbon (meter-3)
+ [182]  IDBaF1    Bacteria(1) Iron (meter-3)
+ [183]  IDBaN1    Bacteria(1) Nitrogen (meter-3)
+ [184]  IDBaP1    Bacteria(1) Phosphorus (meter-3)
+ [185]  IDCDC1    Color Degradational Matter(1) (meter-3)
+ [186]  IDCDC2    Color Degradational Matter(2) (meter-3)
+ [187]  IDDOC1    Diss Org Matter(1) Carbon (meter-3)
+ [188]  IDDOC2    Diss Org Matter(2) Carbon(meter-3)
+ [189]  IDDON1    Diss Org Matter(1) Nitrogen (meter-3)
+ [190]  IDDON2    Diss Org Matter(2) Nitrogen (meter-3)
+ [191]  IDDOP1    Diss Org Matter(1) Phosphorus (meter-3)
+ [192]  IDDOP2    Diss Org Matter(2) Phosphorus (meter-3)
+ [193]  IDFeC1    Fecal Matter(1) Carbon Group (meter-3)
+ [194]  IDFeC2    Fecal Matter(2) Carbon Group (meter-3)
+ [195]  IDFeF1    Fecal Matter(1) Iron Group (meter-3)
+ [196]  IDFeF2    Fecal Matter(2) Iron Group (meter-3)
+ [197]  IDFeN1    Fecal Matter(1) Nitrogen Group (meter-3)
+ [198]  IDFeN2    Fecal Matter(2) Nitrogen Group (meter-3)
+ [199]  IDFeP1    Fecal Matter(1) Phosphorus Group (meter-3)
+ 
+ [200]  IDFeP2    Fecal Matter(2) Phosphorus Group (meter-3)
+ [201]  IDFeS1    Fecal Matter(1) Silica Group (meter-3)
+ [202]  IDFeS2    Fecal Matter(2) Silica Group (meter-3)
+ [203]  IDPhC1    Phytoplankton(1) Carbon Group (meter-3)
+ [204]  IDPhC2    Phytoplankton(2) Carbon Group (meter-3)
+ [205]  IDPhC3    Phytoplankton(3) Carbon Group (meter-3)
+ [206]  IDPhC4    Phytoplankton(4) Carbon Group (meter-3)
+ [207]  IDPhF1    Phytoplankton(1) Iron Group (meter-3)
+ [208]  IDPhF2    Phytoplankton(2) Iron Group (meter-3)
+ [209]  IDPhF3    Phytoplankton(3) Iron Group (meter-3)
+ [210]  IDPhF4    Phytoplankton(4) Iron Group (meter-3)
+ [211]  IDPhN1    Phytoplankton(1) Nitrogen Group (meter-3)
+ [212]  IDPhN2    Phytoplankton(2) Nitrogen Group (meter-3)
+ [213]  IDPhN3    Phytoplankton(3) Nitrogen Group (meter-3)
+ [214]  IDPhN4    Phytoplankton(4) Nitrogen Group (meter-3)
+ [215]  IDPhP1    Phytoplankton(1) Phosphorus (meter-3)
+ [216]  IDPhP2    Phytoplankton(2) Phosphorus (meter-3)
+ [217]  IDPhP3    Phytoplankton(3) Phosphorus (meter-3)
+ [218]  IDPhP4    Phytoplankton(4) Phosphorus (meter-3)
+ [219]  IDPhS1    Phytoplankton(1) Silica Group (meter-3)
+ [220]  IDPhS2    Phytoplankton(2) Silica Group (meter-3)
+ [221]  IDPi11    Phytoplankton(1) Pigment(1) (mg meter-3)
+ [222]  IDPi21    Phytoplankton(2) Pigment(1) (mg meter-3)
+ [223]  IDPi31    Phytoplankton(3) Pigment(1) (mg meter-3)
+ [224]  IDPi41    Phytoplankton(4) Pigment(1) (mg meter-3)
+ [225]  IDPi13    Phytoplankton(1) Pigment(3) (mg meter-3)
+ [226]  IDPi23    Phytoplankton(2) Pigment(3) (mg meter-3)
+ [227]  IDPi33    Phytoplankton(3) Pigment(3) (mg meter-3)
+ [228]  IDPi14    Phytoplankton(1) Pigment(4) (mg meter-3)
+ [229]  IDPi24    Phytoplankton(2) Pigment(4) (mg meter-3)
+ [230]  IDPi34    Phytoplankton(3) Pigment(4) (mg meter-3)
+ [231]  IDPi15    Phytoplankton(1) Pigment(5) (mg meter-3)
+ [232]  IDPi25    Phytoplankton(2) Pigment(5) (mg meter-3)
+ [233]  IDPi35    Phytoplankton(3) Pigment(5) (mg meter-3)
+ [234]  IDPi45    Phytoplankton(4) Pigment(5) (mg meter-3)
+ [235]  IDPi47    Phytoplankton(4) Pigment(7) (mg meter-3)
+*[236]  IDCOL1    Chorophyll a (mg meter-3)
+*[237]  IDCOL3    Chorophyll c (mg meter-3)
+*[238]  IDCOL4    Photosynthetic Carotenoids (mg meter-3)
+*[239]  IDCOL5    Photoprotective Carotenoids (mg meter-3)
+ [240]  IDFSSS    Sea Surface Salinity (C)
+ [241]  IDTKE2    Turbulent Kinetic Energy (m2/s2)
+ [242]  IDTKEL    Turbulent Length-Kinetic Energy (m3/s2)
+ [243]  IDDETT    Detritus (mmoles/m3)
+ [244]  IDSiOH    Silicate (mmoles/m3)
+ [245]  IDNPHY    Nanophytoplankton (mmoles/m3)
+ [246]  IDDIAT    Diatom (mmoles/m3)
+ [247]  IDMiZO    Microzooplankton (mmoles/m3)
+ [248]  IDMeZO    Mesozooplankton (mmoles/m3)
+ [249]  IDOPAL    Opal (mmoles/m3)
+ [250]  IDOXYG    Oxygen (mmoles/m3)
+
+ [301]  IDTAVG    Potential Temperature (C) Mean
+ [302]  IDTVAR    Potential Temperature Variance
+ [303]  IDTEOF    Potential Temperature EOF
+ [304]  IDTERR    Potential Temperature Error
+ [305]  IDTPES    Potential Temperature Error Subspace
+ [306]  IDSAVG    Salinity (PSU) Mean
+ [307]  IDSVAR    Salinity Variance
+ [308]  IDSEOF    Salinity EOF
+ [309]  IDSERR    Salinity Error
+ [310]  IDSPES    Salinity Error Subspace
+ [311]  IDZAVG    Free-surface (m) Mean
+ [312]  IDZVAR    Free-surface Variance
+ [313]  IDZEOF    Free-surface EOF
+ [314]  IDZERR    Free-surface Error
+ [315]  IDZPES    Free-surface Error Subspace
+ [316]  IDUAVG    Total U-velocity (m/s) Mean
+ [317]  IDUVAR    Total U-velocity Variance
+ [318]  IDUEOF    Total U-velocity EOF
+ [319]  IDUERR    Total U-velocity Error
+ [320]  IDUPES    Total U-velocity Error Subspace
+ [321]  IDVAVG    Total V-velocity (m/s) Mean
+ [322]  IDVVAR    Total V-velocity Variance
+ [323]  IDVEOF    Total V-velocity EOF
+ [324]  IDVERR    Total V-velocity Error
+ [325]  IDVPES    Total V-velocity Error Subspace
+ [326]  IDDYHM    Dynamic Height (dyn m) Mean
+ [327]  IDDYHE    Dynamic Height Error
+ [328]  IDSSTM    Sea Surface Temperature (C) Mean
+ [329]  IDSSTV    Sea Surface Temperature (C2) Variance
+ [330]  IDSSTE    Sea Surface Temperature Error
+ [331]  IDSSSM    Sea Surface Salinity (PSU) Mean
+ [332]  IDSSSV    Sea Surface Salinity (PSU2) Variance
+ [333]  IDSSSE    Sea Surface Salinity Error
+ [334]  IDSSHM    Sea Surface Height (m) Mean
+ [335]  IDSSHV    Sea Surface Height (m2) Variance
+ [336]  IDSSHE    Sea Surface Height Error
+ [337]  IDSUSM    U-wind Stress (Pa) Mean
+ [338]  IDSUSE    U-wind Stress Error
+ [339]  IDSVSM    V-Wind Stress (Pa) Mean
+ [340]  IDSVSE    V-Wind Stress Error
+ [341]  IDSUWM    Surface U-Wind (m/s) Mean
+ [342]  IDSUWE    Surface U-Wind Error
+ [343]  IDSVWM    Surface V-Wind (m/s) Mean
+ [344]  IDSVWE    Surface V-Wind Error
+ [345]  IDRHUM    Relative Humidity (%) Mean
+ [346]  IDRHUE    Relative Humidity Error
+ [347]  IDCFRM    Cloud Fraction (%) Mean
+ [348]  IDCFRE    Cloud Fraction Error
+ [349]  IDSAPM    Surface Air Pressure (Pa) Mean
+ [350]  IDSAPE    Surface Air Pressure Error
+ [351]  IDTAIM    Surface Air Temperature (K) Mean
+ [352]  IDTAIE    Surface Air Temperature Error
+ [353]  IDTDPM    Surface Dew-Point Temperature (K) Mean
+ [354]  IDTDPE    Surface Dew-Point Temperature Error
+ [355]  IDTDPM    Surface Dew-Point Temperature (K) Mean
+ [356]  IDTDPE    Surface Dew-Point Temperature Error
+ [357]  IDSSTM    Sea Surface Temperature (C) Mean
+ [358]  IDSSTE    Sea Surface Temperature Error
+ [359]  IDQDTM    dQdT (Watts/m2/Celsius) Mean
+ [360]  IDQDTE    dQdT Error
+ [361]  IDSHFM    Surface Net Heat Flux (W/m2) Mean
+ [362]  IDSHFE    Surface Net Heat Flux Error
+ [363]  IDSWRM    Shortwave Radiation Flux (W/m2) Mean
+ [364]  IDSWRE    Shortwave Radiation Flux Error
+ [365]  IDLWRM    Longwave Radiation Flux (W/m2) Mean
+ [366]  IDLWRE    Longwave Radiation Flux Error
+ [367]  IDSFFM    Surface Freshwater Flux (m/day) Mean
+ [368]  IDSFFE    Surface Freshwater Flux Error
+ [369]  IDRSUM    RADAR Surface U-velocity Mean (cm/s)
+ [370]  IDRSVM    RADAR Surface V-velocity Mean (cm/s)
+*[371]  IDRSMV    RADAR Surface Mean Velocity Vectors (cm/s)
+*[372]  IDRSMM    RADAR Surface Mean Velocity Magnitude (cm/s)
+*[373]  IDRSMS    RADAR Surface Mean Velocity Streamlines
+*[374]  IDRSMB    RADAR Surface Mean Velocity Barbs
+ [375]  IDRSVE    RADAR Surface Velocity Error
+ [376]  IDEKEV    Eddy Kinetic Energy (m2/s2) Variance
+ [377]  IDEADY    Eady Index (nondimensional)
+ [378]  IDEKEN    Eady Kinetic Energy (m2/s2)
+ [379]  IDU3DD    Total Detided U-velocity (cm/s)
+ [380]  IDV3DD    Total Detided V-velocity (cm/s)
+*[381]  ID3VEC    Total Detided Velocity Vectors (cm/s)
+*[382]  ID3MAG    Total Detided Velocity Magnitude (cm/s)
+*[383]  ID3STR    Total Detided Velocity Streamlines
+*[384]  ID3BRB    Total Detided Velocity Barbs
+ [385]  IDU2DD    Detided Barotropic Detided U-velocity (cm/s)
+ [386]  IDV2DD    Detided Barotropic Detided V-velocity (cm/s)
+*[387]  ID2VEC    Detided Barotropic Velocity Vectors (cm/s)
+*[388]  ID2MAG    Detided Barotropic Velocity Magnitude (cm/s)
+*[389]  ID2STR    Detided Barotropic Velocity Streamlines
+*[390]  ID2BRB    Detided Barotropic Velocity Barbs
+ [391]  IDFSUD    Detided Free-Surface (m)
+ [392]  IDBATH    Time-Varying bathymetry (m)
+ [393]  D2D_PV    2D Potential Vorticity (1/m/s)
+ [394]  D2D_RV    2D Relative Vorticity (1/s)
+ [395]  D3D_PV    3D Potential Vorticity (1/m/s)
+ [396]  D3D_RV    3D Relative Vorticity (1/s)
+ [397]  DU2DPG    2D U-velocity, Pressure Gradient (cm/s2)
+ [398]  DV2DPG    2D V-velocity, Pressure Gradient (cm/s2)
+*[399]  DM2PGV    2D Momentum, Pressure Gradient Vectors (cm/s2)
+
+*[400]  DM2PGM    2D Momentum, Pressure Gradient Magnitude (cm/s2)
+*[401]  DM2PGS    2D Momentum, Pressure Gradient Streamlines
+*[402]  DM2PGB    2D Momentum, Pressure Gradient Barbs
+ [403]  DU2DCO    2D U-velocity, Coriolis (cm/s2)
+ [404]  DV2DCO    2D V-velocity, Coriolis (cm/s2)
+*[405]  DM2COV    2D Momentum, Coriolis Vectors (cm/s2)
+*[406]  DM2COM    2D Momentum, Coriolis Magnitude (cm/s2)
+*[407]  DM2COS    2D Momentum, Coriolis Streamlines
+*[408]  DM2COB    2D Momentum, Coriolis Barbs
+ [409]  DU2DXA    2D U-velocity, Horizontal X-Advection (cm/s2)
+ [410]  DV2DXA    2D V-velocity, Horizontal X-Advection (cm/s2)
+ [411]  DU2DYA    2D U-velocity, Horizontal Y-Advection (cm/s2)
+ [412]  DV2DYA    2D V-velocity, Horizontal Y-Advection (cm/s2)
+ [413]  DU2DHA    2D U-velocity, Horizontal Advection (cm/s2)
+ [414]  DV2DHA    2D V-velocity, Horizontal Advection (cm/s2)
+*[415]  DM2HAV    2D Momentum, Horizontal Advection Vectors (cm/s2)
+*[416]  DM2HAM    2D Momentum, Horizontal Advection Magnitude (cm/s2)
+*[417]  DM2HAS    2D Momentum, Horizontal Advection Streamlines
+*[418]  DM2HAB    2D Momentum, Horizontal Advection Barbs
+ [419]  DU2DSS    2D U-velocity, Surface Stress (cm/s2)
+ [420]  DV2DSS    2D V-velocity, Surface Stress (cm/s2)
+*[421]  DM2SSV    2D Momentum, Surface Stress Vectors (cm/s2)
+*[422]  DM2SSM    2D Momentum, Surface Stress Magnitude (cm/s2)
+*[423]  DM2SSS    2D Momentum, Surface Stress Streamlines
+*[424]  DM2SSB    2D Momentum, Surface Stress Barbs
+ [425]  DU2DBS    2D U-velocity, Bottom Stress (cm/s2)
+ [426]  DV2DBS    2D V-velocity, Bottom Stress (cm/s2)
+*[427]  DM2BSV    2D Momentum, Bottom Stress Vectors (cm/s2)
+*[428]  DM2BSM    2D Momentum, Bottom Stress Magnitude (cm/s2)
+*[429]  DM2BSS    2D Momentum, Bottom Stress Streamlines
+*[430]  DM2BSB    2D Momentum, Bottom Stress Barbs
+ [431]  DU2DHV    2D U-velocity, Horizontal X-Viscosity (cm/s2)
+ [432]  DV2DHV    2D V-velocity, Horizontal X-Viscosity (cm/s2)
+ [433]  DU2DHV    2D U-velocity, Horizontal Y-Viscosity (cm/s2)
+ [434]  DV2DHV    2D V-velocity, Horizontal Y-Viscosity (cm/s2)
+ [435]  DU2DHV    2D U-velocity, Horizontal Viscosity (cm/s2)
+ [436]  DV2DHV    2D V-velocity, Horizontal Viscosity (cm/s2)
+*[437]  DM2HVV    2D Momentum, Horizontal Viscosity Vectors (cm/s2)
+*[438]  DM2HVM    2D Momentum, Horizontal Viscosity Magnitude (cm/s2)
+*[439]  DM2HVS    2D Momentum, Horizontal Viscosity Streamlines
+*[440]  DM2HVB    2D Momentum, Horizontal Viscosity Barbs
+ [441]  DU2DHR    2D U-velocity, Horizontal Radiation Stress (cm/s2)
+ [442]  DV2DHR    2D V-velocity, Horizontal Radiation Stress (cm/s2)
+*[443]  DM2HRV    2D Momentum, Horizontal Radiation Stress Vectors (cm/s2)
+*[444]  DM2HRM    2D Momentum, Horizontal Radiation Stress Magnitude (cm/s2)
+*[445]  DM2HRS    2D Momentum, Horizontal Radiation Stress Streamlines
+*[446]  DM2HRB    2D Momentum, Horizontal Radiation Stress Barbs
+ [447]  DU2DAC    2D U-velocity, Acceleration (cm/s2)
+ [448]  DV2DAC    2D V-velocity, Acceleration (cm/s2)
+*[449]  DM2ACV    2D U-velocity, Acceleration Vectors (cm/s2)
+*[450]  DM2ACM    2D U-velocity, Acceleration Magnitude (cm/s2)
+*[451]  DM2ACS    2D U-velocity, Acceleration Streamlines
+*[452]  DM2ACB    2D U-velocity, Acceleration Barbs
+ [453]  DU3DPG    3D U-velocity, Pressure Gradient (cm/s2)
+ [454]  DV3DPG    3D V-velocity, Pressure Gradient (cm/s2)
+*[455]  DM3PGV    3D Momentum, Pressure Gradient Vectors (cm/s2)
+*[456]  DM3PGM    3D Momentum, Pressure Gradient Magnitude (cm/s2)
+*[457]  DM3PGS    3D Momentum, Pressure Gradient Streamlines
+*[458]  DM3PGB    3D Momentum, Pressure Gradient Barbs
+ [459]  DU3DCO    3D U-velocity, Coriolis (cm/s2)
+ [460]  DV3DCO    3D V-velocity, Coriolis (cm/s2)
+*[461]  DM3COV    3D Momentum, Coriolis Vectors (cm/s2)
+*[462]  DM3COM    3D Momentum, Coriolis Magnitude (cm/s2)
+*[463]  DM3COS    3D Momentum, Coriolis Streamlines
+*[464]  DM3COB    3D Momentum, Coriolis Barbs
+ [465]  DU3DXA    3D U-velocity, Horizontal X-Advection (cm/s2)
+ [466]  DV3DXA    3D V-velocity, Horizontal X-Advection (cm/s2)
+ [467]  DU3DYA    3D U-velocity, Horizontal Y-Advection (cm/s2)
+ [468]  DV3DYA    3D V-velocity, Horizontal Y-Advection (cm/s2)
+ [469]  DU3DHA    3D U-velocity, Horizontal Advection (cm/s2)
+ [470]  DV3DHA    3D V-velocity, Horizontal Advection (cm/s2)
+*[471]  DM3HAV    3D Momentum, Horizontal Advection Vectors (cm/s2)
+*[472]  DM3HAM    3D Momentum, Horizontal Advection Magnitude (cm/s2)
+*[473]  DM3HAS    3D Momentum, Horizontal Advection Streamlines
+*[474]  DM3HAB    3D Momentum, Horizontal Advection Barbs
+ [475]  DU3DVA    3D U-velocity, Vertical Advection (cm/s2)
+ [476]  DV3DVA    3D V-velocity, Vertical Advection (cm/s2)
+*[477]  DM3VAV    3D Momentum, Vertical Advection Vectors (cm/s2)
+*[478]  DM3VAM    3D Momentum, Vertical Advection Magnitude (cm/s2)
+*[479]  DM3VAS    3D Momentum, Vertical Advection Streamlines
+*[480]  DM3VAB    3D Momentum, Vertical Advection Barbs
+ [481]  DU3DHV    3D U-velocity, Horizontal X-Viscosity (cm/s2)
+ [482]  DV3DHV    3D V-velocity, Horizontal X-Viscosity (cm/s2)
+ [483]  DU3DHV    3D U-velocity, Horizontal Y-Viscosity (cm/s2)
+ [484]  DV3DHV    3D V-velocity, Horizontal Y-Viscosity (cm/s2)
+*[485]  DM3HVV    3D Momentum, Horizontal Viscosity Vectors (cm/s2)
+*[486]  DM3HVM    3D Momentum, Horizontal Viscosity Magnitude (cm/s2)
+*[487]  DM3HVS    3D Momentum, Horizontal Viscosity Streamlines
+*[488]  DM3HVB    3D Momentum, Horizontal Viscosity Barbs
+ [489]  DU3DVV    3D U-velocity, Vertical Viscosity (cm/s2)
+ [490]  DV3DVV    3D V-velocity, Vertical Viscosity (cm/s2)
+*[491]  DM3VVV    3D Momentum, Vertical Viscosity Vectors (cm/s2)
+*[492]  DM3VVM    3D Momentum, Vertical Viscosity Magnitude (cm/s2)
+*[493]  DM3VVS    3D Momentum, Vertical Viscosity Streamlines
+*[494]  DM3VVB    3D Momentum, Vertical Viscosity Barbs
+ [495]  DU3DHR    3D U-velocity, Horizontal Radiation Stress (cm/s2)
+ [496]  DV3DHR    3D V-velocity, Horizontal Radiation Stress (cm/s2)
+*[497]  DM3HRV    3D Momentum, Horizontal Radiation Stress Vectors (cm/s2)
+*[498]  DM3HRM    3D Momentum, Horizontal Radiation Stress Magnitude (cm/s2)
+*[499]  DM3HRS    3D Momentum, Horizontal Radiation Stress Streamlines
+
+*[500]  DM3HRB    3D Momentum, Horizontal Radiation Stress Barbs
+ [501]  DU3DVR    3D U-velocity, Vertical Radiation Stress (cm/s2)
+ [502]  DV3DVR    3D V-velocity, Vertical Radiation Stress (cm/s2)
+*[503]  DM3VRV    3D Momentum, Vertical Radiation Stress Vectors (cm/s2)
+*[504]  DM3VRM    3D Momentum, Vertical Radiation Stress Magnitude (cm/s2)
+*[505]  DM3VRS    3D Momentum, Vertical Radiation Stress Streamlines
+*[506]  DM3VRB    3D Momentum, Vertical Radiation Stress Barbs
+ [507]  DU3DAC    3D U-velocity, Acceleration (cm/s2)
+ [508]  DV3DAC    3D V-velocity, Acceleration (cm/s2)
+*[509]  DM3ACV    3D U-velocity, Acceleration Vectors (cm/s2)
+*[510]  DM3ACM    3D U-velocity, Acceleration Magnitude (cm/s2)
+*[511]  DM3ACS    3D U-velocity, Acceleration Streamlines
+*[512]  DM3ACB    3D U-velocity, Acceleration Barbs
+ [513]  DTEMXA    Temperature, Horizontal X-Advection (Celsius/s)
+ [514]  DTEMYA    Temperature, Horizontal Y-Advection (Celsius/s)
+ [515]  DTEMHA    Temperature, Horizontal Advection (Celsius/s)
+ [516]  DTEMVA    Temperature, Vertical Advection (Celsius/s)
+ [517]  DTEMXD    Temperature, Horizontal X-Diffusion (Celsius/s)
+ [518]  DTEMYD    Temperature, Horizontal Y-Diffusion (Celsius/s)
+ [519]  DTEMSD    Temperature, Horizontal S-Diffusion (Celsius/s)
+ [520]  DTEMHD    Temperature, Horizontal Diffusion (Celsius/s)
+ [521]  DTEMVD    Temperature, Vertical Diffusion (Celsius/s)
+ [522]  DTEMAC    Temperature, Time Rate of Change (Celsius/s)
+ [523]  DSALXA    Salinity, Horizontal X-Advection (1/s)
+ [524]  DSALYA    Salinity, Horizontal Y-Advection (1/s)
+ [525]  DSALHA    Salinity, Horizontal Advection (1/s)
+ [526]  DSALVA    Salinity, Vertical Advection (1/s)
+ [527]  DSALXD    Salinity, Horizontal X-Diffusion (1/s)
+ [528]  DSALYD    Salinity, Horizontal Y-Diffusion (1/s)
+ [529]  DSALSD    Salinity, Horizontal S-Diffusion (1/s)
+ [530]  DSALHD    Salinity, Horizontal Diffusion (1/s)
+ [531]  DSALVD    Salinity, Vertical Diffusion (1/s)
+ [532]  DSALAC    Salinity, Time Rate of Change (1/s)
+ [533]  DNO3XA    Nitrate, Horizontal X-Advection (mmol/m3/s)
+ [534]  DNO3YA    Nitrate, Horizontal Y-Advection (mmol/m3/s)
+ [535]  DNO3HA    Nitrate, Horizontal Advection (mmol/m3/s)
+ [536]  DNO3VA    Nitrate, Vertical Advection (mmol/m3/s)
+ [537]  DNO3XD    Nitrate, Horizontal X-Diffusion (mmol/m3/s)
+ [538]  DNO3YD    Nitrate, Horizontal Y-Diffusion (mmol/m3/s)
+ [539]  DNO3SD    Nitrate, Horizontal S-Diffusion (mmol/m3/s)
+ [540]  DNO3HD    Nitrate, Horizontal Diffusion (mmol/m3/s)
+ [541]  DNO3VD    Nitrate, Vertical Diffusion (mmol/m3/s)
+ [542]  DNO3AC    Nitrate, Time Rate of Change (mmol/m3/s)
+ [543]  DNH4XA    Ammonium, Horizontal X-Advection (mmol/m3/s)
+ [544]  DNH4YA    Ammonium, Horizontal Y-Advection (mmol/m3/s)
+ [545]  DNH4HA    Ammonium, Horizontal Advection (mmol/m3/s)
+ [546]  DNH4VA    Ammonium, Vertical Advection (mmol/m3/s)
+ [547]  DNH4XD    Ammonium, Horizontal X-Diffusion (mmol/m3/s)
+ [548]  DNH4YD    Ammonium, Horizontal Y-Diffusion (mmol/m3/s)
+ [549]  DNH4SD    Ammonium, Horizontal S-Diffusion (mmol/m3/s)
+ [550]  DNH4HD    Ammonium, Horizontal Diffusion (mmol/m3/s)
+ [551]  DNH4VD    Ammonium, Vertical Diffusion (mmol/m3/s)
+ [552]  DNH4AC    Ammonium, Time Rate of Change (mmol/m3/s)
+ [553]  DPONXA    Particulate Organic Nitrogen, Horizontal Advection (mmol/m3/
+ [554]  DPONYA    Particulate Organic Nitrogen, Horizontal Advection (mmol/m3/
+ [555]  DPONHA    Particulate Organic Nitrogen, Horizontal Advection (mmol/m3/
+ [556]  DPONVA    Particulate Organic Nitrogen, Vertical Advection (mmol/m3/s)
+ [557]  DPONXD    Particulate Organic Nitrogen, Horizontal X-Diffusion (mmol/m
+ [558]  DPONYD    Particulate Organic Nitrogen, Horizontal Y-Diffusion (mmol/m
+ [559]  DPONSD    Particulate Organic Nitrogen, Horizontal S-Diffusion (mmol/m
+ [560]  DPONHD    Particulate Organic Nitrogen, Horizontal Diffusion (mmol/m3/
+ [561]  DPONVD    Particulate Organic Nitrogen, Vertical Diffusion (mmol/m3/s)
+ [562]  DPONAC    Particulate Organic Nitrogen, Time Rate of Change (mmol/m3/s
+ [563]  DDONXA    Dissolved Organic Nitrogen, Horizontal X-Advection (mmol/m3/
+ [564]  DDONYA    Dissolved Organic Nitrogen, Horizontal Y-Advection (mmol/m3/
+ [565]  DDONHA    Dissolved Organic Nitrogen, Horizontal Advection (mmol/m3/s)
+ [566]  DDONVA    Dissolved Organic Nitrogen, Vertical Advection (mmol/m3/s)
+ [567]  DDONXD    Dissolved Organic Nitrogen, Horizontal X-Diffusion (mmol/m3/
+ [568]  DDONYD    Dissolved Organic Nitrogen, Horizontal Y-Diffusion (mmol/m3/
+ [569]  DDONSD    Dissolved Organic Nitrogen, Horizontal S-Diffusion (mmol/m3/
+ [570]  DDONHD    Dissolved Organic Nitrogen, Horizontal Diffusion (mmol/m3/s)
+ [571]  DDONVD    Dissolved Organic Nitrogen, Vertical Diffusion (mmol/m3/s)
+ [572]  DDONAC    Dissolved Organic Nitrogen, Time Rate of Change (mmol/m3/s)
+ [573]  DSILXA    Silica, Horizontal X-Advection (mmol/m3/s)
+ [574]  DSILYA    Silica, Horizontal Y-Advection (mmol/m3/s)
+ [575]  DSILHA    Silica, Horizontal Advection (mmol/m3/s)
+ [576]  DSILVA    Silica, Vertical Advection (mmol/m3/s)
+ [577]  DSILXD    Silica, Horizontal X-Diffusion (mmol/m3/s)
+ [578]  DSILYD    Silica, Horizontal Y-Diffusion (mmol/m3/s)
+ [579]  DSILSD    Silica, Horizontal S-Diffusion (mmol/m3/s)
+ [580]  DSILHD    Silica, Horizontal Diffusion (mmol/m3/s)
+ [581]  DSILVD    Silica, Vertical Diffusion (mmol/m3/s)
+ [582]  DSILAC    Silica, Time Rate of Change (mmol/m3/s)
+ [583]  DOPAXA    Particulate Organic Silica, Horizontal X-Advection (mmol/m3/
+ [584]  DOPAYA    Particulate Organic Silica, Horizontal Y-Advection (mmol/m3/
+ [585]  DOPAHA    Particulate Organic Silica, Horizontal Advection (mmol/m3/s)
+ [586]  DOPAVA    Particulate Organic Silica, Vertical Advection (mmol/m3/s)
+ [587]  DOPAXD    Particulate Organic Silica, Horizontal X-Diffusion (mmol/m3/
+ [588]  DOPAYD    Particulate Organic Silica, Horizontal Y-Diffusion (mmol/m3/
+ [589]  DOPASD    Particulate Organic Silica, Horizontal S-Diffusion (mmol/m3/
+ [590]  DOPAHD    Particulate Organic Silica, Horizontal Diffusion (mmol/m3/s)
+ [591]  DOPAVD    Particulate Organic Silica, Vertical Diffusion (mmol/m3/s)
+ [592]  DOPAAC    Particulate Organic Silica, Time Rate of Change (mmol/m3/s)
+ [593]  DDFEXA    Available Dissolved Iron, Horizontal X-Advection (mmol/m3/s)
+ [594]  DDFEYA    Available Dissolved Iron, Horizontal Y-Advection (mmol/m3/s)
+ [595]  DDFEHA    Available Dissolved Iron, Horizontal Advection (mmol/m3/s)
+ [596]  DDFEVA    Available Dissolved Iron, Vertical Advection (mmol/m3/s)
+ [597]  DDFEXD    Available Dissolved Iron, Horizontal X-Diffusion (mmol/m3/s)
+ [598]  DDFEYD    Available Dissolved Iron, Horizontal Y-Diffusion (mmol/m3/s)
+ [599]  DDFESD    Available Dissolved Iron, Horizontal S-Diffusion (mmol/m3/s)
+
+ [600]  DDFEHD    Available Dissolved Iron, Horizontal Diffusion (mmol/m3/s)
+ [601]  DDEFVD    Available Dissolved Iron, Vertical Diffusion (mmol/m3/s)
+ [602]  DDFEAC    Available Dissolved Iron, Time Rate of Change (mmol/m3/s)
+ [603]  DCHLXA    Chlorophyll, Horizontal X-Advection (mmol/m3/s)
+ [604]  DCHLYA    Chlorophyll, Horizontal Y-Advection (mmol/m3/s)
+ [605]  DCHLHA    Chlorophyll, Horizontal Advection (mmol/m3/s)
+ [606]  DCHLVA    Chlorophyll, Vertical Advection (mmol/m3/s)
+ [607]  DCHLXD    Chlorophyll, Horizontal X-Diffusion (mmol/m3/s)
+ [608]  DCHLYD    Chlorophyll, Horizontal Y-Diffusion (mmol/m3/s)
+ [609]  DCHLSD    Chlorophyll, Horizontal S-Diffusion (mmol/m3/s)
+ [610]  DCHLHD    Chlorophyll, Horizontal Diffusion (mmol/m3/s)
+ [611]  DCHLVD    Chlorophyll, Vertical Diffusion (mmol/m3/s)
+ [612]  DCHLAC    Chlorophyll, Time Rate of Change (mmol/m3/s)
+ [613]  DPHYXA    Phytoplankton, Horizontal X-Advection (mmol/m3/s)
+ [614]  DPHYYA    Phytoplankton, Horizontal Y-Advection (mmol/m3/s)
+ [615]  DPHYHA    Phytoplankton, Horizontal Advection (mmol/m3/s)
+ [616]  DPHYVA    Phytoplankton, Vertical Advection (mmol/m3/s)
+ [617]  DPHYXD    Phytoplankton, Horizontal X-Diffusion (mmol/m3/s)
+ [618]  DPHYYD    Phytoplankton, Horizontal Y-Diffusion (mmol/m3/s)
+ [619]  DPHYSD    Phytoplankton, Horizontal S-Diffusion (mmol/m3/s)
+ [620]  DPHYHD    Phytoplankton, Horizontal Diffusion (mmol/m3/s)
+ [621]  DPHYVD    Phytoplankton, Vertical Diffusion (mmol/m3/s)
+ [622]  DPHYAC    Phytoplankton, Time Rate of Change (mmol/m3/s)
+ [623]  DPFEXA    Phytoplankton-Fe, Horizontal X-Advection (mmol/m3/s)
+ [624]  DPFEYA    Phytoplankton-Fe, Horizontal Y-Advection (mmol/m3/s)
+ [625]  DPFEHA    Phytoplankton-Fe, Horizontal Advection (mmol/m3/s)
+ [626]  DPFEVA    Phytoplankton-Fe, Vertical Advection (mmol/m3/s)
+ [627]  DPFEXD    Phytoplankton-Fe, Horizontal X-Diffusion (mmol/m3/s)
+ [628]  DPFEYD    Phytoplankton-Fe, Horizontal Y-Diffusion (mmol/m3/s)
+ [629]  DPFESD    Phytoplankton-Fe, Horizontal S-Diffusion (mmol/m3/s)
+ [630]  DPFEHD    Phytoplankton-Fe, Horizontal Diffusion (mmol/m3/s)
+ [631]  DPFEVD    Phytoplankton-Fe, Vertical Diffusion (mmol/m3/s)
+ [632]  DPFEAC    Phytoplankton-Fe, Time Rate of Change (mmol/m3/s)
+ [633]  DNPHXA    Nanophytoplankton, Horizontal X-Advection (mmol/m3/s)
+ [634]  DNPHYA    Nanophytoplankton, Horizontal Y-Advection (mmol/m3/s)
+ [635]  DNPHHA    Nanophytoplankton, Horizontal Advection (mmol/m3/s)
+ [636]  DNPHVA    Nanophytoplankton, Vertical Advection (mmol/m3/s)
+ [637]  DNPHXD    Nanophytoplankton, Horizontal X-Diffusion (mmol/m3/s)
+ [638]  DNPHYD    Nanophytoplankton, Horizontal Y-Diffusion (mmol/m3/s)
+ [639]  DNPHSD    Nanophytoplankton, Horizontal S-Diffusion (mmol/m3/s)
+ [640]  DNPHHD    Nanophytoplankton, Horizontal Diffusion (mmol/m3/s)
+ [641]  DNPHVD    Nanophytoplankton, Vertical Diffusion (mmol/m3/s)
+ [642]  DNPHAC    Nanophytoplankton, Time Rate of Change (mmol/m3/s)
+ [643]  DDIAXA    Diatom, Horizontal X-Advection (mmol/m3/s)
+ [644]  DDIAYA    Diatom, Horizontal Y-Advection (mmol/m3/s)
+ [645]  DDIAHA    Diatom, Horizontal Advection (mmol/m3/s)
+ [646]  DDIAVA    Diatom, Vertical Advection (mmol/m3/s)
+ [647]  DDIAXD    Diatom, Horizontal X-Diffusion (mmol/m3/s)
+ [648]  DDIAYD    Diatom, Horizontal Y-Diffusion (mmol/m3/s)
+ [649]  DDIASD    Diatom, Horizontal S-Diffusion (mmol/m3/s)
+ [650]  DDIAHD    Diatom, Horizontal Diffusion (mmol/m3/s)
+ [651]  DDIAVD    Diatom, Vertical Diffusion (mmol/m3/s)
+ [652]  DDIAAC    Diatom, Time Rate of Change (mmol/m3/s)
+ [653]  DZOOXA    Zooplankton, Horizontal X-Advection (mmol/m3/s)
+ [654]  DZOOYA    Zooplankton, Horizontal Y-Advection (mmol/m3/s)
+ [655]  DZOOHA    Zooplankton, Horizontal Advection (mmol/m3/s)
+ [656]  DZOOVA    Zooplankton, Vertical Advection (mmol/m3/s)
+ [657]  DZOOXD    Zooplankton, Horizontal X-Diffusion (mmol/m3/s)
+ [658]  DZOOYD    Zooplankton, Horizontal Y-Diffusion (mmol/m3/s)
+ [659]  DZOOSD    Zooplankton, Horizontal S-Diffusion (mmol/m3/s)
+ [660]  DZOOHD    Zooplankton, Horizontal Diffusion (mmol/m3/s)
+ [661]  DZOOVD    Zooplankton, Vertical Diffusion (mmol/m3/s)
+ [662]  DZOOAC    Zooplankton, Time Rate of Change (mmol/m3/s)
+ [663]  DMIZXA    Microzooplankton, Horizontal X-Advection (mmol/m3/s)
+ [664]  DMIZYA    Microzooplankton, Horizontal Y-Advection (mmol/m3/s)
+ [665]  DMIZHA    Microzooplankton, Horizontal Advection (mmol/m3/s)
+ [666]  DMIZVA    Microzooplankton, Vertical Advection (mmol/m3/s)
+ [667]  DMIZXD    Microzooplankton, Horizontal X-Diffusion (mmol/m3/s)
+ [668]  DMIZYD    Microzooplankton, Horizontal Y-Diffusion (mmol/m3/s)
+ [669]  DMIZSD    Microzooplankton, Horizontal S-Diffusion (mmol/m3/s)
+ [670]  DMIZHD    Microzooplankton, Horizontal Diffusion (mmol/m3/s)
+ [671]  DMIZVD    Microzooplankton, Vertical Diffusion (mmol/m3/s)
+ [672]  DMIZAC    Microzooplankton, Time Rate of Change (mmol/m3/s)
+ [673]  DMEZXA    Mesozooplankton, Horizontal X-Advection (mmol/m3/s)
+ [674]  DMEZYA    Mesozooplankton, Horizontal Y-Advection (mmol/m3/s)
+ [675]  DMEZHA    Mesozooplankton, Horizontal Advection (mmol/m3/s)
+ [676]  DMEZVA    Mesozooplankton, Vertical Advection (mmol/m3/s)
+ [677]  DMEZXD    Mesozooplankton, Horizontal X-Diffusion (mmol/m3/s)
+ [678]  DMEZYD    Mesozooplankton, Horizontal Y-Diffusion (mmol/m3/s)
+ [679]  DMEZSD    Mesozooplankton, Horizontal S-Diffusion (mmol/m3/s)
+ [680]  DMEZHD    Mesozooplankton, Horizontal Diffusion (mmol/m3/s)
+ [681]  DMEZVD    Mesozooplankton, Vertical Diffusion (mmol/m3/s)
+ [682]  DMEZAC    Mesozooplankton, Time Rate of Change (mmol/m3/s)
+ [683]  DPRZXA    Predactor Zooplankton, Horizontal X-Advection (mmol/m3/s)
+ [684]  DPRZYA    Predactor Zooplankton, Horizontal Y-Advection (mmol/m3/s)
+ [685]  DPRZHA    Predactor Zooplankton, Horizontal Advection (mmol/m3/s)
+ [686]  DPRZVA    Predactor Zooplankton, Vertical Advection (mmol/m3/s)
+ [687]  DPRZXD    Predactor Zooplankton, Horizontal X-Diffusion (mmol/m3/s)
+ [688]  DPRZYD    Predactor Zooplankton, Horizontal Y-Diffusion (mmol/m3/s)
+ [689]  DPRZSD    Predactor Zooplankton, Horizontal S-Diffusion (mmol/m3/s)
+ [690]  DPRZHD    Predactor Zooplankton, Horizontal Diffusion (mmol/m3/s)
+ [691]  DPRZVD    Predactor Zooplankton, Vertical Diffusion (mmol/m3/s)
+ [692]  DPRZAC    Predactor Zooplankton, Time Rate of Change (mmol/m3/s)
+ [693]  DDETXA    Detritus, Horizontal X-Advection (mmol/m3/s)
+ [694]  DDETYA    Detritus, Horizontal Y-Advection (mmol/m3/s)
+ [695]  DDETHA    Detritus, Horizontal Advection (mmol/m3/s)
+ [696]  DDETVA    Detritus, Vertical Advection (mmol/m3/s)
+ [697]  DDETXD    Detritus, Horizontal X-Diffusion (mmol/m3/s)
+ [698]  DDETYD    Detritus, Horizontal Y-Diffusion (mmol/m3/s)
+ [699]  DDETSD    Detritus, Horizontal S-Diffusion (mmol/m3/s)
+
+ [700]  DDETHD    Detritus, Horizontal Diffusion (mmol/m3/s)
+ [701]  DDETVD    Detritus, Vertical Diffusion (mmol/m3/s)
+ [702]  DDETAC    Detritus, Time Rate of Change (mmol/m3/s)
+ [703]  DSDNXA    Small Detritus-N, Horizontal X-Advection (mmol/m3/s)
+ [704]  DSDNYA    Small Detritus-N, Horizontal Y-Advection (mmol/m3/s)
+ [705]  DSDNHA    Small Detritus-N, Horizontal Advection (mmol/m3/s)
+ [706]  DSDNVA    Small Detritus-N, Vertical Advection (mmol/m3/s)
+ [707]  DSDNXD    Small Detritus-N, Horizontal X-Diffusion (mmol/m3/s)
+ [708]  DSDNYD    Small Detritus-N, Horizontal Y-Diffusion (mmol/m3/s)
+ [709]  DSDNSD    Small Detritus-N, Horizontal S-Diffusion (mmol/m3/s)
+ [710]  DSDNHD    Small Detritus-N, Horizontal Diffusion (mmol/m3/s)
+ [711]  DSDNVD    Small Detritus-N, Vertical Diffusion (mmol/m3/s)
+ [712]  DSDNAC    Small Detritus-N, Time Rate of Change (mmol/m3/s)
+ [713]  DLDNXA    Large Detritus-N, Horizontal X-Advection (mmol/m3/s)
+ [714]  DLDNYA    Large Detritus-N, Horizontal Y-Advection (mmol/m3/s)
+ [715]  DLDNHA    Large Detritus-N, Horizontal Advection (mmol/m3/s)
+ [716]  DLDNVA    Large Detritus-N, Vertical Advection (mmol/m3/s)
+ [717]  DLDNXD    Large Detritus-N, Horizontal X-Diffusion (mmol/m3/s)
+ [718]  DLDNYD    Large Detritus-N, Horizontal Y-Diffusion (mmol/m3/s)
+ [719]  DLDNSD    Large Detritus-N, Horizontal S-Diffusion (mmol/m3/s)
+ [720]  DLDNHD    Large Detritus-N, Horizontal Diffusion (mmol/m3/s)
+ [721]  DLDNVD    Large Detritus-N, Vertical Diffusion (mmol/m3/s)
+ [722]  DLDNAC    Large Detritus-N, Time Rate of Change (mmol/m3/s)
+ [723]  DSDCXA    Small Detritus-C, Horizontal X-Advection (mmol/m3/s)
+ [724]  DSDCYA    Small Detritus-C, Horizontal Y-Advection (mmol/m3/s)
+ [725]  DSDCHA    Small Detritus-C, Horizontal Advection (mmol/m3/s)
+ [726]  DSDCVA    Small Detritus-C, Vertical Advection (mmol/m3/s)
+ [727]  DSDCXD    Small Detritus-C, Horizontal X-Diffusion (mmol/m3/s)
+ [728]  DSDCYD    Small Detritus-C, Horizontal Y-Diffusion (mmol/m3/s)
+ [729]  DSDCSD    Small Detritus-C, Horizontal S-Diffusion (mmol/m3/s)
+ [730]  DSDCHD    Small Detritus-C, Horizontal Diffusion (mmol/m3/s)
+ [731]  DSDCVD    Small Detritus-C, Vertical Diffusion (mmol/m3/s)
+ [732]  DSDCAC    Small Detritus-C, Time Rate of Change (mmol/m3/s)
+ [733]  DLDCXA    Large Detritus-C, Horizontal X-Advection (mmol/m3/s)
+ [734]  DLDCYA    Large Detritus-C, Horizontal Y-Advection (mmol/m3/s)
+ [735]  DLDCHA    Large Detritus-C, Horizontal Advection (mmol/m3/s)
+ [736]  DLDCVA    Large Detritus-C, Vertical Advection (mmol/m3/s)
+ [737]  DLDCXD    Large Detritus-C, Horizontal X-Diffusion (mmol/m3/s)
+ [738]  DLDCYD    Large Detritus-C, Horizontal Y-Diffusion (mmol/m3/s)
+ [739]  DLDCSD    Large Detritus-C, Horizontal S-Diffusion (mmol/m3/s)
+ [740]  DLDCHD    Large Detritus-C, Horizontal Diffusion (mmol/m3/s)
+ [741]  DLDCVD    Large Detritus-C, Vertical Diffusion (mmol/m3/s)
+ [742]  DLDcAC    Large Detritus-C, Time Rate of Change (mmol/m3/s)
+ [743]  DTICXA    Total Inorganic Carbon, Horizontal X-Advection (mmol/m3/s)
+ [744]  DTICYA    Total Inorganic Carbon, Horizontal Y-Advection (mmol/m3/s)
+ [745]  DTICHA    Total Inorganic Carbon, Horizontal Advection (mmol/m3/s)
+ [746]  DTICVA    Total Inorganic Carbon, Vertical Advection (mmol/m3/s)
+ [747]  DTICXD    Total Inorganic Carbon, Horizontal X-Diffusion (mmol/m3/s)
+ [748]  DTICYD    Total Inorganic Carbon, Horizontal Y-Diffusion (mmol/m3/s)
+ [749]  DTICSD    Total Inorganic Carbon, Horizontal S-Diffusion (mmol/m3/s)
+ [750]  DTICHD    Total Inorganic Carbon, Horizontal Diffusion (mmol/m3/s)
+ [751]  DTICVD    Total Inorganic Carbon, Vertical Diffusion (mmol/m3/s)
+ [752]  DTICAC    Total Inorganic Carbon, Time Rate of Change (mmol/m3/s)
+ [753]  DALKXA    Alkalinity, Horizontal X-Advection (mmol/m3/s)
+ [754]  DALKYA    Alkalinity, Horizontal Y-Advection (mmol/m3/s)
+ [755]  DALKHA    Alkalinity, Horizontal Advection (mmol/m3/s)
+ [756]  DALKVA    Alkalinity, Vertical Advection (mmol/m3/s)
+ [757]  DALKXD    Alkalinity, Horizontal X-Diffusion (mmol/m3/s)
+ [758]  DALKYD    Alkalinity, Horizontal Y-Diffusion (mmol/m3/s)
+ [759]  DALKSD    Alkalinity, Horizontal S-Diffusion (mmol/m3/s)
+ [760]  DALKHD    Alkalinity, Horizontal Diffusion (mmol/m3/s)
+ [761]  DALKVD    Alkalinity, Vertical Diffusion (mmol/m3/s)
+ [762]  DALKAC    Alkalinity, Time Rate of Change (mmol/m3/s)
+ [763]  DOXYXA    Oxygen, Horizontal X-Advection (mmol/m3/s)
+ [764]  DOXYYA    Oxygen, Horizontal Y-Advection (mmol/m3/s)
+ [765]  DOXYHA    Oxygen, Horizontal Advection (mmol/m3/s)
+ [766]  DOXYVA    Oxygen, Vertical Advection (mmol/m3/s)
+ [767]  DOXYXD    Oxygen, Horizontal X-Diffusion (mmol/m3/s)
+ [768]  DOXYYD    Oxygen, Horizontal Y-Diffusion (mmol/m3/s)
+ [769]  DOXYSD    Oxygen, Horizontal S-Diffusion (mmol/m3/s)
+ [770]  DOXYHD    Oxygen, Horizontal Diffusion (mmol/m3/s)
+ [771]  DOXYVD    Oxygen, Vertical Diffusion (mmol/m3/s)
+ [772]  DOXYAC    Oxygen, Time Rate of Change (mmol/m3/s)
+ [773]  DDENXA    Denitrification, Horizontal X-Advection (mmol/m2/s)
+ [774]  DDENYA    Denitrification, Horizontal Y-Advection (mmol/m2/s)
+ [775]  DDENHA    Denitrification, Horizontal Advection (mmol/m2/s)
+ [776]  DDENVA    Denitrification, Vertical Advection (mmol/m2/s)
+ [777]  DDENXD    Denitrification, Horizontal X-Diffusion (mmol/m2/s)
+ [778]  DDENYD    Denitrification, Horizontal Y-Diffusion (mmol/m2/s)
+ [779]  DDENSD    Denitrification, Horizontal S-Diffusion (mmol/m2/s)
+ [780]  DDENHD    Denitrification, Horizontal Diffusion (mmol/m2/s)
+ [781]  DDENVD    Denitrification, Vertical Diffusion (mmol/m2/s)
+ [782]  DDENAC    Denitrification, Time Rate of Change (mmol/m2/s)
+ [783]  DNUPHA    Averaged NO3 Uptake (mmol/m3/day)
+ [784]  DPPRVA    Averaged Primary Production (mmol/m3/day)
+ [785]  DO2ASF    Averaged O2 air-sea Flux (mmol/m2/day)
+ [786]  DCO2AF    Averaged CO2 air-sea Flux (mmol/m2/day)
+ [787]  DPPCO2    Averaged Partial Pressure of CO2 (microatm)

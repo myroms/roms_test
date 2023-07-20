@@ -1,0 +1,47 @@
+&share
+ wrf_core                   = 'ARW'
+ max_dom                    = 1
+ start_date                 = '2011-08-27_06:00:00'
+ end_date                   = '2011-08-29_00:00:00'
+ interval_seconds           = 10800
+ io_form_geogrid            = 2
+ opt_output_from_geogrid_path = './'
+ debug_level                = 0
+/
+
+&geogrid
+ parent_id                  = 1
+ parent_grid_ratio          = 1
+ i_parent_start             = 1
+ j_parent_start             = 1
+ e_we                       = 320
+ e_sn                       = 280
+ geog_data_res              = 'modis_15s_lakes'
+ dx                         = 6000
+ dy                         = 6000
+ map_proj                   = 'lambert'
+ ref_lat                    = 39.45
+ ref_lon                    = -70.1
+ truelat1                   = 39.45
+ truelat2                   = 39.45
+ stand_lon                  = -70.1
+ ref_x                      = 160
+ ref_y                      = 140
+ geog_data_path             = './geogv4'
+ opt_geogrid_tbl_path       = './geogrid'
+/
+
+&ungrib
+ out_format                 = 'WPS'
+ prefix                     = 'FILE'
+/
+
+&metgrid
+ fg_name                    = 'FILE'
+ io_form_metgrid            = 2
+ opt_metgrid_tbl_path       = './metgrid'
+/
+
+&mod_levs
+ press_pa                   = 200100, 201300, 100000, 97500, 95000, 92500, 90000, 87500, 85000, 82500, 80000, 77500, 75000, 72500, 70000, 65000, 60000, 55000, 50000, 45000, 40000, 35000, 30000, 25000, 20000, 15000, 10000, 5000
+/

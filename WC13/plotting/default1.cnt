@@ -1,0 +1,69 @@
+F      'LVPINFO' Switch to print out viewport information (T/F).
+0.0    'SDV_FAC' Standard deviation factor from mean for field range to plot.
+T      'GEO_LAB' Geographic axis labeled as degrees and minutes (T/F).
+F      'LOG_CNT' Switch for logarithmic contour intervals (T/F).
+T      'LNOZERO' Switch to ommit drawing of zero-contour line (T/F).
+T      'LCNTLAB' Switch to label contour lines (T/F).
+0      'CNT_CLL' Width of labeled contour lines: [0] default, [2] double
+F      'LDRWUSR' Switch to draw user lines (T/F).
+F      'LHIGLOW' Switch to label High/Low contour labels (T/F).
+F      'LMODDAY' Switch to write model day (forecast) in date label (T/F).
+F      'LDOMAIN' Switch to draw domain box (T/F).
+T      'LFRAME'  Switch to draw NCAR frame box (T/F).
+T      'LTMARKS' Switch to draw box thick marks and labels (T/F).
+T      'LCLRBAR' Switch to draw color bar (T/F).
+F      'LVECRHO' Switch to draw vectors at RHO-points (F: at PSI-points).
+T      'LVCOLOR' Switch to pain vectors by their magnitude (T/F).
+F      'LROTVEC' Switch to rotate vector component normal to cross-section.
+T      'LZEROZN' Switch to set surface depth to zero in cross-sections.
+2.0    'THCKUSR' User polylines thickness (default 2.0).
+1      'VEC_VPO' Vector positioning mode: [<0] head, [0] middle, [>0] tail
+0.0007 'VEC_AMN' Vector arrow minimum size (fraction of viewport width, ~7E-4).
+0.05   'VEC_AMX' Vector arrow maximum size (fraction of viewport width, ~5E-2).
+0.0    'VEC_VLC' Vector low cutoff percentage (around 0.05).
+0.07   'VEC_VFR' Vector fractional minimum (around 0.07).
+1.0    'VEC_VRM' Vector reference magnitude (if zero, use maximum cutoff)
+0.85   'VEC_MXX' Maximum vector text block X-coordinate (default  0.85).
+-0.07  'VEC_MXY' Maximum vector text block Y-coordinate (default -0.07).
+1      'SECAXIS' Section axis coordinate labels: [0] metric, [1] spherical
+0      'COORSCL' Cartesian coordinate units: [0] km, [1] m, [2] cm, [3] mm
+0      'HVELSCL' H velocity: [0] m/s [1] cm/s  [2] mm/s [3] -knots [4] -knots/2
+2      'WVELSCL' V velocity: [0] m/s [1] m/day [2] cm/day
+0.0    'ZREF'    Reference depth (m) used to compute several quantities.
+0      'SMTHOUT' Smooth output: [0] no, [1] Bleck's filter, [2] Shapiro filter
+1      'NSAPPL'  Number of applications of smoothing filter.
+4      'NORD'    Order of Shapiro filter.
+20.0   'FontSz1' Font size for main header title (20.0 plotter units)
+10.0   'FontSz2' Font size for secondary top/bottom titles (10.0 plotter units)
+10.0   'FontSz3' Font size for colorbar labels (10.0 plotter units)
+10.0   'FontSz4' Font size for grid labels (9.0 plotter units)
+7.0    'FontSz5' Font size for Min, Max, CI labels (7.0 plotter units)
+5.0    'FontSz6' Font size for current date label (5.0 plotter units)
+4,1   'IFLDS, ILEVS' Number of fields and levels in contour interval list.
+  4    0.1
+ 23    4.0
+ 28    0.5
+ 59    1000
+
+ ID  |   1      2
+
+       <---------------------------- Levels ---------------------------->
+
+!svn $Id: default1.cnt 1154 2023-02-17 20:52:30Z arango $
+!========================================================= Hernan G. Arango ===
+!  Copyright (c) 2002-2023 The ROMS/TOMS Group                              ===
+!    Licensed under a MIT/X style license                                   ===
+!    See License_ROMS.txt                                                   ===
+!==============================================================================
+!                                                                             !
+!  Notice that all contour intervals are zero in order to force NCAR contour  !
+!  routines to select the contour interval internally.  Also notice that only !
+!  two levels are enough for this default set-up.                             !
+!                                                                             !
+!  IFLDS    Number of fields specified in contour interval matrix.            !
+!  ILEVS    Number of level specified.  If the field is only 2D, the contour  !
+!             interval is that of level 1.                                    !
+!                                                                             !
+!==============================================================================
+!
+

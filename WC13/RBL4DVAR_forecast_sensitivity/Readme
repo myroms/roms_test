@@ -1,0 +1,29 @@
+You must perform the following calculations in the order shown below:
+
+(1) Run forecast FCSTAT - the forecast initialized from the RBL4DVAR-RPCG analysis
+    of Exercise 3. Ensure that your RBL4DVAR-RPCG output files are saved in the
+    sub-directory called RBL4DVAR/EX3_RPCG. FCSTAT will run the non-linear model
+    using BULK_FLUXES. The computed fluxes will be used in steps (2) and (3).
+
+(2) Run forecast FCSTA - the forecast initialized from the RBL4DVAR-RPCG analysis of
+    Exercise 3, but with BULK_FLUXES undefined, and using the surface fluxes saved in
+    step (1).
+
+(3) Run forecast FCSTB - the forecast initialized from the background solution used
+    in the RBL4DVAR-RPCG analysis of Exercise 2. Ensure that your RBL4DVAR-RPCG output
+    files are saved in the sub-directory called RBL4DVAR/EX3_RPCG. FCSTB will run the
+    nonlinear model with BULK_FLUXES undefined and use the surface fluxes saved in
+    step (1).
+
+(4) Create the impact forcing files for the adjoint model:
+
+   (a) Using the verifying analysis as a surrogate for the true state -
+       Go to the directory ../Data and run the script adsen_37N_transport_fcst.m
+       This will create two netcdf files called wc13_foi_A.nc and wc13_foi_B.nc.
+
+   (b) Using new observations as a surrogate for the true state -
+       Go to the directory ../Data and run the script adsen_SST_fcst.m
+       This will overwrite two existing netcdf files called wc13_oifA.nc and
+       wc13_oifB.nc.
+
+(5) Run the forecast observation impact driver for the two cases in (4).

@@ -1,0 +1,48 @@
+netcdf hycom_mab_sst {
+dimensions:
+	X = 401 ;
+	Y = 291 ;
+	MT = UNLIMITED ; // (0 currently)
+
+variables:
+	double Longitude(Y, X) ;
+		Longitude:long_name = "longitude" ;
+		Longitude:standard_name = "longitude" ;
+		Longitude:units = "degrees_east" ;
+	double Latitude(Y, X) ;
+		Latitude:long_name = "latitude" ;
+		Latitude:standard_name = "latitude" ;
+		Latitude:units = "degrees_north" ;
+	double mask(Y, X) ;
+		mask:long_name = "land-sea mask" ;
+		mask:flag_values = 0., 1. ;
+		mask:flag_meanings = "land water" ;
+		mask:coordinates = "Longitude Latitude" ;
+	double MT(MT) ;
+		MT:long_name = "time" ;
+		MT:units = "days since 1900-12-31 00:00:00" ;
+		MT:calendar = "gregorian" ;
+	double Date(MT) ;
+		Date:long_name = "date" ;
+		Date:units = "day as %Y%m%d.%f" ;
+		Date:C_format = "%13.4f" ;
+		Date:FORTRAN_format = "(f13.4)" ;
+	double temperature(MT, Y, X) ;
+		temperature:long_name = "surface potential temperature" ;
+		temperature:standard_name = "sea_water_potential_temperature" ;
+		temperature:units = "degC" ;
+		temperature:_FillValue = 1.0e+30 ;
+		temperature:coordinates = "Longitude Latitude Date" ;
+
+// global attributes:
+		:Conventions = "CF-1.0" ;
+		:title = "HYCOM GLBa0.08" ;
+		:institution = "Naval Research Laboratory" ;
+		:source = "HYCOM archive file" ;
+		:experiment = "90.9" ;
+		:url = "http://tds.hycom.org/thredds/dodsC/GLBa0.08/expt_90.9/2011/temp" ;
+		:records = "235:1:241" ;
+		:extraction = "(2500:2900, 1900:2190) from global tripolar grid" ;
+		:history = "2-Jul-2019: extracted with hycom_sst.m\n",
+		 "archv2ncdf3z" ;
+}
