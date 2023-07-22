@@ -16,8 +16,8 @@ function plot_wrf (varargin)
 %    wrtPNG    Flag to save figures as a PNG file (logical, OPTIONAL)  
 %
   
-% svn $Id: plot_wrf.m 1154 2023-02-17 20:52:30Z arango $
-%=========================================================================%
+% git $Id$
+  %=========================================================================%
 %  Copyright (c) 2002-2023 The ROMS/TOMS Group                            %
 %    Licensed under a MIT/X style license                                 %
 %    See License_ROMS.txt                           Hernan G. Arango      %

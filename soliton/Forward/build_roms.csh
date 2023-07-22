@@ -1,6 +1,6 @@
 #!/bin/csh -f
 #
-# svn $Id: build_roms.csh 1168 2023-06-04 19:06:30Z arango $
+# git $Id$
 #::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 # Copyright (c) 2002-2023 The ROMS/TOMS Group                           :::
 #   Licensed under a MIT/X style license                                :::
@@ -104,23 +104,30 @@ end
 setenv ROMS_APPLICATION      SOLITON
 
 # Set a local environmental variable to define the path to the directories
-# where all this project's files are kept.
+# where the ROMS source code is located (MY_ROOT_DIR), and this project's
+# configuration and files are kept (MY_PROJECT_DIR). Notice that if the
+# User sets the ROMS_ROOT_DIR environment variable in their computer logging
+# script describing the location from where the ROMS source code was cloned
+# or downloaded, it uses that value. 
 
-setenv MY_ROOT_DIR           ${HOME}/ocean/repository
-setenv MY_PROJECT_DIR        ${PWD}
+if ($?ROMS_ROOT_DIR) then
+  setenv MY_ROOT_DIR        ${ROMS_ROOT_DIR}
+else
+  setenv MY_ROOT_DIR        ${HOME}/ocean/repository/git
+fi
+setenv   MY_PROJECT_DIR     ${PWD}
 
 # The path to the user's local current ROMS source code.
 #
-# If using svn locally, this would be the user's Working Copy Path (WCPATH).
-# Note that one advantage of maintaining your source code locally with svn
-# is that when working simultaneously on multiple machines (e.g. a local
-# workstation, a local cluster and a remote supercomputer) you can checkout
-# the latest release and always get an up-to-date customized source on each
-# machine. This script is designed to more easily allow for differing paths
-# to the code and inputs on differing machines.
+# If downloading ROMS locally, this would be the user's Working Copy Path.
+# One advantage of maintaining your source code copy is that when working
+# simultaneously on multiple machines (e.g., a local workstation, a local
+# cluster, and a remote supercomputer), you can update with the latest ROMS
+# release and always get an up-to-date customized source on each machine.
+# This script allows for differing paths to the code and inputs on other
+# computers.
 
-#setenv MY_ROMS_SRC          ${MY_ROOT_DIR}/git/trunk
- setenv MY_ROMS_SRC          ${MY_ROOT_DIR}/svn/trunk
+ setenv  MY_ROMS_SRC        ${MY_ROOT_DIR}/roms
 
 # Set path of the directory containing makefile configuration (*.mk) files.
 # The user has the option to specify a customized version of these files
@@ -272,25 +279,69 @@ endif
 
  setenv BINDIR              ${MY_PROJECT_DIR}
 
-# Put the f90 files in a project specific Build directory to avoid conflict
-# with other projects.
-
-if ($?USE_DEBUG) then
-  setenv SCRATCH_DIR        ${MY_PROJECT_DIR}/Build_romsG
-else
-  setenv SCRATCH_DIR        ${MY_PROJECT_DIR}/Build_roms
-endif
-
-# Go to the users source directory to compile. The options set above will
-# pick up the application-specific code from the appropriate place.
-
- cd ${MY_ROMS_SRC}
-
 # Stop if activating both MPI and OpenMP at the same time.
 
 if ( ${?USE_MPI} & ${?USE_OpenMP} ) then
   echo "You cannot activate USE_MPI and USE_OpenMP at the same time!"
   exit 1
+endif
+
+# Put the f90 files in a project specific Build directory to avoid conflict
+# with other projects.
+
+if ($?USE_DEBUG) then
+  setenv BUILD_DIR          ${MY_PROJECT_DIR}/Build_romsG
+else
+  if ($?USE_OpenMP) then
+    setenv BUILD_DIR        ${MY_PROJECT_DIR}/Build_romsO
+  else if ($?USE_MPI) then
+    setenv BUILD_DIR        ${MY_PROJECT_DIR}/Build_romsM
+  else
+    setenv BUILD_DIR        ${MY_PROJECT_DIR}/Build_roms
+  endif
+endif
+
+# If necessary, create ROMS build directory.
+
+if ( ! -d $BUILD_DIR ) then
+  echo ""
+  echo "Creating ROMS build directory: ${BUILD_DIR}"
+  echo ""
+  mkdir $BUILD_DIR
+endif
+
+# Go to the users source directory to compile. The options set above will
+# pick up the application-specific code from the appropriate place.
+
+if ( $branch == 1 ) then
+
+  # Check out requested branch from ROMS GitHub.
+
+  if ( ! -d ${MY_PROJECT_DIR}/src ) then
+    echo ""
+    echo "Downloading ROMS source code from GitHub: https://www.github.com/myroms"
+    echo ""
+    git clone https://www.github.com/myroms/roms.git src
+  endif
+  echo ""
+  echo "Checking out ROMS GitHub branch: $branch_name"
+  echo ""
+  cd src
+  git checkout $branch_name
+
+  # If we are using the COMPILERS from the ROMS source code
+  # overide the value set above
+
+  if ( ${COMPILERS} =~ ${MY_ROMS_SRC}* ) then
+    setenv COMPILERS ${MY_PROJECT_DIR}/src/Compilers
+  endif
+  setenv MY_ROMS_SRC ${MY_PROJECT_DIR}/src
+
+else
+  echo ""
+  echo "Using ROMS source code from: ${MY_ROMS_SRC}"
+  echo ""
+  cd ${MY_ROMS_SRC}
 endif
 
 #--------------------------------------------------------------------------
@@ -300,6 +351,9 @@ endif
 # Remove build directory.
 
 if ( $clean == 1 ) then
+  echo ""
+  echo "Cleaning ROMS build directory: ${BUILD_DIR}"
+  echo ""
   make clean
 endif
 
@@ -308,6 +362,9 @@ endif
 if ( $dprint == 1 ) then
   make $debug
 else
+  echo ""
+  echo "Compiling ROMS source code:"
+  echo ""
   if ( $parallel == 1 ) then
     make $NCPUS
   else

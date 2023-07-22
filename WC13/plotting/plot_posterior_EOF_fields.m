@@ -3,7 +3,7 @@
 %                             matrix
 %
 
-% svn $Id: plot_posterior_EOF_fields.m 1154 2023-02-17 20:52:30Z arango $
+% git $Id$
 %===========================================================================%
 %  Copyright (c) 2002-2023 The ROMS/TOMS Group                              %
 %    Licensed under a MIT/X style license                                   %

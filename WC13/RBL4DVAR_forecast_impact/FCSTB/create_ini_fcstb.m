@@ -2,7 +2,7 @@
 % from the previous RBL4D-Var background solution (EXE_RPCG) forward file
 % "wc13_fwd_000.nc".
 
-% svn $Id: create_ini_fcstb.m 1154 2023-02-17 20:52:30Z arango $
+%  git $Id$
 %=========================================================================%
 %  Copyright (c) 2002-2023 The ROMS/TOMS Group                            %
 %    Licensed under a MIT/X style license                                 %

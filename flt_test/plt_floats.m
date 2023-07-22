@@ -18,8 +18,8 @@ function plt_floats(Hname, Fname);
 %    floats.flc  Animation file for Lagrangian trajectory
 %
 
-% svn $Id: plt_floats.m 1154 2023-02-17 20:52:30Z arango $
-%===========================================================================%
+% git $Id$
+  %===========================================================================%
 %  Copyright (c) 2002-2023 The ROMS/TOMS Group                              %
 %    Licensed under a MIT/X style license                                   %
 %    See License_ROMS.txt                           Hernan G. Arango        %

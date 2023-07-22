@@ -43,7 +43,7 @@ default1.cnt
 ../Data/wc13_grd.nc
 
 
-!svn $Id: csec_array_modes_u.in 1154 2023-02-17 20:52:30Z arango $
+! git $Id$
 !========================================================= Hernan G. Arango ===
 !  Copyright (c) 2002-2023 The ROMS/TOMS Group                              ===
 !    Licensed under a MIT/X style license                                   ===

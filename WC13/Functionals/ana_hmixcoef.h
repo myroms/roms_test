@@ -1,6 +1,6 @@
       SUBROUTINE ana_hmixcoef (ng, tile, model)
 !
-!! svn $Id: ana_hmixcoef.h 1154 2023-02-17 20:52:30Z arango $
+!! git $Id$
 !!================================================= Hernan G. Arango ===
 !! Copyright (c) 2002-2023 The ROMS/TOMS Group                         !
 !!   Licensed under a MIT/X style license                              !

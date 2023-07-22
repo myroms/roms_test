@@ -1,6 +1,6 @@
 #!/bin/csh -f
 #
-# svn $Id: copyright.csh 1154 2023-02-17 20:52:30Z arango $
+# git $Id$
 #::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 # Copyright (c) 2002-2023 The ROMS/TOMS Group                           :::
 #   Licensed under a MIT/X style license                                :::
@@ -10,18 +10,14 @@
 # ROMS/TOMS Copyright Update Script                                     :::
 #                                                                       :::
 # Script to update the copyright information on 'matlab' source files.  :::
-# This script replaces the copyright string in the source files and     :::
-# updates the copyright svn property. This script must be executed      :::
-# from the top level 'matlab' source code.                              :::
+# This script replaces the copyright string in the test files. It must  :::
+# be executed from the top level 'roms_test' repository.                :::
 #                                                                       :::
 # Usage:                                                                :::
 #                                                                       :::
 #    ./bin/copyright.csh [options]                                      :::
 #                                                                       :::
 # Options:                                                              :::
-#                                                                       :::
-#    -nosvn    skip updating of the svn properties. Meant for systems   :::
-#                that don't have the comandline svn tools.              :::
 #                                                                       :::
 #    -verbose  list files that are modified.                            :::
 #                                                                       :::
@@ -63,8 +59,6 @@ set c_dirs = "$c_dirs WC13"
 set c_dirs = "$c_dirs weddell"
 set c_dirs = "$c_dirs windbasin"
 
-set setsvn = 1
-
 # verbose is a csh command to print all lines of the script so I changed
 # this variable to "verb".
 
@@ -72,11 +66,6 @@ set verb = 0
 
 while ( ($#argv) > 0 )
   switch ($1)
-    case "-nosvn":
-      shift
-      set setsvn = 0
-    breaksw
-
     case "-verbose":
       shift
       set verb = 1
@@ -87,9 +76,6 @@ while ( ($#argv) > 0 )
       echo "$0 : Unknown option [ $1 ]"
       echo ""
       echo "Available Options:"
-      echo ""
-      echo "-nosvn    skip updating of the svn properties. Meant for systems"
-      echo "            that don't have the comandline svn tools."
       echo ""
       echo "-verbose  list files that are modified"
       echo ""
@@ -103,23 +89,23 @@ echo ""
 echo "Replacing Copyright String in Files ..."
 echo ""
 
-# The "! -path '*/.svn/*'" is there to keep it from messing with
-# files in the .svn directories. The "! -name 'copyright.*'" is to
+# The "! -path '*/.git/*'" is there to keep it from messing with
+# files in the .git directories. The "! -name 'copyright.*'" is to
 # keep it from messing with the file that's making the reaplacements.
 # There is no way to redirect only stderr with csh.
 
-foreach FILE ( `find ${c_dirs} ! -path '*/.svn/*' ! -name 'copyright.*' -type f -print` )
+foreach FILE ( `find ${c_dirs} ! -path '*/.git/*' ! -name 'copyright.*' -type f -print` )
 
-# Double check that we're not changing a file in a .svn folder.
+# Double check that we're not changing a file in a .git folder.
 
-  if ( `echo $FILE | grep -vc '.svn/'` ) then
+  if ( `echo $FILE | grep -vc '.git/'` ) then
     if ( $verb == 1 ) then
       grep -l "${search}" $FILE && sed -i -e "s|${search}|${replace}|g" $FILE
     else
       grep -l "${search}" $FILE > /dev/null && sed -i -e "s|${search}|${replace}|g" $FILE
     endif
   else
-    echo "There is a .svn in the path: $FILE skipped"
+    echo "There is a .git in the path: $FILE skipped"
   endif
 
 end
@@ -128,41 +114,4 @@ echo ""
 echo "Done."
 echo ""
 
-if ( $setsvn == 1 ) then
-  svn propset copyright '(c) 2002-2023 The ROMS/TOMS Group' .
-  svn propset -R copyright '(c) 2002-2023 The ROMS/TOMS Group' External
-  svn propset -R copyright '(c) 2002-2023 The ROMS/TOMS Group' bin
-  svn propset -R copyright '(c) 2002-2023 The ROMS/TOMS Group' basin
-  svn propset -R copyright '(c) 2002-2023 The ROMS/TOMS Group' benchmark
-  svn propset -R copyright '(c) 2002-2023 The ROMS/TOMS Group' bio_toy
-  svn propset -R copyright '(c) 2002-2023 The ROMS/TOMS Group' bl_test
-  svn propset -R copyright '(c) 2002-2023 The ROMS/TOMS Group' canyon
-  svn propset -R copyright '(c) 2002-2023 The ROMS/TOMS Group' channel
-  svn propset -R copyright '(c) 2002-2023 The ROMS/TOMS Group' DAMEE_4
-  svn propset -R copyright '(c) 2002-2023 The ROMS/TOMS Group' dogbone
-  svn propset -R copyright '(c) 2002-2023 The ROMS/TOMS Group' double_gyre
-  svn propset -R copyright '(c) 2002-2023 The ROMS/TOMS Group' estuary_test
-  svn propset -R copyright '(c) 2002-2023 The ROMS/TOMS Group' flt_test
-  svn propset -R copyright '(c) 2002-2023 The ROMS/TOMS Group' grav_adj
-  svn propset -R copyright '(c) 2002-2023 The ROMS/TOMS Group' inlet_test
-  svn propset -R copyright '(c) 2002-2023 The ROMS/TOMS Group' kelvin
-  svn propset -R copyright '(c) 2002-2023 The ROMS/TOMS Group' lab_canyon
-  svn propset -R copyright '(c) 2002-2023 The ROMS/TOMS Group' lake_jersey
-  svn propset -R copyright '(c) 2002-2023 The ROMS/TOMS Group' lmd_test
-  svn propset -R copyright '(c) 2002-2023 The ROMS/TOMS Group' riverplume
-  svn propset -R copyright '(c) 2002-2023 The ROMS/TOMS Group' seamount
-  svn propset -R copyright '(c) 2002-2023 The ROMS/TOMS Group' sed_test
-  svn propset -R copyright '(c) 2002-2023 The ROMS/TOMS Group' shoreface
-  svn propset -R copyright '(c) 2002-2023 The ROMS/TOMS Group' soliton
-  svn propset -R copyright '(c) 2002-2023 The ROMS/TOMS Group' test_chan
-  svn propset -R copyright '(c) 2002-2023 The ROMS/TOMS Group' test_head
-  svn propset -R copyright '(c) 2002-2023 The ROMS/TOMS Group' upwelling
-  svn propset -R copyright '(c) 2002-2023 The ROMS/TOMS Group' WC13
-  svn propset -R copyright '(c) 2002-2023 The ROMS/TOMS Group' weddell
-  svn propset -R copyright '(c) 2002-2023 The ROMS/TOMS Group' windbasin
-else
-  echo ""
-  echo "Not updating svn properties."
-  echo ""
-endif
 

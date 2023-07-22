@@ -34,7 +34,7 @@
 
   24      18   10   59    0.07059  0.03922  0.23137 -4000.0
 
-!svn $Id: gebco1.pal 1154 2023-02-17 20:52:30Z arango $
+! git $Id$
 !========================================================= Hernan G. Arango ===
 !  Copyright (c) 2002-2023 The ROMS/TOMS Group                              ===
 !    Licensed under a MIT/X style license                                   ===

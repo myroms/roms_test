@@ -2,7 +2,7 @@
 % PLOT_RBL4DVAR_COST_COMPARE_WEAK:  Plot RBL4D-Var cost function
 %
 
-% svn $Id: plot_rbl4dvar_cost_compare_weak.m 1154 2023-02-17 20:52:30Z arango $
+% git $Id$
 %=========================================================================%
 %  Copyright (c) 2002-2023 The ROMS/TOMS Group                            %
 %    Licensed under a MIT/X style license                                 %

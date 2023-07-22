@@ -30,7 +30,7 @@ function  fig = soliton_movie(Dir, Vname, type, varargin)
 %   soliton_movie('r01','ubar','his') 
 %   soliton_movie('r01','rvorticity_bar','avg') 
 
-% svn $Id: soliton_movie.m 1154 2023-02-17 20:52:30Z arango $
+% git $Id$
 %=========================================================================%
 %  Copyright (c) 2002-2023 The ROMS/TOMS Group                            %
 %    Licensed under a MIT/X style license                                 %
