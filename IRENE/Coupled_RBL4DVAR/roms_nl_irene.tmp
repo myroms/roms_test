@@ -746,8 +746,8 @@ Qout(idPair) == T       ! Pair               surface air pressure
 Qout(idTair) == T       ! Tair               surface air temperature
 Qout(idUair) == T       ! Uair               surface U-wind
 Qout(idVair) == T       ! Vair               surface V-wind
-Qout(idUaiE) == T       ! Uwind_eastward     surface Eastward  U-wind
-Qout(idVaiN) == T       ! Vwind_northward    surface Northward V-wind
+Qout(idUaiE) == F       ! Uwind_eastward     surface Eastward  U-wind
+Qout(idVaiN) == F       ! Vwind_northward    surface Northward V-wind
 
 Qout(idTsur) == T T     ! shflux, ssflux     surface net heat and salt flux
 Qout(idLhea) == T       ! latent             latent heat flux

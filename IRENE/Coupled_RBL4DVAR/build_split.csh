@@ -57,11 +57,11 @@
 #                                                                       :::
 #    -b          Compile a specific ROMS GitHub branch                  :::
 #                                                                       :::
-#                  build_roms.csh -j 5 -b feature/kernel                :::
+#                  build_split.csh -j 5 -b feature/kernel               :::
 #                                                                       :::
 #    -p macro    Prints any Makefile macro value. For example,          :::
 #                                                                       :::
-#                  build_roms.csh -p FFLAGS                             :::
+#                  build_split.csh -p FFLAGS                            :::
 #                                                                       :::
 #    -noclean    Do not clean already compiled objects                  :::
 #                                                                       :::
@@ -147,10 +147,10 @@ while ( ($#argv) > 0 )
       echo "                  omit argument for all avaliable CPUs"
       echo ""
       echo "-b branch_name  Compile specific ROMS GitHub branch name"
-      echo "                  For example:  build_roms.csh -b feature/kernel"
+      echo "                  For example:  build_split.csh -b feature/kernel"
       echo ""
       echo "-p macro        Prints any Makefile macro value"
-      echo "                  For example:  build_roms.csh -p FFLAGS"
+      echo "                  For example:  build_split.csh -p FFLAGS"
       echo ""
       echo "-noclean        Do not clean already compiled objects"
       echo ""
@@ -421,14 +421,20 @@ endif
 # with other projects.
 
 if ($?USE_DEBUG) then
-  setenv BUILD_DIR          ${MY_PROJECT_DIR}/Build_romsG
-else
-  if ($?USE_OpenMP) then
-    setenv BUILD_DIR        ${MY_PROJECT_DIR}/Build_romsO
-  else if ($?USE_MPI) then
-    setenv BUILD_DIR        ${MY_PROJECT_DIR}/Build_romsM
+  if ( $nl_exe == 1 ) then
+    setenv BUILD_DIR         ${MY_PROJECT_DIR}/Build_romsG_nl
+  else if ( $da_exe == 1 ) then
+    setenv BUILD_DIR         ${MY_PROJECT_DIR}/Build_romsG_da
   else
-    setenv BUILD_DIR        ${MY_PROJECT_DIR}/Build_roms
+    setenv BUILD_DIR         ${MY_PROJECT_DIR}/Build_romsG
+  endif
+else
+  if ( $nl_exe == 1 ) then
+    setenv BUILD_DIR         ${MY_PROJECT_DIR}/Build_roms_nl
+  else if ( $da_exe == 1 ) then
+    setenv BUILD_DIR         ${MY_PROJECT_DIR}/Build_roms_da
+  else
+    setenv BUILD_DIR         ${MY_PROJECT_DIR}/Build_roms
   endif
 endif
 

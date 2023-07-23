@@ -786,7 +786,7 @@ metadata:
   - variable:       dQdSST                                           # Input
     standard_name:  derivative_of_surface_downward_heat_flux_wrt_sea_surface_temperature
     long_name:      surface net heat flux sensitivity to SST
-    units:          watt meter-2 Celsius-1                           # Input:  [Watt/m2]
+    units:          watt meter-2 Celsius-1                           # Input:  [Watt/m2/Celsius]
     field:          d(Q)/d(SST)                                      # [Celsius m/s]
     time:           sst_time
     index_code:     iddQdT

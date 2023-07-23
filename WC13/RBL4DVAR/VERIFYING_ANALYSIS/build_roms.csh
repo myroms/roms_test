@@ -309,7 +309,7 @@ endif
 
  setenv MY_HEADER_DIR       ${MY_PROJECT_DIR}
 
- setenv MY_ANALYTICAL_DIR   ${MY_PROJECT_DIR}
+ setenv MY_ANALYTICAL_DIR   `dirname ${PWD}`/Functionals
 
 # Put the binary to execute in the following directory.
 

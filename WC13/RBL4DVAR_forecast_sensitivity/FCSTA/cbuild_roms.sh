@@ -267,7 +267,9 @@ fi
 
 # If you have custom analytical functions to include, enter the path here.
 
- export MY_ANALYTICAL_DIR=${MY_PROJECT_DIR}
+ Dir=`dirname ${MY_PROJECT_DIR}`
+
+ export MY_ANALYTICAL_DIR=`dirname ${Dir}`/Functionals
 
 # Put the CMake files in a project specific Build directory to avoid conflict
 # with other projects.

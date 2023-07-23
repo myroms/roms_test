@@ -560,7 +560,7 @@ Hout(idUvel) == F       ! u                  3D U-velocity
 Hout(idVvel) == F       ! v                  3D V-velocity
 Hout(idu3dE) == F       ! u_eastward         3D U-eastward  at RHO-points
 Hout(idv3dN) == F       ! v_northward        3D V-northward at RHO-points
-Hout(idWvel) == F       ! w                  3D W-velocity
+Hout(idWvel) == T       ! w                  3D W-velocity
 Hout(idOvel) == F       ! omega              omega vertical velocity
 Hout(idUbar) == F       ! ubar               2D U-velocity
 Hout(idVbar) == F       ! vbar               2D V-velocity

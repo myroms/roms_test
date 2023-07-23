@@ -577,8 +577,8 @@ Hout(idpthU) == F       ! z_u                time-varying depths of U-points
 Hout(idpthV) == F       ! z_v                time-varying depths of V-points
 Hout(idpthW) == F       ! z_w                time-varying depths of W-points
 
-Hout(idUsms) == F       ! sustr              surface U-stress
-Hout(idVsms) == F       ! svstr              surface V-stress
+Hout(idUsms) == T       ! sustr              surface U-stress
+Hout(idVsms) == T       ! svstr              surface V-stress
 Hout(idUbms) == F       ! bustr              bottom U-stress
 Hout(idVbms) == F       ! bvstr              bottom V-stress
 
@@ -628,21 +628,21 @@ Hout(idWdiw) == F       ! Dissip_wcap        wave dissipation from white capping
 Hout(idWdis) == F       ! Dissip_roller      wave roller dissipation
 Hout(idWrol) == F       ! roller_action      wave roller action density
 
-Hout(idPair) == F       ! Pair               surface air pressure
-Hout(idTair) == F       ! Tair               surface air temperature
-Hout(idUair) == F       ! Uwind              surface U-wind
-Hout(idVair) == F       ! Vwind              surface V-wind
+Hout(idPair) == T       ! Pair               surface air pressure
+Hout(idTair) == T       ! Tair               surface air temperature
+Hout(idUair) == T       ! Uwind              surface U-wind
+Hout(idVair) == T       ! Vwind              surface V-wind
 Hout(idUaiE) == F       ! Uwind_eastward     surface Eastward  U-wind
 Hout(idVaiN) == F       ! Vwind_northward    surface Northward V-wind
 
-Hout(idTsur) == F F     ! shflux, ssflux     surface net heat and salt flux
-Hout(idLhea) == F       ! latent             latent heat flux
-Hout(idShea) == F       ! sensible           sensible heat flux
-Hout(idLrad) == F       ! lwrad              longwave radiation flux
-Hout(idSrad) == F       ! swrad              shortwave radiation flux
-Hout(idEmPf) == F       ! EminusP            E-P flux
-Hout(idevap) == F       ! evaporation        evaporation rate
-Hout(idrain) == F       ! rain               precipitation rate
+Hout(idTsur) == T T     ! shflux, ssflux     surface net heat and salt flux
+Hout(idLhea) == T       ! latent             latent heat flux
+Hout(idShea) == T       ! sensible           sensible heat flux
+Hout(idLrad) == T       ! lwrad              longwave radiation flux
+Hout(idSrad) == T       ! swrad              shortwave radiation flux
+Hout(idEmPf) == T       ! EminusP            E-P flux
+Hout(idevap) == T       ! evaporation        evaporation rate
+Hout(idrain) == T       ! rain               precipitation rate
 
 Hout(idDano) == T       ! rho                density anomaly
 Hout(idVvis) == F       ! AKv                vertical viscosity
@@ -692,8 +692,8 @@ Qout(idpthU) == F       ! z_u                time-varying depths of U-points
 Qout(idpthV) == F       ! z_v                time-varying depths of V-points
 Qout(idpthW) == F       ! z_w                time-varying depths of W-points
 
-Qout(idUsms) == F       ! sustr              surface U-stress
-Qout(idVsms) == F       ! svstr              surface V-stress
+Qout(idUsms) == T       ! sustr              surface U-stress
+Qout(idVsms) == T       ! svstr              surface V-stress
 Qout(idUbms) == F       ! bustr              bottom U-stress
 Qout(idVbms) == F       ! bvstr              bottom V-stress
 
@@ -743,21 +743,21 @@ Qout(idWdiw) == F       ! Dissip_wcap        wave dissipation from white capping
 Qout(idWdis) == F       ! Dissip_roller      wave roller dissipation
 Qout(idWrol) == F       ! roller_action      wave roller action density
 
-Qout(idPair) == F       ! Pair               surface air pressure
-Qout(idTair) == F       ! Tair               surface air temperature
-Qout(idUair) == F       ! Uair               surface U-wind
-Qout(idVair) == F       ! Vair               surface V-wind
+Qout(idPair) == T       ! Pair               surface air pressure
+Qout(idTair) == T       ! Tair               surface air temperature
+Qout(idUair) == T       ! Uair               surface U-wind
+Qout(idVair) == T       ! Vair               surface V-wind
 Qout(idUaiE) == F       ! Uwind_eastward     surface Eastward  U-wind
 Qout(idVaiN) == F       ! Vwind_northward    surface Northward V-wind
 
-Qout(idTsur) == F F     ! shflux, ssflux     surface net heat and salt flux
-Qout(idLhea) == F       ! latent             latent heat flux
-Qout(idShea) == F       ! sensible           sensible heat flux
-Qout(idLrad) == F       ! lwrad              longwave radiation flux
-Qout(idSrad) == F       ! swrad              shortwave radiation flux
-Qout(idEmPf) == F       ! EminusP            E-P flux
-Qout(idevap) == F       ! evaporation        evaporation rate
-Qout(idrain) == F       ! rain               precipitation rate
+Qout(idTsur) == T T     ! shflux, ssflux     surface net heat and salt flux
+Qout(idLhea) == T       ! latent             latent heat flux
+Qout(idShea) == T       ! sensible           sensible heat flux
+Qout(idLrad) == T       ! lwrad              longwave radiation flux
+Qout(idSrad) == T       ! swrad              shortwave radiation flux
+Qout(idEmPf) == T       ! EminusP            E-P flux
+Qout(idevap) == T       ! evaporation        evaporation rate
+Qout(idrain) == T       ! rain               precipitation rate
 
 Qout(idDano) == F       ! rho                density anomaly
 Qout(idVvis) == F       ! AKv                vertical viscosity

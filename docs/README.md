@@ -86,7 +86,62 @@ Alternatively, you may execute **`git lfs pull`** at your location of this
 repository to download a viable version of the **Git LFS** files from the
 remote repository in **GitHub**. Also, to add the **LFS** filter to your
 existing **`~/.gitconfig`** automatically, you could use **`git lfs install`**
-from anywhere in your computer directory.
+from anywhere in your computer directories.
+
+As shown in the table above, there is a sub-directory for each **`Test Case`**
+containing the **GNU** and **CMake** build scripts, an application header file
+(**`*.h`**), a standard input script (**`roms_*.in`**), and a **`Data`**
+sub-directory for input files, if applicable. We highly recommend that users
+define the **`ROMS_ROOT_DIR`** variable in their computer shell logging
+environment, specifying where the User cloned/downloaded the **ROMS** source code:
+```
+setenv ROMS_ROOT_DIR  MyDownlodLocationDirectory
+```
+The **build** scripts will use this environmental variable when compiling any of
+the **ROMS Test Cases** without the need to customize the location of the
+**ROMS** source code.
+
+Users need to study the **build** scripts to learn how to customize them.
+Notice that there are a few options for their execution:
+
+```
+Usage:
+
+   ./build_roms.sh [options]
+or
+   ./cbuild_roms.sh [options]
+
+Options:
+
+  -j [N]      Compile in parallel using N processes or CPUs. For example:
+
+                  build_roms.sh -j 10
+
+  -b          Compile a specific ROMS GitHub branch. For example:
+
+                  build_roms.sh -j 5 -b feature/kernel
+
+  -p macro    Prints any Makefile macro value. For example:
+
+                  build_roms.sh -p FFLAGS
+
+  -noclean    Do not clean already compiled objects. For example:
+
+                  build_roms.sh -j 10 -noclean
+```
+Check https://github.com/myroms/roms for available branches other than **master**
+and **develop**. Notice that the **feature** branches are under development and
+targeted to advanced users, superusers, and beta testers. Regular and novice
+users must use the default **develop** branch.
+
+If using the **-b** option, the **build** script will clone the **ROMS** source
+code from **GitHub** into your project sub-directory **`src`**, for example:
+```
+git clone https://www.github.com/myroms/roms.git src
+git checkout feature/kernel
+```
+The **CMake build** scripts (**cbuild_roms.csh** and **cbuild_roms.sh**) are more
+complicated and are intended for advanced users.
 
 The **doxygen** version of **ROMS** is available at:
 ```

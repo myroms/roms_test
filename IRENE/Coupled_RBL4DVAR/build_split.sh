@@ -57,11 +57,11 @@
 #                                                                       :::
 #    -b          Compile a specific ROMS GitHub branch                  :::
 #                                                                       :::
-#                  build_roms.sh -j 5 -b feature/kernel                 :::
+#                  build_split.sh -j 5 -b feature/kernel                :::
 #                                                                       :::
 #    -p macro    Prints any Makefile macro value. For example,          :::
 #                                                                       :::
-#                  build_roms.sh -p FFLAGS                              :::
+#                  build_split.sh -p FFLAGS                             :::
 #                                                                       :::
 #    -noclean    Do not clean already compiled objects                  :::
 #                                                                       :::
@@ -77,6 +77,8 @@
 
 export which_MPI=openmpi                       # default, overwritten below
 
+nl_exe=0
+da_exe=0
 parallel=0
 clean=1
 dprint=0
@@ -87,6 +89,16 @@ export MY_CPP_FLAGS=
 while [ $# -gt 0 ]
 do
   case "$1" in
+    -nl )
+      shift
+      nl_exe=1
+      ;;
+
+    -da )
+      shift
+      da_exe=1
+      ;;
+
     -j )
       shift
       parallel=1
@@ -129,18 +141,18 @@ do
       echo ""
       echo "Available Options:"
       echo ""
-      echo "-nl         Compile split ROMS nonlinear executable"
+      echo "-nl             Compile split ROMS nonlinear executable"
       echo ""
-      echo "-da         Compile split ROMS 4D-Var executable"
+      echo "-da             Compile split ROMS 4D-Var executable"
       echo ""
       echo "-j [N]          Compile in parallel using N CPUs"
       echo "                  omit argument for all avaliable CPUs"
       echo ""
       echo "-b branch_name  Compile specific ROMS GitHub branch name"
-      echo "                  For example:  build_roms.sh -b feature/kernel"
+      echo "                  For example:  build_split.sh -b feature/kernel"
       echo ""
       echo "-p macro        Prints any Makefile macro value"
-      echo "                  For example:  build_roms.sh -p FFLAGS"
+      echo "                  For example:  build_split.sh -p FFLAGS"
       echo ""
       echo "-noclean        Do not clean already compiled objects"
       echo ""
@@ -406,12 +418,18 @@ fi
 # with other projects.
 
 if [ -n "${USE_DEBUG:+1}" ]; then
- export         BUILD_DIR=${MY_PROJECT_DIR}/Build_romsG
+  if [ $nl_exe -eq 1 ]; then
+    export      BUILD_DIR=${MY_PROJECT_DIR}/Build_romsG_nl
+  elif [ $da_exe -eq 1 ]; then
+    export      BUILD_DIR=${MY_PROJECT_DIR}/Build_romsG_da
+  else
+    export      BUILD_DIR=${MY_PROJECT_DIR}/Build_romsG
+  fi
 else
-  if [ -n "${USE_OpenMP:+1}" ]; then
-    export      BUILD_DIR=${MY_PROJECT_DIR}/Build_romsO
-  elif [ -n "${USE_MPI:+1}" ]; then
-    export      BUILD_DIR=${MY_PROJECT_DIR}/Build_romsM
+  if [ $nl_exe -eq 1 ]; then
+    export      BUILD_DIR=${MY_PROJECT_DIR}/Build_roms_nl
+  elif [ $da_exe -eq 1 ]; then
+    export      BUILD_DIR=${MY_PROJECT_DIR}/Build_roms_da
   else
     export      BUILD_DIR=${MY_PROJECT_DIR}/Build_roms
   fi
