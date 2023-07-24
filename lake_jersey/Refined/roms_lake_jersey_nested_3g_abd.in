@@ -624,6 +624,7 @@ Hout(idu3dE) == 3*F     ! u_eastward         3D U-eastward  at RHO-points
 Hout(idv3dN) == 3*F     ! v_northward        3D V-northward at RHO-points
 Hout(idWvel) == 3*T     ! w                  3D W-velocity
 Hout(idOvel) == 3*T     ! omega              omega vertical velocity
+Hout(idOvil) == 3*F     ! omega_implicit     omega implicit vertical velocity
 Hout(idUbar) == 3*T     ! ubar               2D U-velocity
 Hout(idVbar) == 3*T     ! vbar               2D V-velocity
 Hout(idu2dE) == 3*F     ! ubar_eastward      2D U-eastward  at RHO-points
@@ -2721,6 +2722,7 @@ PIO_I2C_Preq = 65                 ! Maximum pending I2C requests
 ! Hout(idv3dN)   Write out 3D Northward velocity component at RHO-points.
 ! Hout(idWvel)   Write out 3D W-velocity component.
 ! Hout(idOvel)   Write out 3D omega vertical velocity.
+! Hout(idOvil)   Write out 3D omega implicit vertical velocity.
 ! Hout(idUbar)   Write out 2D U-velocity component.
 ! Hout(idVbar)   Write out 2D V-velocity component.
 ! Hout(idu2dE)   Write out 2D Eastward  velocity component at RHO-points.

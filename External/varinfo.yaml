@@ -246,6 +246,17 @@ metadata:
     add_offset:     0.0d0
     scale:          1.0d0
 
+  - variable:       omega_implicit                                   # Output
+    standard_name:  upward_sea_water_omega_implicit_velocity
+    long_name:      S-coordinate vertical implicit momentum component
+    units:          meter3 second-1                                  # [m3/s]
+    field:          omega
+    time:           ocean_time
+    index_code:     idOvil
+    type:           w3dvar
+    add_offset:     0.0d0
+    scale:          1.0d0
+
   - variable:       rho                                              # Output
     standard_name:  sea_water_density_anomaly
     long_name:      density anomaly
