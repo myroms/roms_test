@@ -130,20 +130,28 @@ GridsInLayer =  1 1
 ! two letters, regardless if using uppercase or lowercase. If nested
 ! grids, specify values for each grid (see glossary below).
 
-   Hadvection == U3       \                     ! temperature
-                 U3                             ! salinity
+   Hadvection == U3       \                     ! temperature, Grid 1
+                 U3       \                     ! temperature, Grid 2
+                 U3       \                     ! salinity,    Grid 1
+                 U3                             ! salinity,    Grid 2
 
-   Vadvection == C4       \                     ! temperature
-                 C4                             ! salinity
+   Vadvection == C4       \                     ! temperature, Grid 1
+                 C4       \                     ! temperature, Grid 2
+                 C4       \                     ! salinity,    Grid 1
+                 C4                             ! salinity,    Grid 2
 
 ! Adjoint-based algorithms can have different horizontal and schemes
 ! for active and inert tracers.
 
-ad_Hadvection == U3       \                     ! temperature
-                 U3                             ! salinity
+ad_Hadvection == U3       \                     ! temperature, Grid 1
+                 U3       \                     ! temperature, Grid 2
+                 U3       \                     ! salinity,    Grid 1
+                 U3                             ! salinity,    Grid 2
 
-ad_Vadvection == C4       \                     ! temperature
-                 C4                             ! salinity
+ad_Vadvection == C4       \                     ! temperature, Grid 1
+                 C4       \                     ! temperature, Grid 2
+                 C4       \                     ! salinity,    Grid 1
+                 C4                             ! salinity,    Grid 2
 
 ! Set lateral boundary conditions keyword. Notice that a value is expected
 ! for each boundary segment per nested grid for each state variable.
@@ -392,7 +400,7 @@ LtracerSponge == F F                            ! temperature, salinity, inert
 
 ! Constants used in surface turbulent kinetic energy flux computation.
 
- CHARNOK_ALPHA == 2*1400.0d0               ! Charnok surface roughness
+ CHARNOK_ALPHA == 2*1400.0d0               ! Charnock surface roughness
 ZOS_HSIG_ALPHA == 2*0.5d0                  ! roughness from wave amplitude
       SZ_ALPHA == 2*0.25d0                 ! roughness from wave dissipation
      CRGBAN_CW == 2*100.0d0                ! Craig and Banner wave breaking
@@ -453,7 +461,7 @@ ZOS_HSIG_ALPHA == 2*0.5d0                  ! roughness from wave amplitude
 ! origin for tidal forcing, and model reference time for output
 ! NetCDF units attribute.
 
-      DSTART =  0.0d0                      ! days                 
+      DSTART =  0.0d0                      ! days
   TIDE_START =  0.0d0                      ! days
     TIME_REF =  0.0d0                      ! yyyymmdd.dd
 
@@ -644,7 +652,7 @@ Hout(idUwav) == 2*F     ! uWave              wave depth-averaged U-velocity
 Hout(idVwav) == 2*F     ! vWave              wave depth-averaged V-velocity
 Hout(idWdif) == 2*F     ! Dissip_fric        wave dissipation from bottom friction
 Hout(idWdib) == 2*F     ! Dissip_break       wave dissipation from breaking
-Hout(idWdiw) == 2*F     ! Dissip_wcap        wave dissipation from white capping
+Hout(idWdiw) == 2*F     ! Dissip_wcap        wave dissipation from whitecapping
 Hout(idWdis) == 2*F     ! Dissip_roller      wave roller dissipation
 Hout(idWrol) == 2*F     ! roller_action      wave roller action density
 
@@ -702,8 +710,8 @@ Qout(idTvar) == 2*F 2*F ! temp, salt         temperature and salinity
 
 Qout(idUsur) == 2*T     ! u_sur              surface U-velocity
 Qout(idVsur) == 2*T     ! v_sur              surface V-velocity
-Qout(idUsuE) == 2*T     ! u_sur_eastward     surface U-eastward  velocity
-Qout(idVsuN) == 2*T     ! v_sur_northward    surface V-northward velocity
+Qout(idUsuE) == 2*F     ! u_sur_eastward     surface U-eastward  velocity
+Qout(idVsuN) == 2*F     ! v_sur_northward    surface V-northward velocity
 
 Qout(idsurT) == 2*T 2*T ! temp_sur, salt_sur surface temperature and salinity
 
@@ -759,7 +767,7 @@ Qout(idUwav) == 2*F     ! uWave              wave depth-averaged U-velocity
 Qout(idVwav) == 2*F     ! vWave              wave depth-averaged V-velocity
 Qout(idWdif) == 2*F     ! Dissip_fric        wave dissipation from bottom friction
 Qout(idWdib) == 2*F     ! Dissip_break       wave dissipation from breaking
-Qout(idWdiw) == 2*F     ! Dissip_wcap        wave dissipation from white capping
+Qout(idWdiw) == 2*F     ! Dissip_wcap        wave dissipation from whitecapping
 Qout(idWdis) == 2*F     ! Dissip_roller      wave roller dissipation
 Qout(idWrol) == 2*F     ! roller_action      wave roller action density
 
@@ -816,7 +824,7 @@ Aout(idBath) == 2*F     ! bath               time-dependent bathymetry
 
 Aout(idTvar) == 2*T 2*T ! temp, salt         temperature and salinity
 
-Aout(idUsms) == 2*F       ! sustr              surface U-stress
+Aout(idUsms) == 2*F     ! sustr              surface U-stress
 Aout(idVsms) == 2*F     ! svstr              surface V-stress
 Aout(idUbms) == 2*F     ! bustr              bottom U-stress
 Aout(idVbms) == 2*F     ! bvstr              bottom V-stress
@@ -862,7 +870,7 @@ Aout(idUwav) == 2*F     ! uWave              wave-depth averaged U-velocity
 Aout(idVwav) == 2*F     ! vWave              wave-depth averaged V-velocity
 Aout(idWdif) == 2*F     ! Dissip_fric        wave dissipation from bottom friction
 Aout(idWdib) == 2*F     ! Dissip_break       wave dissipation from breaking
-Aout(idWdiw) == 2*F     ! Dissip_wcap        wave dissipation from white capping
+Aout(idWdiw) == 2*F     ! Dissip_wcap        wave dissipation from whitecapping
 Aout(idWdis) == 2*F     ! Dissip_roller      wave roller dissipation
 Aout(idWrol) == 2*F     ! roller_action      wave roller action density
 
@@ -2005,7 +2013,7 @@ PIO_I2C_Preq = 65                 ! Maximum pending I2C requests
 ! energy flux in the GLS.
 !------------------------------------------------------------------------------
 !
-! CHARNOK_ALPHA    Charnok surface roughness,
+! CHARNOK_ALPHA    Charnock surface roughness,
 !                    Zos:   (charnok_alpha * u_star**2) / g
 !
 ! ZOS_HSIG_ALPHA   Roughness from wave amplitude,
@@ -2715,7 +2723,7 @@ PIO_I2C_Preq = 65                 ! Maximum pending I2C requests
 ! Hout(idVwav)   Write out wave depth-averaged V-velocity.
 ! Hout(idWdif)   Write out wave dissipation from bottom friction.
 ! Hout(idWdib)   Write out wave dissipation from breaking.
-! Hout(idWdiw)   Write out wave dissipation from white capping.
+! Hout(idWdiw)   Write out wave dissipation from whitecapping.
 ! Hout(idWdis)   Write out wave roller dissipation.
 ! Hout(idWrol)   Write out wave roller action density.
 !
@@ -2824,7 +2832,7 @@ PIO_I2C_Preq = 65                 ! Maximum pending I2C requests
 ! Qout(idVwav)   Write out wave depth-averaged V-velocity.
 ! Qout(idWdif)   Write out wave dissipation from bottom friction.
 ! Qout(idWdib)   Write out wave dissipation from breaking.
-! Qout(idWdiw)   Write out wave dissipation from white capping.
+! Qout(idWdiw)   Write out wave dissipation from whitecapping.
 ! Qout(idWdis)   Write out wave roller dissipation.
 ! Qout(idWrol)   Write out wave roller action density.
 !
@@ -2923,7 +2931,7 @@ PIO_I2C_Preq = 65                 ! Maximum pending I2C requests
 ! Aout(idVwav)   Write out wave depth-averaged V-velocity.
 ! Aout(idWdif)   Write out wave dissipation from bottom friction.
 ! Aout(idWdib)   Write out wave dissipation from breaking.
-! Aout(idWdiw)   Write out wave dissipation from white capping.
+! Aout(idWdiw)   Write out wave dissipation from whitecapping.
 ! Aout(idWdis)   Write out wave roller dissipation.
 ! Aout(idWrol)   Write out wave roller action density.
 !

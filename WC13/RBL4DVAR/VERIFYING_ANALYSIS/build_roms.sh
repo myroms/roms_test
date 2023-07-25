@@ -132,7 +132,7 @@ export   ROMS_APPLICATION=WC13
 # where the ROMS source code is located (MY_ROOT_DIR), and this project's
 # configuration and files are kept (MY_PROJECT_DIR). Notice that if the
 # User sets the ROMS_ROOT_DIR environment variable in their computer logging
-# MY_PROJECTdescrisrc the location from where the ROMS source code was cloned
+# script describing the location from where the ROMS source code was cloned
 # or downloaded, it uses that value. 
 
 if [ -n "${ROMS_ROOT_DIR:+1}" ]; then 
@@ -140,6 +140,7 @@ if [ -n "${ROMS_ROOT_DIR:+1}" ]; then
 else
   export      MY_ROOT_DIR=${HOME}/ocean/repository/git
 fi
+
 export     MY_PROJECT_DIR=${PWD}
 
 # The path to the user's local current ROMS source code.

@@ -141,6 +141,7 @@ if [ -n "${ROMS_ROOT_DIR:+1}" ]; then
 else
   export      MY_ROOT_DIR=${HOME}/ocean/repository/git
 fi
+
 export     MY_PROJECT_DIR=${PWD}
 
 # The path to the user's local current ROMS source code.

@@ -45,6 +45,11 @@
 #                                                                       :::
 #    -v             Compile in verbose mode (VERBOSE=1)                 :::
 #                                                                       :::
+# The branch option -b is only possible for ROMS source code from       :::
+# https://github.com/myroms. Such versions are under development        :::
+# and targeted to advanced users, superusers, and beta testers.         :::
+# Regular and novice users must use the default 'develop' branch.       :::
+#                                                                       :::
 #::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 export which_MPI=openmpi                       # default, overwritten below

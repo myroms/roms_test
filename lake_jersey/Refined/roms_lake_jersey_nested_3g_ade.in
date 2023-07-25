@@ -434,7 +434,7 @@ LtracerSponge == F F                            ! temperature, salinity, inert
 
 ! Constants used in surface turbulent kinetic energy flux computation.
 
-  CHARNOK_ALPHA == 3*1400.0d0       ! Charnok surface roughness
+  CHARNOK_ALPHA == 3*1400.0d0       ! Charnock surface roughness
  ZOS_HSIG_ALPHA == 3*0.5d0          ! roughness from wave amplitude
        SZ_ALPHA == 3*0.25d0         ! roughness from wave dissipation
       CRGBAN_CW == 3*100.0d0        ! Craig and Banner wave breaking
@@ -686,7 +686,7 @@ Hout(idUwav) == 3*F     ! uWave              wave depth-averaged U-velocity
 Hout(idVwav) == 3*F     ! vWave              wave depth-averaged V-velocity
 Hout(idWdif) == 3*F     ! Dissip_fric        wave dissipation from bottom friction
 Hout(idWdib) == 3*F     ! Dissip_break       wave dissipation from breaking
-Hout(idWdiw) == 3*F     ! Dissip_wcap        wave dissipation from white capping
+Hout(idWdiw) == 3*F     ! Dissip_wcap        wave dissipation from whitecapping
 Hout(idWdis) == 3*F     ! Dissip_roller      wave roller dissipation
 Hout(idWrol) == 3*      ! roller_action      wave roller action density
 
@@ -801,7 +801,7 @@ Qout(idUwav) == 3*F     ! uWave              wave depth-averaged U-velocity
 Qout(idVwav) == 3*F     ! vWave              wave depth-averaged V-velocity
 Qout(idWdif) == 3*F     ! Dissip_fric        wave dissipation from bottom friction
 Qout(idWdib) == 3*F     ! Dissip_break       wave dissipation from breaking
-Qout(idWdiw) == 3*F     ! Dissip_wcap        wave dissipation from white capping
+Qout(idWdiw) == 3*F     ! Dissip_wcap        wave dissipation from whitecapping
 Qout(idWdis) == 3*F     ! Dissip_roller      wave roller dissipation
 Qout(idWrol) == 3*F     ! roller_action      wave roller action density
 
@@ -904,7 +904,7 @@ Aout(idUwav) == 3*F     ! uWave              wave-depth averaged U-velocity
 Aout(idVwav) == 3*F     ! vWave              wave-depth averaged V-velocity
 Aout(idWdif) == 3*F     ! Dissip_fric        wave dissipation from bottom friction
 Aout(idWdib) == 3*F     ! Dissip_break       wave dissipation from breaking
-Aout(idWdiw) == 3*F     ! Dissip_wcap        wave dissipation from white capping
+Aout(idWdiw) == 3*F     ! Dissip_wcap        wave dissipation from whitecapping
 Aout(idWdis) == 3*F     ! Dissip_roller      wave roller dissipation
 Aout(idWrol) == 3*F     ! roller_action      wave roller action density
 
@@ -2074,7 +2074,7 @@ PIO_I2C_Preq = 65                 ! Maximum pending I2C requests
 ! energy flux in the GLS.
 !------------------------------------------------------------------------------
 !
-! CHARNOK_ALPHA    Charnok surface roughness,
+! CHARNOK_ALPHA    Charnock surface roughness,
 !                    Zos:   (charnok_alpha * u_star**2) / g
 !
 ! ZOS_HSIG_ALPHA   Roughness from wave amplitude,
@@ -2784,7 +2784,7 @@ PIO_I2C_Preq = 65                 ! Maximum pending I2C requests
 ! Hout(idVwav)   Write out wave depth-averaged V-velocity.
 ! Hout(idWdif)   Write out wave dissipation from bottom friction.
 ! Hout(idWdib)   Write out wave dissipation from breaking.
-! Hout(idWdiw)   Write out wave dissipation from white capping.
+! Hout(idWdiw)   Write out wave dissipation from whitecapping.
 ! Hout(idWdis)   Write out wave roller dissipation.
 ! Hout(idWrol)   Write out wave roller action density.
 !
@@ -2893,7 +2893,7 @@ PIO_I2C_Preq = 65                 ! Maximum pending I2C requests
 ! Qout(idVwav)   Write out wave depth-averaged V-velocity.
 ! Qout(idWdif)   Write out wave dissipation from bottom friction.
 ! Qout(idWdib)   Write out wave dissipation from breaking.
-! Qout(idWdiw)   Write out wave dissipation from white capping.
+! Qout(idWdiw)   Write out wave dissipation from whitecapping.
 ! Qout(idWdis)   Write out wave roller dissipation.
 ! Qout(idWrol)   Write out wave roller action density.
 !
@@ -2992,7 +2992,7 @@ PIO_I2C_Preq = 65                 ! Maximum pending I2C requests
 ! Aout(idVwav)   Write out wave depth-averaged V-velocity.
 ! Aout(idWdif)   Write out wave dissipation from bottom friction.
 ! Aout(idWdib)   Write out wave dissipation from breaking.
-! Aout(idWdiw)   Write out wave dissipation from white capping.
+! Aout(idWdiw)   Write out wave dissipation from whitecapping.
 ! Aout(idWdis)   Write out wave roller dissipation.
 ! Aout(idWrol)   Write out wave roller action density.
 !

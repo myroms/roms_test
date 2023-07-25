@@ -139,6 +139,7 @@ if ($?ROMS_ROOT_DIR) then
 else
   setenv MY_ROOT_DIR        ${HOME}/ocean/repository/git
 fi
+
 setenv   MY_PROJECT_DIR     ${PWD}
 
 # The path to the user's local current ROMS source code.

@@ -44,6 +44,11 @@
 #                                                                       :::
 #    -v             Compile in verbose mode (VERBOSE=1)                 :::
 #                                                                       :::
+# The branch option -b is only possible for ROMS source code from       :::
+# https://github.com/myroms. Such versions are under development        :::
+# and targeted to advanced users, superusers, and beta testers.         :::
+# Regular and novice users must use the default 'develop' branch.       :::
+#                                                                       :::
 #::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 setenv which_MPI openmpi                      #  default, overwritten below
@@ -108,10 +113,10 @@ while ( ($#argv) > 0 )
       echo "                  omit argument for all avaliable CPUs"
       echo ""
       echo "-b branch_name  Compile specific ROMS GitHub branch name"
-      echo "                  For example:  build_roms.csh -b feature/kernel"
+      echo "                  For example:  cbuild_roms.csh -b feature/kernel"
       echo ""
       echo "-p macro        Prints any Makefile macro value"
-      echo "                  For example:  build_roms.csh -p FFLAGS"
+      echo "                  For example:  cbuild_roms.csh -p FFLAGS"
       echo ""
       echo "-noclean        Do not clean already compiled objects"
       echo ""
