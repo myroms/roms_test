@@ -59,6 +59,8 @@ set clean = 1
 set dprint = 0
 set branch = 0
 
+set separator = `perl -e "print '<>' x 50;"`
+
 setenv MY_CPP_FLAGS ''
 
 while ( ($#argv) > 0 )
@@ -100,6 +102,7 @@ while ( ($#argv) > 0 )
 
     case "-*":
       echo ""
+      echo "${separator}"
       echo "$0 : Unknown option [ $1 ]"
       echo ""
       echo "Available Options:"
@@ -114,6 +117,7 @@ while ( ($#argv) > 0 )
       echo "                  For example:  build_roms.csh -p FFLAGS"
       echo ""
       echo "-noclean        Do not clean already compiled objects"
+      echo "${separator}"
       echo ""
       exit 1
     breaksw
@@ -138,7 +142,7 @@ if ($?ROMS_ROOT_DIR) then
   setenv MY_ROOT_DIR        ${ROMS_ROOT_DIR}
 else
   setenv MY_ROOT_DIR        ${HOME}/ocean/repository/git
-fi
+endif
 
 setenv   MY_PROJECT_DIR     ${PWD}
 
@@ -345,6 +349,9 @@ endif
 # Put the binary to execute in the following directory.
 
  setenv BINDIR              ${MY_PROJECT_DIR}
+
+ echo ""
+ echo "${separator}"
 
 # Stop if activating both MPI and OpenMP at the same time.
 

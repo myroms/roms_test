@@ -32,6 +32,10 @@
 #    -j [N]      Compile in parallel using N CPUs                       :::
 #                  omit argument for all available CPUs                 :::
 #                                                                       :::
+#    -b          Compile a specific ROMS GitHub branch                  :::
+#                                                                       :::
+#                  build_roms.csh -j 5 -b feature/kernel                :::
+#                                                                       :::
 #    -p macro    Prints any Makefile macro value. For example,          :::
 #                                                                       :::
 #                  build_roms.csh -p FFLAGS                             :::
@@ -41,6 +45,11 @@
 # Notice that sometimes the parallel compilation fail to find MPI       :::
 # include file "mpif.h".                                                :::
 #                                                                       :::
+# The branch option -b is only possible for ROMS source code from       :::
+# https://github.com/myroms. Such versions are under development        :::
+# and targeted to advanced users, superusers, and beta testers.         :::
+# Regular and novice users must use the default 'develop' branch.       :::
+#                                                                       :::
 #::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 setenv which_MPI openmpi                      #  default, overwritten below
@@ -48,6 +57,9 @@ setenv which_MPI openmpi                      #  default, overwritten below
 set parallel = 0
 set clean = 1
 set dprint = 0
+set branch = 0
+
+set separator = `perl -e "print '<>' x 50;"`
 
 setenv MY_CPP_FLAGS ''
 
@@ -77,19 +89,35 @@ while ( ($#argv) > 0 )
       endif
     breaksw
 
+    case "-b"
+      shift
+      set branch = 1
+      set branch_name = `echo $1 | grep -v '^-'`
+      if ( "$branch_name" == "" ) then
+        echo "Please enter a branch name."
+        exit 1
+      endif
+      shift
+    breaksw
+
     case "-*":
       echo ""
+      echo "${separator}"
       echo "$0 : Unknown option [ $1 ]"
       echo ""
       echo "Available Options:"
       echo ""
-      echo "-j [N]      Compile in parallel using N CPUs"
-      echo "              omit argument for all avaliable CPUs"
+      echo "-j [N]          Compile in parallel using N CPUs"
+      echo "                  omit argument for all avaliable CPUs"
       echo ""
-      echo "-p macro    Prints any Makefile macro value"
-      echo "              For example:  build_roms.csh -p FFLAGS"
+      echo "-b branch_name  Compile specific ROMS GitHub branch name"
+      echo "                  For example:  build_roms.csh -b feature/kernel"
       echo ""
-      echo "-noclean    Do not clean already compiled objects"
+      echo "-p macro        Prints any Makefile macro value"
+      echo "                  For example:  build_roms.csh -p FFLAGS"
+      echo ""
+      echo "-noclean        Do not clean already compiled objects"
+      echo "${separator}"
       echo ""
       exit 1
     breaksw
@@ -114,7 +142,7 @@ if ($?ROMS_ROOT_DIR) then
   setenv MY_ROOT_DIR        ${ROMS_ROOT_DIR}
 else
   setenv MY_ROOT_DIR        ${HOME}/ocean/repository/git
-fi
+endif
 
 setenv   MY_PROJECT_DIR     ${PWD}
 
@@ -279,6 +307,9 @@ endif
 # Put the binary to execute in the following directory.
 
  setenv BINDIR              ${MY_PROJECT_DIR}
+
+ echo ""
+ echo "${separator}"
 
 # Stop if activating both MPI and OpenMP at the same time.
 

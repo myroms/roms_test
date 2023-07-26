@@ -59,6 +59,8 @@ clean=1
 dprint=0
 branch=0
 
+separator=`perl -e "print '<>' x 50;"`
+
 export MY_CPP_FLAGS=
 
 while [ $# -gt 0 ]
@@ -102,6 +104,7 @@ do
       
     * )
       echo ""
+      echo "${separator}"
       echo "$0 : Unknown option [ $1 ]"
       echo ""
       echo "Available Options:"
@@ -116,6 +119,7 @@ do
       echo "                  For example:  build_roms.sh -p FFLAGS"
       echo ""
       echo "-noclean        Do not clean already compiled objects"
+      echo "${separator}"
       echo ""
       exit 1
       ;;
@@ -316,6 +320,9 @@ fi
 # Put the binary to execute in the following directory.
 
  export            BINDIR=${MY_PROJECT_DIR}
+
+ echo ""
+ echo "${separator}"
 
 # Stop if activating both MPI and OpenMP at the same time.
 

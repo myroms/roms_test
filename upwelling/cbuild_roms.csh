@@ -59,6 +59,8 @@ set dprint = 0
 set Verbose = 0
 set branch = 0
 
+set separator = `perl -e "print '<>' x 50;"`
+
 setenv MY_CPP_FLAGS ''
 
 while ( ($#argv) > 0 )
@@ -105,6 +107,7 @@ while ( ($#argv) > 0 )
 
     case "-*":
       echo ""
+      echo "${separator}"
       echo "$0 : Unknown option [ $1 ]"
       echo ""
       echo "Available Options:"
@@ -121,6 +124,7 @@ while ( ($#argv) > 0 )
       echo "-noclean        Do not clean already compiled objects"
       echo ""
       echo "-v              Compile in verbose mode"
+      echo "${separator}"
       echo ""
       exit 1
     breaksw
@@ -300,6 +304,9 @@ endif
 
  setenv MY_ANALYTICAL_DIR    ${MY_PROJECT_DIR}
 
+ echo ""
+ echo "${separator}"
+
 # Put the CMake files in a project specific Build directory to avoid conflict
 # with other projects.
 
@@ -376,11 +383,17 @@ if ( $dprint == 0 ) then
       setenv COMPILERS ${MY_PROJECT_DIR}/src/Compilers
     endif
     setenv MY_ROMS_SRC ${MY_PROJECT_DIR}/src
+
+  else
+    echo ""
+    echo "Using ROMS source code from: ${MY_ROMS_SRC}"
+    echo ""
+    cd ${MY_ROMS_SRC}
   endif
 endif
 
 #--------------------------------------------------------------------------
-# Add enviromental variables constructed in 'makefile' to MY_CPP_FLAGS
+# Add environmental variables constructed in 'makefile' to MY_CPP_FLAGS
 # so can be passed to ROMS.
 #--------------------------------------------------------------------------
 

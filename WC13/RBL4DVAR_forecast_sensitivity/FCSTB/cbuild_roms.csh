@@ -354,11 +354,17 @@ if ( $dprint == 0 ) then
       setenv COMPILERS ${MY_PROJECT_DIR}/src/Compilers
     endif
     setenv MY_ROMS_SRC ${MY_PROJECT_DIR}/src
+
+  else
+    echo ""
+    echo "Using ROMS source code from: ${MY_ROMS_SRC}"
+    echo ""
+    cd ${MY_ROMS_SRC}
   endif
 endif
 
 #--------------------------------------------------------------------------
-# Add enviromental variables constructed in 'makefile' to MY_CPP_FLAGS
+# Add environmental variables constructed in 'makefile' to MY_CPP_FLAGS
 # so can be passed to ROMS.
 #--------------------------------------------------------------------------
 
