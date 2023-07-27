@@ -1,6 +1,6 @@
       SUBROUTINE ana_smflux (ng, tile, model)
 !
-!! svn $Id: ana_smflux.h 1154 2023-02-17 20:52:30Z arango $
+!! git $Id$
 !!======================================================================
 !! Copyright (c) 2002-2023 The ROMS/TOMS Group                         !
 !!   Licensed under a MIT/X style license                              !

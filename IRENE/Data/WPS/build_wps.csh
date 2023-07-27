@@ -1,6 +1,6 @@
 #!/bin/csh -f
 #
-# svn $Id: build_wps.csh 1154 2023-02-17 20:52:30Z arango $
+# git $Id$
 #::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 # Copyright (c) 2002-2023 The ROMS/TOMS Group                           :::
 #::::::::::::::::::::::::::::::::::::::::::::::::::::: Hernan G. Arango :::
@@ -39,8 +39,6 @@
 setenv which_MPI openmpi                        # default, overwriten below
 
 # Initialize.
-
-set separator = `perl -e "print ':' x 100;"`
 
 set parallel = 0
 set clean = 1

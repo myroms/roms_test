@@ -6,7 +6,7 @@
 %  A veryifying analysis is used as a surrogate for the truth.
 %
 
-% svn $Id$
+%  git $Id$
 %=========================================================================%
 %  Copyright (c) 2002-2023 The ROMS/TOMS Group                            %
 %    Licensed under a MIT/X style license                                 %
