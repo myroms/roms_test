@@ -318,6 +318,7 @@ endif
 # Stop if activating both MPI and OpenMP at the same time.
 
 if ( ${?USE_MPI} & ${?USE_OpenMP} ) then
+  echo ""
   echo "You cannot activate USE_MPI and USE_OpenMP at the same time!"
   exit 1
 endif

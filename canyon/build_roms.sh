@@ -314,6 +314,7 @@ fi
 # Stop if activating both MPI and OpenMP at the same time.
 
 if [ -n "${USE_MPI:+1}" ] && [ -n "${USE_OpenMP:+1}" ]; then
+  echo ""
   echo "You cannot activate USE_MPI and USE_OpenMP at the same time!"
   exit 1
 fi
