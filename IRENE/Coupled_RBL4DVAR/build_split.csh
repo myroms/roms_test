@@ -84,7 +84,7 @@ set clean = 1
 set dprint = 0
 set branch = 0
 
-set command = "build_roms.csh $argv[*]"
+set command = "build_split.csh $argv[*]"
 
 set separator = `perl -e "print '<>' x 50;"`
 

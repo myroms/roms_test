@@ -84,7 +84,7 @@ clean=1
 dprint=0
 branch=0
 
-command="build_roms.sh $@"
+command="build_split.sh $@"
 
 separator=`perl -e "print '<>' x 50;"`
 
