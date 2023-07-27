@@ -60,6 +60,8 @@ dprint=0
 Verbose=0
 branch=0
 
+command="cbuild_roms.sh $@"
+
 separator=`perl -e "print '<>' x 50;"`
 
 export MY_CPP_FLAGS=
@@ -368,6 +370,8 @@ HEADER=`echo ${ROMS_APPLICATION} | tr '[:upper:]' '[:lower:]'`.h
 HEADER_DIR="HEADER_DIR='${MY_HEADER_DIR}'"
 ROOT_DIR="ROOT_DIR='${MY_ROMS_SRC}'"
 
+mycppflags="${MY_CPP_FLAGS}"
+
 export       MY_CPP_FLAGS="${MY_CPP_FLAGS} -D${ANALYTICAL_DIR}"
 export       MY_CPP_FLAGS="${MY_CPP_FLAGS} -D${HEADER_DIR}"
 export       MY_CPP_FLAGS="${MY_CPP_FLAGS} -D${ROOT_DIR}"
@@ -543,6 +547,25 @@ else
     fi
   fi
   make install
+
+  echo ""
+  echo "${separator}"
+  echo "CMake Build script command:    ${command}"
+  echo "ROMS source directory:         ${MY_ROMS_SRC}"
+  echo "ROMS build  directory:         ${BUILD_DIR}"
+  if [ $branch -eq 1 ]; then
+    echo "ROMS downloaded from:          https://github.com/myroms/roms.git"
+    echo "ROMS compiled branch:          $branch_name"
+  fi
+  echo "ROMS Application:              ${ROMS_APPLICATION}"
+  FFLAGS=`cat fortran_flags` 
+  echo "Fortran compiler:              ${FORT}"
+  echo "Fortran flags:                ${FFLAGS}"
+  if [ -n "${mycppflags:+1}" ]; then
+    echo "Added CPP Options:            ${mycppflags}"
+  fi
+  echo "${separator}"
+  echo ""
 fi
 
 cd ${MY_PROJECT_DIR}

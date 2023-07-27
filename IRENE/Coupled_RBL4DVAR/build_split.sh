@@ -84,6 +84,8 @@ clean=1
 dprint=0
 branch=0
 
+command="build_roms.sh $@"
+
 separator=`perl -e "print '<>' x 50;"`
 
 export MY_CPP_FLAGS=
@@ -511,4 +513,23 @@ else
   else
     make
   fi
+
+  echo ""
+  echo "${separator}"
+  echo "GNU Build script command:      ${command}"
+  echo "ROMS source directory:         ${MY_ROMS_SRC}"
+  echo "ROMS build  directory:         ${BUILD_DIR}"
+  if [ $branch -eq 1 ]; then
+    echo "ROMS downloaded from:          https://github.com/myroms/roms.git"
+    echo "ROMS compiled branch:          $branch_name"
+  fi
+  echo "ROMS Application:              ${ROMS_APPLICATION}"
+  FFLAGS=`make print-FFLAGS | cut -d " " -f 3-` 
+  echo "Fortran compiler:              ${FORT}"
+  echo "Fortran flags:                 ${FFLAGS}"
+  if [ -n "${MY_CPP_FLAGS:+1}" ]; then
+    echo "Added CPP Options:            ${MY_CPP_FLAGS}"
+  fi
+  echo "${separator}"
+  echo ""
 fi

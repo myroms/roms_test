@@ -40,6 +40,8 @@ setenv which_MPI openmpi                        # default, overwriten below
 
 # Initialize.
 
+set command = "build_roms.csh $argv[*]"
+
 set separator = `perl -e "print ':' x 100;"`
 
 set parallel = 0
@@ -370,4 +372,23 @@ if ( $move == 1 ) then
 
   find -H ${WPS_ROOT_DIR} -type l -name "*.exe" -exec /bin/rm -fv {} \;
 
+
+  echo ""
+  echo "${separator}"
+  echo "GNU Build script command:      ${command}"
+  echo "ROMS source directory:         ${MY_ROMS_SRC}"
+  echo "ROMS build  directory:         ${BUILD_DIR}"
+  if ( $branch == 1 ) then
+    echo "ROMS downloaded from:          https://github.com/myroms/roms.git"
+    echo "ROMS compiled branch:          $branch_name"
+  endif
+  echo "ROMS Application:              ${ROMS_APPLICATION}"
+  set FFLAGS = `make print-FFLAGS | cut -d " " -f 3-` 
+  echo "Fortran compiler:              ${FORT}"
+  echo "Fortran flags:                 ${FFLAGS}"
+  if ($?MY_CPP_FLAGS) then
+    echo "Added CPP Options:            ${MY_CPP_FLAGS}"
+  endif
+  echo "${separator}"
+  echo ""
 endif

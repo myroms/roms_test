@@ -59,6 +59,8 @@ set dprint = 0
 set Verbose = 0
 set branch = 0
 
+set command = "cbuild_roms.csh $argv[*]"
+
 set separator = `perl -e "print '<>' x 50;"`
 
 setenv MY_CPP_FLAGS ''
@@ -388,6 +390,8 @@ set HEADER = `echo ${ROMS_APPLICATION} | tr '[:upper:]' '[:lower:]'`.h
 set HEADER_DIR = "HEADER_DIR='${MY_HEADER_DIR}'"
 set ROOT_DIR = "ROOT_DIR='${MY_ROMS_SRC}'"
 
+set mycppflags = "${MY_CPP_FLAGS}"
+
 setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -D${ANALYTICAL_DIR}"
 setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -D${HEADER_DIR}"
 setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -D${ROOT_DIR}"
@@ -574,6 +578,25 @@ else
     endif
   endif
   make install
+
+  echo ""
+  echo "${separator}"
+  echo "CMake Build script command:    ${command}"
+  echo "ROMS source directory:         ${MY_ROMS_SRC}"
+  echo "ROMS build  directory:         ${BUILD_DIR}"
+  if ( $branch == 1 ) then
+    echo "ROMS downloaded from:          https://github.com/myroms/roms.git"
+    echo "ROMS compiled branch:          $branch_name"
+  endif
+  echo "ROMS Application:              ${ROMS_APPLICATION}"
+  set FFLAGS = `cat fortran_flags` 
+  echo "Fortran compiler:              ${FORT}"
+  echo "Fortran flags:                 ${FFLAGS}"
+  if ($?mycppflags) then
+    echo "Added CPP Options:            ${mycppflags}"
+  endif
+  echo "${separator}"
+  echo ""
 endif
 
 cd ${MY_PROJECT_DIR}

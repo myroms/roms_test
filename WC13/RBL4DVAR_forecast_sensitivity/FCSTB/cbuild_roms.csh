@@ -59,6 +59,10 @@ set dprint = 0
 set Verbose = 0
 set branch = 0
 
+set command = "cbuild_roms.csh $argv[*]"
+
+set separator = `perl -e "print '<>' x 50;"`
+
 setenv MY_CPP_FLAGS ''
 
 while ( ($#argv) > 0 )
@@ -105,6 +109,7 @@ while ( ($#argv) > 0 )
 
     case "-*":
       echo ""
+      echo "${separator}"
       echo "$0 : Unknown option [ $1 ]"
       echo ""
       echo "Available Options:"
@@ -121,6 +126,7 @@ while ( ($#argv) > 0 )
       echo "-noclean        Do not clean already compiled objects"
       echo ""
       echo "-v              Compile in verbose mode"
+      echo "${separator}"
       echo ""
       exit 1
     breaksw
@@ -278,6 +284,9 @@ endif
 
  setenv MY_ANALYTICAL_DIR    `dirname ${Dir}`/Functionals
 
+ echo ""
+ echo "${separator}"
+
 # Put the CMake files in a project specific Build directory to avoid conflict
 # with other projects.
 
@@ -372,6 +381,8 @@ set ANALYTICAL_DIR = "ANALYTICAL_DIR='${MY_ANALYTICAL_DIR}'"
 set HEADER = `echo ${ROMS_APPLICATION} | tr '[:upper:]' '[:lower:]'`.h
 set HEADER_DIR = "HEADER_DIR='${MY_HEADER_DIR}'"
 set ROOT_DIR = "ROOT_DIR='${MY_ROMS_SRC}'"
+
+set mycppflags = "${MY_CPP_FLAGS}"
 
 setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -D${ANALYTICAL_DIR}"
 setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -D${HEADER_DIR}"
@@ -559,6 +570,25 @@ else
     endif
   endif
   make install
+
+  echo ""
+  echo "${separator}"
+  echo "CMake Build script command:    ${command}"
+  echo "ROMS source directory:         ${MY_ROMS_SRC}"
+  echo "ROMS build  directory:         ${BUILD_DIR}"
+  if ( $branch == 1 ) then
+    echo "ROMS downloaded from:          https://github.com/myroms/roms.git"
+    echo "ROMS compiled branch:          $branch_name"
+  endif
+  echo "ROMS Application:              ${ROMS_APPLICATION}"
+  set FFLAGS = `cat fortran_flags` 
+  echo "Fortran compiler:              ${FORT}"
+  echo "Fortran flags:                 ${FFLAGS}"
+  if ($?mycppflags) then
+    echo "Added CPP Options:            ${mycppflags}"
+  endif
+  echo "${separator}"
+  echo ""
 endif
 
 cd ${MY_PROJECT_DIR}
