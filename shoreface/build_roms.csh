@@ -141,12 +141,12 @@ setenv ROMS_APPLICATION      SHOREFACE
 # or downloaded, it uses that value. 
 
 if ($?ROMS_ROOT_DIR) then
-  setenv MY_ROOT_DIR        ${ROMS_ROOT_DIR}
+  setenv MY_ROOT_DIR         ${ROMS_ROOT_DIR}
 else
-  setenv MY_ROOT_DIR        ${HOME}/ocean/repository/git
+  setenv MY_ROOT_DIR         ${HOME}/ocean/repository/git
 endif
 
-setenv   MY_PROJECT_DIR     ${PWD}
+setenv   MY_PROJECT_DIR      ${PWD}
 
 # The path to the user's local current ROMS source code.
 #
@@ -158,7 +158,7 @@ setenv   MY_PROJECT_DIR     ${PWD}
 # This script allows for differing paths to the code and inputs on other
 # computers.
 
- setenv  MY_ROMS_SRC        ${MY_ROOT_DIR}/roms
+ setenv  MY_ROMS_SRC         ${MY_ROOT_DIR}/roms
 
 # Set path of the directory containing makefile configuration (*.mk) files.
 # The user has the option to specify a customized version of these files
@@ -198,7 +198,9 @@ setenv   MY_PROJECT_DIR     ${PWD}
 
 #setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DMODEL_COUPLING"
 
- setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DNEARSHORE_MELLOR05"
+ setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DWEC_VF"
+#setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DSURFACE_STREAMING"
+#setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DBOTTOM_STREAMING"
 
  setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DWET_DRY -DMASKING"
 
@@ -211,15 +213,16 @@ setenv   MY_PROJECT_DIR     ${PWD}
 #setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DSED_MORPH"
 #setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DBEDLOAD_SOULSBY"
 
-#setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DGLS_MIXING"
+ setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DGLS_MIXING"
 #setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DCRAIG_BANNER"
 #setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DCHARNOK"
 #setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DZOS_HSIG"
 #setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DTKE_WAVEDISS"
 
- setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DMY25_MIXING"
+#setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DMY25_MIXING"
 
- setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DUV_QDRAG"
+#setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DUV_QDRAG"
+ setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DUV_LOGDRAG"
 #setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DSSW_BBL"
 
 #--------------------------------------------------------------------------

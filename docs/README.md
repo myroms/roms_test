@@ -138,6 +138,7 @@ If using the **-b** option, the **build** script will clone the **ROMS** source
 code from **GitHub** into your project sub-directory **`src`**, for example:
 ```
 git clone https://www.github.com/myroms/roms.git src
+cd src
 git checkout feature/kernel
 ```
 The **CMake build** scripts (**cbuild_roms.csh** and **cbuild_roms.sh**) are more
