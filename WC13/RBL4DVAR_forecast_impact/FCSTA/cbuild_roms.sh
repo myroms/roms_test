@@ -374,29 +374,7 @@ export       MY_CPP_FLAGS="${MY_CPP_FLAGS} -D${ANALYTICAL_DIR}"
 export       MY_CPP_FLAGS="${MY_CPP_FLAGS} -D${HEADER_DIR}"
 export       MY_CPP_FLAGS="${MY_CPP_FLAGS} -D${ROOT_DIR}"
 
-if [[ -d "${MY_ROMS_SRC}/.git" ]]; then
-  cd ${MY_ROMS_SRC}
-  GITURL=$(git config --get remote.origin.url)
-  GITREV=$(git rev-parse --verify HEAD)
-  GIT_URL="GIT_URL='${GITURL}'"
-  GIT_REV="GIT_REV='${GITREV}'"
-  SVN_URL="SVN_URL='https://www.myroms.org/svn/src'"
-
-  export     MY_CPP_FLAGS="${MY_CPP_FLAGS} -D${GIT_URL}"
-  export     MY_CPP_FLAGS="${MY_CPP_FLAGS} -D${GIT_REV}"
-  export     MY_CPP_FLAGS="${MY_CPP_FLAGS} -D${SVN_URL}"
-  cd ${BUILD_DIR}
-else
-  cd ${MY_ROMS_SRC}
-  SVNURL=$(svn info | grep '^URL:' | sed 's/URL: //')
-  SVNREV=$(svn info | grep '^Revision:' | sed 's/Revision: //')
-  SVN_URL="SVN_URL='${SVNURL}'"
-  SVN_REV="SVN_REV='${SVNREV}'"
-
-  export     MY_CPP_FLAGS="${MY_CPP_FLAGS} -D${SVN_URL}"
-  export     MY_CPP_FLAGS="${MY_CPP_FLAGS} -D${SVN_REV}"
-  cd ${BUILD_DIR}
-fi
+cd ${BUILD_DIR}
 
 #--------------------------------------------------------------------------
 # Configure.
@@ -587,20 +565,20 @@ if [[ ! -z "${ROMS_EXECUTABLE}" && "${ROMS_EXECUTABLE}" == "OFF" ]]; then
   fi
 fi
 
-# Create symlink to executable. This should work even if ROMS was
-# linked to the shared library (libROMS.{so|dylib}) because
-# CMAKE_BUILD_WITH_INSTALL_RPATH is set to FALSE so that
+# Copy executable to project directory. This should work even
+# if ROMS was linked to the shared library (libROMS.{so|dylib})
+# because CMAKE_BUILD_WITH_INSTALL_RPATH is set to FALSE so that
 # RPATH/RUNPATH are set correctly for both the build tree and
 # installed locations of the ROMS executable.
 
 if [[ -z "${ROMS_EXECUTABLE}" || "${ROMS_EXECUTABLE}" == "ON" ]]; then
   if [ $dprint -eq 0 ]; then
     if [[ ! -z "${USE_DEBUG}" && "${USE_DEBUG}" == "on" ]]; then
-      ln -sfv ${BUILD_DIR}/romsG
+      cp -pfv ${BUILD_DIR}/romsG .
     elif [[ ! -z "${USE_MPI}" && "${USE_MPI}" == "on" ]]; then
-      ln -sfv ${BUILD_DIR}/romsM
+      cp -pfv ${BUILD_DIR}/romsM .
     else
-      ln -sfv ${BUILD_DIR}/romsS
+      cp -pfv ${BUILD_DIR}/romsS .
     fi
   fi
 fi

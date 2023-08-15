@@ -400,29 +400,7 @@ setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -D${ANALYTICAL_DIR}"
 setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -D${HEADER_DIR}"
 setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -D${ROOT_DIR}"
 
-if ( -d ${MY_ROMS_SRC}/.git ) then
-  cd ${MY_ROMS_SRC}
-  set GITURL  = "`git config --get remote.origin.url`"
-  set GITREV  = "`git rev-parse --verify HEAD`"
-  set GIT_URL = "GIT_URL='${GITURL}'"
-  set GIT_REV = "GIT_REV='${GITREV}'"
-  set SVN_URL = "SVN_URL='https://www.myroms.org/svn/src'"
-
-  setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -D${GIT_URL}"
-  setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -D${GIT_REV}"
-  setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -D${SVN_URL}"
-  cd ${BUILD_DIR}
-else
-  cd ${MY_ROMS_SRC}
-  set SVNURL  = "`svn info | grep '^URL:' | sed 's/URL: //'`"
-  set SVNREV  = "`svn info | grep '^Revision:' | sed 's/Revision: //'`"
-  set SVN_URL = "SVN_URL='${SVNURL}'"
-  set SVN_REV = "SVN_REV='${SVNREV}'"
-
-  setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -D${SVN_URL}"
-  setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -D${SVN_REV}"
-  cd ${BUILD_DIR}
-endif
+cd ${BUILD_DIR}
 
 #--------------------------------------------------------------------------
 # Configure.
@@ -630,9 +608,9 @@ if ( $?ROMS_EXECUTABLE ) then
   endif
 endif
 
-# Create symlink to executable. This should work even if ROMS was
-# linked to the shared library (libROMS.{so|dylib}) because
-# CMAKE_BUILD_WITH_INSTALL_RPATH is set to FALSE so that
+# Copy executable to project directory. This should work even
+# if ROMS was linked to the shared library (libROMS.{so|dylib})
+# because CMAKE_BUILD_WITH_INSTALL_RPATH is set to FALSE so that
 # RPATH/RUNPATH are set correctly for both the build tree and
 # installed locations of the ROMS executable.
 
@@ -640,27 +618,27 @@ if ( $dprint == 0 ) then
   if ( ! $?ROMS_EXECUTABLE ) then
     if ( $?USE_DEBUG ) then
       if ( "${USE_DEBUG}" == "on" ) then
-        ln -sfv ${BUILD_DIR}/romsG
+        cp -pfv ${BUILD_DIR}/romsG .
       endif
     else if ( $?USE_MPI ) then
       if ( "${USE_MPI}" == "on" ) then
-        ln -sfv ${BUILD_DIR}/romsM
+        cp -pfv ${BUILD_DIR}/romsM .
       endif
     else
-      ln -sfv ${BUILD_DIR}/romsS
+      cp -pfv ${BUILD_DIR}/romsS .
     endif
   else
     if ( "${ROMS_EXECUTABLE}" == "ON" ) then
       if ( $?USE_DEBUG ) then
         if ( "${USE_DEBUG}" == "on" ) then
-          ln -sfv ${BUILD_DIR}/romsG
+          cp -pfv ${BUILD_DIR}/romsG .
         endif
       else if ( $?USE_MPI ) then
         if ( "${USE_MPI}" == "on" ) then
-          ln -sfv ${BUILD_DIR}/romsM
+          cp -pfv ${BUILD_DIR}/romsM .
         endif
       else
-        ln -sfv ${BUILD_DIR}/romsS
+        cp -pfv ${BUILD_DIR}/romsS .
       endif
     endif
   endif
