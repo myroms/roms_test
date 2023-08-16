@@ -103,7 +103,7 @@ do
       fi
       shift
       ;;
-      
+
     * )
       echo ""
       echo "${separator}"
@@ -421,7 +421,7 @@ else
     echo "ROMS compiled branch:          $branch_name"
   fi
   echo "ROMS Application:              ${ROMS_APPLICATION}"
-  FFLAGS=`make print-FFLAGS | cut -d " " -f 3-` 
+  FFLAGS=`make print-FFLAGS | cut -d " " -f 3-`
   echo "Fortran compiler:              ${FORT}"
   echo "Fortran flags:                 ${FFLAGS}"
   if [ -n "${MY_CPP_FLAGS:+1}" ]; then

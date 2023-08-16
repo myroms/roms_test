@@ -138,7 +138,7 @@ setenv ROMS_APPLICATION      LAKE_JERSEY
 # configuration and files are kept (MY_PROJECT_DIR). Notice that if the
 # User sets the ROMS_ROOT_DIR environment variable in their computer logging
 # script describing the location from where the ROMS source code was cloned
-# or downloaded, it uses that value. 
+# or downloaded, it uses that value.
 
 if ($?ROMS_ROOT_DIR) then
   setenv MY_ROOT_DIR        ${ROMS_ROOT_DIR}

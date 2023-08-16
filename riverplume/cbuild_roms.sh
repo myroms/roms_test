@@ -148,7 +148,7 @@ done
 # configuration and files are kept (MY_PROJECT_DIR). Notice that if the
 # User sets the ROMS_ROOT_DIR environment variable in their computer logging
 # script describing the location from where the ROMS source code was cloned
-# or downloaded, it uses that value. 
+# or downloaded, it uses that value.
 
 if [ -n "${ROMS_ROOT_DIR:+1}" ]; then
   export      MY_ROOT_DIR=${ROMS_ROOT_DIR}
@@ -351,7 +351,7 @@ if [ $dprint -eq 0 ]; then
 
     # If we are using the COMPILERS from the ROMS source code
     # overide the value set above
-  
+
     if [[ ${COMPILERS} == ${MY_ROMS_SRC}* ]]; then
       export COMPILERS=${MY_PROJECT_DIR}/src/Compilers
     fi
@@ -541,7 +541,7 @@ else
     echo "ROMS compiled branch:          $branch_name"
   fi
   echo "ROMS Application:              ${ROMS_APPLICATION}"
-  FFLAGS=`cat fortran_flags` 
+  FFLAGS=`cat fortran_flags`
   echo "Fortran compiler:              ${FORT}"
   echo "Fortran flags:                ${FFLAGS}"
   if [ -n "${mycppflags:+1}" ]; then

@@ -349,10 +349,10 @@ if ( $dprint == 0 ) then
     echo ""
     cd src
     git checkout $branch_name
-  
+
     # If we are using the COMPILERS from the ROMS source code
     # overide the value set above
-  
+
     if ( ${COMPILERS} =~ ${MY_ROMS_SRC}* ) then
       setenv COMPILERS ${MY_PROJECT_DIR}/src/Compilers
     endif
@@ -553,7 +553,7 @@ else
     echo "ROMS compiled branch:          $branch_name"
   endif
   echo "ROMS Application:              ${ROMS_APPLICATION}"
-  set FFLAGS = `cat fortran_flags` 
+  set FFLAGS = `cat fortran_flags`
   echo "Fortran compiler:              ${FORT}"
   echo "Fortran flags:                 ${FFLAGS}"
   if ($?mycppflags) then

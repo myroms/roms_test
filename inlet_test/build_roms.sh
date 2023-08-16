@@ -103,7 +103,7 @@ do
       fi
       shift
       ;;
-      
+
     * )
       echo ""
       echo "${separator}"
@@ -139,9 +139,9 @@ export   ROMS_APPLICATION=INLET_TEST
 # configuration and files are kept (MY_PROJECT_DIR). Notice that if the
 # User sets the ROMS_ROOT_DIR environment variable in their computer logging
 # script describing the location from where the ROMS source code was cloned
-# or downloaded, it uses that value. 
+# or downloaded, it uses that value.
 
-if [ -n "${ROMS_ROOT_DIR:+1}" ]; then 
+if [ -n "${ROMS_ROOT_DIR:+1}" ]; then
   export      MY_ROOT_DIR=${ROMS_ROOT_DIR}
 else
   export      MY_ROOT_DIR=${HOME}/ocean/repository/git
@@ -425,7 +425,7 @@ else
     echo "ROMS compiled branch:          $branch_name"
   fi
   echo "ROMS Application:              ${ROMS_APPLICATION}"
-  FFLAGS=`make print-FFLAGS | cut -d " " -f 3-` 
+  FFLAGS=`make print-FFLAGS | cut -d " " -f 3-`
   echo "Fortran compiler:              ${FORT}"
   echo "Fortran flags:                 ${FFLAGS}"
   if [ -n "${MY_CPP_FLAGS:+1}" ]; then
