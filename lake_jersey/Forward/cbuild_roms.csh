@@ -317,6 +317,11 @@ else
   setenv BUILD_DIR           ${MY_PROJECT_DIR}/CBuild_roms
 endif
 
+# For backward compatibility, set deprecated SCRATCH_DIR to compile
+# older released versions of ROMS.
+
+setenv SCRATCH_DIR ${BUILD_DIR}
+
 # If necessary, create ROMS build directory.
 
 if ( $dprint == 0 ) then

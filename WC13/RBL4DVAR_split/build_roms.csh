@@ -350,6 +350,11 @@ else
   endif
 endif
 
+# For backward compatibility, set deprecated SCRATCH_DIR to compile
+# older released versions of ROMS.
+
+setenv SCRATCH_DIR ${BUILD_DIR}
+
 # If necessary, create ROMS build directory.
 
 if ( ! -d $BUILD_DIR ) then

@@ -346,6 +346,20 @@ else
   fi
 fi
 
+# For backward compatibility, set deprecated SCRATCH_DIR to compile
+# older released versions of ROMS.
+
+export SCRATCH_DIR=${BUILD_DIR}
+
+# If necessary, create ROMS build directory.
+
+if [ ! -d ${BUILD_DIR} ]; then
+  echo ""
+  echo "Creating ROMS build directory: ${BUILD_DIR}"
+  echo ""
+  mkdir $BUILD_DIR
+fi
+
 # Go to the users source directory to compile. The options set above will
 # pick up the application-specific code from the appropriate place.
 
