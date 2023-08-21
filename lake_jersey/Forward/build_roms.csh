@@ -271,7 +271,7 @@ setenv   MY_PROJECT_DIR     ${PWD}
 # and cannot be moved when debugging with tools like TotalView.
 #--------------------------------------------------------------------------
 
-setenv WRF_SRC_DIR         ${HOME}/ocean/repository/WRF
+setenv WRF_SRC_DIR         ${HOME}/ocean/repository/git/WRF
 
 if ($?USE_DEBUG) then
   setenv CICE_LIB_DIR      ${MY_PROJECT_DIR}/Build_ciceG

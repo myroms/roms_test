@@ -274,8 +274,8 @@ endif
 # and cannot be moved when debugging with tools like TotalView.
 #--------------------------------------------------------------------------
 
-#setenv WRF_SRC_DIR         ${HOME}/ocean/repository/WRF.4.3
- setenv WRF_SRC_DIR         ${HOME}/ocean/repository/WRF
+#setenv WRF_SRC_DIR         ${HOME}/ocean/repository/git/WRF4.3
+ setenv WRF_SRC_DIR         ${HOME}/ocean/repository/git/WRF
 
 # Decode WRF version from its README file to decide the appropriate data
 # file links needed.

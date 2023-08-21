@@ -275,7 +275,7 @@ fi
 # and cannot be moved when debugging with tools like TotalView.
 #--------------------------------------------------------------------------
 
-#export        WRF_SRC_DIR=${HOME}/ocean/repository/WRF.4.3
+#export        WRF_SRC_DIR=${HOME}/ocean/repository/WRF.git/4.3
  export        WRF_SRC_DIR=${HOME}/ocean/repository/WRF
 
 if [ -n "${USE_DEBUG:+1}" ]; then

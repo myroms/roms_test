@@ -288,7 +288,7 @@ export     MY_PROJECT_DIR=${PWD}
 # and cannot be moved when debugging with tools like TotalView.
 #--------------------------------------------------------------------------
 
-export        WRF_SRC_DIR=${HOME}/ocean/repository/WRF
+export        WRF_SRC_DIR=${HOME}/ocean/repository/git/WRF
 
 if [ -n "${USE_DEBUG:+1}" ]; then
   export     CICE_LIB_DIR=${MY_PROJECT_DIR}/Build_ciceG
