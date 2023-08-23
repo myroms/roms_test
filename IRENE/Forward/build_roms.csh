@@ -138,7 +138,7 @@ setenv ROMS_APPLICATION      IRENE
 # configuration and files are kept (MY_PROJECT_DIR). Notice that if the
 # User sets the ROMS_ROOT_DIR environment variable in their computer logging
 # script describing the location from where the ROMS source code was cloned
-# or downloaded, it uses that value. 
+# or downloaded, it uses that value.
 
 if ($?ROMS_ROOT_DIR) then
   setenv MY_ROOT_DIR        ${ROMS_ROOT_DIR}
@@ -274,8 +274,8 @@ endif
 # and cannot be moved when debugging with tools like TotalView.
 #--------------------------------------------------------------------------
 
-#setenv WRF_SRC_DIR         ${HOME}/ocean/repository/WRF.4.3
- setenv WRF_SRC_DIR         ${HOME}/ocean/repository/WRF
+#setenv WRF_SRC_DIR         ${HOME}/ocean/repository/git/WRF4.3
+ setenv WRF_SRC_DIR         ${HOME}/ocean/repository/git/WRF
 
 # Decode WRF version from its README file to decide the appropriate data
 # file links needed.
@@ -351,6 +351,11 @@ else
     setenv BUILD_DIR        ${MY_PROJECT_DIR}/Build_roms
   endif
 endif
+
+# For backward compatibility, set deprecated SCRATCH_DIR to compile
+# older released versions of ROMS.
+
+setenv SCRATCH_DIR ${BUILD_DIR}
 
 # If necessary, create ROMS build directory.
 
@@ -432,7 +437,7 @@ else
     echo "ROMS compiled branch:          $branch_name"
   endif
   echo "ROMS Application:              ${ROMS_APPLICATION}"
-  set FFLAGS = `make print-FFLAGS | cut -d " " -f 3-` 
+  set FFLAGS = `make print-FFLAGS | cut -d " " -f 3-`
   echo "Fortran compiler:              ${FORT}"
   echo "Fortran flags:                 ${FFLAGS}"
   if ($?MY_CPP_FLAGS) then

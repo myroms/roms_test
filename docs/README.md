@@ -1,8 +1,8 @@
-# **ROMS Test Cases**
+# ROMS Test Cases
 
 ![roms_test](https://github.com/myroms/roms_test/assets/23062912/faf56433-3e95-469f-a65c-8464d9c690b2)
 
-# **License**
+# License
 
 **Copyright (c) 2002-2023 The ROMS/TOMS Group**
 

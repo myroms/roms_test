@@ -1,6 +1,7 @@
 #!/bin/csh -ef
 #
 # git $Id$
+# svn $Id: cbuild_roms.csh 1189 2023-08-15 21:26:58Z arango $
 #::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 # Copyright (c) 2002-2023 The ROMS/TOMS Group                           :::
 #   Licensed under a MIT/X style license                                :::
@@ -138,7 +139,7 @@ end
 # determine the name of the ".h" header file with the application
 # CPP definitions. REQUIRED
 
- setenv ROMS_APPLICATION     DOGBONE
+ setenv ROMS_APPLICATION     IRENE
 
 # Set a local environmental variable to define the path to the directories
 # where the ROMS source code is located (MY_ROOT_DIR), and this project's
@@ -214,23 +215,33 @@ setenv MY_PROJECT_DIR        ${PWD}
 # can be used to write time-averaged fields. Notice that you can have as
 # many definitions as you want by appending values.
 
- setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DOUT_DOUBLE"
+ set bulk_flux = 0                # use WRF atmosphere boundary layer
+#set bulk_flux = 1                # use ROMS bulk fluxes formulation
+
+if ( $bulk_flux == 1 ) then
+ setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DBULK_FLUXES"
+ setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DCOOL_SKIN"
+ setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DEMINUSP"
+ setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DLONGWAVE_OUT"
+endif
+
+ setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DWIND_MINUS_CURRENT"
+
+ setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DESMF_LIB"
+ setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DDATA_COUPLING"
+ setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DWRF_COUPLING"
+ setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DWRF_TIMEAVG"
+ setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DFRC_COUPLING"
+ setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DROMS_STDOUT"
+
+ setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DVERIFICATION"
+
+ setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DCOLLECT_ALLREDUCE"
+#setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DREDUCE_ALLGATHER"
 
 #setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DDEBUGGING"
+ setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DOUT_DOUBLE"
 #setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DPOSITIVE_ZERO"
-
- setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DNESTING"
- setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DSOLVE3D"
-
- setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DAVERAGES"
-#setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DDIAGNOSTICS_TS"
-#setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DDIAGNOSTICS_UV"
-
-#setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DUV_VIS2"
-#setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DUV_VIS4"
-#setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DMIX_S_UV"
-
- setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DGLS_MIXING"
 
 #--------------------------------------------------------------------------
 # Compilation options.
@@ -391,10 +402,10 @@ if ( $dprint == 0 ) then
     echo ""
     cd src
     git checkout $branch_name
-
+  
     # If we are using the COMPILERS from the ROMS source code
     # overide the value set above
-
+  
     if ( ${COMPILERS} =~ ${MY_ROMS_SRC}* ) then
       setenv COMPILERS ${MY_PROJECT_DIR}/src/Compilers
     endif

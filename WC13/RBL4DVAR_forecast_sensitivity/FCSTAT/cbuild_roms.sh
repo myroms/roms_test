@@ -147,7 +147,7 @@ export   ROMS_APPLICATION=WC13
 # configuration and files are kept (MY_PROJECT_DIR). Notice that if the
 # User sets the ROMS_ROOT_DIR environment variable in their computer logging
 # script describing the location from where the ROMS source code was cloned
-# or downloaded, it uses that value. 
+# or downloaded, it uses that value.
 
 if [ -n "${ROMS_ROOT_DIR:+1}" ]; then
   export      MY_ROOT_DIR=${ROMS_ROOT_DIR}
@@ -261,6 +261,34 @@ export     MY_PROJECT_DIR=${PWD}
 #export          USE_HDF5=on               # compile with HDF5 library
 
 #--------------------------------------------------------------------------
+# If coupling Earth System Models (ESM), set the location of the ESM
+# component libraries and modules. The strategy is to compile and link
+# each ESM component separately first, and then ROMS since it is driving
+# the coupled system. Only the ESM components activated are considered
+# and the rest are ignored.  Some components like WRF cannot be built
+# in a directory specified by the user but in its own root directory,
+# and cannot be moved when debugging with tools like TotalView.
+#--------------------------------------------------------------------------
+
+export        WRF_SRC_DIR=${HOME}/ocean/repository/git/WRF
+
+if [ -n "${USE_DEBUG:+1}" ]; then
+  export     CICE_LIB_DIR=${MY_PROJECT_DIR}/Build_ciceG
+  export   COAMPS_LIB_DIR=${MY_PROJECT_DIR}/Build_coampsG
+  export    REGCM_LIB_DIR=${MY_PROJECT_DIR}/Build_regcmG
+  export      WAM_LIB_DIR=${MY_PROJECT_DIR}/Build_wamG
+# export      WRF_LIB_DIR=${MY_PROJECT_DIR}/Build_wrfG
+  export      WRF_LIB_DIR=${WRF_SRC_DIR}
+else
+  export     CICE_LIB_DIR=${MY_PROJECT_DIR}/Build_cice
+  export   COAMPS_LIB_DIR=${MY_PROJECT_DIR}/Build_coamps
+  export    REGCM_LIB_DIR=${MY_PROJECT_DIR}/Build_regcm
+  export      WAM_LIB_DIR=${MY_PROJECT_DIR}/Build_wam
+  export      WRF_LIB_DIR=${MY_PROJECT_DIR}/Build_wrf
+# export      WRF_LIB_DIR=${WRF_SRC_DIR}
+fi
+
+#--------------------------------------------------------------------------
 # If applicable, use my specified library paths.
 #--------------------------------------------------------------------------
 
@@ -298,6 +326,11 @@ else
     export      BUILD_DIR=${MY_PROJECT_DIR}/CBuild_roms
   fi
 fi
+
+# For backward compatibility, set deprecated SCRATCH_DIR to compile
+# older released versions of ROMS.
+
+export SCRATCH_DIR=${BUILD_DIR}
 
 # If necessary, create ROMS build directory.
 
@@ -345,7 +378,7 @@ if [ $dprint -eq 0 ]; then
 
     # If we are using the COMPILERS from the ROMS source code
     # overide the value set above
-  
+
     if [[ ${COMPILERS} == ${MY_ROMS_SRC}* ]]; then
       export COMPILERS=${MY_PROJECT_DIR}/src/Compilers
     fi
@@ -375,29 +408,7 @@ export       MY_CPP_FLAGS="${MY_CPP_FLAGS} -D${ANALYTICAL_DIR}"
 export       MY_CPP_FLAGS="${MY_CPP_FLAGS} -D${HEADER_DIR}"
 export       MY_CPP_FLAGS="${MY_CPP_FLAGS} -D${ROOT_DIR}"
 
-if [[ -d "${MY_ROMS_SRC}/.git" ]]; then
-  cd ${MY_ROMS_SRC}
-  GITURL=$(git config --get remote.origin.url)
-  GITREV=$(git rev-parse --verify HEAD)
-  GIT_URL="GIT_URL='${GITURL}'"
-  GIT_REV="GIT_REV='${GITREV}'"
-  SVN_URL="SVN_URL='https://www.myroms.org/svn/src'"
-
-  export     MY_CPP_FLAGS="${MY_CPP_FLAGS} -D${GIT_URL}"
-  export     MY_CPP_FLAGS="${MY_CPP_FLAGS} -D${GIT_REV}"
-  export     MY_CPP_FLAGS="${MY_CPP_FLAGS} -D${SVN_URL}"
-  cd ${BUILD_DIR}
-else
-  cd ${MY_ROMS_SRC}
-  SVNURL=$(svn info | grep '^URL:' | sed 's/URL: //')
-  SVNREV=$(svn info | grep '^Revision:' | sed 's/Revision: //')
-  SVN_URL="SVN_URL='${SVNURL}'"
-  SVN_REV="SVN_REV='${SVNREV}'"
-
-  export     MY_CPP_FLAGS="${MY_CPP_FLAGS} -D${SVN_URL}"
-  export     MY_CPP_FLAGS="${MY_CPP_FLAGS} -D${SVN_REV}"
-  cd ${BUILD_DIR}
-fi
+cd ${BUILD_DIR}
 
 #--------------------------------------------------------------------------
 # Configure.
@@ -557,7 +568,7 @@ else
     echo "ROMS compiled branch:          $branch_name"
   fi
   echo "ROMS Application:              ${ROMS_APPLICATION}"
-  FFLAGS=`cat fortran_flags` 
+  FFLAGS=`cat fortran_flags`
   echo "Fortran compiler:              ${FORT}"
   echo "Fortran flags:                ${FFLAGS}"
   if [ -n "${mycppflags:+1}" ]; then
@@ -588,20 +599,20 @@ if [[ ! -z "${ROMS_EXECUTABLE}" && "${ROMS_EXECUTABLE}" == "OFF" ]]; then
   fi
 fi
 
-# Create symlink to executable. This should work even if ROMS was
-# linked to the shared library (libROMS.{so|dylib}) because
-# CMAKE_BUILD_WITH_INSTALL_RPATH is set to FALSE so that
+# Copy executable to project directory. This should work even
+# if ROMS was linked to the shared library (libROMS.{so|dylib})
+# because CMAKE_BUILD_WITH_INSTALL_RPATH is set to FALSE so that
 # RPATH/RUNPATH are set correctly for both the build tree and
 # installed locations of the ROMS executable.
 
 if [[ -z "${ROMS_EXECUTABLE}" || "${ROMS_EXECUTABLE}" == "ON" ]]; then
   if [ $dprint -eq 0 ]; then
     if [[ ! -z "${USE_DEBUG}" && "${USE_DEBUG}" == "on" ]]; then
-      ln -sfv ${BUILD_DIR}/romsG
+      cp -pfv ${BUILD_DIR}/romsG .
     elif [[ ! -z "${USE_MPI}" && "${USE_MPI}" == "on" ]]; then
-      ln -sfv ${BUILD_DIR}/romsM
+      cp -pfv ${BUILD_DIR}/romsM .
     else
-      ln -sfv ${BUILD_DIR}/romsS
+      cp -pfv ${BUILD_DIR}/romsS .
     fi
   fi
 fi

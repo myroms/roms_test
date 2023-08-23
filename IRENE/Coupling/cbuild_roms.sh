@@ -1,6 +1,7 @@
 #!/bin/bash
 #
 # git $Id$
+# svn $Id: cbuild_roms.sh 1189 2023-08-15 21:26:58Z arango $
 #::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 # Copyright (c) 2002-2023 The ROMS/TOMS Group                           :::
 #   Licensed under a MIT/X style license                                :::
@@ -140,7 +141,7 @@ done
 # determine the name of the ".h" header file with the application
 # CPP definitions. REQUIRED
 
-export   ROMS_APPLICATION=WC13
+export   ROMS_APPLICATION=IRENE
 
 # Set a local environmental variable to define the path to the directories
 # where the ROMS source code is located (MY_ROOT_DIR), and this project's
@@ -176,7 +177,7 @@ export     MY_PROJECT_DIR=${PWD}
 #
 # Valid options are SHARED, STATIC, and BOTH.
 
- export           LIBTYPE=STATIC
+ export           LIBTYPE=BOTH
 
 # Do you want to build the ROMS executable?
 #
@@ -212,15 +213,32 @@ export     MY_PROJECT_DIR=${PWD}
 # can be used to write time-averaged fields. Notice that you can have as
 # many definitions as you want by appending values.
 
- export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DI4DVAR"
- export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DANA_SPONGE"
+ bulk_flux=0                      # use WRF atmosphere boundary layer
+#bulk_flux=1                      # use ROMS bulk fluxes formulation
 
-#export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DBGQC"
+if [ $bulk_flux -eq 1 ]; then
+ export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DBULK_FLUXES"
+ export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DCOOL_SKIN"
+ export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DEMINUSP"
+ export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DLONGWAVE_OUT"
+fi
 
-#export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DCOLLECT_ALLREDUCE"
+ export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DWIND_MINUS_CURRENT"
+
+ export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DESMF_LIB"
+ export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DDATA_COUPLING"
+ export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DWRF_COUPLING"
+ export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DWRF_TIMEAVG"
+ export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DFRC_COUPLING"
+ export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DROMS_STDOUT"
+
+ export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DVERIFICATION"
+
+ export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DCOLLECT_ALLREDUCE"
 #export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DREDUCE_ALLGATHER"
 
 #export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DDEBUGGING"
+ export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DOUT_DOUBLE"
 #export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DPOSITIVE_ZERO"
 
 #--------------------------------------------------------------------------
@@ -304,7 +322,7 @@ fi
 
 # If you have custom analytical functions to include, enter the path here.
 
- export MY_ANALYTICAL_DIR=`dirname ${PWD}`/Functionals
+ export MY_ANALYTICAL_DIR=${MY_PROJECT_DIR}
 
  echo ""
  echo "${separator}"
@@ -373,7 +391,7 @@ if [ $dprint -eq 0 ]; then
 
     # If we are using the COMPILERS from the ROMS source code
     # overide the value set above
-
+  
     if [[ ${COMPILERS} == ${MY_ROMS_SRC}* ]]; then
       export COMPILERS=${MY_PROJECT_DIR}/src/Compilers
     fi

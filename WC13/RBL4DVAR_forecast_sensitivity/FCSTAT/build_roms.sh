@@ -103,7 +103,7 @@ do
       fi
       shift
       ;;
-      
+
     * )
       echo ""
       echo "${separator}"
@@ -266,7 +266,7 @@ export     MY_PROJECT_DIR=${PWD}
 # and cannot be moved when debugging with tools like TotalView.
 #--------------------------------------------------------------------------
 
-export        WRF_SRC_DIR=${HOME}/ocean/repository/WRF
+export        WRF_SRC_DIR=${HOME}/ocean/repository/git/WRF
 
 if [ -n "${USE_DEBUG:+1}" ]; then
   export     CICE_LIB_DIR=${MY_PROJECT_DIR}/Build_ciceG
@@ -341,6 +341,11 @@ else
     export      BUILD_DIR=${MY_PROJECT_DIR}/Build_roms
   fi
 fi
+
+# For backward compatibility, set deprecated SCRATCH_DIR to compile
+# older released versions of ROMS.
+
+export SCRATCH_DIR=${BUILD_DIR}
 
 # If necessary, create ROMS build directory.
 
@@ -422,7 +427,7 @@ else
     echo "ROMS compiled branch:          $branch_name"
   fi
   echo "ROMS Application:              ${ROMS_APPLICATION}"
-  FFLAGS=`make print-FFLAGS | cut -d " " -f 3-` 
+  FFLAGS=`make print-FFLAGS | cut -d " " -f 3-`
   echo "Fortran compiler:              ${FORT}"
   echo "Fortran flags:                 ${FFLAGS}"
   if [ -n "${MY_CPP_FLAGS:+1}" ]; then

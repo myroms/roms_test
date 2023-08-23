@@ -103,7 +103,7 @@ do
       fi
       shift
       ;;
-      
+
     * )
       echo ""
       echo "${separator}"
@@ -139,9 +139,9 @@ export   ROMS_APPLICATION=CANYON
 # configuration and files are kept (MY_PROJECT_DIR). Notice that if the
 # User sets the ROMS_ROOT_DIR environment variable in their computer logging
 # script describing the location from where the ROMS source code was cloned
-# or downloaded, it uses that value. 
+# or downloaded, it uses that value.
 
-if [ -n "${ROMS_ROOT_DIR:+1}" ]; then 
+if [ -n "${ROMS_ROOT_DIR:+1}" ]; then
   export      MY_ROOT_DIR=${ROMS_ROOT_DIR}
 else
   export      MY_ROOT_DIR=${HOME}/ocean/repository/git
@@ -260,7 +260,7 @@ export     MY_PROJECT_DIR=${PWD}
 # and cannot be moved when debugging with tools like TotalView.
 #--------------------------------------------------------------------------
 
-export        WRF_SRC_DIR=${HOME}/ocean/repository/WRF
+export        WRF_SRC_DIR=${HOME}/ocean/repository/git/WRF
 
 if [ -n "${USE_DEBUG:+1}" ]; then
   export     CICE_LIB_DIR=${MY_PROJECT_DIR}/Build_ciceG
@@ -333,6 +333,11 @@ else
     export      BUILD_DIR=${MY_PROJECT_DIR}/Build_roms
   fi
 fi
+
+# For backward compatibility, set deprecated SCRATCH_DIR to compile
+# older released versions of ROMS.
+
+export SCRATCH_DIR=${BUILD_DIR}
 
 # If necessary, create ROMS build directory.
 
@@ -414,7 +419,7 @@ else
     echo "ROMS compiled branch:          $branch_name"
   fi
   echo "ROMS Application:              ${ROMS_APPLICATION}"
-  FFLAGS=`make print-FFLAGS | cut -d " " -f 3-` 
+  FFLAGS=`make print-FFLAGS | cut -d " " -f 3-`
   echo "Fortran compiler:              ${FORT}"
   echo "Fortran flags:                 ${FFLAGS}"
   if [ -n "${MY_CPP_FLAGS:+1}" ]; then
