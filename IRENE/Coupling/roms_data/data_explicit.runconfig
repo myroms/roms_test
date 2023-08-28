@@ -1,0 +1,44 @@
+#
+# git $Id$
+#::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+# Copyright (c) 2002-2023 The ROMS/TOMS Group                           :::
+#   Licensed under a MIT/X style license                                :::
+#   See License_ROMS.txt                                                :::
+#::::::::::::::::::::::::::::::::::::::::::::::::::::: Hernan G. Arango :::
+#                                                                       :::
+# DATA-ROMS explicit ESMF coupling:                                     :::
+#                                                                       :::
+# This ESMF configuration file includes the Run Sequence to couple      :::
+# DATA and ROMS components. All the components interact with            :::
+# the same coupling time step. The connector from ROMS to DATA is       :::
+# explicit.                                                             :::
+#                                                                       :::
+# It is not necessary to specify options to the connectors here for     :::
+# the "remapMethod" since it is specified in the input coupling         :::
+# metada file (keyword CPLname) for each exchanged field.               :::
+#                                                                       :::
+# If the timeStep value (in seconds) coupling interval is a wildcard    :::
+# (*) character used for a single outer time loop in the run sequence,  :::
+# then the associated run clock is identical to the driver clock, which :::
+# is set up in standard input configuration script "coupling_esmf.in":  :::
+#                                                                       :::
+#     @*                                                                :::
+#       ...                                                             :::
+#       ...                                                             :::
+#     @                                                                 :::
+#                                                                       :::
+# Check NUOPC reference manual for more information (Chapter 3, API).   :::
+# The component label is specific to how is known in the ESMF driver.   :::
+# It is set in subroutine allocate_esmf_esm, variable MODELS(:)%name.   :::
+#                                                                       :::
+#::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+# Hurricane Irene Application
+
+runSeq::
+  @*                         # timeStep = wildcard (*), single time loop
+    DATA -> ROMS             # DATA to ROMS connector
+    DATA
+    ROMS
+  @
+::

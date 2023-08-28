@@ -401,22 +401,22 @@ HdecayF(isTsur) == 100.0d+3  100.0d+3             ! 1:NT surface tracers flux
 ! Input model, initial conditions, boundary conditions, and surface forcing
 ! standard deviation file names, [1:Ngrids].
 
-       STDnameM == ../Data/STD/irene_std_mesoscale_20110827.nc
-       STDnameI == ../Data/STD/irene_std_mesoscale_20110827.nc
-       STDnameB == ../Data/STD/irene_std_b_mesoscale_20110827.nc
-       STDnameF == ../Data/STD/irene_std_f_mesoscale_20110827.nc
+       STDnameM == ../../Data/STD/irene_std_mesoscale_20110827.nc
+       STDnameI == ../../Data/STD/irene_std_mesoscale_20110827.nc
+       STDnameB == ../../Data/STD/irene_std_b_mesoscale_20110827.nc
+       STDnameF == ../../Data/STD/irene_std_f_mesoscale_20110827.nc
 
 ! Input/output model, initial conditions, boundary conditions, and surface
 ! forcing error covariance normalization factors file name, [1:Ngrids].
 
-       NRMnameM == ../Data/NRM/irene_nrm_40-15k10m.nc
-       NRMnameI == ../Data/NRM/irene_nrm_40-15k10m.nc
-       NRMnameB == ../Data/NRM/irene_nrm_b_40-15k10m.nc
-       NRMnameF == ../Data/NRM/irene_nrm_f_100k.nc
+       NRMnameM == ../../Data/NRM/irene_nrm_40-15k10m.nc
+       NRMnameI == ../../Data/NRM/irene_nrm_40-15k10m.nc
+       NRMnameB == ../../Data/NRM/irene_nrm_b_40-15k10m.nc
+       NRMnameF == ../../Data/NRM/irene_nrm_f_100k.nc
 
 ! Input/output observation file name, [1:Ngrids].
 
-        OBSname == ../Data/OBS/irene_obs_20110827.nc
+        OBSname == ../../Data/OBS/irene_obs_20110827.nc
 
 ! Input/output Hessian eigenvectors file name, [1:Ngrids].
 

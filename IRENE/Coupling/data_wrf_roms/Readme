@@ -51,25 +51,25 @@ Important CPP options: (activated in build_roms.csh or build_roms.sh)
 
 DATA component Input NetCDF file:
 
-                        SST File:  ../Data/HyCOM/hycom_mab3hours_sst_25aug2011_31aug2011.nc
+                        SST File:  ../../Data/HyCOM/hycom_mab3hours_sst_25aug2011_31aug2011.nc
 
 ROMS component Input NetCDF files:
 
-                       Grid File:  ../Data/ROMS/irene_roms_grid.nc
-                    Initial File:  ../Data/ROMS/irene_roms_ini_20110827_06.nc
-                   Boundary File:  ../Data/ROMS/irene_roms_bry.nc
-                Climatology File:  ../Data/ROMS/irene_roms_clm.nc
-       Nudging Coefficients File:  ../Data/ROMS/irene_roms_nudgcoef.nc
-              River Forcing File:  ../Data/ROMS/irene_roms_rivers.nc
-              Tidal Forcing File:  ../Data/ROMS/irene_roms_tides.nc
-               Observations File:  ../Data/OBS/irene_obs_20110827.nc
+                       Grid File:  ../../Data/ROMS/irene_roms_grid.nc
+                    Initial File:  ../../Data/ROMS/irene_roms_ini_20110827_06.nc
+                   Boundary File:  ../../Data/ROMS/irene_roms_bry.nc
+                Climatology File:  ../../Data/ROMS/irene_roms_clm.nc
+       Nudging Coefficients File:  ../../Data/ROMS/irene_roms_nudgcoef.nc
+              River Forcing File:  ../../Data/ROMS/irene_roms_rivers.nc
+              Tidal Forcing File:  ../../Data/ROMS/irene_roms_tides.nc
+               Observations File:  ../../Data/OBS/irene_obs_20110827.nc
 
 WRF componet Input NetCDF files:
 
-                    Initial File:  ../Data/WRF/irene_wrf_inp_d01_20110827.nc
-                   Boundary File:  ../Data/WRF/irene_wrf_bdy_d01_20110827.nc
-        SST Melding Weights File:  ../Data/WRF/irene_wrf_meld_weights.nc
-             Unused WPS SST File:  ../Data/WRF/irene_wrf_sst_d01_20110827.nc
+                    Initial File:  ../../Data/WRF/irene_wrf_inp_d01_20110827.nc
+                   Boundary File:  ../../Data/WRF/irene_wrf_bdy_d01_20110827.nc
+        SST Melding Weights File:  ../../Data/WRF/irene_wrf_meld_weights.nc
+             Unused WPS SST File:  ../../Data/WRF/irene_wrf_sst_d01_20110827.nc
 
 Configuration and input scripts:
 

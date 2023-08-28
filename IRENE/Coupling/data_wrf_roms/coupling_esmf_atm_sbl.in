@@ -208,7 +208,7 @@
 ! ('NestedGrid') needs a merged field from DATA and ESM components. Currently,
 ! the weight values are only needed by the atmosphere component.
 
-WeightsFile(atmos) =  ../Data/WRF/irene_wrf_meld_weights.nc
+WeightsFile(atmos) =  ../../Data/WRF/irene_wrf_meld_weights.nc
   VnameDATA(atmos) =  data_weight_smooth
    VnameESM(atmos) =  ocean_weight_smooth
  NestedGrid(atmos) =  1
@@ -445,7 +445,7 @@ WeightsFile(atmos) =  ../Data/WRF/irene_wrf_meld_weights.nc
 
   DataExport(atmos) == dSST
 
-   DataFiles(atmos) == ../Data/HyCOM/hycom_mab3hours_sst_25aug2011_31aug2011.nc
+   DataFiles(atmos) == ../../Data/HyCOM/hycom_mab3hours_sst_25aug2011_31aug2011.nc
 
 !------------------------------------------------------------------------------
 ! DATA model Export to the Sea Ice Model.
