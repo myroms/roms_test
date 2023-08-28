@@ -142,18 +142,18 @@
 
 ! Data Model parallel distributed-memory domain decomposition.
 
-            ItileD = 4                      ! I-direction partition
-            JtileD = 8                      ! J-direction partition
+            ItileD = 3                      ! I-direction partition
+            JtileD = 4                      ! J-direction partition
 
 ! Number of PETs assigned to each model in the coupled system. If sequential
 ! layout, assign the same number of PETs to all coupled models. If concurrent
 ! layout, the number of PETs needed is the sum of all coupled model components.
 ! Only the PET values for IsActive(...)=T are processed and considered.
 
-  Nthreads(roms)   == 32                    ! ocean model PETs
-  Nthreads(atmos)  == 32                    ! atmosphere model PETs
-  Nthreads(seaice) =  1                     ! sea-ice model PETs
-  Nthreads(waves)  =  1                     ! wave model PETs
+  Nthreads(roms)   == 12                    ! ocean model PETs
+  Nthreads(atmos)  == 12                    ! atmosphere model PETs
+  Nthreads(seaice) =  12                    ! sea-ice model PETs
+  Nthreads(waves)  =  12                    ! wave model PETs
 
 ! Set ESM coupling driver clock. If not re-starting, set StartTime and
 ! RestartTime to the same values.  Set coupling time interval (TimeStep)
@@ -208,7 +208,7 @@
 ! ('NestedGrid') needs a merged field from DATA and ESM components. Currently,
 ! the weight values are only needed by the atmosphere component.
 
-WeightsFile(atmos) =  ../Data/WRF/irene_wrf_meld_weights.nc
+WeightsFile(atmos) =  ../../Data/WRF/irene_wrf_meld_weights.nc
   VnameDATA(atmos) =  data_weight_smooth
    VnameESM(atmos) =  ocean_weight_smooth
  NestedGrid(atmos) =  1
@@ -243,15 +243,20 @@ WeightsFile(atmos) =  ../Data/WRF/irene_wrf_meld_weights.nc
 ! Pair        atmos   roms, cice         surface air pressure
 ! Pmsl        atmos   roms               mean sea level pressure
 ! Qair        atmos   roms               surface relative humidity
-! SWrad       atmos   roms               shortwave radiation flux
+! RhoAir      atmos   roms               surface air density
+! SWrad       atmos   roms               net shortwave radiation flux
+! dSWrad      atmos   roms               downward shortwave radiation flux
 ! SWrad_daily atmos   roms               daily averaged shortwave radiation flux
 ! LWrad       atmos   roms               surface net longwave radiation flux
 ! dLWrad      atmos   roms               surface downward longwave radiation flux
 ! rain        atmos   roms               rain fall rate
 ! Uwind       atmos   roms, cice, waves  surface U-wind component
 ! Vwind       atmos   roms, cice, waves  surface V-wind component
+! Uwind_sbl   atmos   roms               U-wind component at surface boundary layer
+! Vwind_sbl   atmos   roms               V-wind component at surface boundary layer
 ! Ustr        atmos   roms, cice         surface U-momentum stress
 ! Vstr        atmos   roms, cice         surface V-momentum stress
+! Wstar       atmos   roms               rutbulent frictional wind magnitude
 !
 ! zlvl        atmos   cice               atmspheric height lowest level
 ! rhoa        atmos   cice               surface air density
@@ -318,17 +323,20 @@ WeightsFile(atmos) =  ../Data/WRF/irene_wrf_meld_weights.nc
 ! Ocean model (ROMS) Import and Export fields: Import(1:Nimport) and
 ! Export(1:Nexport).
 
-     Nimport(roms) = 8
+     Nimport(roms) = 11
      Nexport(roms) = 1
 
-      Import(roms) = dLWrad \
-                     SWrad  \
-                     Pair   \
-                     Tair   \
-                     Qair   \
-                     rain   \
-                     Uwind  \
-                     Vwind
+      Import(roms) = Pair      \
+                     SWrad     \
+                     LWrad     \
+                     LHfx      \
+                     SHfx      \
+                     shflux    \
+                     swflux    \
+                     RhoAir    \
+                     Uwind_sbl \
+                     Vwind_sbl \
+                     Wstar
 
       Export(roms) = SST
 
@@ -336,19 +344,22 @@ WeightsFile(atmos) =  ../Data/WRF/irene_wrf_meld_weights.nc
 ! Export(1:Nexport).
 
     Nimport(atmos) = 2
-    Nexport(atmos) = 8
+    Nexport(atmos) = 11
 
      Import(atmos) = SST  \
                      dSST
 
-     Export(atmos) = dLWrad \
-                     SWrad  \
-                     Pair   \
-                     Tair   \
-                     Qair   \
-                     rain   \
-                     Uwind  \
-                     Vwind
+     Export(atmos) = Pair      \
+                     SWrad     \
+                     LWrad     \
+                     LHfx      \
+                     SHfx      \
+                     shflux    \
+                     swflux    \
+                     RhoAir    \
+                     Uwind_sbl \
+                     Vwind_sbl \
+                     Wstar
 
 ! Sea-ice model Import and Export fields: Import(1:Nimport) and
 ! Export(1:Nexport).
@@ -438,7 +449,7 @@ WeightsFile(atmos) =  ../Data/WRF/irene_wrf_meld_weights.nc
 
   DataExport(atmos) == dSST
 
-   DataFiles(atmos) == ../Data/HyCOM/hycom_mab3hours_sst_25aug2011_31aug2011.nc
+   DataFiles(atmos) == ../../Data/HyCOM/hycom_mab3hours_sst_25aug2011_31aug2011.nc
 
 !------------------------------------------------------------------------------
 ! DATA model Export to the Sea Ice Model.

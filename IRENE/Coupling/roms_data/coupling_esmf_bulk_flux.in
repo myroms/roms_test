@@ -63,11 +63,11 @@
 !
 ! Coupling import/export variables metadata filename.
 
-           CPLname = coupling_esmf_wrf.yaml
+           CPLname = coupling_esmf_narr.yaml
 
 ! Coupling free-format run sequence configuration filename.
 
-          CONFname = wrf_implicit.runconfig
+          CONFname = data_explicit.runconfig
 
 ! Coupled models standard input script or namelist filename.
 
@@ -82,7 +82,7 @@
 ! needs to be coupled always.
 
   IsActive(roms)   =  T                      ! ROMS
-  IsActive(atmos)  =  T                      ! atmosphere model
+  IsActive(atmos)  =  F                      ! atmosphere model
   IsActive(seaice) =  F                      ! seaice model
   IsActive(waves)  =  F                      ! wave model
   IsActive(data)   =  T                      ! DATA model
@@ -91,20 +91,20 @@
 ! during coupling (T/F). If ROMS has nested grids, indicate which grids
 ! are connected to the other ESM components, [1:NgridsR] expected.
 
-  Coupled(ATM2OCN) ==  T                    ! atmosphere -> ROMS connected
+  Coupled(ATM2OCN) ==  F                    ! atmosphere -> ROMS connected
   Coupled(ICE2OCN) ==  F                    ! seaice -> ROMS connected
   Coupled(WAV2OCN) ==  F                    ! wave -> ROMS connected
-  Coupled(DAT2OCN) ==  F                    ! DATA -> ROMS connected
+  Coupled(DAT2OCN) ==  T                    ! DATA -> ROMS connected
 
 ! Set which ESM components are connected to the atmosphere component
 ! during coupling (T/F). If the atmosphere component has nested grids,
 ! indicate which grids are connected to the other ESM components,
 ! [1:NgridsA] expected.
 
-  Coupled(OCN2ATM) ==  T                    ! ROMS -> atmosphere connected
+  Coupled(OCN2ATM) ==  F                    ! ROMS -> atmosphere connected
   Coupled(ICE2ATM) ==  F                    ! seaice -> atmosphere connected
   Coupled(WAV2ATM) ==  F                    ! wave -> atmosphere connected
-  Coupled(DAT2ATM) ==  T                    ! DATA -> atmosphere connected
+  Coupled(DAT2ATM) ==  F                    ! DATA -> atmosphere connected
 
 ! Set which ESM components are connected to the seaice component
 ! during coupling (T/F). If the seaice component has nested grids,
@@ -131,7 +131,7 @@
 !    1:   Explicit
 !    2:   Semi-Implicit.
 
-      CouplingType = 2
+      CouplingType = 1
 
 !  Persistent Execution Thread (PET) layout option:
 !
@@ -208,9 +208,9 @@
 ! ('NestedGrid') needs a merged field from DATA and ESM components. Currently,
 ! the weight values are only needed by the atmosphere component.
 
-WeightsFile(atmos) =  ../Data/WRF/irene_wrf_meld_weights.nc
-  VnameDATA(atmos) =  data_weight_smooth
-   VnameESM(atmos) =  ocean_weight_smooth
+WeightsFile(atmos) =  NONE
+  VnameDATA(atmos) =  NONE
+   VnameESM(atmos) =  NONE
  NestedGrid(atmos) =  1
 
 ! Coupling debug flag:      [0] no debugging
@@ -243,20 +243,15 @@ WeightsFile(atmos) =  ../Data/WRF/irene_wrf_meld_weights.nc
 ! Pair        atmos   roms, cice         surface air pressure
 ! Pmsl        atmos   roms               mean sea level pressure
 ! Qair        atmos   roms               surface relative humidity
-! RhoAir      atmos   roms               surface air density
-! SWrad       atmos   roms               net shortwave radiation flux
-! dSWrad      atmos   roms               downward shortwave radiation flux
+! SWrad       atmos   roms               shortwave radiation flux
 ! SWrad_daily atmos   roms               daily averaged shortwave radiation flux
 ! LWrad       atmos   roms               surface net longwave radiation flux
 ! dLWrad      atmos   roms               surface downward longwave radiation flux
 ! rain        atmos   roms               rain fall rate
 ! Uwind       atmos   roms, cice, waves  surface U-wind component
 ! Vwind       atmos   roms, cice, waves  surface V-wind component
-! Uwind_sbl   atmos   roms               U-wind component at surface boundary layer
-! Vwind_sbl   atmos   roms               V-wind component at surface boundary layer
 ! Ustr        atmos   roms, cice         surface U-momentum stress
 ! Vstr        atmos   roms, cice         surface V-momentum stress
-! Wstar       atmos   roms               rutbulent frictional wind magnitude
 !
 ! zlvl        atmos   cice               atmspheric height lowest level
 ! rhoa        atmos   cice               surface air density
@@ -323,43 +318,29 @@ WeightsFile(atmos) =  ../Data/WRF/irene_wrf_meld_weights.nc
 ! Ocean model (ROMS) Import and Export fields: Import(1:Nimport) and
 ! Export(1:Nexport).
 
-     Nimport(roms) = 11
-     Nexport(roms) = 1
+     Nimport(roms) = 8
+     Nexport(roms) = 0
 
-      Import(roms) = Pair      \
-                     SWrad     \
-                     LWrad     \
-                     LHfx      \
-                     SHfx      \
-                     shflux    \
-                     swflux    \
-                     RhoAir    \
-                     Uwind_sbl \
-                     Vwind_sbl \
-                     Wstar
+      Import(roms) = dLWrad \
+                     SWrad  \
+                     Pair   \
+                     Tair   \
+                     Qair   \
+                     rain   \
+                     Uwind  \
+                     Vwind
 
-      Export(roms) = SST
+      Export(roms) = NONE
 
 ! Atmospheric model Import and Export fields: Import(1:Nimport) and
 ! Export(1:Nexport).
 
-    Nimport(atmos) = 2
-    Nexport(atmos) = 11
+    Nimport(atmos) = 0
+    Nexport(atmos) = 0
 
-     Import(atmos) = SST  \
-                     dSST
+     Import(atmos) = NONE
 
-     Export(atmos) = Pair      \
-                     SWrad     \
-                     LWrad     \
-                     LHfx      \
-                     SHfx      \
-                     shflux    \
-                     swflux    \
-                     RhoAir    \
-                     Uwind_sbl \
-                     Vwind_sbl \
-                     Wstar
+     Export(atmos) = NONE
 
 ! Sea-ice model Import and Export fields: Import(1:Nimport) and
 ! Export(1:Nexport).
@@ -431,26 +412,39 @@ WeightsFile(atmos) =  ../Data/WRF/irene_wrf_meld_weights.nc
 ! DATA model export to ROMS.
 !------------------------------------------------------------------------------
 
-  nDataExport(roms) == 0                ! number of fields to export
+  nDataExport(roms) == 8                ! number of fields to export
 
-   nDataFiles(roms) == 0                ! number of NetCDF files to process
+   nDataFiles(roms) == 8                ! number of NetCDF files to process
 
-   DataExport(roms) == NONE
+   DataExport(roms) == dLWrad \
+                       SWrad  \
+                       Pair   \
+                       Tair   \
+                       Qair   \
+                       rain   \
+                       Uwind  \
+                       Vwind
 
-    DataFiles(roms) == data2roms.nc
+    DataFiles(roms) == ../../Data/FRC/lwrad_down_narr_IRENE.nc  \
+                       ../../Data/FRC/Pair_narr_IRENE.nc        \
+                       ../../Data/FRC/Qair_narr_IRENE.nc        \
+                       ../../Data/FRC/rain_narr_IRENE.nc        \
+                       ../../Data/FRC/swrad_daily_narr_IRENE.nc \
+                       ../../Data/FRC/Tair_narr_IRENE.nc        \
+                       ../../Data/FRC/Uwind_narr_IRENE.nc       \
+                       ../../Data/FRC/Vwind_narr_IRENE.nc
 
 !------------------------------------------------------------------------------
 ! DATA model export to the Atmosphere Model.
 !------------------------------------------------------------------------------
 
- nDataExport(atmos) == 1                ! number of fields to export
+ nDataExport(atmos) == 0                ! number of fields to export
 
-  nDataFiles(atmos) == 1                ! number of NetCDF files to process
+  nDataFiles(atmos) == 0                ! number of NetCDF files to process
 
-  DataExport(atmos) == dSST
+  DataExport(atmos) == NONE
 
-!  DataFiles(atmos) == ../Data/HyCOM/hycom_mab_sst_25aug2011_31aug2011.nc
-   DataFiles(atmos) == ../Data/HyCOM/hycom_mab3hours_sst_25aug2011_31aug2011.nc
+   DataFiles(atmos) == data2atm.nc
 
 !------------------------------------------------------------------------------
 ! DATA model Export to the Sea Ice Model.

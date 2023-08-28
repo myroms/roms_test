@@ -21,8 +21,8 @@
  interval_seconds                    = 21600    ! incomming OBC data (every 6 hours)
  input_from_file                     = .true., .false., .false.,
  force_use_old_data                  = .false.,
- input_inname                        = "../Data/WRF/irene_wrf_inp_d<domain>_20110827.nc"
- bdy_inname                          = "../Data/WRF/irene_wrf_bdy_d<domain>_20110827.nc" 
+ input_inname                        = "../../Data/WRF/irene_wrf_inp_d<domain>_20110827.nc"
+ bdy_inname                          = "../../Data/WRF/irene_wrf_bdy_d<domain>_20110827.nc" 
  history_outname                     = "irene_wrf_his_d<domain>_<date>.nc" 
  history_interval                    = 60,   60,   60,       ! minutes
  frames_per_outfile                  = 1000, 1000, 1000,
@@ -35,7 +35,7 @@
  io_form_boundary                    = 2      ! 1: binary, 2: NetCDF, 5: GRIB1
  debug_level                         = 0
  nocolons                            = .true.
- auxinput4_inname                    = "../Data/WRF/irene_wrf_sst_d<domain>_20110827.nc"
+ auxinput4_inname                    = "../../Data/WRF/irene_wrf_sst_d<domain>_20110827.nc"
  auxinput4_interval                  = 360, 360, 360,  ! minutes (6 hours), only used if sst_update=1
  io_form_auxinput4                   = 2
  mean_diag                           = 1      ! RAMS averaged diagnostics (1:yes 0:no)
@@ -47,7 +47,7 @@
  mean_diag_interval_mo               = 0
  auxhist5_outname                    = "irene_wrf_mean_d<domain>_<date>.nc"
  io_form_auxhist5                    = 0      ! 0: no file, 2: NetCDF
- iofields_filename                   = "../Data/WRF/iofield_list.txt"
+ iofields_filename                   = "../../Data/WRF/iofield_list.txt"
  /
 
  &domains
