@@ -9,11 +9,11 @@ US East Coast on August 27, 2011.
 
 **WRF** and **ROMS** grids are incongruent. The **WRF** grid is
 larger than the **ROMS** grid. Therefore, the **DATA** model provides
-SST values at the **WRF** grid locations are not covered by the ROMS
+SST values at the **WRF** grid locations are not covered by the **ROMS**
 grid. Thus, both **DATA** and **ROMS** SST values are melded with a
-smooth transition at the ROMS domain boundaries.
+smooth transition at the **ROMS** domain boundaries.
 
-The WRF and ROMS timesteps are 20 and 60 seconds, respectively,
+The **WRF** and **ROMS** timesteps are 20 and 60 seconds
 for stable solutions due to the strong Hurricane winds.  The
 coupling step is 60 seconds (same as **ROMS**).  The **WRF** values are
 averaged every 60 seconds by activating the **RAMS**-averaged
@@ -69,6 +69,12 @@ They are activated in the build scripts.
 ### Configuration and input scripts:
 
   ```
+  build_roms.csh                ROMS GNU Make compiling and linking CSH script
+  build_roms.csh                ROMS GNU Make compiling and linking BASH script
+  build_wrf.csh                 WRF GNU Make compiling and linking CSH script
+  build_wrf.csh                 WRF GNU Make compiling and linking BASH script
+  cbuild_roms.csh               ROMS CMake compiling and linking CSH script
+  cbuild_roms.csh               ROMS CMake compiling and linking BASH script
   coupling_esmf_atm_sbl.in      Coupling standard input script (WRF SBL fluxes)
   coupling_esmf_atm_sbl_wmc.in  Coupling standard input script (WRF SBL fluxes)
                                   WIND_MINUS_CURRENT option
@@ -83,7 +89,7 @@ They are activated in the build scripts.
   ```
 ### How to Download and Compile WRF:
 
-- To download WRF and WPS version 4.3, you may use:
+- To download **WRF** and **WPS** version 4.3, you may use:
   ```
     git clone  https://github.com/wrf-model/WRF WRF.4.3
     cd WRF.4.3
@@ -138,7 +144,7 @@ They are activated in the build scripts.
 
 - **ROMS** is the driver of the coupling system. In this application, the **WRF** Surface
     Boundary Layer (SBL) formulation is used to compute the atmospheric fluxes.
-    Therefore, **bulk_flux = 0** in either **build_roms.csh** or **build_roms.sh**.
+    Therefore, **bulk_flux = 0** in the build scripts.
 
     Notice that **bulk_flux = 1** activates **ROMS** CPP options: **BULK_FLUXES**, **COOL_SKIN**,
     **WIND_MINUS_CURRENT**, **EMINUSP**, and **LONGWAVE_OUT**.
