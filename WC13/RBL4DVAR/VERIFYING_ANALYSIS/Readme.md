@@ -1,58 +1,35 @@
-*
-* git $Id$
-***********************************************************************
-*  Copyright (c) 2002-2023 The ROMS/TOMS Group                        *
-*    Licensed under a MIT/X style license                             *
-*    See License_ROMS.txt                                             *
-***********************************************************************
-*                                                                     *
-*  This directory includes various files to run the Strong/Weak       *
-*  constraint, 4-Dimensional Variational data (4D-Var) assimilation   *
-*  stabilized representer matrix array modes in the California        *
-*  Current System, 1/3 degree resolution, application (WC13).         *
-*                                                                     *
-*  References:                                                        *
-*                                                                     *
-*    Moore, A.M., H.G. Arango, C.A. Edwards, 2017: Reduced-Rank       *
-*      Array Modes of the California Current Observing System,        *
-*      J. Geophys. Res. Ocean, 122, doi:10.1002/2017JC013172.         *
-*                                                                     *
-*    Moore, A.M., H.G. Arango, G. Broquet, B.S. Powell, A.T. Weaver,  *
-*      and J. Zavala-Garay, 2011: The Regional Ocean Modeling System  *
-*      (ROMS)  4-dimensional variational data assimilations systems,  *
-*      Part I - System overview and formulation, Prog. Oceanogr., 91, *
-*      34-49, doi:10.1016/j.pocean.2011.05.004.                       *
-*                                                                     *
-*    Moore, A.M., H.G. Arango, G. Broquet, C. Edward, M. Veneziani,   *
-*      B. Powell, D. Foley, J.D. Doyle, D. Costa, and P. Robinson,    *
-*      2011: The Regional Ocean Modeling System (ROMS) 4-dimensional  *
-*      variational data assimilations systems, Part II - Performance  *
-*      and application to the California Current System, Prog.        *
-*      Oceanogr., 91, 50-73, doi:10.1016/j.pocean.2011.05.003.        *
-*                                                                     *
-*    Moore, A.M., H.G. Arango, G. Broquet, C. Edward, M. Veneziani,   *
-*      B. Powell, D. Foley, J.D. Doyle, D. Costa, and P. Robinson,    *
-*      2011: The Regional Ocean Modeling System (ROMS) 4-dimensional  *
-*      variational data assimilations systems, Part III - Observation *
-*      impact and observation sensitivity in the California Current   *
-*      System, Prog. Oceanogr., 91, 74-94,                            *
-*      doi:10.1016/j.pocean.2011.05.005.                              *
-*                                                                     *
-***********************************************************************
-*
+<img width="600" alt="image" src="https://github.com/myroms/roms_test/assets/23062912/ad6a7ef1-1fed-4b2e-96b9-9c53615b9333">
+
+This directory includes various files to run the Verifying
+Analysis forecast used in the RBL4D-Var forecast impacts and
+forecast sensitivity computed elsewhere.
+
+The veryfing analyis is computed by running a second RBL4D-Var
+analysis cycle for the following 7-day window: 07-Jan-2004 00:00:00 GMT
+to  14-Jan-2004 00:00:00 GMT
+
+It is initialized the first RBL4D-Var analysis cycle (wc13_dai.nc)
+for the period of: 03-Jan-2004 00:00:00 GMT  to  07-Jan-2004 00:00:00 GMT
+
+See Exercises 08 and 09 for more information.
+
+www.myroms.org/wiki/RBL4DVAR_Forecast_Observation_Impact_Tutorial
+
+www.myroms.org/wiki/RBL4DVAR_Forecast_Observation_Sensitivity_Tutorial
 
 4D-Var Tutorial: www.myroms.org/wiki/4DVar_Tutorial_Introduction
-                 Exercise 07
-
-        Results: www.myroms.org/wiki/Array_Modes_Tutorial
+                 Exercise 08 and Exercise 09
 
 Important CPP options:
 
-   ARRAY_MODES             Representer Matrix Array Modes driver
+   RBL4DVAR                RBL4D-Var driver (observation space)
    ANA_SPONGE              Analytical enhanced viscosity/diffusion sponge
-   ARRAY_MODES_SPLIT       Analysis due to IC, surface forcing, and OBC
+   BGQC                    Backgound quality control of observations
+   MINRES                  Minimal Residual Method for minimization
    RPCG                    Restricted B-preconditioned Lanczos minimization
-   SKIP_NLM                Skipping running NLM, reading NLM state trajectory
+   POSTERIOR_EOFS          Estimate posterior analysis error
+   POSTERIOR_ERROR_I       Estimate initial posterior analysis error
+   TIME_CONV               Weak-constraint 4D-Var time convolution
    WC13                    Application CPP option
 
 Input NetCDF files:
@@ -68,7 +45,6 @@ Input NetCDF files:
                  Forcing File 07:  ../Data/coamps_wc13_wind.nc
                    Boundary File:  ../Data/wc13_ecco_bry.nc
 
-        Adjoint Sensitivity File:  wc13_ads.nc
      Initial Conditions STD File:  ../Data/wc13_std_i.nc
                   Model STD File:  ../Data/wc13_std_m.nc
     Boundary Conditions STD File:  ../Data/wc13_std_b.nc
@@ -78,7 +54,6 @@ Input NetCDF files:
    Boundary Conditions Norm File:  ../Data/wc13_nrm_b.nc
        Surface Forcing Norm File:  ../Data/wc13_nrm_f.nc
                Observations File:  wc13_obs.nc
-            Lanczos Vectors File:  wc13_lcz.nc
 
 Currently, you can find the following files here:
 
@@ -86,8 +61,11 @@ Currently, you can find the following files here:
    build_roms.sh        bash script to compile application
    cbuild_roms.csh      csh  CMake script to compile application
    cbuild_roms.sh       bash CMake script to compile application
-   job_array_modes.csh  job configuration script
-   roms_wc13.in         ROMS standard input script for WC13
+   job_rbl4dvar.csh     job configuration script
+   roms_wc13_daily.in   ROMS standard input script for WC13, NHIS=48,
+                          daily forward trajectory snapshots
+   roms_wc13_2hours.in  ROMS standard input script for WC13, NHIS=4,
+                          two-hours forward trajectory snapshots
    s4dvar.in            4D-Var standard input script template
    wc13.h               WC13 header with CPP options
 
@@ -121,6 +99,7 @@ To run this application you need to take the following steps:
       These standard deviations have already been created for you:
 
       ../Data/wc13_std_i.nc     initial conditions
+      ../Data/wc13_std_m.nc     model error (if weak constraint)
       ../Data/wc13_std_b.nc     open boundary conditions
       ../Data/wc13_std_f.nc     surface forcing (wind stress and
                                                  net heat flux)
@@ -159,36 +138,37 @@ To run this application you need to take the following steps:
       LdefNRM == F F F F        ! Create a new normalization files
       LwrtNRM == F F F F        ! Compute and write normalization
 
-      CnormM(isFsur) =  T       ! Model, 2D variable at RHO-points
-      CnormM(isUbar) =  T       ! Model, 2D variable at U-points
-      CnormM(isVbar) =  T       ! Model, 2D variable at V-points 
-      CnormM(isUvel) =  T       ! Model, 3D variable at U-points
-      CnormM(isVvel) =  T       ! Model, 3D variable at V-points
-      CnormM(isTvar) =  T T     ! Model, NT tracers
+      CnormM(isFsur) =  T       ! 2D variable at RHO-points
+      CnormM(isUbar) =  T       ! 2D variable at U-points
+      CnormM(isVbar) =  T       ! 2D variable at V-points 
+      CnormM(isUvel) =  T       ! 3D variable at U-points
+      CnormM(isVvel) =  T       ! 3D variable at V-points
+      CnormM(isTvar) =  T T     ! NT tracers
 
-      CnormI(isFsur) =  T       ! IC, 2D variable at RHO-points
-      CnormI(isUbar) =  T       ! IC, 2D variable at U-points
-      CnormI(isVbar) =  T       ! IC, 2D variable at V-points 
-      CnormI(isUvel) =  T       ! IC, 3D variable at U-points
-      CnormI(isVvel) =  T       ! IC, 3D variable at V-points
-      CnormI(isTvar) =  T T     ! IC, NT tracers
+      CnormI(isFsur) =  T       ! 2D variable at RHO-points
+      CnormI(isUbar) =  T       ! 2D variable at U-points
+      CnormI(isVbar) =  T       ! 2D variable at V-points 
+      CnormI(isUvel) =  T       ! 3D variable at U-points
+      CnormI(isVvel) =  T       ! 3D variable at V-points
+      CnormI(isTvar) =  T T     ! NT tracers
 
-      CnormB(isFsur) =  T       ! OBC, 2D variable at RHO-points
-      CnormB(isUbar) =  T       ! OBC, 2D variable at U-points
-      CnormB(isVbar) =  T       ! OBC, 2D variable at V-points
-      CnormB(isUvel) =  T       ! OBC, 3D variable at U-points
-      CnormB(isVvel) =  T       ! OBC, 3D variable at V-points
-      CnormB(isTvar) =  T T     ! OBC, NT tracers
+      CnormB(isFsur) =  T       ! 2D variable at RHO-points
+      CnormB(isUbar) =  T       ! 2D variable at U-points
+      CnormB(isVbar) =  T       ! 2D variable at V-points
+      CnormB(isUvel) =  T       ! 3D variable at U-points
+      CnormB(isVvel) =  T       ! 3D variable at V-points
+      CnormB(isTvar) =  T T     ! NT tracers
 
-      CnormF(isUstr) =  T       ! Surface Forcing, U-momentum stress
-      CnormF(isVstr) =  T       ! Surface Forcing, V-momentum stress
-      CnormF(isTsur) =  T T     ! Surface Forcing, NT tracers fluxes
+      CnormF(isUstr) =  T       ! surface U-momentum stress
+      CnormF(isVstr) =  T       ! surface V-momentum stress
+      CnormF(isTsur) =  T T     ! NT surface tracers flux
 
       These normalization coefficients have already been computed
       for you (../Normalization) using the exact method since this
       application has a small grid (54x53x30):
 
       ../Data/wc13_nrm_i.nc     initial conditions
+      ../Data/wc13_nrm_m.nc     model error (if weak constraint)
       ../Data/wc13_nrm_b.nc     open boundary conditions
       ../Data/wc13_nrm_f.nc     surface forcing (wind stress and
                                                  net heat flux)
@@ -204,15 +184,7 @@ To run this application you need to take the following steps:
       structure are observed near the open boundaries and land/sea
       masking regions.
 
-  (3) Before you run this application, you need to execute the job
-      script:
-
-      job_array_modes.csh
-
-      In R4D-Var (observation space minimization), the Lanczos vectors
-      are stored in output 4D-Var NetCDF file "wc13_mod.nc".
-
-  (4) Customize your preferred "build_roms" script and provide the
+  (3) Customize your preferred "build_roms" script and provide the
       appropriate values for:
 
       * Root directory, MY_ROOT_DIR
@@ -225,14 +197,19 @@ To run this application you need to take the following steps:
         If you want to ignore this section, comment out the
         assignment for the variable USE_MY_LIBS.
 
-  (5) Notice that the most important CPP options for this application
+  (4) Notice that the most important CPP options for this application
       are specified in the "build_roms" script instead of "wc13.h":
 
-      setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DARRAY_MODES"
-      setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DANA_SPONGE"
-      setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DARRAY_MODES_SPLIT"
-      setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DRPCG"
-      setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DSKIP_NLM"
+       setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DRBL4DVAR"
+       setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DANA_SPONGE"
+      #setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DMINRES"
+       setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DRPCG"
+      #setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DTIME_CONV"
+
+      #setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DBGQC"
+
+      #setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DPOSTERIOR_EOFS"
+      #setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DPOSTERIOR_ERROR_I"
 
       this is to allow flexibility with different CPP options.
 
@@ -240,9 +217,9 @@ To run this application you need to take the following steps:
       avoided in the header file "wc13.h" since it has precedence
       during C-preprocessing.
 
-  (6) You MUST use the "build_roms" script to compile.
+  (5) You MUST use the "build_roms" script to compile.
 
-  (7) Customize the ROMS input script "roms_wc13.in" and specify
+  (6) Customize the ROMS input script "roms_wc13.in" and specify
       the appropriate values for the distributed-memory partition.
       It is set by default to:
 
@@ -253,8 +230,8 @@ To run this application you need to take the following steps:
       in parallel using MPI.  This is because of the way that the
       adjoint model is constructed.
 
-  (8) Customize the configuration script "job_array_modes.csh" and
-      provide the appropriate place for the "substitute" Perl script:
+  (7) Customize the configuration script "job_rbl4dvar.csh" and provide
+      the appropriate place for the "substitute" Perl script:
 
       set SUBSTITUTE=${ROMS_ROOT}/ROMS/Bin/substitute
 
@@ -265,47 +242,40 @@ To run this application you need to take the following steps:
 
       setenv ROMS_ROOT ${HOME}/ocean/repository/trunk
 
-  (9) The only change that you need to make is to "s4dvar.in", where you
-      will select the array mode that you wish to calculate (you may
-      only calculate on mode at a time). The choice of array mode is
-      determined by the parameter Nvct. The array modes are referenced
-      in reverse order, so choosing Nvct=Ninner-1 is the array mode is
-      the important. Note that Nvct must be assigned a numeric value
-      (i.e. Nvct=10 for the RBL4D-Var tutorial). 
-
- (10) Execute the configuration "job_array_modes.csh" BEFORE running
-      the model.  It copies the required files and creates "r4dvar.in"
+  (8) Execute the configuration "job_rbl4dvar.csh" BEFORE running
+      the model. It copies the required files and creates "rbl4dvar.in"
       input script from template "s4dvar.in". This has to be done
       EVERY TIME that you run this application. We need a clean and
       fresh copy of the initial conditions and observation files
       since they are modified by ROMS during execution.
 
- (11) Run ROMS with data assimilation:
+  (9) Run ROMS with data assimilation:
 
-      mpirun -np 4 romsM roms_wc13.in > & log &
+      mpirun -np 8 romsM roms_wc13_daily.in > & log &
 
- (12) We recommend creating a new subdirectory EX7 (Tutorial Exercise 7),
-      and saving the solution in it for analysis and plotting to avoid
-      overwriting output files when playing with difference CPP options
-      and parameters. For example:
+      or
 
-      mkdir EX7
-      mv Build_roms rbl4var.in *.nc log EX7
-      cp -p romsM roms_wc13.in EX7
+      mpirun -np 8 romsM roms_wc13_2hours.in > & log &
 
- (13) Analyze the results using the plotting scripts (Matlab or
-      ROMS plotting package) provided in the ../plotting directory:
+      Notice that the nonlinear trajectory can be written either
+      daily (NHIS=48 if using roms_wc13_daily.in) or every two-hours
+      (NHIS=4 if using roms_wc13_2hours.in). It is the basic state
+      trajectory used to linearize the tangent linear and adjoint
+      models. It turns out that the daily sampling is over the
+      limit where the tangent linear approximation is valid. The
+      results are much better when using the two-hours snapshots.
+      The two set-ups are provided to make the user aware of the
+      validity of the tangent linear approximation in highly
+      nonlinear circulations. The differences will be noticeable
+      when computing observation impacts and observation sensitivities.
 
-      plot_array_modes.m           plots chosen stabilized representer
-                                   matrix array modes.
+ (10) We recommend creating a new subdirectories "daily" or
+      "2hours" to save the solution tha will be use the
+      Forecast Impacts and Forecast Sensitivity.
+      For example:
 
-      plot_array_modes_spectrum.m  Plots array modes eigenvalues
-                                   spectrum
+      mkdir daily
+      mv Build_roms rbl4dvar.in *.nc log daily
+      cp -p romsM roms_wc13_daily.in daily
 
-      ccnt_array_modes*.in         plots chosen stabilized representer
-                                   matrix array modes maps at the
-                                   surface or at z=-100m
-
-      csec_array_modes*.in         plots chosen stabilized representer
-                                   matrix array modes cross-sections
-                                   along 37N
+      Check Exercise 8 instructions for more details.

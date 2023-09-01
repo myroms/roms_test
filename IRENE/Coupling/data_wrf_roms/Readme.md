@@ -1,41 +1,33 @@
-*
-* git $Id$
-***********************************************************************
-*  Copyright (c) 2002-2023 The ROMS/TOMS Group                        *
-*    Licensed under a MIT/X style license                             *
-*    See License_ROMS.txt                                             *
-***********************************************************************
-*                                                                     *
-*  Hurricane Irene: ESMF/NUOPC Coupling                               *   
-*                                                                     *
-*  This directory includes various files to run the DATA-WRF-ROMS     *
-*  coupling for Hurricane Irene using the ESMF/NUOPC library. The     *
-*  coupled simulation is only run for 42 hours as it approaches the   *
-*  US East coast on August 27, 2011.                                  *
-*                                                                     *
-*  WRF and ROMS grids are incongruent. That is, the WRF grid is       *
-*  larger than the ROMS grid. Therefore, the DATA model provides      *
-*  SST values at the WRF grid locations not covered by the ROMS       *
-*  grid. Thus, both DATA and ROMS SST values are melded with a        *
-*  smooth transition at the ROMS domain boundaries.                   *
-*                                                                     *
-*  The WRF and ROMS timesteps are 20 and 60 seconds, respectively,    *
-*  for stable solutions due to the strong Hurricane winds.  The       *
-*  coupling step is 60 seconds (same as ROMS).  The WRF values are    *
-*  averaged every 60 seconds by activating the RAMS averaged          *
-*  diagnostics.                                                       *
-*                                                                     *
-*  All the components interact with the same coupling time step.      *
-*  The connector for ROMS to WRF is explicit, whereas the connector   *
-*  from WRF to ROMS is semi-implicit.                                 *
-*                                                                     *
-*  For more information, visit WikiROMS:                              *
-*                                                                     *
-*  https://www.myroms.org/wiki/Model_Coupling_ESMF                    *
-*  https://www.myroms.org/wiki/Model_Coupling_IRENE                   *
-*                                                                     *
-***********************************************************************
-*
+<img width="600" alt="image" src="https://github.com/myroms/roms_test/assets/23062912/ad6a7ef1-1fed-4b2e-96b9-9c53615b9333">
+
+## Hurricane Irene: ESMF/NUOPC Coupling
+
+This directory includes various files to run the DATA-WRF-ROMS
+coupling for Hurricane Irene using the ESMF/NUOPC library. The
+coupled simulation is only run for 42 hours as it approaches the
+US East coast on August 27, 2011.
+
+WRF and ROMS grids are incongruent. That is, the WRF grid is
+larger than the ROMS grid. Therefore, the DATA model provides
+SST values at the WRF grid locations not covered by the ROMS
+grid. Thus, both DATA and ROMS SST values are melded with a
+smooth transition at the ROMS domain boundaries.
+
+The WRF and ROMS timesteps are 20 and 60 seconds, respectively,
+for stable solutions due to the strong Hurricane winds.  The
+coupling step is 60 seconds (same as ROMS).  The WRF values are
+averaged every 60 seconds by activating the RAMS averaged
+diagnostics.
+
+All the components interact with the same coupling time step.
+The connector for ROMS to WRF is explicit, whereas the connector
+from WRF to ROMS is semi-implicit.
+
+For more information, visit WikiROMS:
+
+https://www.myroms.org/wiki/Model_Coupling_ESMF
+https://www.myroms.org/wiki/Model_Coupling_IRENE
+
 
 Important CPP options: (activated in build_roms.csh or build_roms.sh)
 

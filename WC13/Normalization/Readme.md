@@ -1,49 +1,42 @@
-*
-* git $Id$
-***********************************************************************
-*  Copyright (c) 2002-2023 The ROMS/TOMS Group                        *
-*    Licensed under a MIT/X style license                             *
-*    See License_ROMS.txt                                             *
-***********************************************************************
-*                                                                     *
-*  This directory includes various files to run the 4-Dimensional     *
-*  Variational (4D-Var) data assimilation error covariance model      *
-*  that computes normalization coefficients in the California         *
-*  Current System, 1/3 degree resolution, application (WC13).         *
-*                                                                     *
-*  The computation of 4D-Var error covariance normalization           *
-*  coefficients is very expensive. It depends on the grid size.       *
-*  The ones computed here use the expensive "exact" method. For       *
-*  large grids, we need to use the "randomization" approach. The      *
-*  normalization coefficients need to be computed only once for       *
-*  a particular application provided that the grid, land/sea          *
-*  masking (if any), and decorrelation scales remain the same.        *
-*                                                                     *
-*  References:                                                        *
-*                                                                     *
-*    Moore, A.M., H.G. Arango, G. Broquet, B.S. Powell, A.T. Weaver,  *
-*      and J. Zavala-Garay, 2011: The Regional Ocean Modeling System  *
-*      (ROMS)  4-dimensional variational data assimilations systems,  *
-*      Part I - System overview and formulation, Prog. Oceanogr., 91, *
-*      34-49, doi:10.1016/j.pocean.2011.05.004.                       *
-*                                                                     *
-*    Moore, A.M., H.G. Arango, G. Broquet, C. Edward, M. Veneziani,   *
-*      B. Powell, D. Foley, J.D. Doyle, D. Costa, and P. Robinson,    *
-*      2011: The Regional Ocean Modeling System (ROMS) 4-dimensional  *
-*      variational data assimilations systems, Part II - Performance  *
-*      and application to the California Current System, Prog.        *
-*      Oceanogr., 91, 50-73, doi:10.1016/j.pocean.2011.05.003.        *
-*                                                                     *
-*    Moore, A.M., H.G. Arango, G. Broquet, C. Edward, M. Veneziani,   *
-*      B. Powell, D. Foley, J.D. Doyle, D. Costa, and P. Robinson,    *
-*      2011: The Regional Ocean Modeling System (ROMS) 4-dimensional  *
-*      variational data assimilations systems, Part III - Observation *
-*      impact and observation sensitivity in the California Current   *
-*      System, Prog. Oceanogr., 91, 74-94,                            *
-*      doi:10.1016/j.pocean.2011.05.005.                              *
-*                                                                     *
-***********************************************************************
-*
+<img width="600" alt="image" src="https://github.com/myroms/roms_test/assets/23062912/ad6a7ef1-1fed-4b2e-96b9-9c53615b9333">
+
+This directory includes various files to run the 4-Dimensional
+Variational (4D-Var) data assimilation error covariance model
+that computes normalization coefficients in the California
+Current System, 1/3 degree resolution, application (WC13).
+
+The computation of 4D-Var error covariance normalization
+coefficients is very expensive. It depends on the grid size.
+The ones computed here use the expensive "exact" method. For
+large grids, we need to use the "randomization" approach. The
+normalization coefficients need to be computed only once for
+a particular application provided that the grid, land/sea
+masking (if any), and decorrelation scales remain the same.
+
+References:
+
+Moore, A.M., H.G. Arango, G. Broquet, B.S. Powell, A.T. Weaver,
+  and J. Zavala-Garay, 2011: The Regional Ocean Modeling System
+  (ROMS)  4-dimensional variational data assimilations systems,
+  Part I - System overview and formulation, Prog. Oceanogr., 91,
+  34-49, doi:10.1016/j.pocean.2011.05.004.
+
+Moore, A.M., H.G. Arango, G. Broquet, C. Edward, M. Veneziani,
+  B. Powell, D. Foley, J.D. Doyle, D. Costa, and P. Robinson,
+  2011: The Regional Ocean Modeling System (ROMS) 4-dimensional
+  variational data assimilations systems, Part II - Performance
+  and application to the California Current System, Prog.
+  Oceanogr., 91, 50-73, doi:10.1016/j.pocean.2011.05.003.
+
+Moore, A.M., H.G. Arango, G. Broquet, C. Edward, M. Veneziani,
+  B. Powell, D. Foley, J.D. Doyle, D. Costa, and P. Robinson,
+  2011: The Regional Ocean Modeling System (ROMS) 4-dimensional
+  variational data assimilations systems, Part III - Observation
+  impact and observation sensitivity in the California Current
+  System, Prog. Oceanogr., 91, 74-94,
+  doi:10.1016/j.pocean.2011.05.005.
+
+
 4D-Var Tutorial: www.myroms.org/wiki/4DVar_Tutorial_Introduction
 
         Results: www.myroms.org/wiki/4DVar_Normalization_Tutorial

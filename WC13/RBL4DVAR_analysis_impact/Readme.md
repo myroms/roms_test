@@ -1,57 +1,52 @@
-*
-* git $Id$
-***********************************************************************
-*  Copyright (c) 2002-2023 The ROMS/TOMS Group                        *
-*    Licensed under a MIT/X style license                             *
-*    See License_ROMS.txt                                             *
-***********************************************************************
-*                                                                     *
-*  This directory includes various files to run the strong/weak       *
-*  constraint, dual form of 4-Dimensional Variational (4D-Var)        *
-*  data assimilation observation sensitivity based on the             *
-*  Restricted B-preconditioned Lanczos (RBL4D-Var) algorithm          *
-*  in the California Current System, 1/3 degree resolution,           *
-*  application (WC13).                                                *
-*                                                                     *
-*  References:                                                        *
-*                                                                     *
-*    Moore, A.M., H.G. Arango, G. Broquet, B.S. Powell, A.T. Weaver,  *
-*      and J. Zavala-Garay, 2011: The Regional Ocean Modeling System  *
-*      (ROMS)  4-dimensional variational data assimilations systems,  *
-*      Part I - System overview and formulation, Prog. Oceanogr., 91, *
-*      34-49, doi:10.1016/j.pocean.2011.05.004.                       *
-*                                                                     *
-*    Moore, A.M., H.G. Arango, G. Broquet, C. Edward, M. Veneziani,   *
-*      B. Powell, D. Foley, J.D. Doyle, D. Costa, and P. Robinson,    *
-*      2011: The Regional Ocean Modeling System (ROMS) 4-dimensional  *
-*      variational data assimilations systems, Part II - Performance  *
-*      and application to the California Current System, Prog.        *
-*      Oceanogr., 91, 50-73, doi:10.1016/j.pocean.2011.05.003.        *
-*                                                                     *
-*    Moore, A.M., H.G. Arango, G. Broquet, C. Edward, M. Veneziani,   *
-*      B. Powell, D. Foley, J.D. Doyle, D. Costa, and P. Robinson,    *
-*      2011: The Regional Ocean Modeling System (ROMS) 4-dimensional  *
-*      variational data assimilations systems, Part III - Observation *
-*      impact and observation sensitivity in the California Current   *
-*      System, Prog. Oceanogr., 91, 74-94,                            *
-*      doi:10.1016/j.pocean.2011.05.005.                              *
-*                                                                     *
-***********************************************************************
-*
+<img width="600" alt="image" src="https://github.com/myroms/roms_test/assets/23062912/ad6a7ef1-1fed-4b2e-96b9-9c53615b9333">
+
+This directory includes various files to run the strong/weak
+constraint, dual form of 4-Dimensional Variational (4D-Var)
+data assimilation observation impact based on the Restricted
+B-preconditioned Lanczos (RBL4D-Var) algorithm in the California
+Current System, 1/3 degree resolution, application (WC13).
+
+References:
+
+Moore, A.M., H.G. Arango, G. Broquet, B.S. Powell, A.T. Weaver,
+  and J. Zavala-Garay, 2011: The Regional Ocean Modeling System
+  (ROMS)  4-dimensional variational data assimilations systems,
+  Part I - System overview and formulation, Prog. Oceanogr., 91,
+  34-49, doi:10.1016/j.pocean.2011.05.004.
+
+Moore, A.M., H.G. Arango, G. Broquet, C. Edward, M. Veneziani,
+  B. Powell, D. Foley, J.D. Doyle, D. Costa, and P. Robinson,
+  2011: The Regional Ocean Modeling System (ROMS) 4-dimensional
+  variational data assimilations systems, Part II - Performance
+  and application to the California Current System, Prog.
+  Oceanogr., 91, 50-73, doi:10.1016/j.pocean.2011.05.003.
+
+Moore, A.M., H.G. Arango, G. Broquet, C. Edward, M. Veneziani,
+  B. Powell, D. Foley, J.D. Doyle, D. Costa, and P. Robinson,
+  2011: The Regional Ocean Modeling System (ROMS) 4-dimensional
+  variational data assimilations systems, Part III - Observation
+  impact and observation sensitivity in the California Current
+  System, Prog. Oceanogr., 91, 74-94,
+  doi:10.1016/j.pocean.2011.05.005.
+
 
 4D-Var Tutorial: www.myroms.org/wiki/4DVar_Tutorial_Introduction
-                 Exercise 06
+                 Exercise 05
 
-Results: www.myroms.org/wiki/RBL4DVAR_Analysis_Observation_Sensitivity_Tutorial
+Results: www.myroms.org/wiki/RBL4DVAR_Analysis_Observation_Impact_Tutorial
 
 Important CPP options:
 
    RBL4DVAR_ANA_SENSITIVITY  RBL4D-Var observation sensitivity driver
    AD_IMPULSE                Force ADM with intermittent impulses
    ANA_SPONGE                Analytical enhanced viscosity/diffusion sponge
-   RPCG                      Restricted Preconditioned Conjugate Gradient
-                               for minimization
+   RPCG                      Restricted B-preconditioned Lanczos minimization
    MINRES                    Minimal Residual Method for minimization
+   OBS_IMPACT                Compute observation impact
+   OBS_IMPACT_SPLIT          separate impact due to IC, forcing, and OBC
+   IMPACT_INNER              Compute the impacts for each inner-loop.
+   NLM_SKIP                  Skip the recomputation of the NL model
+                               trajectory and provide wc13_fwd_xxx.nc
    WC13                      Application CPP option
 
 Input NetCDF files:
@@ -81,17 +76,17 @@ Input NetCDF files:
 
 Currently, you can find the following files here:
 
-   build_roms.csh        csh  script to compile application
-   build_roms.sh         bash script to compile application
-   cbuild_roms.csh       csh  script to compile application
-   cbuild_roms.sh        bash script to compile application
-   job_rbl4dvar_sen.csh  job configuration script
-   roms_wc13_daily.in    ROMS standard input script for WC13, NHIS=48,
-                           daily forward trajectory snapshots
-   roms_wc13_2hours.in   ROMS standard input script for WC13, NHIS=4,
-                           two-hours forward trajectory snapshots
-   s4dvar.in             4D-Var standard input script template
-   wc13.h                WC13 header with CPP options
+   build_roms.csh           csh  script to compile application
+   build_roms.sh            bash script to compile application
+   cbuild_roms.csh          csh  script to compile application
+   cbuild_roms.sh           bash script to compile application
+   job_rbl4dvar_impact.csh  job configuration script
+   roms_wc13_daily.in       ROMS standard input script for WC13, NHIS=48,
+                              daily forward trajectory snapshots
+   roms_wc13_2hours.in      ROMS standard input script for WC13, NHIS=4,
+                            two-hours forward trajectory snapshots
+   s4dvar.in                4D-Var standard input script template
+   wc13.h                   WC13 header with CPP options
 
 Important parameters in standard input "roms_wc13.in" script:
 
@@ -117,6 +112,15 @@ Important parameters in standard input "roms_wc13.in" script:
 
        FWDNAME == wc13_fwd.nc
        HISNAME == wc13_fwd.nc
+
+Important parameters in standard input "s4dvar.in" script:
+
+   * The following parameter specifies the outer-loop for which
+     you wish to compute observation impacts. In this exercise we
+     are using only the single outer-loop from the RBL4DVAR-RPCG
+     calculation of Exercise 3.
+
+       Nimpact = 1
 
 To run this application you need to take the following steps:
 
@@ -235,7 +239,7 @@ To run this application you need to take the following steps:
 
   (3) Before you run this application, you need to run the standard
       RBL4D-Var (../RBL4DVAR directory) since we need the Lanczos
-      vectors. Notice that in "job_rbl4dvar_sen.csh" we have the
+      vectors. Notice that in "job_rbl4dvar_impact.csh" we have the
       following operation:
 
       cp -p ${Dir}/RBL4DVAR/wc13_mod.nc wc13_lcz.nc
@@ -272,8 +276,10 @@ To run this application you need to take the following steps:
       are specified in the "build_roms" script instead of "wc13.h":
 
       setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DRBL4DVAR_ANA_SENSITIVITY"
-      setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DAD_IMPULSE"
       setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DRPCG"
+      setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DAD_IMPULSE"
+      setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DOBS_IMPACT"
+      setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DOBS_IMPACT_SPLIT"
 
       this is to allow flexibility with different CPP options.
 
@@ -294,7 +300,7 @@ To run this application you need to take the following steps:
       in parallel using MPI.  This is because of the way that the
       adjoint model is constructed.
 
-  (9) Customize the configuration script "job_rbl4dvar_sen.csh" and
+  (9) Customize the configuration script "job_rbl4dvar_impact.csh" and
       provide the appropriate place for the "substitute" Perl script:
 
       set SUBSTITUTE=${ROMS_ROOT}/ROMS/Bin/substitute
@@ -306,7 +312,7 @@ To run this application you need to take the following steps:
 
       setenv ROMS_ROOT ${HOME}/ocean/repository/trunk
 
- (10) Execute the configuration "job_rbl4dvar_sen.csh" BEFORE running
+ (10) Execute the configuration "job_rbl4dvar_impact.csh" BEFORE running
       the model.  It copies the required files and creates "rbl4dvar.in"
       input script from template "s4dvar.in". This has to be done
       EVERY TIME that you run this application. We need a clean and
@@ -336,8 +342,8 @@ To run this application you need to take the following steps:
  (12) Analyze the results using the plotting Matlab script
       provided in the ../plotting directory:
 
-      plot_rbl4dvar_sensitivity.m      plots observation sensitivity
-                                       for RBL4D-Var
+      plot_rbl4dvar_impact.m       plots observation impact for
+                                   RBL4D-Var
 
       Before running this script, be sure to copy the appropriate
       wc13_fwd_000.nc and wc13_fwd_001.nc files into ../RBL4DVAR.

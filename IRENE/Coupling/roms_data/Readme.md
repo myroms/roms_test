@@ -1,32 +1,24 @@
-*
-* git $Id$
-***********************************************************************
-*  Copyright (c) 2002-2023 The ROMS/TOMS Group                        *
-*    Licensed under a MIT/X style license                             *
-*    See License_ROMS.txt                                             *
-***********************************************************************
-*                                                                     *
-*  Hurricane Irene: ESMF/NUOPC Coupling                               *   
-*                                                                     *
-*  This directory includes various files to run the DATA-ROMS         *
-*  coupling for Hurricane Irene using the ESMF/NUOPC library. The     *
-*  coupled simulation is only run for 42 hours as it approaches the   *
-*  US East coast on August 27, 2011.                                  *
-*                                                                     *
-*  The atmospheric forcing is exported to ROMS from the DATA model    *
-*  with coupling interval of 60 second (same as ROMS timestep). It    * 
-*  is a standard test od ROMS and DATA ESMF/NUOCP modules.            * 
-*                                                                     *
-*  All the components interact with the same coupling time step.      *
-*  The connector for DATA to ROMS is explicit.                        *
-*                                                                     *
-*  For more information, visit WikiROMS:                              *
-*                                                                     *
-*  https://www.myroms.org/wiki/Model_Coupling_ESMF                    *
-*  https://www.myroms.org/wiki/Model_Coupling_IRENE                   *
-*                                                                     *
-***********************************************************************
-*
+<img width="600" alt="image" src="https://github.com/myroms/roms_test/assets/23062912/ad6a7ef1-1fed-4b2e-96b9-9c53615b9333">
+
+## Hurricane Irene: ESMF/NUOPC Coupling
+
+This directory includes various files to run the DATA-ROMS
+coupling for Hurricane Irene using the ESMF/NUOPC library. The
+coupled simulation is only run for 42 hours as it approaches the
+US East coast on August 27, 2011.
+
+The atmospheric forcing is exported to ROMS from the DATA model
+with coupling interval of 60 second (same as ROMS timestep). It
+is a standard test od ROMS and DATA ESMF/NUOCP modules.
+
+All the components interact with the same coupling time step.
+The connector for DATA to ROMS is explicit.
+
+For more information, visit WikiROMS:
+
+https://www.myroms.org/wiki/Model_Coupling_ESMF
+https://www.myroms.org/wiki/Model_Coupling_IRENE
+
 
 Important CPP options: (activated in build_roms.csh or build_roms.sh)
 

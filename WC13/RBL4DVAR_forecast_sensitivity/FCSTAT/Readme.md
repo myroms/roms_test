@@ -1,27 +1,18 @@
-*
-* git $Id$
-***********************************************************************
-*  Copyright (c) 2002-2023 The ROMS/TOMS Group                        *
-*    Licensed under a MIT/X style license                             *
-*    See License_ROMS.txt                                             *
-***********************************************************************
-*                                                                     *
-*  RBL4D-Var Forecast Cycle Observation Impacts: Step 1 (TRUE         *
-*                                                        FORECAST)    *
-*                                                                     *
-*  Runs ROMS Nonlinear model in forcast mode by initializing with     *
-*  the RBL4D-Var analysis (EX3_RPCG) file "wc13_dai.nc".              *
-*                                                                     *
-*  The VERIFICATION option is activated to interpolate the forecats   *
-*  trajectory at the new observation locations "forecast_obs.nc". The *
-*  nonlinear model values at the observation locations are stored in  *
-*  "wc13_mod.nc".                                                     *
-*                                                                     *
-*  The surface forcing fields computed from BULK_FLUXES are stored in *
-*  "wc13_fwd.nc", and will be used in Steps (2) and (3).              *
-*                                                                     *
-***********************************************************************
-*
+<img width="600" alt="image" src="https://github.com/myroms/roms_test/assets/23062912/ad6a7ef1-1fed-4b2e-96b9-9c53615b9333">
+
+## RBL4D-Var Forecast Cycle Observation Impacts: Step 1 (TRUE FORECAST)
+
+Runs ROMS Nonlinear model in forcast mode by initializing with
+the RBL4D-Var analysis (EX3_RPCG) file "wc13_dai.nc".
+
+The VERIFICATION option is activated to interpolate the forecats
+trajectory at the new observation locations "forecast_obs.nc". The
+nonlinear model values at the observation locations are stored in
+"wc13_mod.nc".
+
+The surface forcing fields computed from BULK_FLUXES are stored in
+"wc13_fwd.nc", and will be used in Steps (2) and (3).
+
 
 4D-Var Tutorial: https://www.myroms.org/wiki/4DVar_Tutorial_Introduction
                  Exercise 08, Step 1

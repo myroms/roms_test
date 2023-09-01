@@ -1,42 +1,34 @@
-*
-* git $Id$
-***********************************************************************
-*  Copyright (c) 2002-2023 The ROMS/TOMS Group                        *
-*    Licensed under a MIT/X style license                             *
-*    See License_ROMS.txt                                             *
-***********************************************************************
-*                                                                     *
-*  This directory includes various files to run the strong/weak       *
-*  constraint, dual form of 4-Dimensional Variational data (4D-Var)   *
-*  assimilation based on the Restricted B-preconditiones Lanczos      *
-*  (RBL4D-Var) algorithm in the California Current System, 1/3        *
-*  degree resolution, application (WC13).                             *
-*                                                                     *
-*  References:                                                        *
-*                                                                     *
-*    Moore, A.M., H.G. Arango, G. Broquet, B.S. Powell, A.T. Weaver,  *
-*      and J. Zavala-Garay, 2011: The Regional Ocean Modeling System  *
-*      (ROMS)  4-dimensional variational data assimilations systems,  *
-*      Part I - System overview and formulation, Prog. Oceanogr., 91, *
-*      34-49, doi:10.1016/j.pocean.2011.05.004.                       *
-*                                                                     *
-*    Moore, A.M., H.G. Arango, G. Broquet, C. Edward, M. Veneziani,   *
-*      B. Powell, D. Foley, J.D. Doyle, D. Costa, and P. Robinson,    *
-*      2011: The Regional Ocean Modeling System (ROMS) 4-dimensional  *
-*      variational data assimilations systems, Part II - Performance  *
-*      and application to the California Current System, Prog.        *
-*      Oceanogr., 91, 50-73, doi:10.1016/j.pocean.2011.05.003.        *
-*                                                                     *
-*    Moore, A.M., H.G. Arango, G. Broquet, C. Edward, M. Veneziani,   *
-*      B. Powell, D. Foley, J.D. Doyle, D. Costa, and P. Robinson,    *
-*      2011: The Regional Ocean Modeling System (ROMS) 4-dimensional  *
-*      variational data assimilations systems, Part III - Observation *
-*      impact and observation sensitivity in the California Current   *
-*      System, Prog. Oceanogr., 91, 74-94,                            *
-*      doi:10.1016/j.pocean.2011.05.005.                              *
-*                                                                     *
-***********************************************************************
-*
+<img width="600" alt="image" src="https://github.com/myroms/roms_test/assets/23062912/ad6a7ef1-1fed-4b2e-96b9-9c53615b9333">
+
+This directory includes various files to run the strong/weak
+constraint, dual form of 4-Dimensional Variational data (4D-Var)
+assimilation based on the Restricted B-preconditiones Lanczos
+(RBL4D-Var) algorithm in the California Current System, 1/3
+degree resolution, application (WC13).
+
+References:
+
+Moore, A.M., H.G. Arango, G. Broquet, B.S. Powell, A.T. Weaver,
+  and J. Zavala-Garay, 2011: The Regional Ocean Modeling System
+  (ROMS)  4-dimensional variational data assimilations systems,
+  Part I - System overview and formulation, Prog. Oceanogr., 91,
+  34-49, doi:10.1016/j.pocean.2011.05.004.
+
+Moore, A.M., H.G. Arango, G. Broquet, C. Edward, M. Veneziani,
+  B. Powell, D. Foley, J.D. Doyle, D. Costa, and P. Robinson,
+  2011: The Regional Ocean Modeling System (ROMS) 4-dimensional
+  variational data assimilations systems, Part II - Performance
+  and application to the California Current System, Prog.
+  Oceanogr., 91, 50-73, doi:10.1016/j.pocean.2011.05.003.
+
+Moore, A.M., H.G. Arango, G. Broquet, C. Edward, M. Veneziani,
+  B. Powell, D. Foley, J.D. Doyle, D. Costa, and P. Robinson,
+  2011: The Regional Ocean Modeling System (ROMS) 4-dimensional
+  variational data assimilations systems, Part III - Observation
+  impact and observation sensitivity in the California Current
+  System, Prog. Oceanogr., 91, 74-94.
+doi:10.1016/j.pocean.2011.05.005.
+
 
 4D-Var Tutorial: www.myroms.org/wiki/4DVar_Tutorial_Introduction
                  Exercise 03 and Exercise 04

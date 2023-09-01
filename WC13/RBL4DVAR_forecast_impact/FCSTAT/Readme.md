@@ -1,39 +1,27 @@
-*
-* git $Id$
-***********************************************************************
-*  Copyright (c) 2002-2023 The ROMS/TOMS Group                        *
-*    Licensed under a MIT/X style license                             *
-*    See License_ROMS.txt                                             *
-***********************************************************************
-*                                                                     *
-*  RBL4D-Var Forecast Cycle Observation Impacts: Step 3 (BLUE         *
-*                                                        FORECAST)    *
-*                                                                     *
-*  Runs ROMS Nonlinear model in forcast mode by initializing with     *
-*  the background circulation at the end of the RBL4D-Var cycle       *
-*  (EX3_RPCG) file "wc13_fwd_000.nc", green curve forecast.           *
-*                                                                     *
-*  The VERIFICATION option is activated to interpolate the forecats   *
-*  trajectory at the new observation locations "forecast_obs.nc". The *
-*  nonlinear model values at the observation locations are stored in  *
-*  "wc13_mod.nc".                                                     *
-*                                                                     *
-*  The surface forcing fields are read from "../FCSTAT/wc13_fwd.nc",  *
-*  BULK_FLUXES is NOT activated. This step is necessary because the   *
-*  red forecast and green forecast must be subject to the same        *
-*  surface and lateral boundary conditions.                           *
-*                                                                     *
-***********************************************************************
-*
+<img width="600" alt="image" src="https://github.com/myroms/roms_test/assets/23062912/ad6a7ef1-1fed-4b2e-96b9-9c53615b9333">
+
+## RBL4D-Var Forecast Cycle Observation Impacts: Step 1 (TRUE FORECAST)
+
+Runs ROMS Nonlinear model in forcast mode by initializing with
+the RBL4D-Var analysis (EX3_RPCG) file "wc13_dai.nc".
+
+The VERIFICATION option is activated to interpolate the forecats
+trajectory at the new observation locations "forecast_obs.nc". The
+nonlinear model values at the observation locations are stored in
+"wc13_mod.nc".
+
+The surface forcing fields computed from BULK_FLUXES are stored in
+"wc13_fwd.nc", and will be used in Steps (2) and (3).
 
 4D-Var Tutorial: https://www.myroms.org/wiki/4DVar_Tutorial_Introduction
-                 Exercise 08, Step 3
+                 Exercise 08, Step 1
 
 
 Important CPP options:
 
    NLM_DRIVER              Nonlinear model driver
    ANA_SPONGE              Analytical enhanced viscosity/diffusion sponge
+   BULK_FLUXES             Surface bulk fluxes parameterization
    FORWARD_WRITE           Write out Forward solution for Tangent/Adjoint
    VERIFICATION            Proccess model solution at observation locations
    WC13                    Application CPP option
@@ -55,15 +43,14 @@ Input NetCDF files:
 
 Currently, you can find the following files here:
 
-   build_roms.csh       csh  script to compile application
-   build_roms.sh        bash script to compile application
-   cbuild_roms.csh      csh  CMake script to compile application
-   cbuild_roms.sh       bash CMake script to compile application
-   create_ini_fcstb.m   Matlab script to create ROMS initial conditions
-   job_fcsta.csh        job configuration script
-   roms_wc13.in         ROMS standard input script for WC13
-   s4dvar.in            4D-Var standard input script template
-   wc13.h               WC13 header with CPP options
+   build_roms.csh      csh  script to compile application
+   build_roms.sh       bash script to compile application
+   cbuild_roms.csh     csh  CMake script to compile application
+   cbuild_roms.sh      bash CMake script to compile application
+   job_fcstat.csh      job configuration script
+   roms_wc13.in        ROMS standard input script for WC13
+   s4dvar.in           4D-Var standard input script template
+   wc13.h              WC13 header with CPP options
 
 To run this application you need to take the following steps:
 
@@ -85,6 +72,7 @@ To run this application you need to take the following steps:
 
        setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DNLM_DRIVER"
        setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DANA_SPONGE"
+       setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DBULK_FLUXES"
        setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DFORWARD_WRITE"
        setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DVERIFICATION"
 
@@ -107,7 +95,7 @@ To run this application you need to take the following steps:
       in parallel using MPI.  This is because of the way that the
       adjoint model is constructed.
 
-  (5) Customize the configuration script "job_fcsta.csh" and provide
+  (5) Customize the configuration script "job_fcstat.csh" and provide
       the appropriate place for the "substitute" Perl script:
 
       set SUBSTITUTE=${ROMS_ROOT}/ROMS/Bin/substitute
@@ -119,17 +107,17 @@ To run this application you need to take the following steps:
 
       setenv ROMS_ROOT ${HOME}/ocean/repository/trunk
 
-  (6) Execute the configuration "job_fcsta.csh" BEFORE running
+  (6) Execute the configuration "job_fcstat.csh" BEFORE running
       the model. It copies the required files and creates "rbl4dvar.in"
       input script from template "s4dvar.in". This has to be done
       EVERY TIME that you run this application. We need a clean and
       fresh copy of the initial conditions and observation files
       since they are modified by ROMS during execution.
 
-  (7) Use Matlab script "create_ini_fcstb.m" to create ROMS inital
-      condtions from the previous RBL4D-Var background solution (EXE_RPCG)
-      forward file "../../RBL4DVAR/EX3_RPCG/wc13_fwd_000.nc".
-
-  (8) Run ROMS with data assimilation:
+  (7) Run ROMS with data assimilation:
 
       mpirun -np 8 romsM roms_wc13.in > & log &
+
+
+
+

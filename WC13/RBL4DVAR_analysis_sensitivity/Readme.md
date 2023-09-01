@@ -1,50 +1,50 @@
-*
-* git $Id$
-***********************************************************************
-*  Copyright (c) 2002-2023 The ROMS/TOMS Group                        *
-*    Licensed under a MIT/X style license                             *
-*    See License_ROMS.txt                                             *
-***********************************************************************
-*                                                                     *
-*  This directory includes various files to run the Verifying         *
-*  Analysis forecast used in the RBL4D-Var forecast impacts and       *
-*  forecast sensitivity computed elsewhere.                           *
-*                                                                     *
-*  The veryfing analyis is computed by running a second RBL4D-Var     *
-*  analysis cycle for the following 7-day window:                     *
-*                                                                     *
-*    07-Jan-2004 00:00:00 GMT  to  14-Jan-2004 00:00:00 GMT           *
-*                                                                     *
-*  It is initialized the first RBL4D-Var analysis cycle (wc13_dai.nc) *
-*  for the period of:                                                 *
-*                                                                     *
-*    03-Jan-2004 00:00:00 GMT  to  07-Jan-2004 00:00:00 GMT           * 
-*                                                                     *
-*  See Exercises 08 and 09 for more information.                      *
-*                                                                     *
-*  www.myroms.org/wiki/                                               *
-*                  RBL4DVAR_Forecast_Observation_Impact_Tutorial      *
-*                                                                     *
-*  www.myroms.org/wiki/                                               *
-*                  RBL4DVAR_Forecast_Observation_Sensitivity_Tutorial *
-*                                                                     *
-***********************************************************************
-*
+<img width="600" alt="image" src="https://github.com/myroms/roms_test/assets/23062912/ad6a7ef1-1fed-4b2e-96b9-9c53615b9333">
+
+This directory includes various files to run the strong/weak
+constraint, dual form of 4-Dimensional Variational (4D-Var)
+data assimilation observation sensitivity based on the
+Restricted B-preconditioned Lanczos (RBL4D-Var) algorithm
+in the California Current System, 1/3 degree resolution,
+application (WC13).
+
+References:
+
+Moore, A.M., H.G. Arango, G. Broquet, B.S. Powell, A.T. Weaver,
+  and J. Zavala-Garay, 2011: The Regional Ocean Modeling System
+  (ROMS)  4-dimensional variational data assimilations systems,
+  Part I - System overview and formulation, Prog. Oceanogr., 91,
+  34-49, doi:10.1016/j.pocean.2011.05.004.
+
+Moore, A.M., H.G. Arango, G. Broquet, C. Edward, M. Veneziani,
+  B. Powell, D. Foley, J.D. Doyle, D. Costa, and P. Robinson,
+  2011: The Regional Ocean Modeling System (ROMS) 4-dimensional
+  variational data assimilations systems, Part II - Performance
+  and application to the California Current System, Prog.
+  Oceanogr., 91, 50-73, doi:10.1016/j.pocean.2011.05.003.
+
+Moore, A.M., H.G. Arango, G. Broquet, C. Edward, M. Veneziani,
+   B. Powell, D. Foley, J.D. Doyle, D. Costa, and P. Robinson,
+   2011: The Regional Ocean Modeling System (ROMS) 4-dimensional
+   variational data assimilations systems, Part III - Observation
+   impact and observation sensitivity in the California Current
+   System, Prog. Oceanogr., 91, 74-94,
+   doi:10.1016/j.pocean.2011.05.005.
+
 
 4D-Var Tutorial: www.myroms.org/wiki/4DVar_Tutorial_Introduction
-                 Exercise 08 and Exercise 09
+                 Exercise 06
+
+Results: www.myroms.org/wiki/RBL4DVAR_Analysis_Observation_Sensitivity_Tutorial
 
 Important CPP options:
 
-   RBL4DVAR                RBL4D-Var driver (observation space)
-   ANA_SPONGE              Analytical enhanced viscosity/diffusion sponge
-   BGQC                    Backgound quality control of observations
-   MINRES                  Minimal Residual Method for minimization
-   RPCG                    Restricted B-preconditioned Lanczos minimization
-   POSTERIOR_EOFS          Estimate posterior analysis error
-   POSTERIOR_ERROR_I       Estimate initial posterior analysis error
-   TIME_CONV               Weak-constraint 4D-Var time convolution
-   WC13                    Application CPP option
+   RBL4DVAR_ANA_SENSITIVITY  RBL4D-Var observation sensitivity driver
+   AD_IMPULSE                Force ADM with intermittent impulses
+   ANA_SPONGE                Analytical enhanced viscosity/diffusion sponge
+   RPCG                      Restricted Preconditioned Conjugate Gradient
+                               for minimization
+   MINRES                    Minimal Residual Method for minimization
+   WC13                      Application CPP option
 
 Input NetCDF files:
 
@@ -59,6 +59,7 @@ Input NetCDF files:
                  Forcing File 07:  ../Data/coamps_wc13_wind.nc
                    Boundary File:  ../Data/wc13_ecco_bry.nc
 
+        Adjoint Sensitivity File:  wc13_ads.nc
      Initial Conditions STD File:  ../Data/wc13_std_i.nc
                   Model STD File:  ../Data/wc13_std_m.nc
     Boundary Conditions STD File:  ../Data/wc13_std_b.nc
@@ -68,20 +69,46 @@ Input NetCDF files:
    Boundary Conditions Norm File:  ../Data/wc13_nrm_b.nc
        Surface Forcing Norm File:  ../Data/wc13_nrm_f.nc
                Observations File:  wc13_obs.nc
+            Lanczos Vectors File:  wc13_lcz.nc
 
 Currently, you can find the following files here:
 
-   build_roms.csh       csh  script to compile application
-   build_roms.sh        bash script to compile application
-   cbuild_roms.csh      csh  CMake script to compile application
-   cbuild_roms.sh       bash CMake script to compile application
-   job_rbl4dvar.csh     job configuration script
-   roms_wc13_daily.in   ROMS standard input script for WC13, NHIS=48,
-                          daily forward trajectory snapshots
-   roms_wc13_2hours.in  ROMS standard input script for WC13, NHIS=4,
-                          two-hours forward trajectory snapshots
-   s4dvar.in            4D-Var standard input script template
-   wc13.h               WC13 header with CPP options
+   build_roms.csh        csh  script to compile application
+   build_roms.sh         bash script to compile application
+   cbuild_roms.csh       csh  script to compile application
+   cbuild_roms.sh        bash script to compile application
+   job_rbl4dvar_sen.csh  job configuration script
+   roms_wc13_daily.in    ROMS standard input script for WC13, NHIS=48,
+                           daily forward trajectory snapshots
+   roms_wc13_2hours.in   ROMS standard input script for WC13, NHIS=4,
+                           two-hours forward trajectory snapshots
+   s4dvar.in             4D-Var standard input script template
+   wc13.h                WC13 header with CPP options
+
+Important parameters in standard input "roms_wc13.in" script:
+
+   * Notice that this driver uses the following adjoint sensitivity
+     parameters (see input script for details):
+
+       DstrS == 0.0d0                      ! starting day
+       DendS == 0.0d0                      ! ending day
+
+       KstrS ==  1                         ! starting level
+       KendS == 30                         ! ending level
+
+       Lstate(isFsur) == T                 ! free-surface
+       Lstate(isUbar) == T                 ! 2D U-momentum
+       Lstate(isVbar) == T                 ! 2D V-momentum
+       Lstate(isUvel) == T                 ! 3D U-momentum
+       Lstate(isVvel) == T                 ! 3D V-momentum
+       Lstate(isWvel) == F                 ! 3D W-momentum
+
+       Lstate(isTvar) == T T               ! tracers
+
+   * Both FWDNAME and HISNAME must be the same:
+
+       FWDNAME == wc13_fwd.nc
+       HISNAME == wc13_fwd.nc
 
 To run this application you need to take the following steps:
 
@@ -152,30 +179,30 @@ To run this application you need to take the following steps:
       LdefNRM == F F F F        ! Create a new normalization files
       LwrtNRM == F F F F        ! Compute and write normalization
 
-      CnormM(isFsur) =  T       ! 2D variable at RHO-points
-      CnormM(isUbar) =  T       ! 2D variable at U-points
-      CnormM(isVbar) =  T       ! 2D variable at V-points 
-      CnormM(isUvel) =  T       ! 3D variable at U-points
-      CnormM(isVvel) =  T       ! 3D variable at V-points
-      CnormM(isTvar) =  T T     ! NT tracers
+      CnormM(isFsur) =  T       ! Model, 2D variable at RHO-points
+      CnormM(isUbar) =  T       ! Model, 2D variable at U-points
+      CnormM(isVbar) =  T       ! Model, 2D variable at V-points 
+      CnormM(isUvel) =  T       ! Model, 3D variable at U-points
+      CnormM(isVvel) =  T       ! Model, 3D variable at V-points
+      CnormM(isTvar) =  T T     ! Model, NT tracers
 
-      CnormI(isFsur) =  T       ! 2D variable at RHO-points
-      CnormI(isUbar) =  T       ! 2D variable at U-points
-      CnormI(isVbar) =  T       ! 2D variable at V-points 
-      CnormI(isUvel) =  T       ! 3D variable at U-points
-      CnormI(isVvel) =  T       ! 3D variable at V-points
-      CnormI(isTvar) =  T T     ! NT tracers
+      CnormI(isFsur) =  T       ! IC, 2D variable at RHO-points
+      CnormI(isUbar) =  T       ! IC, 2D variable at U-points
+      CnormI(isVbar) =  T       ! IC, 2D variable at V-points 
+      CnormI(isUvel) =  T       ! IC, 3D variable at U-points
+      CnormI(isVvel) =  T       ! IC, 3D variable at V-points
+      CnormI(isTvar) =  T T     ! IC, NT tracers
 
-      CnormB(isFsur) =  T       ! 2D variable at RHO-points
-      CnormB(isUbar) =  T       ! 2D variable at U-points
-      CnormB(isVbar) =  T       ! 2D variable at V-points
-      CnormB(isUvel) =  T       ! 3D variable at U-points
-      CnormB(isVvel) =  T       ! 3D variable at V-points
-      CnormB(isTvar) =  T T     ! NT tracers
+      CnormB(isFsur) =  T       ! OBC, 2D variable at RHO-points
+      CnormB(isUbar) =  T       ! OBC, 2D variable at U-points
+      CnormB(isVbar) =  T       ! OBC, 2D variable at V-points
+      CnormB(isUvel) =  T       ! OBC, 3D variable at U-points
+      CnormB(isVvel) =  T       ! OBC, 3D variable at V-points
+      CnormB(isTvar) =  T T     ! OBC, NT tracers
 
-      CnormF(isUstr) =  T       ! surface U-momentum stress
-      CnormF(isVstr) =  T       ! surface V-momentum stress
-      CnormF(isTsur) =  T T     ! NT surface tracers flux
+      CnormF(isUstr) =  T       ! Surface Forcing, U-momentum stress
+      CnormF(isVstr) =  T       ! Surface Forcing, V-momentum stress
+      CnormF(isTsur) =  T T     ! Surface Forcing, NT tracers fluxes
 
       These normalization coefficients have already been computed
       for you (../Normalization) using the exact method since this
@@ -198,7 +225,29 @@ To run this application you need to take the following steps:
       structure are observed near the open boundaries and land/sea
       masking regions.
 
-  (3) Customize your preferred "build_roms" script and provide the
+  (3) Before you run this application, you need to run the standard
+      RBL4D-Var (../RBL4DVAR directory) since we need the Lanczos
+      vectors. Notice that in "job_rbl4dvar_sen.csh" we have the
+      following operation:
+
+      cp -p ${Dir}/RBL4DVAR/wc13_mod.nc wc13_lcz.nc
+
+      In RBL4D-Var (observartion space minimization), the Lanczos
+      vectors are stored in output 4D-Var NetCDF file "wc13_mod.nc".
+
+  (4) In addition, to run this application you need an adjoint
+      sensitivity functional. This is computed by the following
+      Matlab script:
+
+      ../Data/adsen_37N_transport.m
+
+      which creates the NetCDF file "wc13_ads.nc". This file has
+      already been created for you.
+
+      The adjoint sensitivity functional is defined as the
+      time-averaged transport crossing 37N in the upper 500m.
+
+  (5) Customize your preferred "build_roms" script and provide the
       appropriate values for:
 
       * Root directory, MY_ROOT_DIR
@@ -211,19 +260,12 @@ To run this application you need to take the following steps:
         If you want to ignore this section, comment out the
         assignment for the variable USE_MY_LIBS.
 
-  (4) Notice that the most important CPP options for this application
+  (6) Notice that the most important CPP options for this application
       are specified in the "build_roms" script instead of "wc13.h":
 
-       setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DRBL4DVAR"
-       setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DANA_SPONGE"
-      #setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DMINRES"
-       setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DRPCG"
-      #setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DTIME_CONV"
-
-      #setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DBGQC"
-
-      #setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DPOSTERIOR_EOFS"
-      #setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DPOSTERIOR_ERROR_I"
+      setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DRBL4DVAR_ANA_SENSITIVITY"
+      setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DAD_IMPULSE"
+      setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DRPCG"
 
       this is to allow flexibility with different CPP options.
 
@@ -231,9 +273,9 @@ To run this application you need to take the following steps:
       avoided in the header file "wc13.h" since it has precedence
       during C-preprocessing.
 
-  (5) You MUST use the "build_roms" script to compile.
+  (7) You MUST use the "build_roms" script to compile.
 
-  (6) Customize the ROMS input script "roms_wc13.in" and specify
+  (8) Customize the ROMS input script "roms_wc13.in" and specify
       the appropriate values for the distributed-memory partition.
       It is set by default to:
 
@@ -244,8 +286,8 @@ To run this application you need to take the following steps:
       in parallel using MPI.  This is because of the way that the
       adjoint model is constructed.
 
-  (7) Customize the configuration script "job_rbl4dvar.csh" and provide
-      the appropriate place for the "substitute" Perl script:
+  (9) Customize the configuration script "job_rbl4dvar_sen.csh" and
+      provide the appropriate place for the "substitute" Perl script:
 
       set SUBSTITUTE=${ROMS_ROOT}/ROMS/Bin/substitute
 
@@ -256,14 +298,14 @@ To run this application you need to take the following steps:
 
       setenv ROMS_ROOT ${HOME}/ocean/repository/trunk
 
-  (8) Execute the configuration "job_rbl4dvar.csh" BEFORE running
-      the model. It copies the required files and creates "rbl4dvar.in"
+ (10) Execute the configuration "job_rbl4dvar_sen.csh" BEFORE running
+      the model.  It copies the required files and creates "rbl4dvar.in"
       input script from template "s4dvar.in". This has to be done
       EVERY TIME that you run this application. We need a clean and
       fresh copy of the initial conditions and observation files
       since they are modified by ROMS during execution.
 
-  (9) Run ROMS with data assimilation:
+ (11) Run ROMS with data assimilation:
 
       mpirun -np 8 romsM roms_wc13_daily.in > & log &
 
@@ -283,13 +325,11 @@ To run this application you need to take the following steps:
       nonlinear circulations. The differences will be noticeable
       when computing observation impacts and observation sensitivities.
 
- (10) We recommend creating a new subdirectories "daily" or
-      "2hours" to save the solution tha will be use the
-      Forecast Impacts and Forecast Sensitivity.
-      For example:
+ (12) Analyze the results using the plotting Matlab script
+      provided in the ../plotting directory:
 
-      mkdir daily
-      mv Build_roms rbl4dvar.in *.nc log daily
-      cp -p romsM roms_wc13_daily.in daily
+      plot_rbl4dvar_sensitivity.m      plots observation sensitivity
+                                       for RBL4D-Var
 
-      Check Exercise 8 instructions for more details.
+      Before running this script, be sure to copy the appropriate
+      wc13_fwd_000.nc and wc13_fwd_001.nc files into ../RBL4DVAR.
