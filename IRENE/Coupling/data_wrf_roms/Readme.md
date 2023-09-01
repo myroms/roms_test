@@ -1,6 +1,6 @@
 <img width="600" alt="image" src="https://github.com/myroms/roms_test/assets/23062912/ad6a7ef1-1fed-4b2e-96b9-9c53615b9333">
 
-## Hurricane Irene: ESMF/NUOPC Coupling
+## Hurricane Irene Test Case: ESMF/NUOPC Coupling
 
 This directory includes various files to run the **DATA-WRF-ROMS**
 coupling for Hurricane Irene using the **ESMF/NUOPC** library. The
