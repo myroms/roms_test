@@ -29,8 +29,11 @@ https://www.myroms.org/wiki/Model_Coupling_ESMF
 https://www.myroms.org/wiki/Model_Coupling_IRENE
 
 
-Important CPP options: (activated in build_roms.csh or build_roms.sh)
+### Important CPP options:
 
+They are activated in the build scripts.
+
+```
    IRENE                   ROMS application CPP option
    DATA_COUPLING           Activates DATA component
    ESMF_LIB                ESMF/NUOPC coupling library (version 8.0 and up)
@@ -39,14 +42,14 @@ Important CPP options: (activated in build_roms.csh or build_roms.sh)
    VERIFICATION            Interpolates ROMS solution at observation points
    WRF_COUPLING            Activates WRF component (version 4.1 and up)
    WRF_TIMEAVG             WRF exporting 60 sec time-averaged fields
+```
 
-
-DATA component Input NetCDF file:
-
+### DATA component Input NetCDF file:
+```
                         SST File:  ../../Data/HyCOM/hycom_mab3hours_sst_25aug2011_31aug2011.nc
-
-ROMS component Input NetCDF files:
-
+```
+### ROMS component Input NetCDF files:
+```
                        Grid File:  ../../Data/ROMS/irene_roms_grid.nc
                     Initial File:  ../../Data/ROMS/irene_roms_ini_20110827_06.nc
                    Boundary File:  ../../Data/ROMS/irene_roms_bry.nc
@@ -55,17 +58,17 @@ ROMS component Input NetCDF files:
               River Forcing File:  ../../Data/ROMS/irene_roms_rivers.nc
               Tidal Forcing File:  ../../Data/ROMS/irene_roms_tides.nc
                Observations File:  ../../Data/OBS/irene_obs_20110827.nc
-
-WRF componet Input NetCDF files:
-
+```
+### WRF component Input NetCDF files:
+```
                     Initial File:  ../../Data/WRF/irene_wrf_inp_d01_20110827.nc
                    Boundary File:  ../../Data/WRF/irene_wrf_bdy_d01_20110827.nc
         SST Melding Weights File:  ../../Data/WRF/irene_wrf_meld_weights.nc
              Unused WPS SST File:  ../../Data/WRF/irene_wrf_sst_d01_20110827.nc
+```
+### Configuration and input scripts:
 
-Configuration and input scripts:
-
-
+```
   coupling_esmf_atm_sbl.in      Coupling standard input script (WRF SBL fluxes)
   coupling_esmf_atm_sbl_wmc.in  Coupling standard input script (WRF SBL fluxes)
                                   WIND_MINUS_CURRENT option
@@ -77,11 +80,11 @@ Configuration and input scripts:
   roms_irene.in                 ROMS standard input script
   submit.sh                     Job submission bash script
   wrf_implicit.runconfig        ESMF coupling Run Sequence
-
-How to Download and Compile WRF:
+```
+### How to Download and Compile WRF:
 
   * To download WRF and WPS version 4.3, you may use:
-
+```
     git clone  https://github.com/wrf-model/WRF WRF.4.3
     cd WRF.4.3
     git checkout tags/v4.3
@@ -89,17 +92,18 @@ How to Download and Compile WRF:
     git clone  https://github.com/wrf-model/WPS WPS.4.3
     cd WPS.4.3
     git checkout tags/v4.3
-
+```
   * The strategy is to compile WRF from a directory other than where the
     source code is located. We use the -move option to 'build_wrf.csh' or
     'build_wrf.sh' script. To compile WRF use:
 
-
+```
     build_wrf.csh -j 10 -move
-
+```
     Please select from among the following Linux x86_64 options: for 'ifort'
     we choose the 'dmpar' (distributed-memory pararalle) option:
 
+```
     1.  (serial)   2. (smpar)   3. (dmpar)   4. (dm+sm)   PGI (pgf90/gcc)
     5.  (serial)   6. (smpar)   7. (dmpar)   8. (dm+sm)   PGI (pgf90/pgcc): SGI MPT
     9.  (serial)  10. (smpar)  11. (dmpar)  12. (dm+sm)   PGI (pgf90/gcc): PGI accelerator
@@ -122,15 +126,15 @@ How to Download and Compile WRF:
 
     Enter selection [1-75] : 15
     Compile for nesting? (1=basic, 2=preset moves, 3=vortex following) [default 1]: 1
-
+```
   * The WRF executables will located in sub-directory 'Build_wrf/Bin'
 
   * It is useful to define a "ltl" macro at login to avoid showing all the
     links files created by the build script and needed to run WRF:
-
+```
     alias ltl '/bin/ls -ltHF | grep -v ^l'
-      
-How to Compile ROMS:
+```      
+### How to Compile ROMS:
 
   * ROMS is the driver of the coupling system. In this application the WRF surface
     Boundary Layer (SBL) formulation is used to compute the atmospheric fluxes.
@@ -144,34 +148,34 @@ How to Compile ROMS:
     and will get the wrong solution
    
     To compile ROMS use:
-
+```
     build_roms.csh -j 10
-
+```
 To submit the job on 32 CPUs via SLURM or not, use:
-
+```
     sbatch submit.sh        or
     submit.sh > & log &
 
     Modify 'submit.sh' for your appropriate computer environment.
-
-The output Files:
+```
+### The output Files:
 
   * Standard Output Files
-
+```
     log.coupler                                   coupler information
     log.esmf                                      ESMF/NUOPC informatiom
     log.roms                                      ROMS standard output
     log.wrf                                       WRF standard error/output
     namelist.output                               WRF configuration parameters
-
+```
   * ROMS NetCDF files
-
+```
     irene_avg.nc                                  6-hour averages
     irene_his.nc                                  hourly history
     irene_mod_20110827.nc                         model at observation locations
     irene_qck.nc                                  hourly surface fields quick save
     irene_rst.nc                                  restart
-
+```
   * WRF NetCDF file
 
     irene_wrf_his_d01_2011-08-27_06_00_00.nc      hourly history
