@@ -23,7 +23,7 @@ All the components interact with the same coupling time step.
 The connector from **ROMS** to **WRF** is explicit, whereas the connector
 from **WRF** to **ROMS** is semi-implicit.
 
-For more information, visit WikiROMS:
+For more information, visit **WikiROMS**:
 
 https://www.myroms.org/wiki/Model_Coupling_ESMF
 https://www.myroms.org/wiki/Model_Coupling_IRENE
@@ -169,12 +169,12 @@ They are activated in the build scripts.
 - Standard Output Files:
   ```
     log.coupler                                   coupler information
-    log.esmf                                      ESMF/NUOPC informatiom
+    log.esmf                                      ESMF/NUOPC information
     log.roms                                      ROMS standard output
     log.wrf                                       WRF standard error/output
     namelist.output                               WRF configuration parameters
   ```
- - **ROMS** NetCDF files:
+ - **ROMS** NetCDF Files:
    ```
     irene_avg.nc                                  6-hour averages
     irene_his.nc                                  hourly history
@@ -182,7 +182,7 @@ They are activated in the build scripts.
     irene_qck.nc                                  hourly surface fields quick save
     irene_rst.nc                                  restart
    ```
- - **WRF** NetCDF file:
+ - **WRF** NetCDF File:
    ```
     irene_wrf_his_d01_2011-08-27_06_00_00.nc      hourly history
    ```
