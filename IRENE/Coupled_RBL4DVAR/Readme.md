@@ -204,7 +204,7 @@ They are activated in the build scripts.
 
 ### The output Files:
 
- - Standard Output Files:
+- Standard Output Files:
   ```
     log.coupler                                   coupler information
     log.esmf                                      ESMF/NUOPC information
@@ -213,7 +213,7 @@ They are activated in the build scripts.
     namelist.output                               WRF configuration parameters
   ```
 
- - **ROMS** NetCDF Files:
+- **ROMS** NetCDF Files:
   ```
     irene_mod_20110827.nc                         RBL4D-Var model/obs vectors
     irene_roms_adj_20110827.nc                    ADM fields
@@ -230,7 +230,7 @@ They are activated in the build scripts.
     irene_roms_tlf_20110827.nc			              TLM forcing
   ```
 
- - **WRF** NetCDF File:
+- **WRF** NetCDF File:
   ```
     irene_wrf_his_d01_20110827.nc                 hourly history
   ```
