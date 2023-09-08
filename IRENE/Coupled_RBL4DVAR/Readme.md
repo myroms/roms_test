@@ -6,7 +6,7 @@ This directory includes various files to run the **DATA-WRF-ROMS**
 coupling for Hurricane Irene using the **ESMF/NUOPC** library. The
 coupled simulation is only run for 42 hours as it approaches the
 US East Coast on August 27, 2011. It uses the split **RBL4D-Var**
-wheew the coupled system is run in the background **4D-Var** phase
+where the coupled system is run in the background **4D-Var** phase
 to compute the trajectory used to linearize the tangent linear
 adjoint kernels in the inner loops.
 
@@ -151,7 +151,7 @@ They are activated in the build scripts.
   ```
 - **The WRF** executables will located in the sub-directory **Build_wrf/Bin**
 
-- It is useful to define a **ltl** macro at login to avoid showing all the
+- It is helpful to define a **ltl** macro at login to avoid showing all the
     links files created by the build script and needed to run **WRF**:
   ```
     alias ltl '/bin/ls -ltHF | grep -v ^l'
@@ -174,7 +174,7 @@ They are activated in the build scripts.
     build_split.csh -nl -j 10                     creates executable romsM_nl
     build_split.csh -da -j 10                     creates executable romsM_da
    ```
-    That is, the split scheme use two different executables for ROMS:
+    That is, the **4D-Var split** scheme uses two different executables for **ROMS**:
    ```
       romsM_nl       Coupling driver for RBL4D-Var background phase
 
@@ -185,13 +185,13 @@ They are activated in the build scripts.
    ```
     sbatch submit.sh        or
     submit.sh > & log &
-
-    Modify **submit.sh** for your appropriate computer environment.
    ```
-    The **submit.sh** script creates the sub-directory 2011.08.27 and includes all
+    You can modify **submit.sh** for your appropriate computer environment.
+  
+    The **submit.sh** script creates the sub-directory **2011.08.27** and includes all
     the required input scripts to run the **coupled/RBL4D-Var** system. The input
-    scripts are generated from the templates.  The 'submit.sh' script is quite
-    complex, and it is designed to run sequential coupling/assimilation windows
+    scripts are generated from the templates.  The **submit.sh** script is quite
+    complex and designed to run sequential coupling/assimilation windows
     (cycles). However, it only runs a single cycle for Hurricane Irene.
 
     Generated input scripts:
@@ -213,7 +213,7 @@ They are activated in the build scripts.
     namelist.output                               WRF configuration parameters
   ```
 
- -ROMS NetCDF Files:
+ - **ROMS** NetCDF Files:
   ```
     irene_mod_20110827.nc                         RBL4D-Var model/obs vectors
     irene_roms_adj_20110827.nc                    ADM fields
@@ -227,10 +227,10 @@ They are activated in the build scripts.
     irene_roms_qck_20110827_outer0.nc             hourly surface fields, outer = 0
     irene_roms_qck_20110827_outer1.nc             hourly surface fields, outer = 1
     irene_roms_rst_20110827.nc                    restart
-    irene_roms_tlf_20110827.nc			  TLM forcing
+    irene_roms_tlf_20110827.nc			              TLM forcing
   ```
 
- - WRF NetCDF File:
+ - **WRF** NetCDF File:
   ```
     irene_wrf_his_d01_20110827.nc                 hourly history
   ```
