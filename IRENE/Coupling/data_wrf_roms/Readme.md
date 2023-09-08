@@ -161,9 +161,9 @@ They are activated in the build scripts.
    ```
     sbatch submit.sh        or
     submit.sh > & log &
-
-    Modify **submit.sh** for your appropriate computer environment.
    ```
+  You can modify **submit.sh** for your appropriate computer environment.
+   
 ### The output Files:
 
  - Standard Output Files:
