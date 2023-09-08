@@ -166,15 +166,17 @@ They are activated in the build scripts.
    
 ### The output Files:
 
- - Standard Output Files:
-  ```
+- Standard Output Files:
+   ```
     log.coupler                                   coupler information
     log.esmf                                      ESMF/NUOPC information
     log.roms                                      ROMS standard output
     log.wrf                                       WRF standard error/output
     namelist.output                               WRF configuration parameters
   ```
- - **ROMS** NetCDF Files:
+
+- **ROMS** NetCDF Files:
+ 
    ```
     irene_avg.nc                                  6-hour averages
     irene_his.nc                                  hourly history
@@ -182,7 +184,8 @@ They are activated in the build scripts.
     irene_qck.nc                                  hourly surface fields quick save
     irene_rst.nc                                  restart
    ```
- - **WRF** NetCDF File:
+
+- **WRF** NetCDF File:
    ```
     irene_wrf_his_d01_2011-08-27_06_00_00.nc      hourly history
    ```
