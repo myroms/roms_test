@@ -2,35 +2,44 @@
 
 ## Hurricane Irene: ESMF/NUOPC Coupling
 
-This directory includes various files to run the DATA-ROMS
-coupling for Hurricane Irene using the ESMF/NUOPC library. The
+This directory includes various files to run the **DATA-ROMS**
+coupling for Hurricane Irene using the **ESMF/NUOPC** library. The
 coupled simulation is only run for 42 hours as it approaches the
-US East coast on August 27, 2011.
+US East Coast on August 27, 2011.
 
-The atmospheric forcing is exported to ROMS from the DATA model
-with coupling interval of 60 second (same as ROMS timestep). It
-is a standard test od ROMS and DATA ESMF/NUOCP modules.
+The atmospheric forcing is exported to **ROMS** from the **DATA** model
+with a coupling interval of 60 seconds (same as **ROMS** timestep). It
+is a standard test of **ROMS** and **DATA** modules in the native coupling
+system.
 
 All the components interact with the same coupling time step.
-The connector for DATA to ROMS is explicit.
+The connector for **DATA** to **ROMS** is explicit, and it uses the same
+forcing **NCEP-NARR** files used in the regular **`../../Forward`** solution,
+except that the **ESMF/NUOCP** system is doing the spatial and temporal
+interpolation.
 
-For more information, visit WikiROMS:
+For more information, visit **WikiROMS**:
 
 https://www.myroms.org/wiki/Model_Coupling_ESMF
 https://www.myroms.org/wiki/Model_Coupling_IRENE
 
 
-Important CPP options: (activated in build_roms.csh or build_roms.sh)
+### Important CPP options:
 
+They are activated in the build scripts.
+
+```
    IRENE                   ROMS application CPP option
    DATA_COUPLING           Activates DATA component
    ESMF_LIB                ESMF/NUOPC coupling library (version 8.0 and up)
    FRC_COUPLING            Activates surface forcing from coupled system
    ROMS_STDOUT             ROMS standard output is written into 'log.roms'
    VERIFICATION            Interpolates ROMS solution at observation points
+```
 
-DATA component Input NetCDF files:
+### DATA component Input NetCDF files:
 
+```
                                    ../../Data/FRC/lwrad_down_narr_IRENE.nc
                                    ../../Data/FRC/Pair_narr_IRENE.nc
                                    ../../Data/FRC/Qair_narr_IRENE.nc
@@ -39,9 +48,11 @@ DATA component Input NetCDF files:
                                    ../../Data/FRC/Tair_narr_IRENE.nc
                                    ../../Data/FRC/Uwind_narr_IRENE.nc
                                    ../../Data/FRC/Vwind_narr_IRENE.nc
+```
 
-ROMS component Input NetCDF files:
+### ROMS component Input NetCDF files:
 
+```
                        Grid File:  ../../Data/ROMS/irene_roms_grid.nc
                     Initial File:  ../../Data/ROMS/irene_roms_ini_20110827_06.nc
                    Boundary File:  ../../Data/ROMS/irene_roms_bry.nc
@@ -50,9 +61,17 @@ ROMS component Input NetCDF files:
               River Forcing File:  ../../Data/ROMS/irene_roms_rivers.nc
               Tidal Forcing File:  ../../Data/ROMS/irene_roms_tides.nc
                Observations File:  ../../Data/OBS/irene_obs_20110827.nc
+```
 
-Configuration and input scripts:
+### Configuration and input scripts:
 
+```
+  build_roms.csh                ROMS GNU Make compiling and linking CSH script
+  build_roms.csh                ROMS GNU Make compiling and linking BASH script
+  build_wrf.csh                 WRF GNU Make compiling and linking CSH script
+  build_wrf.csh                 WRF GNU Make compiling and linking BASH script
+  cbuild_roms.csh               ROMS CMake compiling and linking CSH script
+  cbuild_roms.csh               ROMS CMake compiling and linking BASH script
   coupling_esmf_bulk_flux.in    Coupling standard input script (ROMS bulk fluxes)
   coupling_esmf_narr.yaml       Coupling fields exchange YAML metadata
   irene.h                       ROMS header file
@@ -61,35 +80,41 @@ Configuration and input scripts:
   roms_irene.in                 ROMS standard input script
   submit.sh                     Job submission bash script
   data_explicit.runconfig       ESMF coupling Run Sequence
-      
-How to Compile ROMS:
+ ```
+     
+### How to Compile ROMS:
 
-  * ROMS is the driver of the coupling system.
+- **ROMS** is the driver of the coupling system.
 
-    The bulk_flux = 1 in build scripts. Notice that activates ROMS CPP options:
-    BULK_FLUXES, COOL_SKIN, WIND_MINUS_CURRENT, EMINUSP, and LONGWAVE_OUT.
+  Notice that **bulk_flux = 1** activate **ROMS** CPP options: **BULK_FLUXES**, **COOL_SKIN**,
+  **WIND_MINUS_CURRENT**, **EMINUSP**, and **LONGWAVE_OUT**.
 
-    To compile ROMS use:
-
+  To compile **ROMS**, use:
+   ```
     build_roms.csh -j 10
-
-How to run:
-
+   ```
+  To run, use:
+   ```
     mpirun -n 12 romsM coupling_esmf_bulk_flux.in > & log &
+    ```
 
-The output Files:
+### The output Files:
 
-  * Standard Output Files
+- Standard Output Files:
 
+  ```
     log                                           standard output/error
     log.coupler                                   coupler information
-    log.esmf                                      ESMF/NUOPC informatiom
+    log.esmf                                      ESMF/NUOPC information
     log.roms                                      ROMS standard output
+  ```
 
-  * ROMS NetCDF files
+- ROMS NetCDF Files:
 
+  ```
     irene_avg.nc                                  6-hour averages
     irene_his.nc                                  hourly history
     irene_mod_20110827.nc                         model at observation locations
     irene_qck.nc                                  hourly surface fields quick save
     irene_rst.nc                                  restart
+  ```
