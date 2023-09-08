@@ -66,15 +66,16 @@ They are activated in the build scripts.
         SST Melding Weights File:  ../../Data/WRF/irene_wrf_meld_weights.nc
              Unused WPS SST File:  ../../Data/WRF/irene_wrf_sst_d01_20110827.nc
   ```
+
 ### Configuration and input scripts:
 
   ```
   build_roms.csh                ROMS GNU Make compiling and linking CSH script
-  build_roms.csh                ROMS GNU Make compiling and linking BASH script
+  build_roms.sh                 ROMS GNU Make compiling and linking BASH script
   build_wrf.csh                 WRF GNU Make compiling and linking CSH script
-  build_wrf.csh                 WRF GNU Make compiling and linking BASH script
+  build_wrf.sh                  WRF GNU Make compiling and linking BASH script
   cbuild_roms.csh               ROMS CMake compiling and linking CSH script
-  cbuild_roms.csh               ROMS CMake compiling and linking BASH script
+  cbuild_roms.sh                ROMS CMake compiling and linking BASH script
   coupling_esmf_atm_sbl.in      Coupling standard input script (WRF SBL fluxes)
   coupling_esmf_atm_sbl_wmc.in  Coupling standard input script (WRF SBL fluxes)
                                   WIND_MINUS_CURRENT option
@@ -87,7 +88,6 @@ They are activated in the build scripts.
   submit.sh                     Job submission bash script
   wrf_implicit.runconfig        ESMF coupling Run Sequence
   ```
-### How to Download and Compile WRF:
 
 - To download **WRF** and **WPS** version 4.3, you may use:
   ```
@@ -166,7 +166,7 @@ They are activated in the build scripts.
    ```
 ### The output Files:
 
-- Standard Output Files:
+ - Standard Output Files:
   ```
     log.coupler                                   coupler information
     log.esmf                                      ESMF/NUOPC information
