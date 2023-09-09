@@ -116,7 +116,7 @@ You need to take the following steps:
     over a specified number of iterations, **Nrandom**.                      
 
   Check the following parameters in the **4D-Var** input script
-  **s4dvar.in** (see input script for details):
+  **s4dvar.in**:
   ```
       Nmethod  == 0             ! normalization method
       Nrandom  == 5000          ! randomization iterations
@@ -206,7 +206,7 @@ You need to take the following steps:
   in parallel using **MPI**.  This is because of the way that the
   adjoint model is constructed.
 
-- Customize the configuration script **job_array_modes.csh** and provide
+- Customize the configuration script **job_i4dvar.csh** and provide
   the appropriate place for the **substitute** Perl script:
   ```
       set SUBSTITUTE=${ROMS_ROOT}/ROMS/Bin/substitute
