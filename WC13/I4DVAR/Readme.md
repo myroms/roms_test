@@ -70,19 +70,20 @@ You need to take the following steps:
   diffusion equation as in Weaver and Courtier (2001).
 
   - In this application, we need standard deviations for
-      initial conditions, surface forcing (**ADJUST_WSTRESS** and
-      **ADJUST_STFLUX**), and open boundary conditions (**ADJUST_BOUNDARY**).
-      The standard deviations for the initial and open boundary
-      conditions are in terms of the unbalanced error covariance
-      (**K Du K'**) since the balanced operator is activated
-      (**BALANCE_OPERATOR** and **ZETA_ELLIPTIC**).
+    initial conditions, surface forcing (**ADJUST_WSTRESS** and
+    **ADJUST_STFLUX**), and open boundary conditions (**ADJUST_BOUNDARY**).
+    The standard deviations for the initial and open boundary
+    conditions are in terms of the unbalanced error covariance
+    (**K Du K'**) since the balanced operator is activated
+    (**BALANCE_OPERATOR** and **ZETA_ELLIPTIC**).
 
   - The balance operator imposes a multivariate constraint on
-      the error covariance such that the unobserved variable
-      information is extracted from observed data by establishing
-      balance relationships (*i.e.*, **T-S** empirical formulas,
-      hydrostatic balance, and geostrophic balance) with other
-      state variables (Weaver *et al.*, 2005).
+    the error covariance such that the unobserved variable
+    information is extracted from observed data by establishing
+    balance relationships (*i.e.*, **T-S** empirical formulas,
+    hydrostatic balance, and geostrophic balance) with other
+    state variables (Weaver *et al.*, 2005).
+
   - These standard deviations have already been created for you:
     ```
       ../Data/wc13_std_i.nc     initial conditions
@@ -98,11 +99,11 @@ You need to take the following steps:
   **randomization** (an approximation).
 
   - The **exact method** is very expensive on large grids. The
-   normalization coefficients are computed by perturbing each
-   model grid cell with a delta function scaled by the area
-   (2D state variables) or volume (3D state variables), and
-   then by convolving with the squared-root adjoint and tangent
-   linear diffusion operators.
+    normalization coefficients are computed by perturbing each
+    model grid cell with a delta function scaled by the area
+    (2D state variables) or volume (3D state variables), and
+    then by convolving with the squared-root adjoint and tangent
+    linear diffusion operators.
    
   - The **randomization method** is cheaper and an approximation.
     The normalization coefficients are computed using the approach
@@ -168,7 +169,7 @@ You need to take the following steps:
       masking regions.
 
 - Customize your preferred **build** script and provide the
-    appropriate values for:
+  appropriate values for:
 
     - Root directory, **MY_ROOT_DIR**
     - **ROMS** source code path, **MY_ROMS_SRC**
@@ -181,8 +182,8 @@ You need to take the following steps:
       assignment for the macro **USE_MY_LIBS**.
 
 - Notice that the most important CPP options for this application
-    are specified in the **build** script instead of the header file
-    **wc13.h** allows flexibility with different CPP options:
+  are specified in the **build** script instead of the header file
+  **wc13.h** allows flexibility with different CPP options:
     ```
       setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DI4DVAR"
       setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DANA_SPONGE"
@@ -219,11 +220,11 @@ You need to take the following steps:
     ```
 
 - Execute the configuration **job_i4dvar.csh** `BEFORE` running
-   the model.  It copies the required files and creates **i4dvar.in**
-   input script from template **s4dvar.in**. This has to be done
-   EVERY TIME that you run this application. We need a clean and
-   fresh copy of the initial conditions and observation files
-   since they are modified by **ROMS** during execution.
+  the model.  It copies the required files and creates **i4dvar.in**
+  input script from template **s4dvar.in**. This has to be done
+  EVERY TIME that you run this application. We need a clean and
+  fresh copy of the initial conditions and observation files
+  since they are modified by **ROMS** during execution.
 
  - Run **ROMS** with data assimilation:
     ```
@@ -236,7 +237,7 @@ You need to take the following steps:
     
       Notice that the nonlinear trajectory can be written either
       daily (**NHIS=48** if using **roms_wc13_daily.in**) or every
-      two hours (**NHIS=4**) if using **roms_wc13_2hours.in**). It is
+      two hours (**NHIS=4** if using **roms_wc13_2hours.in**). It is
       the basic state trajectory used to linearize the tangent linear
       and adjoint models. It turns out that the daily sampling is over the
       limit where the tangent linear approximation is valid. The
@@ -257,7 +258,7 @@ You need to take the following steps:
    ```
 
  - Analyze the results using the plotting scripts (Matlab or
-   **ROMS** plotting package) provided in the **../plotting** directory:
+   **ROMS** plotting package) provided in the **`../plotting`** directory:
 
    - **plot_i4dvar_cost.m**: plots **I4D-Var** cost function.
 
@@ -269,6 +270,7 @@ You need to take the following steps:
 
    - **csec_i4dvar_increments.in**: plots **I4D-Var** initial conditions
                                     increments cross-sections along **37N**.
+
  ---
 
 ### References:
