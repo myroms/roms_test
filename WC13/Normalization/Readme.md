@@ -1,53 +1,32 @@
 <img width="600" alt="image" src="https://github.com/myroms/roms_test/assets/23062912/ad6a7ef1-1fed-4b2e-96b9-9c53615b9333">
 
-This directory includes various files to run the 4-Dimensional
-Variational (4D-Var) data assimilation error covariance model
-that computes normalization coefficients in the California
-Current System, 1/3 degree resolution, application (WC13).
+## 4D-Var Tutorial:
 
-The computation of 4D-Var error covariance normalization
+**Information**:  www.myroms.org/wiki/4DVar_Tutorial_Introduction
+
+**Results**:      www.myroms.org/wiki/4DVar_Normalization_Tutorial
+
+This directory includes various files to compute the 4-Dimensional
+Variational (**4D-Var**) data assimilation error covariance
+normalization coefficients for the California Current System,
+1/3 degree resolution, application (**WC13**).
+
+The computation of **4D-Var** error covariance normalization
 coefficients is very expensive. It depends on the grid size.
-The ones computed here use the expensive "exact" method. For
-large grids, we need to use the "randomization" approach. The
-normalization coefficients need to be computed only once for
-a particular application provided that the grid, land/sea
+The ones computed here use the expensive **exact** method. For
+large grids, we need to use the **randomization** approach. The
+normalization coefficients must be computed only once for
+a particular application, provided that the grid, land/sea
 masking (if any), and decorrelation scales remain the same.
 
-References:
-
-Moore, A.M., H.G. Arango, G. Broquet, B.S. Powell, A.T. Weaver,
-  and J. Zavala-Garay, 2011: The Regional Ocean Modeling System
-  (ROMS)  4-dimensional variational data assimilations systems,
-  Part I - System overview and formulation, Prog. Oceanogr., 91,
-  34-49, doi:10.1016/j.pocean.2011.05.004.
-
-Moore, A.M., H.G. Arango, G. Broquet, C. Edward, M. Veneziani,
-  B. Powell, D. Foley, J.D. Doyle, D. Costa, and P. Robinson,
-  2011: The Regional Ocean Modeling System (ROMS) 4-dimensional
-  variational data assimilations systems, Part II - Performance
-  and application to the California Current System, Prog.
-  Oceanogr., 91, 50-73, doi:10.1016/j.pocean.2011.05.003.
-
-Moore, A.M., H.G. Arango, G. Broquet, C. Edward, M. Veneziani,
-  B. Powell, D. Foley, J.D. Doyle, D. Costa, and P. Robinson,
-  2011: The Regional Ocean Modeling System (ROMS) 4-dimensional
-  variational data assimilations systems, Part III - Observation
-  impact and observation sensitivity in the California Current
-  System, Prog. Oceanogr., 91, 74-94,
-  doi:10.1016/j.pocean.2011.05.005.
-
-
-4D-Var Tutorial: www.myroms.org/wiki/4DVar_Tutorial_Introduction
-
-        Results: www.myroms.org/wiki/4DVar_Normalization_Tutorial
-
-Important CPP options:
-
+### Important CPP Options:
+```
    NORMALIZATION         4D-Var error covariance normalization factors
    WC13                  Application CPP option
+```
 
-Input NetCDF files:
-
+### Input NetCDF Files:
+```
                        Grid File:  ../Data/wc13_grd.nc
           Nonlinear Initial File:  wc13_ini.nc
                  Forcing File 01:  ../Data/coamps_wc13_lwrad_down.nc
@@ -63,50 +42,51 @@ Input NetCDF files:
                   Model STD File:  ../Data/wc13_std_m.nc
     Boundary Conditions STD File:  ../Data/wc13_std_b.nc
         Surface Forcing STD File:  ../Data/wc13_std_f.nc
+```
 
-Output NetCDF files:
-
+### Output NetCDF Files:
+```
     Initial Conditions Norm File:  wc13_nrm_i.nc
                  Model Norm File:  wc13_nrm_m.nc
    Boundary Conditions Norm File:  wc13_nrm_b.nc
        Surface Forcing Norm File:  wc13_nrm_f.nc
-
-Currently, you can find the following files here:
-
-   build_roms.csh         csh  script to compile application
-   build_roms.sh          bash script to compile application
-   cbuild_roms.csh        csh  CMake script to compile application
-   cbuild_roms.sh         bash CMake script to compile application
-   job_normalization.sh   job configuration script
+```
+### Configuration and Input Scripts:
+```
+   build_roms.csh         ROMS GNU make compiling and linking CSH script
+   build_roms.sh          ROMS GNU make compiling and linking BASH script
+   cbuild_roms.csh        ROMS CMake compiling and linking CSH script
+   cbuild_roms.sh         ROMS CMake compiling and linking BASH script
+   job_normalization.csh  job configuration script
    roms_wc13.in           ROMS standard input script for WC13
    s4dvar.in              4D-Var standard input script template
    wc13.h                 WC13 header with CPP options
+```
+### Important Parameters:
 
-Important Parameters:
-
-Since we are modeling the error covariance matrix, D, we need to
+Since we are modeling the error covariance matrix, **D**, we need to
 compute the normalization coefficients to ensure that the diagonal
-elements of the associated correlation matrix C are equal to unity.
-There are two methods to compute normalization coefficients: exact
-and randomization (an approximation).
+elements of the associated correlation matrix **C** are equal to unity.
+There are two methods to compute normalization coefficients: **exact**
+and **randomization** (an approximation).
 
-The exact method is very expensive on large grids. The normalization
+The **exact method** is very expensive on large grids. The normalization
 coefficients are computed by perturbing each model grid cell with a
 delta function scaled by the area (2D state variables) or volume
 (3D state variables), and then by convolving with the squared-root
 adjoint and tangent linear diffusion operators.
 
-The approximated method is cheaper: the normalization coefficients
-are computed using the randomization approach of Fisher and Courtier
+The **randomization method** is cheaper. The normalization coefficients
+are computed using the approach of Fisher and Courtier
 (1995). The coefficients are initialized with random numbers having
 a uniform distribution (drawn from a normal distribution with zero
 mean and unit variance). Then, they are scaled by the inverse
 squared-root of the cell area (2D state variable) or volume (3D state
 variable) and convolved with the squared-root adjoint and tangent
-diffusion operators over a specified number of iterations, Nrandom.                      
-Check following parameters in the 4D-Var input script "s4dvar.in"
-(see input script for details):
+diffusion operators over a specified number of iterations, **Nrandom**.                      
 
+Check the following parameters in the **4D-Var** input script **s4dvar.in**:
+```
       Nmethod  == 0             ! normalization method
       Nrandom  == 5000          ! randomization iterations
 
@@ -130,145 +110,175 @@ Check following parameters in the 4D-Var input script "s4dvar.in"
       CnormF(isUstr) =  T       ! surface U-momentum stress
       CnormF(isVstr) =  T       ! surface V-momentum stress
       CnormF(isTsur) =  T T     ! NT surface tracers flux
+```
 
 This directory computes the normalization coefficients using the
-exact method since this application has a small grid (54x53x30)
+**exact** method since this application has a small grid (**54x53x30**)
 and creates the following files:
 
+```
       wc13_nrm_i.nc             initial conditions
-      wc13_nrm_m.nc             model error
+      wc13_nrm_m.nc             model error (weak constraint)
       wc13_nrm_b.nc             open boundary conditions
-      wc13_nrm_f.nc             surface forcing (wind stress and
-                                                 net heat flux)
+      wc13_nrm_f.nc             surface forcing (wind stress and net heat flux)
+```
 
 The normalization coefficients need to be computed only once
 for a particular application provided that the grid, land/sea
-masking (if any), and decorrelation scales (HdecayI, VdecayI,
-HdecayB, VdecayV, and HdecayF) remain the same. Notice that
+masking (if any), and decorrelation scales (**HdecayI**, **VdecayI**,
+**HdecayB**, **VdecayV**, and **HdecayF**) remain the same. Notice that
 large spatial changes in the normalization coefficient
 structure are observed near the open boundaries and land/sea
 masking regions.
 
-To run this application you need to take the following steps:
+### How to Run this Application:
 
-  (1) We need to run the model application for a period that is
-      long enough to compute meaningful circulation statistics,
-      like mean and standard deviations for all prognostic state
-      variables (zeta, u, v, T, and S). The standard deviations
-      are written to NetCDF files and are read by the 4D-Var
-      algorithm to convert modeled error correlations to error
-      covariances. The error covariance matrix, D, is very large
-      and not well known. It is modeled by convolving a diffusion
-      equation as in Weaver and Courtier (2001).
+You need to take the following steps:
 
-      In this application, we need standard deviations for
-      initial conditions, surface forcing (ADJUST_WSTRESS and
-      ADJUST_STFLUX), and open boundary conditions (ADJUST_BOUNDARY).
-      The standard deviations for the initial and open boundary
-      conditions are in terms of the unbalanced error covariance
-      (K Du K') since the balanced operator is activated
-      (BALANCE_OPERATOR and ZETA_ELLIPTIC).
+- We need to run the model application for a period that is
+  long enough to compute meaningful circulation statistics,
+  like mean and standard deviations for all prognostic state
+  variables (**zeta**, **u**, **v**, **T**, and **S**). The standard deviations
+  are written to NetCDF files and are read by the **4D-Var**
+  algorithm to convert modeled error correlations to error
+  covariances. The error covariance matrix, **D**, is very large
+  and not well known. It is modeled as the solution of a
+  diffusion equation as in Weaver and Courtier (2001).
 
-      The balance operator imposes a multivariate constraint on
-      the error covariance such that the unobserved variable
-      information is extracted from observed data by establishing
-      balance relationships (i.e., T-S empirical formulas,
-      hydrostactic balance, and geostrophic balance) with other
-      state variables (Weaver et al., 2005).
-   
-      These standard deviations have already been created for you:
+  - In this application, we need standard deviations for
+    initial conditions, surface forcing (**ADJUST_WSTRESS** and
+    **ADJUST_STFLUX**), and open boundary conditions (**ADJUST_BOUNDARY**).
+    The standard deviations for the initial and open boundary
+    conditions are in terms of the unbalanced error covariance
+    (**K Du K'**) since the balanced operator is activated
+    (**BALANCE_OPERATOR** and **ZETA_ELLIPTIC**).
 
+  - The balance operator imposes a multivariate constraint on
+    the error covariance such that the unobserved variable
+    information is extracted from observed data by establishing
+    balance relationships (*i.e.*, **T-S** empirical formulas,
+    hydrostatic balance, and geostrophic balance) with other
+    state variables (Weaver *et al.*, 2005).
+
+  - These standard deviations `have already been created` for you:
+    ```
       ../Data/wc13_std_m.nc     model error
       ../Data/wc13_std_i.nc     initial conditions
       ../Data/wc13_std_b.nc     open boundary conditions
-      ../Data/wc13_std_f.nc     surface forcing (wind stress and
-                                                 net heat flux)
+      ../Data/wc13_std_f.nc     surface forcing (wind stress and net heat flux)
+    ```
 
-      The model error normalization coefficients are computed if
-      NADJ < NTIMES in ¨roms_wc13.in¨. In this application,
-      NADJ = 48 to force the computation of model error
-      normalization coefficients.
-
+- The model error normalization coefficients are computed if
+  **NADJ < NTIMES** in **roms_wc13.in**. In this application,
+  **NADJ = 48** to force the computation of model error, **Q**,
+  normalization coefficients.
+  ```
       NTIMES == 192
       ...
         NADJ == 48      ! force to compute model error normalization factors
-!       NADJ == 192     ! avoid computing  model error normalization factors
+      ! NADJ == 192     ! avoid computing  model error normalization factors
+  ```
+- Customize your preferred **build** script and provide the
+  appropriate values for:
 
-  (2) Customize your preferred "build_roms" script and provide the
-      appropriate values for:
+  - Root directory, **MY_ROOT_DIR**
+  - **ROMS** source code path, **MY_ROMS_SRC**
+  - Fortran compiler, **FORT**
+  - MPI flags, **USE_MPI** and **USE_MPIF90**
+  - Path of **MPI**, **NetCDF**, and **ARPACK** libraries according to
+    the compiler. Notice that you need to provide the
+    correct locations of these libraries for your computer.
+    If you want to ignore this section, comment (turn off) the
+    assignment for the macro **USE_MY_LIBS**.
 
-      * Root directory, MY_ROOT_DIR
-      * ROMS source code, MY_ROMS_SRC
-      * Fortran compiler, FORT
-      * MPI flags, USE_MPI and USE_MPIF90
-      * Path of MPI, NetCDF, and ARPACK libraries according to
-        the compiler. Notice that you need to provide the
-        correct places of these libraries for your computer.
-        If you want to ignore this section, comment out the
-        assignment for the variable USE_MY_LIBS.
-
-  (3) Notice that the most important CPP option for this application
-      is specified in the "build_roms" script instead of "wc13.h":
-
+- Notice that the most important CPP options for this application
+  are specified in the **build** script instead of the header file
+  **wc13.h** allows flexibility with different CPP options:
+  ```
       setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DNORMALIZATION"
+  ```
+  For this to work, however, any **#undef** directives **must** be
+  avoided in the header file **wc13.h** since it has precedence
+  during C-preprocessing.
 
-      this is to allow flexibility with different CPP options.
+- You **must** use any of the **build** scripts to compile.
 
-      For this to work, however, any "#undef" directives MUST be
-      avoided in the header file "wc13.h" since it has precedence
-      during C-preprocessing.
-
-  (4) You MUST use the "build_roms" script to compile.
-
-  (5) Customize the ROMS input script "roms_wc13.in" and specify
-      the appropriate values for the distributed-memory partition.
-      It is set by default to:
-
+- Customize the **ROMS** input script **roms_wc13.in** and specify
+  the appropriate values for the distributed-memory tile partition.
+  It is set by default to:
+  ```
       NtileI == 1                               ! I-direction partition
       NtileJ == 8                               ! J-direction partition
+  ```
+  Notice that the adjoint-based algorithms can only be run
+  in parallel using **MPI**.  This is because of the way that the
+  adjoint model is constructed.
 
-      Notice that the adjoint-based algorithms can only be run
-      in parallel using MPI.  This is because of the way that the
-      adjoint model is constructed.
-
-  (6) Customize the configuration script "job_normalization.sh" and
-      provide the appropriate place for the "substitute" Perl script:
-
+- Customize the configuration script **job_normalization.csh** and provide
+  the appropriate place for the **substitute** Perl script:
+  ```
       set SUBSTITUTE=${ROMS_ROOT}/ROMS/Bin/substitute
+  ```
+  This Perl script is distributed with **ROMS**, and it is found in the
+  **ROMS/Bin** sub-directory. Alternatively, you can define
+  **ROMS_ROOT** environmental variable in your login script. For example,
+  I have:
+  ```
+      setenv ROMS_ROOT ${HOME}/ocean/repository/git/roms
+  ```
+- Execute the configuration **job_normalization.csh** `BEFORE`
+  running the model.  It copies the required files and
+  creates **c4dvar.in** input script from template **s4dvar.in**.
 
-      This script is distributed with ROMS and it is found in the
-      ROMS/Bin sub-directory. Alternatively, you can define
-      ROMS_ROOT environmental variable in your .cshrc login
-      script. For example, I have:
-
-      setenv ROMS_ROOT ${HOME}/ocean/repository/trunk
-
-  (7) Execute the configuration "job_normalization.sh" BEFORE
-      running the model.  It copies the required files and
-      creates "c4dvar.in" input script from template "s4dvar.in".
-
-  (8) Run ROMS with data assimilation:
-
+- Run **ROMS** data assimilation normalization:
+  ```
       mpirun -np 8 romsM roms_wc13.in > & log &
+  ```
 
-  (9) We recommend creating a new subdirectory "exact" or "random",
-      and saving the solution in it for analysis and plotting to avoid
-      overwriting output files when playing with difference CPP options
-      and parameters. For example:
-
+- We recommend creating a new subdirectory **exact** or **random**,
+  and saving the solution in it for analysis and plotting to avoid
+  overwriting output files when playing with different CPP options
+  and parameters. For example:
+  ```
       mkdir exact
       mv Build_roms c4dvar.in *.nc log exact
       cp -p romsM roms_wc13.in exact
+  ```
+  The Normalization coefficients have already been computed for
+  the **WC13** application using the exact method.
 
-      The Normalization coefficients have been already computed for
-      the WC13 application using the exact method.
+- Analyze the results using the plotting scripts (**ROMS** plotting
+  package) provided in the **`../plotting`** directory:
 
- (10) Analyze the results using the plotting scripts (ROMS plotting
-      package) provided in the ../plotting directory:
+  - **`ccnt_normalization_f.in`**:  plots error covariance normalization
+                                    coefficients for surface forcing.
 
-      ccnt_normalization_f.in      plots error covariance normalization
-                                   coefficients for surface forcing
+  - **`ccnt_normalization_i.in`**:  plots error covariance normalization
+                                    coefficients for initial conditions
+                                    at the surface or at **z=-100m**.
 
-      ccnt_normalization_i.in      plots error covariance normalization
-                                   coefficients for initial conditions
-                                   at the surface or at z=-100m
+---
+
+### References:
+
+- Moore, A.M., H.G. Arango, G. Broquet, B.S. Powell, A.T. Weaver,
+  and J. Zavala-Garay, **2011**: The Regional Ocean Modeling System
+  (ROMS)  4-dimensional variational data assimilation systems,
+  Part I - System overview and formulation, *Prog. Oceanogr.*,
+  **91**, 34-49, https://doi.org/10.1016/j.pocean.2011.05.004.
+
+- Moore, A.M., H.G. Arango, G. Broquet, C. Edward, M. Veneziani,
+  B. Powell, D. Foley, J.D. Doyle, D. Costa, and P. Robinson,
+  **2011**: The Regional Ocean Modeling System (ROMS) 4-dimensional
+  variational data assimilations systems, Part II - Performance
+  and application to the California Current System, *Prog.
+  Oceanogr.*, **91**, 50-73, 
+  https://doi.org/10.1016/j.pocean.2011.05.003.
+
+- Moore, A.M., H.G. Arango, G. Broquet, C. Edward, M. Veneziani,
+  B. Powell, D. Foley, J.D. Doyle, D. Costa, and P. Robinson,
+  **2011**: The Regional Ocean Modeling System (ROMS) 4-dimensional
+  variational data assimilations systems, Part III - Observation
+  impact and observation sensitivity in the California Current
+  System, *Prog. Oceanogr.*, **91**, 74-94,
+  https://doi.org/10.1016/j.pocean.2011.05.005.
