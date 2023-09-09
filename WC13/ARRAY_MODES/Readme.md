@@ -52,10 +52,10 @@ Current System, 1/3 degree resolution, application (**WC13**).
 ### Configuration and Input Scripts:
 
 ```
-   build_roms.csh       csh  script to compile application
-   build_roms.sh        bash script to compile application
-   cbuild_roms.csh      csh  CMake script to compile application
-   cbuild_roms.sh       bash CMake script to compile application
+   build_roms.csh       ROMS GNU make compiling and linking CSH script
+   build_roms.sh        ROMS GNU make compiling and linking BASH script
+   cbuild_roms.csh      ROMS CMake compiling and linking CSH script
+   cbuild_roms.sh       ROMS CMake compiling and linking BASH script
    job_array_modes.csh  job configuration script
    roms_wc13.in         ROMS standard input script for WC13
    s4dvar.in            4D-Var standard input script template
@@ -67,14 +67,14 @@ Current System, 1/3 degree resolution, application (**WC13**).
 You need to take the following steps:
 
 - We need to run the model application for a period that is
-      long enough to compute meaningful circulation statistics,
-      like mean and standard deviations for all prognostic state
-      variables (**zeta**, **u**, **v**, **T**, and **S**). The standard deviations
-      are written to NetCDF files and are read by the **4D-Var**
-      algorithm to convert modeled error correlations to error
-      covariances. The error covariance matrix, **D**, is very large
-      and not well known. It is modeled as the solution of a
-      diffusion equation as in Weaver and Courtier (2001).
+  long enough to compute meaningful circulation statistics,
+  like mean and standard deviations for all prognostic state
+  variables (**zeta**, **u**, **v**, **T**, and **S**). The standard
+  deviations are written to NetCDF files and are read by the **4D-Var**
+  algorithm to convert modeled error correlations to error
+  covariances. The error covariance matrix, **D**, is very large
+  and not well known. It is modeled as the solution of a
+  diffusion equation as in Weaver and Courtier (2001).
 
   - In this application, we need standard deviations for
       initial conditions, surface forcing (**ADJUST_WSTRESS** and
@@ -245,7 +245,7 @@ You need to take the following steps:
     (i.e. **Nvct=10** for the **RBL4D-Var** tutorial). 
 
  - Execute the configuration **job_array_modes.csh** `BEFORE` running
-   the model.  It copies the required files and creates **rbl4dvar.in**
+   the model.  It copies the required files and creates **r4dvar.in**
    input script from template **s4dvar.in**. This has to be done
    EVERY TIME that you run this application. We need a clean and
    fresh copy of the initial conditions and observation files
