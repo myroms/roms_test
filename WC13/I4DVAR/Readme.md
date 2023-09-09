@@ -115,9 +115,9 @@ You need to take the following steps:
     with the squared-root adjoint and tangent diffusion operators
     over a specified number of iterations, **Nrandom**.                      
 
-    Check the following parameters in the **4D-Var** input script
-    **s4dvar.in** (see input script for details):
-    ```
+  Check the following parameters in the **4D-Var** input script
+  **s4dvar.in** (see input script for details):
+  ```
       Nmethod  == 0             ! normalization method
       Nrandom  == 5000          ! randomization iterations
 
@@ -148,38 +148,38 @@ You need to take the following steps:
       CnormF(isUstr) =  T       ! Surface Forcing, U-momentum stress
       CnormF(isVstr) =  T       ! Surface Forcing, V-momentum stress
       CnormF(isTsur) =  T T     ! Surface Forcing, NT tracers fluxes
-    ```
-      These normalization coefficients have already been computed for you
-      (see **`../Normalization`**) using the **exact method** since this
-      application has a small grid (**54x53x30**):
-    ```
+  ```
+  These normalization coefficients have already been computed for you
+  (see **`../Normalization`**) using the **exact method** since this
+  application has a small grid (**54x53x30**):
+  ```
       ../Data/wc13_nrm_i.nc     initial conditions
       ../Data/wc13_nrm_b.nc     open boundary conditions
       ../Data/wc13_nrm_f.nc     surface forcing (wind stress and net heat flux)
-    ```
-      Notice that the switches **LdefNRM** and **LwrtNRM** are all **.FALSE.**
-      (**F**) since we already computed these coefficients.
+  ```
+  Notice that the switches **LdefNRM** and **LwrtNRM** are all **.FALSE.**
+  (**F**) since we already computed these coefficients.
 
-      The normalization coefficients need to be computed only once
-      for a particular application provided that the grid, land/sea
-      masking (if any), and decorrelation scales (**HdecayI**, **VdecayI**,
-      **HdecayB**, **VdecayV**, and **HdecayF**) remain the same. Notice that
-      large spatial changes in the normalization coefficient
-      structure are observed near the open boundaries and land/sea
-      masking regions.
+  The normalization coefficients need to be computed only once
+  for a particular application provided that the grid, land/sea
+  masking (if any), and decorrelation scales (**HdecayI**, **VdecayI**,
+  **HdecayB**, **VdecayV**, and **HdecayF**) remain the same. Notice that
+  large spatial changes in the normalization coefficient
+  structure are observed near the open boundaries and land/sea
+  masking regions.
 
 - Customize your preferred **build** script and provide the
   appropriate values for:
 
-    - Root directory, **MY_ROOT_DIR**
-    - **ROMS** source code path, **MY_ROMS_SRC**
-    - Fortran compiler, **FORT**
-    - MPI flags, **USE_MPI** and **USE_MPIF90**
-    - Path of **MPI**, **NetCDF**, and **ARPACK** libraries according to
-      the compiler. Notice that you need to provide the
-      correct locations of these libraries for your computer.
-      If you want to ignore this section, comment (turn off) the
-      assignment for the macro **USE_MY_LIBS**.
+  - Root directory, **MY_ROOT_DIR**
+  - **ROMS** source code path, **MY_ROMS_SRC**
+  - Fortran compiler, **FORT**
+  - MPI flags, **USE_MPI** and **USE_MPIF90**
+  - Path of **MPI**, **NetCDF**, and **ARPACK** libraries according to
+    the compiler. Notice that you need to provide the
+    correct locations of these libraries for your computer.
+    If you want to ignore this section, comment (turn off) the
+    assignment for the macro **USE_MY_LIBS**.
 
 - Notice that the most important CPP options for this application
   are specified in the **build** script instead of the header file
@@ -195,29 +195,28 @@ You need to take the following steps:
      
 - You **must** use any of the **build** scripts to compile.
 
-  - Customize the **ROMS** input script **roms_wc13.in** and specify
-    the appropriate values for the distributed-memory tile partition.
-    It is set by default to:
-    ```
+- Customize the **ROMS** input script **roms_wc13.in** and specify
+  the appropriate values for the distributed-memory tile partition.
+  It is set by default to:
+  ```
       NtileI == 2                               ! I-direction partition
       NtileJ == 4                               ! J-direction partition
-    ```
-    Notice that the adjoint-based algorithms can only be run
-    in parallel using **MPI**.  This is because of the way that the
-    adjoint model is constructed.
+  ```
+  Notice that the adjoint-based algorithms can only be run
+  in parallel using **MPI**.  This is because of the way that the
+  adjoint model is constructed.
 
-  - Customize the configuration script **job_array_modes.csh** and provide
-    the appropriate place for the **substitute** Perl script:
-    ```
+- Customize the configuration script **job_array_modes.csh** and provide
+  the appropriate place for the **substitute** Perl script:
+  ```
       set SUBSTITUTE=${ROMS_ROOT}/ROMS/Bin/substitute
-    ```
-    This Perl script is distributed with **ROMS**, and it is found in the
-    **ROMS/Bin** sub-directory. Alternatively, you can define
-    **ROMS_ROOT** environmental variable in your login script. For example,
-    I have:
-    ```
-      setenv ROMS_ROOT ${HOME}/ocean/repository/git/roms
-    ```
+  ```
+  This Perl script is distributed with **ROMS**, and it is found in the
+  **ROMS/Bin** sub-directory. Alternatively, you can define
+  **ROMS_ROOT** environmental variable in your login script. For example, I have:
+  ```
+     setenv ROMS_ROOT ${HOME}/ocean/repository/git/roms
+  ```
 
 - Execute the configuration **job_i4dvar.csh** `BEFORE` running
   the model.  It copies the required files and creates **i4dvar.in**
@@ -226,39 +225,41 @@ You need to take the following steps:
   fresh copy of the initial conditions and observation files
   since they are modified by **ROMS** during execution.
 
- - Run **ROMS** with data assimilation:
-    ```
+- Run **ROMS** with data assimilation:
+  ```
       mpirun -np 8 romsM roms_wc13_daily.in > & log &
 
       or
 
       mpirun -np 8 romsM roms_wc13_2hours.in > & log &
-    ```
+  ```
     
-      Notice that the nonlinear trajectory can be written either
-      daily (**NHIS=48** if using **roms_wc13_daily.in**) or every
-      two hours (**NHIS=4** if using **roms_wc13_2hours.in**). It is
-      the basic state trajectory used to linearize the tangent linear
-      and adjoint models. It turns out that the daily sampling is over the
-      limit where the tangent linear approximation is valid. The
-      results are much better when using the two-hour snapshots.
-      The two set-ups are provided to make the user aware of the
-      validity of the tangent linear approximation in highly
-      nonlinear circulations. The differences will be noticeable
-      when computing observation impacts and observation sensitivities.  
+  Notice that the nonlinear trajectory can be written either
+  daily (**NHIS=48** if using **roms_wc13_daily.in**) or every
+  two hours (**NHIS=4** if using **roms_wc13_2hours.in**). It is
+  the basic state trajectory used to linearize the tangent linear
+  and adjoint models.
 
- - We recommend creating a new subdirectories **EX1** (Tutorial Exercise 1)
-   and **EX2** (Tutorial Exercise 2) to save the solution in it for
-   analysis and plotting to avoid overwriting output files when playing
-   with different CPP options and parameters. For example:
-   ```
+  It turns out that the daily sampling is over the
+  limit where the tangent linear approximation is valid. The
+  results are much better when using the two-hour snapshots.
+  The two set-ups are provided to make the user aware of the
+  validity of the tangent linear approximation in highly
+  nonlinear circulations. The differences will be noticeable
+  when computing observation impacts and observation sensitivities.  
+
+- We recommend creating a new subdirectories **EX1** (Tutorial Exercise 1)
+  and **EX2** (Tutorial Exercise 2) to save the solution in it for
+  analysis and plotting to avoid overwriting output files when playing
+  with different CPP options and parameters. For example:
+  ```
       mkdir EX1
       mv Build_roms i4dvar.in *.nc log EX1
       cp -p romsM roms_wc13.in EX1
-   ```
+  ```
 
- - Analyze the results using the plotting scripts (Matlab or
-   **ROMS** plotting package) provided in the **`../plotting`** directory:
+- Analyze the results using the plotting scripts (Matlab or
+  **ROMS** plotting package) provided in the **`../plotting`** directory:
 
    - **plot_i4dvar_cost.m**: plots **I4D-Var** cost function.
 
