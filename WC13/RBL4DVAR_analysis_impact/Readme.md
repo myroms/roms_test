@@ -4,7 +4,7 @@
 
 **Information**:  www.myroms.org/wiki/4DVar_Tutorial_Introduction
 
-**Results:** www.myroms.org/wiki/RBL4DVAR_Analysis_Observation_Impact_Tutorial
+**Results:**      www.myroms.org/wiki/RBL4DVAR_Analysis_Observation_Impact_Tutorial
 
 This directory includes various files to run the strong/weak
 constraint, dual formulation, 4-Dimensional Variational (**4D-Var**)
@@ -279,7 +279,7 @@ You need to take the following steps:
   in parallel using **MPI**.  This is because of the way that the
   adjoint model is constructed.
 
-- Customize the configuration script **job_rbl4dvar.csh** and provide
+- Customize the configuration script **job_rbl4dvar_impact.csh** and provide
   the appropriate place for the **substitute** Perl script:
   ```
       set SUBSTITUTE=${ROMS_ROOT}/ROMS/Bin/substitute
@@ -291,14 +291,14 @@ You need to take the following steps:
      setenv ROMS_ROOT ${HOME}/ocean/repository/git/roms
   ```
 
-- Execute the configuration **job_rbl4dvar.csh** `BEFORE` running
+- Execute the configuration **job_rbl4dvar_impact.csh** `BEFORE` running
   the model.  It copies the required files and creates **i4dvar.in**
   input script from template **s4dvar.in**. This has to be done
   EVERY TIME that you run this application. We need a clean and
   fresh copy of the initial conditions and observation files
   since they are modified by **ROMS** during execution.
 
-- Run **ROMS** with data assimilation:
+- Run **RBL4D-Var** analysis observations impact:
   ```
       mpirun -np 8 romsM roms_wc13_daily.in > & log &
 
