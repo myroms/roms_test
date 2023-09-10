@@ -101,7 +101,7 @@ Current System, 1/3 degree resolution, application (**WC13**).
     **ADJUST_STFLUX**), and open boundary conditions (**ADJUST_BOUNDARY**).
     The standard deviations for the initial and open boundary
     conditions are in terms of the unbalanced error covariance
-    (**K Du K'**) since the balanced operator is activated
+    (**K D<sub>u</sub> K<sup>T</sup>**) since the balanced operator is activated
     (**BALANCE_OPERATOR** and **ZETA_ELLIPTIC**).
 
   - The balance operator imposes a multivariate constraint on
