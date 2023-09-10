@@ -222,7 +222,7 @@ You need to take the following steps:
   in parallel using **MPI**.  This is because of the way that the
   adjoint model is constructed.
 
-- Customize the configuration script **job_array_modes.csh** and provide
+- Customize the configuration script **job_rbl4dvar.csh** and provide
   the appropriate place for the **substitute** Perl script:
   ```
       set SUBSTITUTE=${ROMS_ROOT}/ROMS/Bin/substitute
