@@ -1,6 +1,6 @@
 <img width="600" alt="image" src="https://github.com/myroms/roms_test/assets/23062912/ad6a7ef1-1fed-4b2e-96b9-9c53615b9333">
 
-## 4D-Var Tutorial: RBL4D-Var Forecast Cycle Observation Impacts - Exercise 8, Step 2
+## RBL4D-Var Forecast Cycle Observation Impacts - Exercise 8, Step 2
 
 It sets and runs the **ROMS** Nonlinear model in forecast mode,
 initialized with the **RBL4D-Var** analysis file **wc13_dai.nc**
