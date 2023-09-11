@@ -1,6 +1,6 @@
 <img width="600" alt="image" src="https://github.com/myroms/roms_test/assets/23062912/ad6a7ef1-1fed-4b2e-96b9-9c53615b9333">
 
-## 4D-Var Tutorial: RBL4D-Var Forecast Cycle Observation Impacts
+## 4D-Var Tutorial: RBL4D-Var Forecast Cycle Observation Impacts, Exercise 8
 
 Computation of the observation impacts for the forecast cycle involves
 multiple steps, so it is important that you follow the instructions
