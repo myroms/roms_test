@@ -4,9 +4,27 @@
 
 It sets and runs the **ROMS** Nonlinear model in forecast mode,
 initialized with the **RBL4D-Var** analysis file **wc13_dai.nc**
-to compute the Red Forecast curve trajectory shown below:
+to compute the **`FCSTA` red curve** trajectory shown in **Figure 1**.
 
 <img width="600" alt="image" src="https://github.com/myroms/roms_test/assets/23062912/e6e46069-f78a-4ffb-967f-4f45bf6960d2"> 
+
+**`Figure 1:`** A schematic of a typical operational analysis-forecast cycle. 
+During the analysis cycle, an ocean state estimate is computed using
+4D-Var to assimilate all available observations. The blue curve represents
+the background circulation, **X<sub>b</sub>**, for this cycle and is derived
+from the state estimate from the previous **4D-Var** cycle. The number of 
+time steps during the analysis cycle is given by **NTIMES_ANA**. At the end of
+the analysis cycle, there are two possible forecasts: **FCAT** - the red forecast,
+which is initialized using the state estimate at the end of the analysis cycle,
+and **FCTB** - the green forecast, which extends the 4D-Var background into the
+forecast cycle. The number of time steps during the forecast cycle is **NTIMES_FCT**.
+These two forecasts can be verified against either a new analysis or against
+new observations during the `verification interval`. The red forecast **FCTA** has
+benefited from the observations assimilated during the analysis interval, while
+the **green** forecast **FCTB** has not. Therefore, the difference in forecast
+error between **FCTA** and **FCTB** can be used to quantify the impact of the 
+observations assimilated during the analysis cycle on the subsequent forecast
+skill of **FCTA**.
 
 The **VERIFICATION** option is activated to interpolate the forecast
 trajectory at the new observation locations **forecast_obs.nc**. The
@@ -49,10 +67,10 @@ surface and lateral boundary conditions.
    build_roms.sh            ROMS GNU make compiling and linking BASH script
    cbuild_roms.csh          ROMS CMake compiling and linking CSH script
    cbuild_roms.sh           ROMS CMake compiling and linking BASH script
-   job_fcsta.csh       job configuration script
-   roms_wc13.in        ROMS standard input script for WC13
-   s4dvar.in           4D-Var standard input script template
-   wc13.h              WC13 header with CPP options
+   job_fcsta.csh            job configuration script
+   roms_wc13.in             ROMS standard input script for WC13
+   s4dvar.in                4D-Var standard input script template
+   wc13.h                   WC13 header with CPP options
 ```
 
 ### How to Run this Application:
@@ -111,7 +129,14 @@ You need to take the following steps:
      setenv ROMS_ROOT ${HOME}/ocean/repository/git/roms
   ```
   
-- Run nonlinear **ROMS Red Forecast**:
+- Execute the configuration **job_fcstat.csh** `EFORE` running
+  the model. It copies the required files and creates **rbl4dvar.in**
+  input script from template **s4dvar.in**. This has to be done
+  EVERY TIME that you run this application. We need a clean and
+  fresh copy of the initial conditions and observation files
+  since they are modified by **ROMS** during execution.
+  
+- Run nonlinear **ROMS `FCSTA` Red Forecast**:
   ```
       mpirun -np 8 romsM roms_wc13_daily.in > & log &
 
