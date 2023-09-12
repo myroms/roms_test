@@ -2,6 +2,8 @@
 
 ## 4D-Var Tutorial: Exercise 5
 
+**Technical Description**: [Exercise_5.pdf](https://github.com/myroms/roms_test/edit/feature/info/WC13/RBL4DVAR_analysis_impact/Exercise_5.pdf)
+
 **Information**:  www.myroms.org/wiki/4DVar_Tutorial_Introduction
 
 **Results:**      www.myroms.org/wiki/RBL4DVAR_Analysis_Observation_Impact_Tutorial
