@@ -2,7 +2,9 @@
 
 ## 4D-Var Tutorial: RBL4D-Var Forecast Cycle Observation Impacts, Exercise 8
 
-Computation of the observation impacts for the forecast cycle involves
+**Technical Description:** [Exercise_8.pdf](https://github.com/myroms/roms_test/edit/feature/info/WC13/RBL4DVAR_forecast_impact/Exercise_8.pdf)
+
+The computation of the observation impacts for the forecast cycle involves
 multiple steps, so it is important that you follow the instructions
 below carefully and perform all the steps described in the order in
 which they are presented. Please do not deviate from these instructions.
