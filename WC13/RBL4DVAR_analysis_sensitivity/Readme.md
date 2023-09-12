@@ -2,6 +2,8 @@
 
 ## 4D-Var Tutorial: Exercise 6
 
+**Technical Description**: [Exercise_6.pdf](https://github.com/myroms/roms_test/edit/feature/info/WC13/RBL4DVAR_analysis_sensitivity/Exercise_6.pdf)
+
 **Information**:  www.myroms.org/wiki/4DVar_Tutorial_Introduction
 
 **Results:**      www.myroms.org/wiki/RBL4DVAR_Analysis_Observation_Sensitivity_Tutorial
@@ -18,8 +20,7 @@ application (**WC13**).
    RBL4DVAR_ANA_SENSITIVITY  RBL4D-Var observation sensitivity driver
    AD_IMPULSE                Force ADM with intermittent impulses
    ANA_SPONGE                Analytical enhanced viscosity/diffusion sponge
-   RPCG                      Restricted Preconditioned Conjugate Gradient
-                               for minimization
+   RPCG                      Restricted Preconditioned Conjugate Gradient for minimization
    MINRES                    Minimal Residual Method for minimization
    WC13                      Application CPP option
 ```
