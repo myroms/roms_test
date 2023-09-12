@@ -2,6 +2,8 @@
 
 ## 4D-Var Tutorial: Exercise 3 and Exercise 4
 
+**Technical Description**: [Exercise_3.pdf](https://github.com/myroms/roms_test/edit/feature/info/WC13/RBL4DVAR/Exercise_3.pdf), [Exercise_4.pdf](https://github.com/myroms/roms_test/edit/feature/info/WC13/RBL4DVAR/Exercise_4.pdf)
+
 **Information**:  www.myroms.org/wiki/4DVar_Tutorial_Introduction
 
 **Results**:      www.myroms.org/wiki/RBL4DVAR_Tutorial
