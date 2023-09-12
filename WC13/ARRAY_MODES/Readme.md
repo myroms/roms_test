@@ -2,7 +2,8 @@
 
 ## 4D-Var Tutorial: Exercise 7
 
- 
+**Tecnical Description**: [Exercise_7.pdf](https://github.com/myroms/roms_test/edit/feature/info/WC13/ARRAY_MODES/Exercise_7.pdf)
+
 **Information**:  www.myroms.org/wiki/4DVar_Tutorial_Introduction
 
 **Results**:      www.myroms.org/wiki/Array_Modes_Tutorial
