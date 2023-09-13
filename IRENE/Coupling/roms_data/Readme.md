@@ -16,7 +16,7 @@ All the components interact with the same coupling time step.
 The connector for **DATA** to **ROMS** is explicit, and it uses the same
 forcing **NCEP-NARR** files used in the regular **`../../Forward`** solution,
 except that the **ESMF/NUOCP** system is doing the spatial and temporal
-interpolation. Alternatively, you may use ECMWF-ERA5 forcing.
+interpolation. Alternatively, you may use **ECMWF-ERA5** forcing.
 
 For more information, visit **WikiROMS**:
 
