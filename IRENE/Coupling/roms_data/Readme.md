@@ -16,7 +16,7 @@ All the components interact with the same coupling time step.
 The connector for **DATA** to **ROMS** is explicit, and it uses the same
 forcing **NCEP-NARR** files used in the regular **`../../Forward`** solution,
 except that the **ESMF/NUOCP** system is doing the spatial and temporal
-interpolation. Alternatively, you may use **ECMWF-ERA5** forcing.
+interpolation.
 
 For more information, visit **WikiROMS**:
 
@@ -37,13 +37,7 @@ They are activated in the build scripts.
    VERIFICATION            Interpolates ROMS solution at observation points
 ```
 
-### DATA component Input NetCDF files: ECMWF-ERA5 Forcing
-
-```
-                                   ../../Data/FRC/era5_IRENE.nc
-```
-
-### DATA component Input NetCDF files: NCEP-NARR Forcing
+### DATA component Input NetCDF files:
 
 ```
                                    ../../Data/FRC/lwrad_down_narr_IRENE.nc
@@ -78,14 +72,13 @@ They are activated in the build scripts.
   build_wrf.csh                 WRF GNU Make compiling and linking BASH script
   cbuild_roms.csh               ROMS CMake compiling and linking CSH script
   cbuild_roms.csh               ROMS CMake compiling and linking BASH script
-  coupling_esmf_era5.in         Coupling standard input script for ECMWF-ERA5 data
-  coupling_esmf_era5.yaml       Coupling fields metadata YAML for ECMWF-ERA5 data
-  coupling_esmf_narr.in         Coupling standard input script for NCEP-NARR data
-  coupling_esmf_narr.yaml       Coupling fields metadata YAML for NECP-NARR data
+  coupling_esmf_bulk_flux.in    Coupling standard input script (ROMS bulk fluxes)
+  coupling_esmf_narr.yaml       Coupling fields exchange YAML metadata
   irene.h                       ROMS header file
   namelist.input                WRF standard input script
   rbl4dvar.in                   ROMS observation input script
   roms_irene.in                 ROMS standard input script
+  submit.sh                     Job submission bash script
   data_explicit.runconfig       ESMF coupling Run Sequence
  ```
      
@@ -94,25 +87,16 @@ They are activated in the build scripts.
 - **ROMS** is the driver of the coupling system.
 
   Notice that **bulk_flux = 1** activate **ROMS** CPP options: **BULK_FLUXES**, **COOL_SKIN**,
-  **WIND_MINUS_CURRENT**, **EMINUSP**, and **LONGWAVE_OUT** in the **build** scripts.
+  **WIND_MINUS_CURRENT**, **EMINUSP**, and **LONGWAVE_OUT**.
 
-  If running the **NCEP-NARR** forcing case, you must activate **DIURNAL_SRFLUX** to
-  modulate the net shortwave radiation daily cycle at every timestep from the NARR
-  daily-averaged value. You need to deactivate **DIURNAL_SRFLUX** if running the
-  **ECMWF-ERA5** hourly forcing.
-
-- To compile **ROMS**, use:
+  To compile **ROMS**, use:
    ```
     build_roms.csh -j 10
    ```
-- To run, use:
+  To run, use:
    ```
-    mpirun -n 12 romsM coupling_esmf_era5.in > & log &
-
-   or
-
-    mpirun -n 12 romsM coupling_esmf_narr.in > & log &
-   ```
+    mpirun -n 12 romsM coupling_esmf_bulk_flux.in > & log &
+    ```
 
 ### The output Files:
 
