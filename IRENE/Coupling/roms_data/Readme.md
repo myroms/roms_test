@@ -79,14 +79,13 @@ They are activated in the build scripts.
   cbuild_roms.csh               ROMS CMake compiling and linking CSH script
   cbuild_roms.csh               ROMS CMake compiling and linking BASH script
   coupling_esmf_era5.in         Coupling standard input script for ECMWF-ERA5 data
-  coupling_esmf_era5.yaml       Coupling fields metdata YAML for ECMWF-ERA5 data
+  coupling_esmf_era5.yaml       Coupling fields metadata YAML for ECMWF-ERA5 data
   coupling_esmf_narr.in         Coupling standard input script for NCEP-NARR data
-  coupling_esmf_narr.yaml       Coupling fields metdata YAML for NECP-NARR data
+  coupling_esmf_narr.yaml       Coupling fields metadata YAML for NECP-NARR data
   irene.h                       ROMS header file
   namelist.input                WRF standard input script
   rbl4dvar.in                   ROMS observation input script
   roms_irene.in                 ROMS standard input script
-  submit.sh                     Job submission bash script
   data_explicit.runconfig       ESMF coupling Run Sequence
  ```
      
@@ -97,10 +96,10 @@ They are activated in the build scripts.
   Notice that **bulk_flux = 1** activate **ROMS** CPP options: **BULK_FLUXES**, **COOL_SKIN**,
   **WIND_MINUS_CURRENT**, **EMINUSP**, and **LONGWAVE_OUT** in the **build** scripts.
 
-  If running the NCEP-NARR forcing case, you need to activate **DIURNAL_SRFLUX** to
+  If running the **NCEP-NARR** forcing case, you must activate **DIURNAL_SRFLUX** to
   modulate the net shortwave radiation daily cycle at every timestep from the NARR
-  daily-averaged value. You need to deactive **DIURNAL_SRFLUX** if running the
-  ECMWF-ERA5 hourly forcing.
+  daily-averaged value. You need to deactivate **DIURNAL_SRFLUX** if running the
+  **ECMWF-ERA5** hourly forcing.
 
 - To compile **ROMS**, use:
    ```
@@ -108,11 +107,11 @@ They are activated in the build scripts.
    ```
 - To run, use:
    ```
-    mpirun -n 12 romsM coupling_esmf_narr.in > & log &
+    mpirun -n 12 romsM coupling_esmf_era5.in > & log &
 
    or
 
-    mpirun -n 12 romsM coupling_esmf_era5.in > & log &
+    mpirun -n 12 romsM coupling_esmf_narr.in > & log &
    ```
 
 ### The output Files:
