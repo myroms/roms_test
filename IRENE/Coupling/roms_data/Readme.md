@@ -96,10 +96,12 @@ They are activated in the build scripts.
   Notice that **bulk_flux = 1** activate **ROMS** CPP options: **BULK_FLUXES**, **COOL_SKIN**,
   **WIND_MINUS_CURRENT**, **EMINUSP**, and **LONGWAVE_OUT** in the **build** scripts.
 
-  If running the NCEP-NARR forcing case, you must activate **DIURNAL_SRFLUX** to
-  modulate the net shortwave radiation daily cycle at every timestep from the NARR
-  daily-averaged value. You must deactivate **DIURNAL_SRFLUX** if running the
-  ECMWF-ERA5 hourly forcing.
+  If running the **NCEP-NARR** forcing case, you must also activate **DIURNAL_SRFLUX** to
+  modulate the net shortwave radiation daily cycle at every timestep from its
+  daily-averaged value.
+
+  Alternatively, deactivate **DIURNAL_SRFLUX** if running with the **ECMWF-ERA5** hourly
+  forcing.
 
 - To compile **ROMS**, use:
    ```
