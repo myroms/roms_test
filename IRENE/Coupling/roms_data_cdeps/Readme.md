@@ -5,7 +5,7 @@
 This directory includes various files to run the **DATA-ROMS** coupling for Hurricane Irene
 using **CDEPS** **NUOPC**-based connectors. The **DATA** component is replacing the 
 Atmosphere Model, using datasets from **NCEP-NARR** or **ECMWF-ERA5** products.
-The coupled simulation only runs for 42 hours as Hurricane Irene approaches the US. 
+The coupled simulation only runs for 42 hours as Hurricane Irene approaches the US
 East Coast on August 27, 2011.
 
 For more information about the Community Data Models for Earth Predictive Systems
@@ -83,7 +83,7 @@ They are activated in the build scripts.
   datm_in                       UFS DATA component configuration namelist
   datm.streams                  CDEPS DATA model streams configuration
   irene.h                       ROMS header file
-  job_setup.csh                 Coupling set up script
+  job_setup.csh                 Coupling setup script
   model_configure               UFS coupling configuration parameters
   nems.configure                UFS-NEMS run-time configuration paramters
   rbl4dvar.in                   ROMS observation input script
@@ -114,6 +114,13 @@ They are activated in the build scripts.
   ./compile.sh "pontus" "-DAPP=CSTLR -DBULK_FLUX=ON" coastal intel NO NO
   ```
   It creates the **`build_ufs_coastal`** subdirectory and executable driver **`ufs_coastal.exe`**.
+
+- Execute **job_setup.csh** to generate the linked (**ln -fsv**) needed before running the
+  **UFS-coastal** driver.
+
+  ```
+  ./job_setup.csh
+  ```
 
 - To run, use:
   ```

@@ -7,7 +7,7 @@
 #   See License_ROMS.txt                                              #
 #######################################################################
 #                                                                     #
-# ROMS-UFS coupling setup. It need to be run before excuting the      #
+# ROMS-UFS coupling setup. It needs to be run before excuting the     #
 # coupling driver.                                                    #
 #                                                                     #
 #######################################################################
