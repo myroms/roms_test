@@ -78,7 +78,7 @@
 #      ifrac            normalize by the 'ifrac' field in FBFrac(compice).
 #                        Used to map ice->atm
 #      ofrac            normalize by the 'ofrac' field in FBFrac(compocn).
-#                        Used to map ocn->atm
+#                        Used to map ice->atm
 #      custom           custom mapping and normalization will be done in
 #                        the prep phase for the corresponding field
 #                        (used to map glc->lnd).
@@ -119,7 +119,7 @@ standard_input:
 
 import_variables: [dLWrad, SWrad, Pair, Tair, Qair, rain, Uwind, Vwind]
 
-export_variables: [mask_rho]
+export_variables: [cpl_scalars, mask_rho]
 
 ################################
 ### Exported Fields Metadata ###
@@ -200,6 +200,21 @@ export:
     debug_write:         false
     connected_to:        *ATM
     map_type:            mapnstod
+    map_norm:            none
+
+  - standard_name:       cpl_scalars
+    long_name:           CMEPS
+    short_name:          cpl_scalars
+    data_variables:      [cpl_scalars, time]
+    source_units:        nondimensional
+    destination_units:   nondimensional
+    source_grid:         cell_center
+    destination_grid:    cell_center
+    add_offset:          0.0d0
+    scale:               1.0d0
+    debug_write:         false
+    connected_to:        CMEPS
+    map_type:            mapfcopy
     map_norm:            none
 
 ################################

@@ -4,7 +4,7 @@
 
 # ESMF #
 
-logKindFlag:            ESMF_LOGKIND_MULTI
+logKindFlag:            ESMF_LOGKIND_SINGLE     # ESMF_LOGKIND_MULTI
 globalResourceControl:  true
 
 # EARTH #
@@ -30,7 +30,7 @@ ATM_attributes::
 # OCN: ROMS Component #
 
 OCN_model:                      roms 
-OCN_petlist_bounds:             0 11 
+OCN_petlist_bounds:             0 11
 OCN_omp_num_threads:            1
 OCN_attributes::
   Verbosity = 0 #max
@@ -47,7 +47,7 @@ OCN_attributes::
 # MED: CMEPS #
 
 MED_model:                      cmeps
-MED_petlist_bounds:             0 11      # 12 23 
+MED_petlist_bounds:             0 11          # 12 23 
 MED_omp_num_threads:            1
 MED_attributes::
   Verbosity = 0 #max
@@ -89,9 +89,9 @@ ALLCOMP_attributes::
   ScalarFieldIdxNextSwCday = 3 
   ScalarFieldName = cpl_scalars
   start_type = startup
-  restart_dir = Restart/
+  restart_dir = ./
   case_name = ufs.cpld
-  restart_n = 12
+  restart_n = 42
   restart_option = nhours
   restart_ymd = -999
   orb_eccen = 1.e36

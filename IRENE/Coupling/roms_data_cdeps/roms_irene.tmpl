@@ -106,8 +106,8 @@ GridsInLayer =  1
 ! shared-memory configurations used to determine tile horizontal range
 ! indices (Istr,Iend) and (Jstr,Jend), [1:Ngrids].
 
-      NtileI == 3                        ! I-direction partition
-      NtileJ == 4                        ! J-direction partition
+      NtileI == MyNtileI                        ! I-direction partition
+      NtileJ == MyNtileJ                        ! J-direction partition
 
 ! Set horizontal and vertical advection schemes for active and inert
 ! tracers. A different advection scheme is allowed for each tracer.
@@ -1052,8 +1052,8 @@ PIO_I2C_Preq = 65                 ! Maximum pending I2C requests
 
 ! Input NetCDF file names, [1:Ngrids].
 
-     GRDNAME == ../../Data/ROMS/irene_roms_grid.nc
-     ININAME == ../../Data/ROMS/irene_roms_ini_20110827_06.nc
+     GRDNAME == MyIRENEdir/Data/ROMS/irene_roms_grid.nc
+     ININAME == MyIRENEdir/Data/ROMS/irene_roms_ini_20110827_06.nc
      ITLNAME == irene_itl.nc
      IRPNAME == irene_irp.nc
      IADNAME == irene_iad.nc
@@ -1095,7 +1095,7 @@ PIO_I2C_Preq = 65                 ! Maximum pending I2C requests
 
     NBCFILES == 1                          ! number of boundary files
 
-     BRYNAME == ../../Data/ROMS/irene_roms_bry.nc
+     BRYNAME == MyIRENEdir/Data/ROMS/irene_roms_bry.nc
 
 ! Input climatology file names. The USER has the option to separate the
 ! climatology variables into individual NetCDF files (NCLMFILES > 1),
@@ -1107,19 +1107,19 @@ PIO_I2C_Preq = 65                 ! Maximum pending I2C requests
 
    NCLMFILES == 1                          ! number of climatology files
 
-     CLMNAME == ../../Data/ROMS/irene_roms_clm.nc
+     CLMNAME == MyIRENEdir/Data/ROMS/irene_roms_clm.nc
 
 ! Input climatology nudging coefficients file name.
 
-     NUDNAME == ../../Data/ROMS/irene_roms_nudgcoef.nc
+     NUDNAME == MyIRENEdir/Data/ROMS/irene_roms_nudgcoef.nc
 
 ! Input Sources/Sinks forcing (like river runoff) file name.
 
-     SSFNAME == ../../Data/ROMS/irene_roms_rivers.nc
+     SSFNAME == MyIRENEdir/Data/ROMS/irene_roms_rivers.nc
 
 ! Input tidal forcing file name.
 
-     TIDENAME == ../../Data/ROMS/irene_roms_tides.nc 
+     TIDENAME == MyIRENEdir/Data/ROMS/irene_roms_tides.nc 
 
 ! Input forcing NetCDF file name(s).
 !
@@ -1141,14 +1141,14 @@ PIO_I2C_Preq = 65                 ! Maximum pending I2C requests
 
      NFFILES == 8                           ! number of unique forcing files
 
-     FRCNAME == ../../Data/FRC/lwrad_down_narr_IRENE.nc  \
-                ../../Data/FRC/Pair_narr_IRENE.nc        \
-                ../../Data/FRC/Qair_narr_IRENE.nc        \
-                ../../Data/FRC/rain_narr_IRENE.nc        \
-                ../../Data/FRC/swrad_daily_narr_IRENE.nc \
-                ../../Data/FRC/Tair_narr_IRENE.nc        \
-                ../../Data/FRC/Uwind_narr_IRENE.nc       \
-                ../../Data/FRC/Vwind_narr_IRENE.nc
+     FRCNAME == MyIRENEdir/Data/FRC/lwrad_down_narr_IRENE.nc  \
+                MyIRENEdir/Data/FRC/Pair_narr_IRENE.nc        \
+                MyIRENEdir/Data/FRC/Qair_narr_IRENE.nc        \
+                MyIRENEdir/Data/FRC/rain_narr_IRENE.nc        \
+                MyIRENEdir/Data/FRC/swrad_daily_narr_IRENE.nc \
+                MyIRENEdir/Data/FRC/Tair_narr_IRENE.nc        \
+                MyIRENEdir/Data/FRC/Uwind_narr_IRENE.nc       \
+                MyIRENEdir/Data/FRC/Vwind_narr_IRENE.nc
 
 ! Output NetCDF file names, [1:Ngrids].
 

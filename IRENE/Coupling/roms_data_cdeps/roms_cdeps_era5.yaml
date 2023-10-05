@@ -78,7 +78,7 @@
 #      ifrac            normalize by the 'ifrac' field in FBFrac(compice).
 #                        Used to map ice->atm
 #      ofrac            normalize by the 'ofrac' field in FBFrac(compocn).
-#                        Used to map ocn->atm
+#                        Used to map ice->atm
 #      custom           custom mapping and normalization will be done in
 #                        the prep phase for the corresponding field
 #                        (used to map glc->lnd).
