@@ -51,3 +51,5 @@ It uses the data located in **`../../Data/FRC/*_IRENE.nc`** and
 ```
 ./create_mesh.sh
 ```
+:earth_americas: :globe_with_meridians: The output **mesh** files have already been created
+for you and are located in the sub-directory **`../../Data/ESMF`**.
