@@ -29,21 +29,24 @@ They are activated in the build scripts.
 
 ### ESMF Mesh Files:
 
+:earth_americas: :globe_with_meridians: The output **mesh** files have already been created
+for you using the **`../mesh_esmf/create_mesh.sh`** script, and are located in the sub-directory
+**`../../Data/ESMF`**.
 ```
-                                   ../mesh_esmf/irene_roms_grid_rho_ESMFmesh.nc
+                                   ../../Data/ESMF/irene_roms_grid_rho_ESMFmesh.nc
 
-                                   ../mesh_esmf/era5_IRENE_ESMFmesh.nc
+                                   ../../Data/ESMF/era5_IRENE_ESMFmesh.nc
 
-                                   ../mesh_esmf/lwrad_down_narr_IRENE_ESMFmesh.nc
-                                   ../mesh_esmf/lwrad_narr_IRENE_ESMFmesh.nc
-                                   ../mesh_esmf/Pair_narr_IRENE_ESMFmesh.nc
-                                   ../mesh_esmf/Qair_narr_IRENE_ESMFmesh.nc
-                                   ../mesh_esmf/rain_narr_IRENE_ESMFmesh.nc
-                                   ../mesh_esmf/swrad_daily_narr_IRENE_ESMFmesh.nc
-                                   ../mesh_esmf/swrad_narr_IRENE_ESMFmesh.nc
-                                   ../mesh_esmf/Tair_narr_IRENE_ESMFmesh.nc
-                                   ../mesh_esmf/Uwind_narr_IRENE_ESMFmesh.nc
-                                   ../mesh_esmf/Vwind_narr_IRENE_ESMFmesh.nc
+                                   ../../Data/ESMF/lwrad_down_narr_IRENE_ESMFmesh.nc
+                                   ../../Data/ESMF/lwrad_narr_IRENE_ESMFmesh.nc
+                                   ../../Data/ESMF/Pair_narr_IRENE_ESMFmesh.nc
+                                   ../../Data/ESMF/Qair_narr_IRENE_ESMFmesh.nc
+                                   ../../Data/ESMF/rain_narr_IRENE_ESMFmesh.nc
+                                   ../../Data/ESMF/swrad_daily_narr_IRENE_ESMFmesh.nc
+                                   ../../Data/ESMF/swrad_narr_IRENE_ESMFmesh.nc
+                                   ../../Data/ESMF/Tair_narr_IRENE_ESMFmesh.nc
+                                   ../../Data/ESMF/Uwind_narr_IRENE_ESMFmesh.nc
+                                   ../../Data/ESMF/Vwind_narr_IRENE_ESMFmesh.nc
 ```
 
 ### DATA component Input NetCDF files: ECMWF-ERA5 Forcing
@@ -110,14 +113,14 @@ For example, it uses Perl to replace the value of **`MyIRENEdir`** in the templa
 
 ### How to Compile and Run UFS Coupling System:
 
-- Clone UFS-coastal repository:
+- Clone **UFS-coastal** repository:
   ```
   git -c submodule.ADCIRC.update=none clone -b feature/coastal_app --recursive https://github.com/oceanmodeling/ufs-coastal
   ```
-  Notice that omit to clone the ADCIRC component since it is still private and working with research
+  Notice that omit to clone the **ADCIRC** component since it is still private and working with research
   branch **`feature/coastal_app`**.
 
-- Load JEDI Spack-Stack modules. In Rutgers computers, we execute:
+- Load **Spack-Stack** modules. In Rutgers computers, we load the **JEDI Spack/Stack** modules using:
   ```
   module purge
   module load stack-intel
