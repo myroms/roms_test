@@ -19,7 +19,8 @@ They are activated in the build scripts.
 
 ```
    IRENE                   ROMS application CPP option
-   CDEPS                   Activates the DATA component
+   BULK_FLUXES             Activates COARE bulk parameterization of surface fluxes
+   CMEPS                   Activates the UFS coupling with the CMEPS interface
    ESMF_LIB                ESMF/NUOPC coupling library (version 8.0 and up)
    FRC_COUPLING            Activates surface forcing from coupled system
    ROMS_STDOUT             ROMS standard output is written into 'log.roms'
@@ -80,10 +81,11 @@ They are activated in the build scripts.
 ### Configuration and input scripts:
 
 ```
+  build_ufs.sh                  UFS CMake compiling and linking BASH script
   datm_in                       UFS DATA component configuration namelist
   datm.streams                  CDEPS DATA model streams configuration
   irene.h                       ROMS header file
-  job_setup.csh                 Coupling setup script
+  job_setup.sh                  Creates configuration scripts from templates
   model_configure               UFS coupling configuration parameters
   nems.configure                UFS-NEMS run-time configuration paramters
   rbl4dvar.in                   ROMS observation input script
@@ -91,7 +93,21 @@ They are activated in the build scripts.
   roms_cdeps_narr.yaml          ROMS-CDEPS configuration YAML file for NCEP-NARR data
   roms_irene.in                 ROMS standard input script
  ```
-     
+
+### Configuration template scripts:
+
+The **User** must run **`job_setup.sh`** bash script to generate the needed configuration scripts
+from templates. It facilitates customizing the location of Hurricane Irene's input NetCDF files.
+For example, it uses Perl to replace the value of **`MyIRENEdir`** in the template scripts.
+
+```
+  datm_in.tmpl                  UFS DATA component namelist template
+  datm.streams_era5.tmpl        CDEPS DATA model ECMWF-ERA5 streams template
+  datm.streams_narr.tmpl        CDEPS DATA model NCEP-NARR  streams template
+  rbl4dvar.in.tmpl              ROMS observation input template
+  roms_irene.in.tmpl            ROMS standard input template
+ ```
+
 ### How to Compile and Run UFS Coupling System:
 
 - Clone UFS-coastal repository:
@@ -107,24 +123,27 @@ They are activated in the build scripts.
   module load stack-intel
   module list
   ```
-- Configure, compile, and link:
-  ```
-  cd ufs-coastal
-  cd tests
-  ./compile.sh "pontus" "-DAPP=CSTLR -DBULK_FLUX=ON" coastal intel NO NO
-  ```
-  It creates the **`build_ufs_coastal`** subdirectory and executable driver **`ufs_coastal.exe`**.
 
-- Execute **job_setup.csh** to generate the linked (**ln -fsv**) needed before running the
-  **UFS-coastal** driver.
-
+- Configure, compile, and link. We provide the **`build_ufs.sh`** to facilitate configuring and compiling a generic
+  **ROMS** application coupled to the **`UFS-coastal`** framework.
   ```
-  ./job_setup.csh
+  build_ufs.sh -j 10
+  ```
+  It creates the **`Build_ufs`** sub-directory and executable driver **`ufs_model`**.
+
+  You could compile with a specific **ROMS** branch from https://github.com/myroms/roms. For example:
+  ```
+  build_ufs.sh -j 10 -b feature/kernel
+  ```
+
+- Execute **job_setup.csh** to generate the required **UFS-ROMS** input scripts after customization:
+  ```
+  ./job_setup.sh
   ```
 
 - To run, use:
   ```
-  mpirun -n 12 ufs_coastal.exe > & log &
+  mpirun -n 12 ufs_model > & log &
   ```
 
 ### The output Files:
@@ -138,6 +157,8 @@ They are activated in the build scripts.
     log.roms                                      ROMS standard output
 
     datm.log                                      DATA component standard output
+
+    ESMF_LogFile                                  ESMF single log file
   ```
 
 - Coupling NetCDF Files:
@@ -149,9 +170,7 @@ They are activated in the build scripts.
     irene_qck.nc                                  ROMS hourly surface fields quick save
     irene_rst.nc                                  ROMS restart
 
-    ufs.cpld.datm.r.2011-08-27-64800.nc           UFS restart 2011-08-27 18:00:00
-    ufs.cpld.datm.r.2011-08-28-21600.nc           UFS restart 2011-08-28  6:00:00
-    ufs.cpld.datm.r.2011-08-28-64800.nc           UFS restart 2011-08-28 18:00:00
+    ufs.cpld.datm.r.2011-08-29-00000.nc           UFS restart 2011-08-29 00:00:00
 
     weightmatrix_ATM-TO-OCN_faxa_lwdn.nc          lwrad_down interpolation weights
     weightmatrix_ATM-TO-OCN_faxa_rain.nc          rain       interpolation weights
