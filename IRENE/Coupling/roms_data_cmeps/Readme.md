@@ -138,9 +138,13 @@ For example, it uses Perl to replace the value of **`MyIRENEdir`** in the templa
   build_ufs.sh -j 10 -b feature/kernel
   ```
 
-- Execute **job_setup.csh** to generate the required **UFS-ROMS** input scripts after customization:
+- Execute **job_setup.csh** to generate the required **UFS-ROMS** input scripts from templates:
   ```
   ./job_setup.sh
+
+  or
+
+  ./job_setup.sh -pets 3x4 -d /home/CaptainCook/IRENE
   ```
 
 - To run, use:
