@@ -568,7 +568,7 @@ else
 
   echo ""
   echo "${separator}"
-  echo "GNU Build script command:      ${command}"
+  echo "CMake Build script command:    ${command}"
   echo "ROMS source directory:         ${MY_ROMS_SRC}"
   echo "ROMS build  directory:         ${BUILD_DIR}"
   if ( $branch == 1 ) then
@@ -577,15 +577,16 @@ else
   endif
   echo "ROMS Application:              ${ROMS_APPLICATION}"
   echo "ROMS header file:              ${MY_HEADER_DIR}/${HEADER}"
-  set FFLAGS = `make print-FFLAGS | cut -d " " -f 3-`
+  set FFLAGS = `cat fortran_flags`
   echo "Fortran compiler:              ${FORT}"
   echo "Fortran flags:                 ${FFLAGS}"
-  if ($?MY_CPP_FLAGS) then
-    echo "Added CPP Options:            ${MY_CPP_FLAGS}"
+  if ($?mycppflags) then
+    echo "Added CPP Options:            ${mycppflags}"
   endif
   echo "${separator}"
   echo ""
 endif
+
 
 cd ${MY_PROJECT_DIR}
 

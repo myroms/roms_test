@@ -268,6 +268,25 @@ setenv MY_PROJECT_DIR        ${PWD}
 
 source ${MY_ROMS_SRC}/ESM/esm_libs.csh ${MY_ROMS_SRC}/ESM/esm_libs.csh
 
+#--------------------------------------------------------------------------
+# If applicable, use my specified library paths.
+#--------------------------------------------------------------------------
+
+ setenv USE_MY_LIBS no           # use system default library paths
+#setenv USE_MY_LIBS yes          # use my customized library paths
+
+set MY_PATHS = ${COMPILERS}/my_build_paths.csh
+
+if ($USE_MY_LIBS == 'yes') then
+  source ${MY_PATHS} ${MY_PATHS}
+endif
+
+# Set location of the application header file.
+
+ setenv MY_HEADER_DIR        ${MY_PROJECT_DIR}
+
+# If you have custom analytical functions to include, enter the path here.
+
  setenv MY_ANALYTICAL_DIR    `dirname ${Dir}`/Functionals
 
  echo ""
