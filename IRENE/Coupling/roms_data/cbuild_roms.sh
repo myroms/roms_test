@@ -1,7 +1,6 @@
 #!/bin/bash
 #
 # git $Id$
-# svn $Id: cbuild_roms.sh 1189 2023-08-15 21:26:58Z arango $
 #::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 # Copyright (c) 2002-2023 The ROMS/TOMS Group                           :::
 #   Licensed under a MIT/X style license                                :::
@@ -277,32 +276,10 @@ fi
 
 #--------------------------------------------------------------------------
 # If coupling Earth System Models (ESM), set the location of the ESM
-# component libraries and modules. The strategy is to compile and link
-# each ESM component separately first, and then ROMS since it is driving
-# the coupled system. Only the ESM components activated are considered
-# and the rest are ignored.  Some components like WRF cannot be built
-# in a directory specified by the user but in its own root directory,
-# and cannot be moved when debugging with tools like TotalView.
+# component libraries and modules.
 #--------------------------------------------------------------------------
 
- export       WRF_SRC_DIR=${HOME}/ocean/repository/git/WRF.4.3
-#export       WRF_SRC_DIR=${HOME}/ocean/repository/git/WRF
-
-if [ -n "${USE_DEBUG:+1}" ]; then
-  export     CICE_LIB_DIR=${MY_PROJECT_DIR}/Build_ciceG
-  export   COAMPS_LIB_DIR=${MY_PROJECT_DIR}/Build_coampsG
-  export    REGCM_LIB_DIR=${MY_PROJECT_DIR}/Build_regcmG
-  export      WAM_LIB_DIR=${MY_PROJECT_DIR}/Build_wamG
-# export      WRF_LIB_DIR=${MY_PROJECT_DIR}/Build_wrfG
-  export      WRF_LIB_DIR=${WRF_SRC_DIR}
-else
-  export     CICE_LIB_DIR=${MY_PROJECT_DIR}/Build_cice
-  export   COAMPS_LIB_DIR=${MY_PROJECT_DIR}/Build_coamps
-  export    REGCM_LIB_DIR=${MY_PROJECT_DIR}/Build_regcm
-  export      WAM_LIB_DIR=${MY_PROJECT_DIR}/Build_wam
-  export      WRF_LIB_DIR=${MY_PROJECT_DIR}/Build_wrf
-# export      WRF_LIB_DIR=${WRF_SRC_DIR}
-fi
+source ${MY_ROMS_SRC}/ESM/esm_libs.sh ${MY_ROMS_SRC}/ESM/esm_libs.sh
 
 #--------------------------------------------------------------------------
 # If applicable, use my specified library paths.
@@ -572,6 +549,8 @@ else
   fi
   make install
 
+  HEADER=`echo ${ROMS_APPLICATION} | tr '[:upper:]' '[:lower:]'`.h
+
   echo ""
   echo "${separator}"
   echo "CMake Build script command:    ${command}"
@@ -582,6 +561,7 @@ else
     echo "ROMS compiled branch:          $branch_name"
   fi
   echo "ROMS Application:              ${ROMS_APPLICATION}"
+  echo "ROMS header file:              ${MY_HEADER_DIR}/${HEADER}"
   FFLAGS=`cat fortran_flags`
   echo "Fortran compiler:              ${FORT}"
   echo "Fortran flags:                ${FFLAGS}"
