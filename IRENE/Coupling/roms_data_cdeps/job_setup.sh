@@ -31,15 +31,20 @@
 #                                                                     #
 #                    job_setup -d ../..                    (default)  #
 #                                                                     #
+#   -t             IRENE templates scripts path                       #
+#                                                                     #
+#                    job_setup -d ../.. -t .               (default)  #
+#                                                                     #
 #   -pets          ROMS parallel tile partitions                      #
 #                                                                     #
-#                    job_setup -d ../.. -pets 3x4          (default)  #
+#                    job_setup -d ../.. -t . -pets 3x4     (default)  #
 #                                                                     #
 #######################################################################
 
 # Initilialize.
 
 IreneDir=../..                     # default MyIRENEdir value
+TemplDir=.                         # default template scripts path
 nPETsX=3                           # number PETs in the X-direction
 nPETsY=4                           # number PETs in the Y-direction
 
@@ -49,6 +54,12 @@ do
     -d )
       shift
       IreneDir="$1"
+      shift
+      ;;
+
+    -t )
+      shift
+      TemplDir="$1"
       shift
       ;;
 
@@ -65,6 +76,8 @@ do
       echo ""
       echo "  -d      IRENE test case 'Data' full or relative path"
       echo "            (default ../..)"
+      echo "  -t      IRENE template scripts path"
+      echo "            (default ./)"
       echo "  -pets   ROMS parallel tile decomposition"
       echo "            (default 3x4)"
       exit 1
@@ -76,14 +89,14 @@ echo
 echo "ROMS-UFS coupling Configuration:"
 echo
 echo "  IRENE Data path: ${IreneDir}"
-echo "  ROMS partitions, nPETsX = ${nPETsX}, nPETxY = ${nPETsY}" 
+echo "  ROMS partitions, nPETsX = ${nPETsX}, nPETxY = ${nPETsY}"
 
-# Check if provided if correct "Data" directory path.
+# Check if provided "Data" directory path is correct.
 
 if [ ! -f "${IreneDir}/Data/ROMS/irene_roms_grid.nc" ]; then
   echo ""
   echo "  Cannot find file: ${IreneDir}/Data/ROMS/irene_roms_grid.nc"
-  echo "  Correct the location of IRENE Data directory in: ${IreneDir}"
+  echo "  Correct the provided location of IRENE Data directory: ${IreneDir}"
   exit
 fi
 
@@ -106,12 +119,21 @@ datm_NARR=`basename $DATM_NARR .tmpl`
 OuterLoop=1                        # outer loop counter (not used)
 Phase4DVAR=1                       # 4D-Var phase (not used)
 
+# Check if provided template scripts directory path is correct.
+
+if [ ! -f "${TemplDir}/${ROMS_InpTmpl}" ]; then
+  echo ""
+  echo "  Cannot find template script: ${TemplDir}/${ROMS_InpTmpl}"
+  echo "  Correct the provided location of IRENE template scripts: ${TemplDir}"
+  exit
+fi
+
 # Generate ROMS standard input scripts from template.
 
 echo
-echo "  Generating '${ROMS_Inp}'      from template '${ROMS_InpTmpl}'"
+echo "  Generating '${ROMS_Inp}'      from template '${TemplDir}/${ROMS_InpTmpl}'"
  
-cp -f ${ROMS_InpTmpl} ${ROMS_Inp}
+cp -f ${TemplDir}/${ROMS_InpTmpl} ${ROMS_Inp}
 
 perl -p0777 -i -e "s|MyNtileI|${nPETsX}|g"     ${ROMS_Inp}
 perl -p0777 -i -e "s|MyNtileJ|${nPETsY}|g"     ${ROMS_Inp}
@@ -119,9 +141,9 @@ perl -p0777 -i -e "s|MyIRENEdir|${IreneDir}|g" ${ROMS_Inp}
 
 # Generate ROMS standard input scripts from template.
 
-echo "  Generating '${ROMS_Obs}'        from template '${ROMS_ObsTmpl}'"
+echo "  Generating '${ROMS_Obs}'        from template '${TemplDir}/${ROMS_ObsTmpl}'"
 
-cp -f ${ROMS_ObsTmpl} ${ROMS_Obs}
+cp -f ${TemplDir}/${ROMS_ObsTmpl} ${ROMS_Obs}
 
 perl -p0777 -i -e "s|MyOuterLoop|${OuterLoop}|g"   ${ROMS_Obs}
 perl -p0777 -i -e "s|MyPhase4DVAR|${Phase4DVAR}|g" ${ROMS_Obs}
@@ -129,21 +151,21 @@ perl -p0777 -i -e "s|MyIRENEdir|${IreneDir}|g"     ${ROMS_Obs}
 
 # Generate DATA components scripts from templates.
 
-echo "  Generating '${datm_Inml}'            from template '${DATM_Inml}'"
+echo "  Generating '${datm_Inml}'            from template '${TemplDir}/${DATM_Inml}'"
 
-cp -f ${DATM_Inml} ${datm_Inml}
+cp -f ${TemplDir}/${DATM_Inml} ${datm_Inml}
 
 perl -p0777 -i -e "s|MyIRENEdir|${IreneDir}|g" ${datm_Inml}
 
-echo "  Generating '${datm_ERA5}'       from template '${DATM_ERA5}'"
+echo "  Generating '${datm_ERA5}'       from template '${TemplDir}/${DATM_ERA5}'"
 
-cp -f ${DATM_ERA5} ${datm_ERA5}
+cp -f ${TemplDir}/${DATM_ERA5} ${datm_ERA5}
 
 perl -p0777 -i -e "s|MyIRENEdir|${IreneDir}|g" ${datm_ERA5}
 
-echo "  Generating '${datm_NARR}'  from template '${DATM_NARR}'"
+echo "  Generating '${datm_NARR}'  from template '${TemplDir}/${DATM_NARR}'"
 
-cp -f ${DATM_NARR} ${datm_NARR}
+cp -f ${TemplDir}/${DATM_NARR} ${datm_NARR}
 
 perl -p0777 -i -e "s|MyIRENEdir|${IreneDir}|g" ${datm_NARR}
 

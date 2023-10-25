@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/csh -ef
 #
 # git $Id$
 #::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -7,7 +7,7 @@
 #   See License_ROMS.md                                                 :::
 #:::::::::::::::::::::::::::::::::::::::::::::::::::::: David Robertson :::
 #                                                                       :::
-# ROMS-UFS CMake Compiling BASH Script                                  :::
+# ROMS-UFS CMake Compiling CSH Script                                   :::
 #                                                                       :::
 # Script to configure and compile a user application where the          :::
 # application-specific files are kept separate from the ROMS and        :::
@@ -26,7 +26,7 @@
 #                                                                       :::
 # Usage:                                                                :::
 #                                                                       :::
-#    ./build_ufs.sh [options]                                           :::
+#    ./build_ufs.csh [options]                                          :::
 #                                                                       :::
 # Options:                                                              :::
 #                                                                       :::
@@ -35,11 +35,11 @@
 #                                                                       :::
 #    -b             Compile a specific ROMS GitHub branch               :::
 #                                                                       :::
-#                     build_ufs.sh -j 5 -b feature/kernel               :::
+#                     build_ufs.csh -j 5 -b feature/kernel              :::
 #                                                                       :::
 #    -p macro       Prints any Makefile macro value. For example,       :::
 #                                                                       :::
-#                     build_ufs.sh -p MY_CPP_FLAGS                      :::
+#                     build_ufs.csh -p MY_CPP_FLAGS                     :::
 #                                                                       :::
 #    -noclean       Do not clean already compiled objects               :::
 #                                                                       :::
@@ -52,65 +52,63 @@
 #                                                                       :::
 #::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-export which_MPI=openmpi                       # default, overwritten below
+setenv which_MPI openmpi                      #  default, overwritten below
 
-parallel=0
-clean=1
-dprint=0
-Verbose=0
-branch=0
+set parallel = 0
+set clean = 1
+set dprint = 0
+set Verbose = 0
+set branch = 0
 
-command="build_ufs.sh $@"
+set command = "build_ufs.csh $argv[*]"
 
-separator=`perl -e "print '<>' x 50;"`
+set separator = `perl -e "print '<>' x 50;"`
 
-export MY_CPP_FLAGS=
+setenv MY_CPP_FLAGS ''
 
-while [ $# -gt 0 ]
-do
-  case "$1" in
-    -j )
+while ( ($#argv) > 0 )
+  switch ($1)
+    case "-j"
       shift
-      parallel=1
-      test=`echo $1 | grep '^[0-9]\+$'`
-      if [ "$test" != "" ]; then
-        NCPUS="-j $1"
+      set parallel = 1
+      if (`echo $1 | grep '^[0-9]\+$'` != "" ) then
+        set NCPUS = "-j $1"
         shift
       else
-        NCPUS="-j"
-      fi
-      ;;
+        set NCPUS = "-j"
+      endif
+    breaksw
 
-    -p )
+    case "-p"
       shift
-      clean=0
-      dprint=1
-      debug="$1"
+      set clean = 0
+      set dprint = 1
+      set debug = "$1"
       shift
-      ;;
+    breaksw
 
-    -v )
+    case "-v"
       shift
-      Verbose=1
-      ;;
+      set Verbose = 1
+    breaksw
 
-    -noclean )
+    case "-noclean"
       shift
-      clean=0
-      ;;
+      set clean = 0
+    breaksw
 
-    -b )
+    case "-b"
       shift
-      branch=1
-      branch_name=`echo $1 | grep -v '^-'`
-      if [ "$branch_name" == "" ]; then
-        echo "Please enter a ROMS GitHub branch name."
+      set branch = 1
+      set branch_name = `echo $1 | grep -v '^-'`
+      if ( "$branch_name" == "" ) then
+        echo "Please enter a branch name."
         exit 1
-      fi
+      endif
       shift
-      ;;
+    breaksw
 
-    * )
+    case "-*":
       echo ""
       echo "${separator}"
       echo "$0 : Unknown option [ $1 ]"
@@ -121,10 +119,10 @@ do
       echo "                  omit argument for all avaliable CPUs"
       echo ""
       echo "-b branch_name  Compile specific ROMS GitHub branch name"
-      echo "                  For example:  build_ufs.sh -b feature/kernel"
+      echo "                  For example:  build_ufs.csh -b feature/kernel"
       echo ""
       echo "-p macro        Prints any Makefile macro value"
-      echo "                  For example:  build_ufs.sh -p FFLAGS"
+      echo "                  For example:  build_ufs.csh -p FFLAGS"
       echo ""
       echo "-noclean        Do not clean already compiled objects"
       echo ""
@@ -132,15 +130,16 @@ do
       echo "${separator}"
       echo ""
       exit 1
-      ;;
-  esac
-done
+    breaksw
+
+  endsw
+end
 
 # Set the CPP option defining the particular application. This will
 # determine the name of the ".h" header file with the application
 # CPP definitions. REQUIRED
 
-export   ROMS_APPLICATION=IRENE
+ setenv ROMS_APPLICATION     IRENE
 
 # Set a local environmental variable to define the path to the directories
 # where the ROMS source code is located (MY_ROOT_DIR), and this project's
@@ -149,13 +148,17 @@ export   ROMS_APPLICATION=IRENE
 # script describing the location from where the ROMS source code was cloned
 # or downloaded, it uses that value.
 
-if [ -n "${UFS_ROOT_DIR:+1}" ]; then
-  export      MY_ROOT_DIR=${UFS_ROOT_DIR}
+if ( $?UFS_ROOT_DIR ) then
+  if ( "${UFS_ROOT_DIR}" != "" ) then
+    setenv MY_ROOT_DIR       ${UFS_ROOT_DIR}
+  else
+    setenv MY_ROOT_DIR       ${HOME}/ocean/repository/git
+  endif
 else
-  export      MY_ROOT_DIR=${HOME}/ocean/repository/git
-fi
+  setenv MY_ROOT_DIR         ${HOME}/ocean/repository/git
+endif
 
-export     MY_PROJECT_DIR=${PWD}
+setenv MY_PROJECT_DIR        ${PWD}
 
 # The path to the user's local current ROMS source code.
 #
@@ -167,38 +170,38 @@ export     MY_PROJECT_DIR=${PWD}
 # This script allows for differing paths to the code and inputs on other
 # computers.
 
- export        MY_UFS_SRC=${MY_ROOT_DIR}/ufs-coastal
+ setenv MY_UFS_SRC           ${MY_ROOT_DIR}/ufs-coastal
 
-#export       MY_ROMS_SRC=${MY_UFS_SRC}/ROMS-interface/ROMS
- export       MY_ROMS_SRC=${MY_ROOT_DIR}/roms
+#setenv MY_ROMS_SRC          ${MY_UFS_SRC}/ROMS-interface/ROMS
+ setenv MY_ROMS_SRC          ${MY_ROOT_DIR}/roms
 
- export      ROMS_APP_DIR=${MY_PROJECT_DIR}
- 
+ setenv ROMS_APP_DIR         ${MY_PROJECT_DIR}
+
 # Which type(s) of libraries would you like?
 #
 # NOTE: If you choose both and also choose to build the ROMS executable,
-#       it will be linked to the shared version of the library.
+#       it will be linked to the static version of the library.
 #
 # Valid options are SHARED, STATIC, and BOTH.
 
- export           LIBTYPE=STATIC
+ setenv LIBTYPE              STATIC
 
 # Do you want to build the ROMS executable?
 #
 # Valid values are: ON (build the executable) and OFF (do NOT build the
 # executable). If you comment this out the executable WILL be built.
 
- export   ROMS_EXECUTABLE=OFF
+ setenv ROMS_EXECUTABLE      OFF
 
-# Set path of the directory containing "my_build_paths.sh".
+# Set path of the directory containing "my_build_paths.csh".
 #
 # The user has the option to specify a customized version of this file
 # in a different directory than the one distributed with the source code,
-# ${MY_ROMS_SRC}/Compilers. If this is the case, you need to keep these
+# ${MY_ROMS_SRC}/Compilers. If this is the case, you need to keep this
 # configurations files up-to-date.
 
- export         COMPILERS=${MY_ROMS_SRC}/Compilers
-#export         COMPILERS=${HOME}/Compilers/ROMS
+ setenv COMPILERS            ${MY_ROMS_SRC}/Compilers
+#setenv COMPILERS            ${HOME}/Compilers/ROMS
 
 #--------------------------------------------------------------------------
 # Set tunable CPP options.
@@ -211,39 +214,39 @@ export     MY_PROJECT_DIR=${PWD}
 # Notice also that you need to use shell's quoting syntax to enclose the
 # definition.
 #
-#export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DAVERAGES"
-#export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DDEBUGGING"
+#    setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DAVERAGES"
+#    setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DDEBUGGING"
 #
 # can be used to write time-averaged fields. Notice that you can have as
 # many definitions as you want by appending values.
 
- export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DBULK_FLUXES"
+ setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DBULK_FLUXES"
 
-#export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DDIURNAL_SRFLUX"
+#setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DDIURNAL_SRFLUX"
 
- export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DCOLLECT_ALLREDUCE"
-#export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DREDUCE_ALLGATHER"
+ setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DCOLLECT_ALLREDUCE"
+#setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DREDUCE_ALLGATHER"
 
-#export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DDEBUGGING"
-#export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DPOSITIVE_ZERO"
+#setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DDEBUGGING"
+#setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DPOSITIVE_ZERO"
 
 #--------------------------------------------------------------------------
 # Compilation options.
 #--------------------------------------------------------------------------
 
- export           USE_MPI=on               # distributed-memory parallelism
- export        USE_MPIF90=on               # compile with mpif90 script
-#export         which_MPI=intel            # compile with mpiifort library
-#export         which_MPI=mpich            # compile with MPICH library
-#export         which_MPI=mpich2           # compile with MPICH2 library
-#export         which_MPI=mvapich2         # compile with MVAPICH2 library
- export         which_MPI=openmpi          # compile with OpenMPI library
+ setenv USE_MPI              on              # distributed-memory
+ setenv USE_MPIF90           on              # compile with mpif90 script
+#setenv which_MPI            intel           # compile with mpiifort library
+#setenv which_MPI            mpich           # compile with MPICH library
+#setenv which_MPI            mpich2          # compile with MPICH2 library
+#setenv which_MPI            mvapich2        # compile with MVAPICH2 library
+ setenv which_MPI            openmpi         # compile with OpenMPI library
 
- export              FORT=ifort
-#export              FORT=gfortran
-#export              FORT=pgi
+ setenv FORT                 ifort
+#setenv FORT                 gfortran
+#setenv FORT                 pgi
 
-#export         USE_DEBUG=on               # use Fortran debugging flags
+#setenv USE_DEBUG            on              # use Fortran debugging flags
 
 # ROMS I/O choices and combinations. A more complete description of the
 # available options can be found in the wiki (https://myroms.org/wiki/IO).
@@ -251,22 +254,18 @@ export     MY_PROJECT_DIR=${PWD}
 # instruct the ROMS build system to use nf-config to determine the
 # necessary libraries and paths to link into the ROMS executable.
 
-#export       USE_NETCDF4=on               # compile with NetCDF-4 library
-#export   USE_PARALLEL_IO=on               # Parallel I/O with NetCDF-4/HDF5
-#export           USE_PIO=on               # Parallel I/O with PIO library
-#export       USE_SCORPIO=on               # Parallel I/O with SCORPIO library
-
-#--------------------------------------------------------------------------
-# Build definitions and options.  
-#--------------------------------------------------------------------------
+ setenv USE_NETCDF4          on              # compile with NetCDF4 library
+#setenv USE_PARALLEL_IO      on              # Parallel I/O with NetCDF-4/HDF5
+#setenv USE_PIO              on              # Parallel I/O with PIO library
+#setenv USE_SCORPIO          on              # Parallel I/O with SCORPIO library
 
 # Set location of the application header file.
 
- export     MY_HEADER_DIR=${MY_PROJECT_DIR}
+ setenv MY_HEADER_DIR        ${MY_PROJECT_DIR}
 
 # If you have custom analytical functions to include, enter the path here.
 
- export MY_ANALYTICAL_DIR=${MY_PROJECT_DIR}
+ setenv MY_ANALYTICAL_DIR    ${MY_PROJECT_DIR}
 
  echo ""
  echo "${separator}"
@@ -274,94 +273,98 @@ export     MY_PROJECT_DIR=${PWD}
 # Put the CMake files in a project specific Build directory to avoid conflict
 # with other projects.
 
-if [ "${USE_DEBUG:-x}" = "on" ]; then
-  export        BUILD_DIR=${MY_PROJECT_DIR}/BuildG_ufs
+if ( $?USE_DEBUG ) then
+  if ( "${USE_DEBUG}" == "on" ) then
+    setenv BUILD_DIR         ${MY_PROJECT_DIR}/BuildG_ufs
+  else
+    setenv BUILD_DIR         ${MY_PROJECT_DIR}/BuildG_ufs
+  endif
 else
-  export        BUILD_DIR=${MY_PROJECT_DIR}/Build_ufs
-fi
+  setenv BUILD_DIR       ${MY_PROJECT_DIR}/Build_ufs
+endif
 
 # For backward compatibility, set deprecated SCRATCH_DIR to compile
 # older released versions of ROMS.
 
-export SCRATCH_DIR=${BUILD_DIR}
+setenv SCRATCH_DIR ${BUILD_DIR}
 
 # If requested, check out requested branch from ROMS GitHub.
 
-if [ $dprint -eq 0 ]; then
-  if [ $branch -eq 1 ]; then
-    if [ ! -d ${MY_PROJECT_DIR}/src ]; then
+if ( $dprint == 0 ) then
+  if ( $branch == 1 ) then
+    if ( ! -d ${MY_PROJECT_DIR}/src ) then
       echo ""
       echo "Downloading ROMS source code from GitHub: https://www.github.com/myroms"
       echo ""
       git clone https://www.github.com/myroms/roms.git src
-    fi
+    endif
     echo ""
     echo "Checking out ROMS GitHub branch: $branch_name"
     echo ""
     cd src
     git checkout $branch_name
     cd ${MY_PROJECT_DIR}
-
+  
     # If we are using the COMPILERS from the ROMS source code
     # overide the value set above
   
-    if [[ ${COMPILERS} == ${MY_ROMS_SRC}* ]]; then
-      export COMPILERS=${MY_PROJECT_DIR}/src/Compilers
-    fi
-    export MY_ROMS_SRC=${MY_PROJECT_DIR}/src
+    if ( ${COMPILERS} =~ ${MY_ROMS_SRC}* ) then
+      setenv COMPILERS ${MY_PROJECT_DIR}/src/Compilers
+    endif
+    setenv MY_ROMS_SRC ${MY_PROJECT_DIR}/src
   else
     echo ""
     echo "Using ROMS source code from: ${MY_ROMS_SRC}"
     echo ""
-  fi
-fi
+  endif
+endif
 
 # If necessary, create ROMS build directory.
 
-if [ $dprint -eq 0 ]; then
-  if [ -d ${BUILD_DIR} ]; then
-    if [ $clean -eq 1 ]; then
+if ( $dprint == 0 ) then
+  if ( -d ${BUILD_DIR} ) then
+    if ( $clean == 1 ) then
       echo ""
       echo "Removing ROMS build directory: ${BUILD_DIR}"
       echo ""
-      rm -rf ${BUILD_DIR} ufs_model
+      rm -rf ${BUILD_DIR}
       echo ""
       echo "Creating ROMS build directory: ${BUILD_DIR}"
       echo ""
       mkdir ${BUILD_DIR}
-    fi
+    endif
   else
-    if [ $clean -eq 1 ]; then
+    if ( $clean == 1 ) then
       mkdir ${BUILD_DIR}
       rm -f ufs_model
       cd ${BUILD_DIR}
     else
       echo ""
-      echo "Option -noclean activated when the ROMS build directory did not exist"
+      echo "Option -noclean activated when the ROMS build directory didn't exist"
       echo "Creating ROMS build directory and disabling -noclean"
       echo ""
-      clean=1
+      set clean = 1
       mkdir ${BUILD_DIR}
       cd ${BUILD_DIR}
-    fi
-  fi
-fi
+    endif
+  endif
+endif
 
 #--------------------------------------------------------------------------
 # Add environmental variables constructed in 'makefile' to MY_CPP_FLAGS
 # so can be passed to ROMS.
 #--------------------------------------------------------------------------
 
-ANALYTICAL_DIR="ANALYTICAL_DIR='${MY_ANALYTICAL_DIR}'"
-HEADER=`echo ${ROMS_APPLICATION} | tr '[:upper:]' '[:lower:]'`.h
-HEADER_DIR="HEADER_DIR='${MY_HEADER_DIR}'"
-ROOT_DIR="ROOT_DIR='${MY_ROMS_SRC}'"
+set ANALYTICAL_DIR = "ANALYTICAL_DIR='${MY_ANALYTICAL_DIR}'"
+set HEADER = `echo ${ROMS_APPLICATION} | tr '[:upper:]' '[:lower:]'`.h
+set HEADER_DIR = "HEADER_DIR='${MY_HEADER_DIR}'"
+set ROOT_DIR = "ROOT_DIR='${MY_ROMS_SRC}'"
 
-mycppflags="${MY_CPP_FLAGS}"
+set mycppflags = "${MY_CPP_FLAGS}"
 
-export       MY_CPP_FLAGS="${MY_CPP_FLAGS} -D${ANALYTICAL_DIR}"
-export       MY_CPP_FLAGS="${MY_CPP_FLAGS} -D${HEADER_DIR}"
-export       MY_CPP_FLAGS="${MY_CPP_FLAGS} -D${ROOT_DIR}"
+setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -D${ANALYTICAL_DIR}"
+setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -D${HEADER_DIR}"
+setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -D${ROOT_DIR}"
 
 cd ${BUILD_DIR}
 
@@ -369,154 +372,170 @@ cd ${BUILD_DIR}
 # Configure.
 #--------------------------------------------------------------------------
 
-# Construct the "cmake" command.
+# Construct the cmake command.
 
-if [ ! -z "${LIBTYPE}" ]; then
-  ltype="-DLIBTYPE=${LIBTYPE}"
+if ( $?LIBTYPE ) then
+  set ltype="-DLIBTYPE=${LIBTYPE}"
 else
-  ltype=""
-fi
+  set ltype=""
+endif
 
-if [ ! -z "${FORT}" ]; then
-  if [ ${FORT} == "ifort" ]; then
-    compiler="-DCMAKE_Fortran_COMPILER=ifort"
-  elif [ ${FORT} == "gfortran" ]; then
-    compiler="-DCMAKE_Fortran_COMPILER=gfortran"
+if ( $?FORT ) then
+  if ( "${FORT}" == "ifort" ) then
+    set compiler="-DCMAKE_Fortran_COMPILER=ifort"
+  else if ( "${FORT}" == "gfortran" ) then
+    set compiler="-DCMAKE_Fortran_COMPILER=gfortran"
   else
-    compiler=""
-  fi
-fi
+    set compiler=""
+  endif
+endif
 
-if [ ! -z "${MY_CPP_FLAGS}" ]; then
-  tmp=`echo ${MY_CPP_FLAGS} | sed 's/^ *-D//' | sed 's/ *-D/;/g'`
-  extra_flags="-DMY_CPP_FLAGS=${tmp}"
+if ( $?MY_CPP_FLAGS ) then
+  set tmp=`echo ${MY_CPP_FLAGS} | sed 's/^ *-D//' | sed 's/ *-D/;/g'`
+  set extra_flags="-DMY_CPP_FLAGS=${tmp}"
 else
-  extra_flags=""
-fi
+  set extra_flags=""
+endif
 
-if [ ! -z "${PARPACK_LIBDIR}" ]; then
-  parpack_ldir="-DPARPACK_LIBDIR=${PARPACK_LIBDIR}"
+if ( $?PARPACK_LIBDIR ) then
+  set parpack_ldir="-DPARPACK_LIBDIR=${PARPACK_LIBDIR}"
 else
-  parpack_ldir=""
-fi
+  set parpack_ldir=""
+endif
 
-if [ ! -z "${ARPACK_LIBDIR}" ]; then
-  arpack_ldir="-DARPACK_LIBDIR=${ARPACK_LIBDIR}"
+if ( $?ARPACK_LIBDIR ) then
+  set arpack_ldir="-DARPACK_LIBDIR=${ARPACK_LIBDIR}"
 else
-  arpack_ldir=""
-fi
+  set arpack_ldir=""
+endif
 
-if [ ! -z "${USE_SCORPIO}" ]; then
-  if [[ ! -z "${PIO_LIBDIR}" && ! -z "${PIO_INCDIR}" ]]; then
-    pio_ldir="-DPIO_LIBDIR=${PIO_LIBDIR}"
-    pio_idir="-DPIO_INCDIR=${PIO_INCDIR}"
-    if [[ ! -z "${PNETCDF_LIBDIR}" && ! -z "${PNETCDF_INCDIR}" ]]; then
-      pnetcdf_ldir="-DPNETCDF_LIBDIR=${PNETCDF_LIBDIR}"
-      pnetcdf_idir="-DPNETCDF_INCDIR=${PNETCDF_INCDIR}"
-    else
-      pnetcdf_ldir=""
-      pnetcdf_idir=""
-    fi
+if ( $?PIO_LIBDIR && $?PIO_INCDIR ) then
+  set pio_ldir="-DPIO_LIBDIR=${PIO_LIBDIR}"
+  set pio_idir="-DPIO_INCDIR=${PIO_INCDIR}"
+  if ( $?PNETCDF_LIBDIR && $?PNETCDF_INCDIR ) then
+    set pnetcdf_ldir="-DPNETCDF_LIBDIR=${PNETCDF_LIBDIR}"
+    set pnetcdf_idir="-DPNETCDF_INCDIR=${PNETCDF_INCDIR}"
   else
-    pio_ldir=""
-    pio_idir=""
-    pnetcdf_ldir=""
-    pnetcdf_idir=""
-  fi
-fi
-
-if [[ ! -z "${USE_MPI}" && "${USE_MPI}" == "on" ]]; then
-  mpi="-DMPI=ON"
+    set pnetcdf_ldir=""
+    set pnetcdf_idir=""
+  endif
 else
-  mpi=""
-fi
+  set pio_ldir=""
+  set pio_idir=""
+  set pnetcdf_ldir=""
+  set pnetcdf_idir=""
+endif
 
-if [[ ! -z "${USE_MPIF90}" && "${USE_MPIF90}" == "on" ]]; then
-  comm="-DCOMM=${which_MPI}"
-else
-  comm=""
-fi
+# The nested ifs are required to avoid breaking the script, as tcsh
+# apparently does not short-circuit if when the first truth is found
 
-if [ ! -z "${ROMS_EXECUTABLE}" ]; then
-  if [[ "${ROMS_EXECUTABLE}" == "ON" ]]; then
-    roms_exec="-DROMS_EXECUTABLE=ON"
+if ( $?USE_MPI ) then
+  if ( "${USE_MPI}" == "on" ) then
+    set mpi="-DMPI=ON"
   else
-    roms_exec="-DROMS_EXECUTABLE=OFF"
-  fi
+    set mpi=""
+  endif
 else
-  roms_exec=""
-fi
+  set mpi=""
+endif
 
-if [[ ! -z "${USE_DEBUG}" && "${USE_DEBUG}" == "on" ]]; then
-  dbg="-DDEBUG=ON"
+if ( $?USE_MPIF90 ) then
+  if ( "${USE_MPIF90}" == "on" ) then
+    set comm="-DCOMM=${which_MPI}"
+  else
+    set comm=""
+  endif
 else
-  dbg=""
-fi
+  set comm=""
+endif
+
+if ( $?ROMS_EXECUTABLE ) then
+  if ( "${ROMS_EXECUTABLE}" == "ON" ) then
+    set roms_exec="-DROMS_EXECUTABLE=ON"
+  else
+    set roms_exec="-DROMS_EXECUTABLE=OFF"
+  endif
+else
+  set roms_exec=""
+endif
+
+if ( $?USE_DEBUG ) then
+  if ( "${USE_DEBUG}" == "on" ) then
+    set dbg="-DDEBUG=ON"
+  else
+    set dbg=""
+  endif
+else
+  set dbg=""
+endif
 
 #--------------------------------------------------------------------------
 # Run the chosen build command.
 #--------------------------------------------------------------------------
 
-my_hdir="-DMY_HEADER_DIR=${MY_HEADER_DIR}"
+set my_hdir="-DMY_HEADER_DIR=${MY_HEADER_DIR}"
 
-if [[ $dprint -eq 0 && $clean -eq 1 ]]; then
-  export CC=mpicc
-  export CXX=mpicxx
-  export FC=mpif90
+if ( $dprint == 0 ) then
+  if ( $clean == 1 ) then
+    setenv CC  mpicc
+    setenv CXX mpicxx
+    setenv FC  mpif90
 
-  echo ""
-  echo "Configuring CMake for ROMS application:"
-  echo ""
-  cmake -DROMS_APP=${ROMS_APPLICATION} \
-	           -DROMS_APP_DIR=${ROMS_APP_DIR} \
-                   ${my_hdir} \
-                   ${ltype} \
-                   ${compiler} \
-                   ${extra_flags} \
-                   ${parpack_ldir} \
-                   ${arpack_ldir} \
-                   ${pio_ldir} \
-                   ${pio_idir} \
-                   ${pnetcdf_ldir} \
-                   ${pnetcdf_idir} \
-                   ${mpi} \
-                   ${comm} \
-                   ${roms_exec} \
-                   ${dbg} \
-		   -DROMS_SRC_DIR=${MY_ROMS_SRC} \
-                   -DAPP=CSTLR ${MY_UFS_SRC}
-fi
+    echo ""
+    echo "Configuring CMake for ROMS application:"
+    echo ""
+    cmake -DROMS_APP=${ROMS_APPLICATION} \
+                     -DROMS_APP_DIR=${ROMS_APP_DIR} \
+                     ${my_hdir} \
+                     ${ltype} \
+                     ${compiler} \
+                     ${extra_flags} \
+                     ${parpack_ldir} \
+                     ${arpack_ldir} \
+                     ${pio_ldir} \
+                     ${pio_idir} \
+                     ${pnetcdf_ldir} \
+                     ${pnetcdf_idir} \
+                     ${mpi} \
+                     ${comm} \
+                     ${roms_exec} \
+                     ${dbg} \
+                     -DROMS_SRC_DIR=${MY_ROMS_SRC} \
+                     -DAPP=CSTLR ${MY_UFS_SRC}
+  endif
+endif
 
-if [ $? -ne 0 ]; then
+if ( $status > 0 ) then
   echo "cmake did not complete successfully"
   exit 1
-fi
+endif
 
 #--------------------------------------------------------------------------
 # Compile.
 #--------------------------------------------------------------------------
 
-if [ $dprint -eq 1 ]; then
-  echo $debug:"${!debug}"
+if ( $dprint == 1 ) then
+  set val = `eval echo \$${debug}`
+  echo "${debug}:$val"
 else
 
   echo ""
   echo "Compiling ROMS source code:"
   echo ""
 
-  if [ $parallel -eq 1 ]; then
-    if [ $Verbose -eq 1 ]; then
+  if ( $parallel == 1 ) then
+    if ( $Verbose == 1 ) then
       make VERBOSE=1 $NCPUS
     else
       make $NCPUS
-    fi
+    endif
   else
-    if [ $Verbose -eq 1 ]; then
+    if ( $Verbose == 1 ) then
       make VERBOSE=1
     else
       make
-    fi
-  fi
+    endif
+  endif
   make install
 
   echo ""
@@ -525,20 +544,20 @@ else
   echo "ROMS source directory:         ${MY_ROMS_SRC}"
   echo "ROMS header file:              ${MY_HEADER_DIR}/${HEADER}"
   echo "ROMS build  directory:         ${BUILD_DIR}"
-  if [ $branch -eq 1 ]; then
+  if ( $branch == 1 ) then
     echo "ROMS downloaded from:          https://github.com/myroms/roms.git"
     echo "ROMS compiled branch:          $branch_name"
-  fi
+  endif
   echo "ROMS Application:              ${ROMS_APPLICATION}"
-  FFLAGS=`cat ${BUILD_DIR}/ROMS-interface/ROMS/fortran_flags`
+  set FFLAGS = `cat ${BUILD_DIR}/ROMS-interface/ROMS/fortran_flags`
   echo "Fortran compiler:              ${FORT}"
   echo "Fortran flags:                 ${FFLAGS}"
-  if [ -n "${mycppflags:+1}" ]; then
+  if ($?mycppflags) then
     echo "Added CPP Options:            ${mycppflags}"
-  fi
+  endif
   echo "${separator}"
   echo ""
-fi
+endif
 
 # Copy UFS executable and create links to ROMS and UFS metadata YAML files.
 
