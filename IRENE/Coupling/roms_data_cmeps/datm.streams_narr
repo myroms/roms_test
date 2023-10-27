@@ -1,5 +1,5 @@
 #####################################################
-####  CDEPS/CMEPS DATA Component Condiguration  #####
+####  CDEPS/CMEPS DATA Component Configuration  #####
 #####################################################
 
 stream_info:               narr.01 narr.02 narr.03 narr.04 narr.05 narr.06 narr.07 narr.08
@@ -14,7 +14,7 @@ yearFirst01:               2011
 yearLast01:                2011
 yearAlign01:               2011
 stream_vectors01:          null
-stream_mesh_file01:        "../mesh_esmf/lwrad_down_narr_IRENE_ESMFmesh.nc"
+stream_mesh_file01:        "../../Data/ESMF/lwrad_down_narr_IRENE_ESMFmesh.nc"
 stream_lev_dimname01:      null
 stream_data_files01:       "../../Data/FRC/lwrad_down_narr_IRENE_fixed.nc"
 stream_data_variables01:   "lwrad_down Faxa_lwdn"
@@ -29,7 +29,7 @@ yearFirst02:               2011
 yearLast02:                2011
 yearAlign02:               2011
 stream_vectors02:          null
-stream_mesh_file02:        "../mesh_esmf/swrad_narr_IRENE_ESMFmesh.nc"
+stream_mesh_file02:        "../../Data/ESMF/swrad_narr_IRENE_ESMFmesh.nc"
 stream_lev_dimname02:      null
 stream_data_files02:       "../../Data/FRC/swrad_narr_IRENE_fixed.nc"
 stream_data_variables02:   "swrad Faxa_swnet"
@@ -44,7 +44,7 @@ yearFirst03:               2011
 yearLast03:                2011
 yearAlign03:               2011
 stream_vectors03:          null
-stream_mesh_file03:        "../mesh_esmf/Pair_narr_IRENE_ESMFmesh.nc"
+stream_mesh_file03:        "../../Data/ESMF/Pair_narr_IRENE_ESMFmesh.nc"
 stream_lev_dimname03:      null
 stream_data_files03:       "../../Data/FRC/Pair_narr_IRENE_fixed.nc"
 stream_data_variables03:   "Pair Sa_pslv"
@@ -59,7 +59,7 @@ yearFirst04:               2011
 yearLast04:                2011
 yearAlign04:               2011
 stream_vectors04:          null
-stream_mesh_file04:        "../mesh_esmf/Tair_narr_IRENE_ESMFmesh.nc"
+stream_mesh_file04:        "../../Data/ESMF/Tair_narr_IRENE_ESMFmesh.nc"
 stream_lev_dimname04:      null
 stream_data_files04:       "../../Data/FRC/Tair_narr_IRENE_fixed.nc"
 stream_data_variables04:   "Tair Sa_t2m"
@@ -74,7 +74,7 @@ yearFirst05:               2011
 yearLast05:                2011
 yearAlign05:               2011
 stream_vectors05:          null
-stream_mesh_file05:        "../mesh_esmf/Qair_narr_IRENE_ESMFmesh.nc"
+stream_mesh_file05:        "../../Data/ESMF/Qair_narr_IRENE_ESMFmesh.nc"
 stream_lev_dimname05:      null
 stream_data_files05:       "../../Data/FRC/Qair_narr_IRENE_fixed.nc"
 stream_data_variables05:   "Qair Sa_q2m"
@@ -89,7 +89,7 @@ yearFirst06:               2011
 yearLast06:                2011
 yearAlign06:               2011
 stream_vectors06:          null
-stream_mesh_file06:        "../mesh_esmf/rain_narr_IRENE_ESMFmesh.nc"
+stream_mesh_file06:        "../../Data/ESMF/rain_narr_IRENE_ESMFmesh.nc"
 stream_lev_dimname06:      null
 stream_data_files06:       "../../Data/FRC/rain_narr_IRENE_fixed.nc"
 stream_data_variables06:   "rain Faxa_rain"
@@ -104,7 +104,7 @@ yearFirst07:               2011
 yearLast07:                2011
 yearAlign07:               2011
 stream_vectors07:          null
-stream_mesh_file07:        "../mesh_esmf/Uwind_narr_IRENE_ESMFmesh.nc"
+stream_mesh_file07:        "../../Data/ESMF/Uwind_narr_IRENE_ESMFmesh.nc"
 stream_lev_dimname07:      null
 stream_data_files07:       "../../Data/FRC/Uwind_narr_IRENE_fixed.nc"
 stream_data_variables07:   "Uwind Sa_u10m"
@@ -119,7 +119,7 @@ yearFirst08:               2011
 yearLast08:                2011
 yearAlign08:               2011
 stream_vectors08:          null
-stream_mesh_file08:        "../mesh_emsf/Vwind_narr_IRENE_ESMFmesh.nc"
+stream_mesh_file08:        "../../Data/ESMF/Vwind_narr_IRENE_ESMFmesh.nc"
 stream_lev_dimname08:      null
 stream_data_files08:       "../../Data/FRC/Vwind_narr_IRENE_fixed.nc"
 stream_data_variables08:   "Vwind Sa_v10m"

@@ -2,9 +2,9 @@
 
 ## Hurricane Irene: CDEPS/CMEPS Coupling
 
-This directory includes **create_mesh.sh** script and the mesh files that
-it generates to run the **DATA-ROMS** coupling for Hurricane Irene using
-the **CDEPS/CMEPS** couplers, which are **NUOPC**-based.
+This directory includes the **create_mesh.sh** script, which is used to generate
+the coupled components **mesh** files required by the **NUOPC**-based **CDEPS/CMEPS**
+interface used by the **UFS-coastal** framework.
 
 We can run the **DATA-ROMS** coupling system with the **CDEPS** connectors
 or **CMEPS** mediator.
@@ -51,3 +51,5 @@ It uses the data located in **`../../Data/FRC/*_IRENE.nc`** and
 ```
 ./create_mesh.sh
 ```
+:earth_americas: :globe_with_meridians: The output **mesh** files have already been created
+for you and are located in the sub-directory **`../../Data/ESMF`**.

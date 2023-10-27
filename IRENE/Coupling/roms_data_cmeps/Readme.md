@@ -5,7 +5,7 @@
 This directory includes various files to run the **DATA-ROMS** coupling for Hurricane Irene
 using **CMEPS** **NUOPC**-based mediator. The **DATA** component is replacing the 
 Atmosphere Model, using datasets from **NCEP-NARR** or **ECMWF-ERA5** products.
-The coupled simulation only runs for 42 hours as Hurricane Irene approaches the US. 
+The coupled simulation only runs for 42 hours as Hurricane Irene approaches the US 
 East Coast on August 27, 2011.
 
 For more information about the  Community Mediator for Earth Prediction Systems 
@@ -19,6 +19,7 @@ They are activated in the build scripts.
 
 ```
    IRENE                   ROMS application CPP option
+   BULK_FLUXES             Activates COARE bulk parameterization of surface fluxes
    CMEPS                   Activates the coupling mediator
    ESMF_LIB                ESMF/NUOPC coupling library (version 8.0 and up)
    FRC_COUPLING            Activates surface forcing from coupled system
@@ -28,21 +29,24 @@ They are activated in the build scripts.
 
 ### ESMF Mesh Files:
 
+:earth_americas: :globe_with_meridians: The output **mesh** files have already been created
+for you using the **`../mesh_esmf/create_mesh.sh`** script, and are located in the sub-directory
+**`../../Data/ESMF`**.
 ```
-                                   ../mesh_esmf/irene_roms_grid_rho_ESMFmesh.nc
+                                   ../../Data/ESMF/irene_roms_grid_rho_ESMFmesh.nc
 
-                                   ../mesh_esmf/era5_IRENE_ESMFmesh.nc
+                                   ../../Data/ESMF/era5_IRENE_ESMFmesh.nc
 
-                                   ../mesh_esmf/lwrad_down_narr_IRENE_ESMFmesh.nc
-                                   ../mesh_esmf/lwrad_narr_IRENE_ESMFmesh.nc
-                                   ../mesh_esmf/Pair_narr_IRENE_ESMFmesh.nc
-                                   ../mesh_esmf/Qair_narr_IRENE_ESMFmesh.nc
-                                   ../mesh_esmf/rain_narr_IRENE_ESMFmesh.nc
-                                   ../mesh_esmf/swrad_daily_narr_IRENE_ESMFmesh.nc
-                                   ../mesh_esmf/swrad_narr_IRENE_ESMFmesh.nc
-                                   ../mesh_esmf/Tair_narr_IRENE_ESMFmesh.nc
-                                   ../mesh_esmf/Uwind_narr_IRENE_ESMFmesh.nc
-                                   ../mesh_esmf/Vwind_narr_IRENE_ESMFmesh.nc
+                                   ../../Data/ESMF/lwrad_down_narr_IRENE_ESMFmesh.nc
+                                   ../../Data/ESMF/lwrad_narr_IRENE_ESMFmesh.nc
+                                   ../../Data/ESMF/Pair_narr_IRENE_ESMFmesh.nc
+                                   ../../Data/ESMF/Qair_narr_IRENE_ESMFmesh.nc
+                                   ../../Data/ESMF/rain_narr_IRENE_ESMFmesh.nc
+                                   ../../Data/ESMF/swrad_daily_narr_IRENE_ESMFmesh.nc
+                                   ../../Data/ESMF/swrad_narr_IRENE_ESMFmesh.nc
+                                   ../../Data/ESMF/Tair_narr_IRENE_ESMFmesh.nc
+                                   ../../Data/ESMF/Uwind_narr_IRENE_ESMFmesh.nc
+                                   ../../Data/ESMF/Vwind_narr_IRENE_ESMFmesh.nc
 ```
 
 ### DATA component Input NetCDF files: ECMWF-ERA5 Forcing
@@ -80,10 +84,11 @@ They are activated in the build scripts.
 ### Configuration and input scripts:
 
 ```
+  build_ufs.csh, .sh            UFS CMake compiling and linking CSH and BASH script
   datm_in                       UFS DATA component configuration namelist
   datm.streams                  CDEPS DATA model streams configuration
   irene.h                       ROMS header file
-  job_setup.csh                 Coupling set up script
+  job_setup.sh                  Creates configuration scripts from templates
   model_configure               UFS coupling configuration parameters
   nems.configure                UFS-NEMS run-time configuration paramters
   rbl4dvar.in                   ROMS observation input script
@@ -91,33 +96,67 @@ They are activated in the build scripts.
   roms_cdeps_narr.yaml          ROMS-CDEPS configuration YAML file for NCEP-NARR data
   roms_irene.in                 ROMS standard input script
  ```
+
+### Configuration template scripts:
+
+The **User** must run **`job_setup.sh`** bash script to generate the needed configuration scripts
+from templates. It facilitates customizing the location of Hurricane Irene's input NetCDF files.
+For example, it uses Perl to replace the value of **`MyIRENEdir`** in the template scripts.
+
+```
+  datm_in.tmpl                  UFS DATA component namelist template
+  datm.streams_era5.tmpl        CDEPS DATA model ECMWF-ERA5 streams template
+  datm.streams_narr.tmpl        CDEPS DATA model NCEP-NARR  streams template
+  rbl4dvar.in.tmpl              ROMS observation input template
+  roms_irene.in.tmpl            ROMS standard input template
+ ```
      
 ### How to Compile and Run UFS Coupling System:
 
-- Clone UFS-coastal repository:
-  ```
+- Clone **UFS-coastal** repository:
+  ```d
   git -c submodule.ADCIRC.update=none clone -b feature/coastal_app --recursive https://github.com/oceanmodeling/ufs-coastal
   ```
-  Notice that omit to clone the ADCIRC component since it is still private and working with research
+  It omits to clone the **ADCIRC** component since it is still private and working with the research
   branch **`feature/coastal_app`**.
 
-- Load JEDI Spack-Stack modules. In Rutgers computers, we execute:
+- Load **Spack-Stack** modules. In Rutgers computers, we load the **JEDI Spack/Stack** modules using:
   ```
   module purge
   module load stack-intel
   module list
   ```
-- Configure, compile, and link:
+- Configure, compile, and link. We provide the **`build_ufs.sh`** to facilitate configuring and compiling a generic
+  **ROMS** application coupled to the **`UFS-coastal`** framework.
+  ```d
+  build_ufs.sh -j 10
   ```
-  cd ufs-coastal
-  cd tests
-  ./compile.sh "pontus" "-DAPP=CSTLR -DBULK_FLUX=ON" coastal intel NO NO
-  ```
-  It creates the **`build_ufs_coastal`** subdirectory and executable driver **`ufs_coastal.exe`**.
+  It creates the **`Build_ufs`** sub-directory and executable driver **`ufs_model`**.
 
-- To run, use:
+  In addition, you could compile with a specific **ROMS** branch from https://github.com/myroms/roms. For example:
+  ```d
+  build_ufs.sh -j 10 -b feature/kernel
   ```
-  mpirun -n 12 ufs_coastal.exe > & log &
+
+- The **job_setup.sh** generates the required **UFS-ROMS** input scripts from templates.
+  ```d
+   ./jobs_setup.sh [options]
+                  -d      IRENE Data location full or relative path,  default  ../..
+                  -t      IRENE templates location scripts path,      default  .
+                  -pets   ROMS parallel tile partitions,              default  3x4
+  ```
+  To generate input scripts, you could use:
+  ```d
+  ./job_setup.sh
+
+  or
+
+  ./job_setup.sh -pets 3x4 -d /home/CaptainCook/IRENE -t ${PWD}
+  ```
+
+- To run the coupled system, use:
+  ```
+  mpirun -n 12 ufs_model > & log &
   ```
 
 ### The output Files:
@@ -131,6 +170,8 @@ They are activated in the build scripts.
     log.roms                                      ROMS standard output
 
     mediator.log                                  CMEPS mediator standard output
+
+    ESMF_LogFile                                  ESMF single log file
   ```
 
 - Coupling NetCDF Files:
@@ -143,5 +184,6 @@ They are activated in the build scripts.
     irene_rst.nc                                  ROMS restart
 
     ufs.cpld.cpl.hi.*.nc                          UFS history, exchanged fields
-    
+
+    ufs.cpld.datm.r.2011-08-29-00000.nc           UFS restart 2011-08-29 00:00:00
   ```

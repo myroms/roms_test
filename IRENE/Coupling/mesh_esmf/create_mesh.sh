@@ -1,5 +1,4 @@
 #!/bin/bash
-
 #
 # git $Id$
 #######################################################################
@@ -14,13 +13,18 @@
 #                                                                     #
 #######################################################################
 
+# Set Hurricane Irene full or relative directory.
+
+#IreneDir=~/ocean/repository/git/roms_test/IRENE
+ IreneDir=../..
+
 # Create DATA component MESH grids.
 
 echo
-echo "Creating MESH file for DATA component files:"
+echo "Creating ESMF MESH file for DATA component files:"
 echo
 
-for f in `ls -al ../../Data/FRC/*_IRENE.nc | awk '{print $9}'`
+for f in `ls -al ${IreneDir}/Data/FRC/*_IRENE.nc | awk '{print $9}'`
 do
   bname=`basename $f .nc`
   out_file=${bname}_ESMFmesh.nc
@@ -39,7 +43,7 @@ echo
 echo "Creating MESH file for DATA component files:"
 echo
 
-inp_file=../../Data/ROMS/irene_roms_grid.nc
+inp_file=${IreneDir}/Data/ROMS/irene_roms_grid.nc
 out_file=`basename ${inp_file} .nc`_rho_ESMFmesh.nc
 
 echo "  Processing DATA file: ${inp_file}"

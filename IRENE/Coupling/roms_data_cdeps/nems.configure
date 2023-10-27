@@ -4,7 +4,7 @@
 
 # ESMF #
 
-logKindFlag:            ESMF_LOGKIND_MULTI
+logKindFlag:            ESMF_LOGKIND_SINGLE     # ESMF_LOGKIND_MULTI
 globalResourceControl:  true
 
 # EARTH #
@@ -62,9 +62,9 @@ ALLCOMP_attributes::
   ScalarFieldIdxNextSwCday = 3 
   ScalarFieldName = cpl_scalars
   start_type = startup
-  restart_dir = Restart/
+  restart_dir = ./
   case_name = ufs.cpld
-  restart_n = 12
+  restart_n = 42
   restart_option = nhours
   restart_ymd = -999
   orb_eccen = 1.e36

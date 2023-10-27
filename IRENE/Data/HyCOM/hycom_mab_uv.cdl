@@ -1,0 +1,60 @@
+netcdf hycom_mab_uv {
+dimensions:
+	lon = 413 ;
+	lat = 326 ;
+        time = UNLIMITED ; // (0 currently)
+
+variables:
+	double time(time) ;
+		time:long_name = "time" ;
+		time:units = "days since 2000-01-01 00:00:00" ;
+		time:calendar = "gregorian" ;
+		time:axis = "T" ;
+	double Date(time) ;
+		Date:long_name = "date" ;
+		Date:units = "day as %Y%m%d.%f" ;
+		Date:C_format = "%13.4f" ;
+		Date:FORTRAN_format = "(f13.4)" ;
+	double lon(lat, lon) ;
+		lon:long_name = "longitude" ;
+		lon:standard_name = "longitude" ;
+		lon:units = "degrees_east" ;
+		lon:axis = "X" ;
+	double lat(lat, lon) ;
+		lat:long_name = "latitude" ;
+		lat:standard_name = "latitude" ;
+		lat:units = "degrees_north" ;
+		lat:axis = "Y" ;
+        double mask(lat, lon) ;
+                mask:standard_name = "land-sea mask" ;
+                mask:flag_values = 0., 1. ;
+                mask:flag_meanings = "land water" ;
+                mask:coordinates = "lon lat" ;
+	float water_u(time, lat, lon) ;
+		water_u:long_name = "surface eastward water velocity" ;
+		water_u:standard_name = "eastward_sea_water_velocity" ;
+		water_u:units = "m/s" ;
+		water_u:time = "time" ;
+		water_u:coordinates = "lon lat time" ;
+		water_u:_FillValue = 1.e+30f ;
+	float water_v(time, lat, lon) ;
+		water_v:long_name = "surface eastward water velocity" ;
+		water_v:standard_name = "eastward_sea_water_velocity" ;
+		water_v:units = "m/s" ;
+		water_v:time = "time" ;
+		water_v:coordinates = "lon lat time" ;
+		water_v:_FillValue = 1.e+30f ;
+
+// global attributes:
+		:Conventions = "CF-1.6 NAVO_netcdf_v1.1" ;
+		:title = "HYCOM GLBu0.08" ;
+		:institution = "Naval Oceanographic Office" ;
+		:source = "HYCOM archive file" ;
+		:experiment = "expt_53.X" ;
+		:history = "archv2ncdf3z" ;
+		:field_type = "instantaneous" ;
+		:geospatial_lat_min = 30. ;
+		:geospatial_lat_max = 48. ;
+		:geospatial_lon_min = -86. ;
+		:geospatial_lon_max = -53.0400390625 ;
+}
