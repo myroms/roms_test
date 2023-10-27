@@ -304,14 +304,15 @@ if ( $dprint == 0 ) then
     cd src
     git checkout $branch_name
     cd ${MY_PROJECT_DIR}
-  
+
     # If we are using the COMPILERS from the ROMS source code
     # overide the value set above
-  
+
     if ( ${COMPILERS} =~ ${MY_ROMS_SRC}* ) then
       setenv COMPILERS ${MY_PROJECT_DIR}/src/Compilers
     endif
     setenv MY_ROMS_SRC ${MY_PROJECT_DIR}/src
+
   else
     echo ""
     echo "Using ROMS source code from: ${MY_ROMS_SRC}"
@@ -477,9 +478,16 @@ set my_hdir="-DMY_HEADER_DIR=${MY_HEADER_DIR}"
 
 if ( $dprint == 0 ) then
   if ( $clean == 1 ) then
-    setenv CC  mpicc
-    setenv CXX mpicxx
-    setenv FC  mpif90
+
+    if ( "${which_MPI}" == "intel" ) then
+      setenv CC  mpiicc
+      setenv CXX mpiicxx
+      setenv FC  mpiif90
+    else
+      setenv CC  mpicc
+      setenv CXX mpicxx
+      setenv FC  mpif90
+    endif
 
     echo ""
     echo "Configuring CMake for ROMS application:"
