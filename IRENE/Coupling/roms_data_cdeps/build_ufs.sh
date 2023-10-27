@@ -173,7 +173,7 @@ export     MY_PROJECT_DIR=${PWD}
  export       MY_ROMS_SRC=${MY_ROOT_DIR}/roms
 
  export      ROMS_APP_DIR=${MY_PROJECT_DIR}
- 
+
 # Which type(s) of libraries would you like?
 #
 # NOTE: If you choose both and also choose to build the ROMS executable,
@@ -257,7 +257,7 @@ export     MY_PROJECT_DIR=${PWD}
 #export       USE_SCORPIO=on               # Parallel I/O with SCORPIO library
 
 #--------------------------------------------------------------------------
-# Build definitions and options.  
+# Build definitions and options.
 #--------------------------------------------------------------------------
 
 # Set location of the application header file.
@@ -304,7 +304,7 @@ if [ $dprint -eq 0 ]; then
 
     # If we are using the COMPILERS from the ROMS source code
     # overide the value set above
-  
+
     if [[ ${COMPILERS} == ${MY_ROMS_SRC}* ]]; then
       export COMPILERS=${MY_PROJECT_DIR}/src/Compilers
     fi
@@ -460,15 +460,22 @@ fi
 my_hdir="-DMY_HEADER_DIR=${MY_HEADER_DIR}"
 
 if [[ $dprint -eq 0 && $clean -eq 1 ]]; then
-  export CC=mpicc
-  export CXX=mpicxx
-  export FC=mpif90
+
+  if [[ ${which_MPI} == "intel" ]]; then
+    export CC=mpiicc
+    export CXX=mpiicxx
+    export FC=mpiifort
+  else
+    export CC=mpicc
+    export CXX=mpicxx
+    export FC=mpif90
+  fi
 
   echo ""
   echo "Configuring CMake for ROMS application:"
   echo ""
   cmake -DROMS_APP=${ROMS_APPLICATION} \
-	           -DROMS_APP_DIR=${ROMS_APP_DIR} \
+                   -DROMS_APP_DIR=${ROMS_APP_DIR} \
                    ${my_hdir} \
                    ${ltype} \
                    ${compiler} \
@@ -483,7 +490,7 @@ if [[ $dprint -eq 0 && $clean -eq 1 ]]; then
                    ${comm} \
                    ${roms_exec} \
                    ${dbg} \
-		   -DROMS_SRC_DIR=${MY_ROMS_SRC} \
+                   -DROMS_SRC_DIR=${MY_ROMS_SRC} \
                    -DAPP=CSTLR ${MY_UFS_SRC}
 fi
 
