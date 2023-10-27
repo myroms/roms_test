@@ -84,7 +84,7 @@ for you using the **`../mesh_esmf/create_mesh.sh`** script, and are located in t
 ### Configuration and input scripts:
 
 ```
-  build_ufs.csh, .sh            UFS CMake compiling and linking BASH scripts
+  build_ufs.csh, .sh            UFS CMake compiling and linking CSH and BASH scripts
   datm_in                       UFS DATA component configuration namelist
   datm.streams                  CDEPS DATA model streams configuration
   irene.h                       ROMS header file
