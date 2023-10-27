@@ -67,6 +67,7 @@ for you using the **`../mesh_esmf/create_mesh.sh`** script, and are located in t
                                    ../../Data/FRC/Uwind_narr_IRENE.nc
                                    ../../Data/FRC/Vwind_narr_IRENE.nc
 ```
+
 ### ROMS component Input NetCDF files:
 
 ```
@@ -155,7 +156,6 @@ For example, it uses Perl to replace the value of **`MyIRENEdir`** in the templa
 
 - To run the coupled system, use:
   ```
->>>>>>> main
   mpirun -n 12 ufs_model > & log &
   ```
 
