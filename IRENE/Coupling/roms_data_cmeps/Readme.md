@@ -84,7 +84,7 @@ for you using the **`../mesh_esmf/create_mesh.sh`** script, and are located in t
 ### Configuration and input scripts:
 
 ```
-  build_ufs.sh                  UFS CMake compiling and linking BASH script
+  build_ufs.csh, .sh            UFS CMake compiling and linking CSH and BASH script
   datm_in                       UFS DATA component configuration namelist
   datm.streams                  CDEPS DATA model streams configuration
   irene.h                       ROMS header file
@@ -114,10 +114,10 @@ For example, it uses Perl to replace the value of **`MyIRENEdir`** in the templa
 ### How to Compile and Run UFS Coupling System:
 
 - Clone **UFS-coastal** repository:
-  ```
+  ```d
   git -c submodule.ADCIRC.update=none clone -b feature/coastal_app --recursive https://github.com/oceanmodeling/ufs-coastal
   ```
-  Notice that omit to clone the **ADCIRC** component since it is still private and working with research
+  It omits to clone the **ADCIRC** component since it is still private and working with the research
   branch **`feature/coastal_app`**.
 
 - Load **Spack-Stack** modules. In Rutgers computers, we load the **JEDI Spack/Stack** modules using:
@@ -128,26 +128,33 @@ For example, it uses Perl to replace the value of **`MyIRENEdir`** in the templa
   ```
 - Configure, compile, and link. We provide the **`build_ufs.sh`** to facilitate configuring and compiling a generic
   **ROMS** application coupled to the **`UFS-coastal`** framework.
-  ```
+  ```d
   build_ufs.sh -j 10
   ```
   It creates the **`Build_ufs`** sub-directory and executable driver **`ufs_model`**.
 
   In addition, you could compile with a specific **ROMS** branch from https://github.com/myroms/roms. For example:
-  ```
+  ```d
   build_ufs.sh -j 10 -b feature/kernel
   ```
 
-- Execute **job_setup.csh** to generate the required **UFS-ROMS** input scripts from templates:
+- The **job_setup.sh** generates the required **UFS-ROMS** input scripts from templates.
+  ```d
+   ./jobs_setup.sh [options]
+                  -d      IRENE Data location full or relative path,  default  ../..
+                  -t      IRENE templates location scripts path,      default  .
+                  -pets   ROMS parallel tile partitions,              default  3x4
   ```
+  To generate input scripts, you could use:
+  ```d
   ./job_setup.sh
 
   or
 
-  ./job_setup.sh -pets 3x4 -d /home/CaptainCook/IRENE
+  ./job_setup.sh -pets 3x4 -d /home/CaptainCook/IRENE -t ${PWD}
   ```
 
-- To run, use:
+- To run the coupled system, use:
   ```
   mpirun -n 12 ufs_model > & log &
   ```
