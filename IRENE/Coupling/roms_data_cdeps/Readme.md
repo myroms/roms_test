@@ -114,7 +114,7 @@ For example, it uses Perl to replace the value of **`MyIRENEdir`** in the templa
 ### How to Compile and Run UFS Coupling System:
 
 - Clone **UFS-coastal** repository:
-  ```
+  ```d
   git -c submodule.ADCIRC.update=none clone -b feature/coastal_app --recursive https://github.com/oceanmodeling/ufs-coastal
   ```
   It omits to clone the **ADCIRC** component since it is still private and working with the research branch **`feature/coastal_app`**.
