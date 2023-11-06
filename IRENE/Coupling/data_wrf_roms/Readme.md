@@ -3,15 +3,20 @@
 ## Hurricane Irene Test Case: ESMF/NUOPC Coupling
 
 This directory includes various files to run the **DATA-WRF-ROMS**
-coupling for Hurricane Irene using the **ESMF/NUOPC** library. The
-coupled simulation is only run for 42 hours as it approaches the
-US East Coast on August 27, 2011.
+coupling system for Hurricane Irene using the **ESMF/NUOPC** library. It
+uses our Coupled Forecast Framework (**CFF**) configuration for the
+US East Coast **`CFF-EC7`** (**ROMS** 7km grid), and the simulation is 
+only run for 42 hours as Hurricane Irene approached the Outer Banks
+of North Carolina on August 27, 2011.
+
+<img width="940" alt="image" src="https://github.com/myroms/roms_test/assets/23062912/43010527-1cb7-4ba0-aec4-a888f46369c4">
 
 **WRF** and **ROMS** grids are incongruent. The **WRF** grid is
 larger than the **ROMS** grid. Therefore, the **DATA** model provides
-SST values at the **WRF** grid locations are not covered by the **ROMS**
+SST values at the **WRF** grid locations not covered by the **ROMS**
 grid. Thus, both **DATA** and **ROMS** SST values are melded with a
-smooth transition at the **ROMS** domain boundaries.
+smooth transition at the **ROMS** domain boundaries, as shown in the
+melding weights above.
 
 The **WRF** and **ROMS** timesteps are 20 and 60 seconds
 for stable solutions due to the strong Hurricane winds.  The
@@ -21,9 +26,10 @@ diagnostics.
 
 All the components interact with the same coupling time step.
 The connector from **ROMS** to **WRF** is explicit, whereas the connector
-from **WRF** to **ROMS** is semi-implicit.
+from **WRF** to **ROMS** is semi-implicit. 
 
-For more information, visit **WikiROMS**:
+It uses **ROMS**'s native, **NUOPC**-based coupling system. For more information,
+visit **WikiROMS**:
 
 https://www.myroms.org/wiki/Model_Coupling_ESMF
 https://www.myroms.org/wiki/Model_Coupling_IRENE
