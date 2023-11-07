@@ -3,11 +3,15 @@
 ## Hurricane Irene: ESMF/NUOPC Coupling
 
 This directory includes various files to run the **DATA-ROMS**
-coupling for Hurricane Irene using the **ESMF/NUOPC** library. The
-coupled simulation is only run for 42 hours as it approaches the
-US East Coast on August 27, 2011.
+coupling for Hurricane Irene using the **ESMF/NUOPC** library.  It
+uses our Coupled Forecast Framework (**CFF**) configuration for the
+US East Coast **`CFF-EC7`** (**ROMS** 7km grid), and the simulation is 
+only run for 42 hours as Hurricane Irene approached the Outer Banks
+of North Carolina on August 27, 2011.
 
-The atmospheric forcing is exported to **ROMS** from the **DATA** model
+<img width="897" alt="image" src="https://github.com/myroms/roms_test/assets/23062912/5ecba382-289a-4871-b472-2e632282b440">
+
+The atmospheric forcing is exported to **ROMS** from the **DATA** component
 with a coupling interval of 60 seconds (same as **ROMS** timestep). It
 is a standard test of **ROMS** and **DATA** modules in the native coupling
 system.
@@ -16,9 +20,11 @@ All the components interact with the same coupling time step.
 The connector for **DATA** to **ROMS** is explicit, and it uses the same
 forcing **NCEP-NARR** files used in the regular **`../../Forward`** solution,
 except that the **ESMF/NUOCP** system is doing the spatial and temporal
-interpolation. Alternatively, you may use **ECMWF-ERA5** forcing.
+interpolation. Alternatively, you may use **ECMWF-ERA5** forcing, as shown
+in the Figure above for surface pressure.
 
-For more information, visit **WikiROMS**:
+It uses **ROMS**'s native, **NUOPC**-based coupling system. For more information,
+visit **WikiROMS**:
 
 https://www.myroms.org/wiki/Model_Coupling_ESMF
 https://www.myroms.org/wiki/Model_Coupling_IRENE
