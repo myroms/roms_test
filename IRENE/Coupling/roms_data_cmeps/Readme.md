@@ -4,9 +4,13 @@
 
 This directory includes various files to run the **DATA-ROMS** coupling for Hurricane Irene
 using **CMEPS** **NUOPC**-based mediator. The **DATA** component is replacing the 
-Atmosphere Model, using datasets from **NCEP-NARR** or **ECMWF-ERA5** products.
-The coupled simulation only runs for 42 hours as Hurricane Irene approaches the US 
-East Coast on August 27, 2011.
+Atmosphere Model, using datasets from **NCEP-NARR** or **ECMWF-ERA5** products. It
+uses our Coupled Forecast Framework (**CFF**) configuration for the
+US East Coast **`CFF-EC7`** (**ROMS** 7km grid), and the simulation is 
+only run for 42 hours as Hurricane Irene approached the Outer Banks
+of North Carolina on August 27, 2011.
+
+<img width="897" alt="image" src="https://github.com/myroms/roms_test/assets/23062912/5ecba382-289a-4871-b472-2e632282b440">
 
 For more information about the  Community Mediator for Earth Prediction Systems 
 (**CMEPS**), visit:
