@@ -2,7 +2,7 @@
 #
 # git $Id$
 #::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-# Copyright (c) 2002-2023 The ROMS/TOMS Group                           :::
+# Copyright (c) 2002-2024 The ROMS/TOMS Group                           :::
 #::::::::::::::::::::::::::::::::::::::::::::::::::::: Hernan G. Arango :::
 #                                                                       :::
 # WRF Compiling CSH Script: WRF Versions 4.1 and up                     :::
