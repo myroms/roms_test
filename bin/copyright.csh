@@ -2,7 +2,7 @@
 #
 # git $Id$
 #::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-# Copyright (c) 2002-2023 The ROMS/TOMS Group                           :::
+# Copyright (c) 2002-2024 The ROMS/TOMS Group                           :::
 #   Licensed under a MIT/X style license                                :::
 #   See License_ROMS.md                                                 :::
 #:::::::::::::::::::::::::::::::::::::::::::::::::::::: David Robertson :::
@@ -23,8 +23,8 @@
 #                                                                       :::
 #::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-set search = "2002-2022 The ROMS/TOMS"
-set replace = "2002-2023 The ROMS/TOMS"
+set search = "2002-2023 The ROMS/TOMS"
+set replace = "2002-2024 The ROMS/TOMS"
 
 # Directories to search for replacements.
 
@@ -36,6 +36,7 @@ set c_dirs = "$c_dirs bl_test"
 set c_dirs = "$c_dirs canyon"
 set c_dirs = "$c_dirs channel"
 set c_dirs = "$c_dirs DAMEE_4"
+set c_dirs = "$c_dirs docs"
 set c_dirs = "$c_dirs dogbone"
 set c_dirs = "$c_dirs double_gyre"
 set c_dirs = "$c_dirs estuary_test"

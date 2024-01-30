@@ -2,7 +2,7 @@
 #
 # git $Id$
 #::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-# Copyright (c) 2002-2023 The ROMS/TOMS Group                           :::
+# Copyright (c) 2002-2024 The ROMS/TOMS Group                           :::
 #   Licensed under a MIT/X style license                                :::
 #   See License_ROMS.md                                                 :::
 #:::::::::::::::::::::::::::::::::::::::::::::::::::::: David Robertson :::
@@ -23,8 +23,8 @@
 #                                                                       :::
 #::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-search="2002-2022 The ROMS/TOMS"
-replace="2002-2023 The ROMS/TOMS"
+search="2002-2023 The ROMS/TOMS"
+replace="2002-2024 The ROMS/TOMS"
 
 # Directories to search for replacements.
 
@@ -36,6 +36,7 @@ c_dirs="$c_dirs bl_test"
 c_dirs="$c_dirs canyon"
 c_dirs="$c_dirs channel"
 c_dirs="$c_dirs DAMEE_4"
+c_dirs="$c_dirs docs"
 c_dirs="$c_dirs dogbone"
 c_dirs="$c_dirs double_gyre"
 c_dirs="$c_dirs estuary_test"
