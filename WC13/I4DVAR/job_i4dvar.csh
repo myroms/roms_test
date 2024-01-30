@@ -50,6 +50,11 @@
  set STDnameB=../Data/wc13_std_b.nc
  set STDnameF=../Data/wc13_std_f.nc
 
+# Set output file for standard deviation computed/modeled from background
+# (prior) state.
+
+ set STDnameC=wc13_std_computed.nc
+
 # Set initial conditions, boundary conditions and surface forcing
 # error covariance normalization factors files.
 
@@ -77,6 +82,7 @@
  $SUBSTITUTE $I4DVAR roms_std_i.nc $STDnameI
  $SUBSTITUTE $I4DVAR roms_std_b.nc $STDnameB
  $SUBSTITUTE $I4DVAR roms_std_f.nc $STDnameF
+ $SUBSTITUTE $I4DVAR roms_std_c.nc $STDnameC
  $SUBSTITUTE $I4DVAR roms_nrm_i.nc $NRMnameI
  $SUBSTITUTE $I4DVAR roms_nrm_b.nc $NRMnameB
  $SUBSTITUTE $I4DVAR roms_nrm_f.nc $NRMnameF
