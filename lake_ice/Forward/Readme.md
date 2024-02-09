@@ -69,6 +69,7 @@ The sea model is activated with the C-preprocessing option **`ICE_MODEL`**, and 
 | **ALBEDO_CSIM**        | if CSIM albedo formulation |
 | **ALBEDO_CURVE**       | if seawater albedo from curve |
 | **ALBEDO_SZO**         | if zenith angle from Briegleb et al. (1986) |
+| **ICE_BIOLOGY**        |
 | **ICE_MODEL**          | To activate ROMS native sea-ice model |
 | **ICE_THERMO**         | If thermodynamic component |
 | **ICE_MK**             | If Mellor-Kantha thermodynamics (only choice) |
@@ -163,13 +164,13 @@ Below are maps illustrating the solution's freezing and melting cycle in winter 
 
 | Ice Concentration and Age | Winter Year 2            |
 :--------------------------:|:-------------------------:
-|<img width="400" alt="image" src="https://github.com/myroms/roms_test/assets/23062912/90e90864-30e3-41b2-bc3a-979fd518fcf2"> | <img width="400" alt="image" src="https://github.com/myroms/roms_test/assets/23062912/618e748e-32d4-41a8-badc-0f7d1e16b509"> |
-|<img width="400" alt="image" src="https://github.com/myroms/roms_test/assets/23062912/62ed6768-58e1-41e0-91c6-ab5fe2f8f7b9"> | <img width="400" alt="image" src="https://github.com/myroms/roms_test/assets/23062912/d063e79a-8caf-4fc8-9770-0d3f3f853844"> |
+|<img width="400" alt="image" src="https://github.com/myroms/roms_test/assets/23062912/317dd6ec-a54b-4581-beff-0956743563da"> | <img width="400" alt="image" src="https://github.com/myroms/roms_test/assets/23062912/fe76f19c-7bbf-429b-8e55-1ff93f7d3bb4"> |
+|<img width="400" alt="image" src="https://github.com/myroms/roms_test/assets/23062912/f32d4c2d-2ee9-4cf3-9116-794fa5d9f9fe"> | <img width="400" alt="image" src="https://github.com/myroms/roms_test/assets/23062912/a8e0ef12-8e08-46a1-af56-3860ec72d3d0"> |
 
 | Ice and Meltwater Thicknesses | Winter Year 2            |
 :------------------------------:|:-------------------------:
-| <img width="400" alt="image" src="https://github.com/myroms/roms_test/assets/23062912/e919e475-771c-4fd1-bf10-950d57ee6427"> | <img width="400" alt="image" src="https://github.com/myroms/roms_test/assets/23062912/fee07f8d-05b8-4531-b913-a16506a20868"> |
-| <img width="400" alt="image" src="https://github.com/myroms/roms_test/assets/23062912/1d7a45f1-1bfa-4b39-90d4-c56353fd18d5"> | <img width="400" alt="image" src="https://github.com/myroms/roms_test/assets/23062912/8af33698-50d5-45e0-9b23-9db8ec66c18a"> |
+| <img width="400" alt="image" src="https://github.com/myroms/roms_test/assets/23062912/bad0a05d-c32d-4830-8b64-9e629891ed95"> | <img width="400" alt="image" src="https://github.com/myroms/roms_test/assets/23062912/6af93740-9980-4b9f-97e1-dcc57311427b"> |
+| <img width="400" alt="image" src="https://github.com/myroms/roms_test/assets/23062912/2e17286a-978b-450e-a5ef-66417712ed19"> | <img width="400" alt="image" src="https://github.com/myroms/roms_test/assets/23062912/35b55ac3-9584-425c-a20f-87209ad95a38"> |
 
 ----
 
@@ -177,25 +178,23 @@ The **`STATION`** option was activated to output the ice model solution time ser
 
 | Heat Fluxes Forcing           | Wind Stress Forcing      |
 :------------------------------:|:-------------------------:
-| <img width="400" alt="image" src="https://github.com/myroms/roms_test/assets/23062912/a8b5bc20-ae27-4968-8742-4c3f6646d390"> | <img width="400" alt="image" src="https://github.com/myroms/roms_test/assets/23062912/4288c57a-fa0c-4eeb-adbc-58488b4c58d0"> |
+| <img width="400" alt="image" src="https://github.com/myroms/roms_test/assets/23062912/c58ecdc5-9a13-4116-b11b-0d8531517210"> | <img width="400" alt="image" src="https://github.com/myroms/roms_test/assets/23062912/2a330595-e965-4ae2-adec-71442b875d46"> |
 
-| Ice Concentration             | Ice Age.                 |
+| Ice Concentration             | Ice Age                  |
 :------------------------------:|:-------------------------:
-| <img width="400" alt="image" src="https://github.com/myroms/roms_test/assets/23062912/ea79b196-a011-4c5f-b798-a859257528b4"> | <img width="400" alt="image" src="https://github.com/myroms/roms_test/assets/23062912/6baf61c4-ff53-4fc1-bd89-0d0a07487dc4"> |
+| <img width="400" alt="image" src="https://github.com/myroms/roms_test/assets/23062912/9172cee8-29d0-4d5f-be5d-6c56e0a55688"> | <img width="400" alt="image" src="https://github.com/myroms/roms_test/assets/23062912/bdc6eda3-2cba-40e7-9c1a-73530f65e350"> |
 
 | Melt/Freeze Rates             | Meltponds Thickness      |
 :------------------------------:|:-------------------------:
-| <img width="400" alt="image" src="https://github.com/myroms/roms_test/assets/23062912/683a61f7-0b52-4a7b-9b1b-7d29c1cba997"> | <img width="400" alt="image" src="https://github.com/myroms/roms_test/assets/23062912/6307e361-1015-46e9-91d0-e01e15d08c7d"> |
+| <img width="400" alt="image" src="https://github.com/myroms/roms_test/assets/23062912/1caa5327-d88b-4512-a5ac-32ff4cfe24b5"> | <img width="400" alt="image" src="https://github.com/myroms/roms_test/assets/23062912/39c17044-b039-429d-9cf8-bdadfe4675a9"> |
 
 | Interior Ice Temperature      | Surface Ice/Snow Temperature |
 :------------------------------:|:-----------------------------:
-| <img width="400" alt="image" src="https://github.com/myroms/roms_test/assets/23062912/a8b04f08-c7db-4a1d-8906-86e8c8ab1cbf"> | <img width="400" alt="image" src="https://github.com/myroms/roms_test/assets/23062912/132e9d1c-d632-44f9-b46c-4e1e31b5847f"> |
+| <img width="400" alt="image" src="https://github.com/myroms/roms_test/assets/23062912/97c37a79-8e2f-4bd0-bd2c-a20ce15f4034"> | <img width="400" alt="image" src="https://github.com/myroms/roms_test/assets/23062912/58e27a2c-ec9c-4ecc-b5fe-c1ed7924a347"> |
 
 | Ice Velocity.                 | Free Surface              |
 :------------------------------:|:--------------------------:
-| <img width="400" alt="image" src="https://github.com/myroms/roms_test/assets/23062912/b22d3ac3-fc64-4386-9ca4-b07f7425d644"> | <img width="400" alt="image" src="https://github.com/myroms/roms_test/assets/23062912/5da528b6-c647-42a4-a989-cffe6b5f6158"> |
-
-
+| <img width="400" alt="image" src="https://github.com/myroms/roms_test/assets/23062912/749ecf3a-c02c-41ee-a839-f26ab95c48ec"> | <img width="400" alt="image" src="https://github.com/myroms/roms_test/assets/23062912/fe67ab81-0355-4589-930e-5fcc300c8ebe"> |
 
 ---- 
 
