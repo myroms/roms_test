@@ -34,7 +34,7 @@ doPNG_stations = false;
 nf       = 3;                      % history filename number to process
 Contours = false;                  % switch to use 'contourf' instead
 Land     = [0.6 0.65 0.6];         % background color instead of white
-Recs     = [60 76 104 121 130];    % time records to process
+Recs     = [60 76 104 121];        % time records to process
 
 if (PLOT_MAPS)
 
@@ -339,7 +339,6 @@ else
   subplot(2,1,2)
   plot(x, F, 'linewidth', width);
   datetick('x', 'mmmyy', 'keepticks');
-  legend(sta_lab, 'Location','best');
   title('Temperature of Molecular sub-layer under Ice, C');
   grid on;
   if (doPNG_stations)

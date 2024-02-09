@@ -178,7 +178,7 @@ Sout(idW_ro) == T       ! Fi(...,icW_ro)     melt/freeze rate runoff into ocean
 ! essential because the station arrays are dynamically allocated using
 ! these values, [1:Ngrids].
 
-    NSTATION ==  6
+    NSTATION ==  8
 
 ! Station locations for all grids in any desired order.  The horizontal
 ! location for a particular station may be specified in terms of fractional
@@ -190,12 +190,14 @@ Sout(idW_ro) == T       ! Fi(...,icW_ro)     melt/freeze rate runoff into ocean
 
 POS =  GRID  FLAG      X-POS       Y-POS     COMMENT
 
+         1    0         30.0d0     20.0d0
+         1    0        180.0d0     30.0d0
          1    0         25.0d0     50.0d0
-         1    0        180.0d0     50.0d0
          1    0        100.0d0     50.0d0
+         1    0        180.0d0     50.0d0
          1    0         25.0d0     80.0d0
-         1    0        180.0d0     80.0d0
          1    0        100.0d0     80.0d0
+         1    0        180.0d0     80.0d0
 
 !
 !  GLOSSARY:

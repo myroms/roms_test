@@ -29,7 +29,6 @@
 #define SOLVE3D
 #define MASKING
 
-#define ANA_INITIAL
 #define ANA_BTFLUX
 #define ANA_BSFLUX
 #define ANA_CLOUD
