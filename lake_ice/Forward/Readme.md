@@ -104,6 +104,7 @@ They are activated in the build scripts.
 
 ```
                                 ../Data/FRC/lake_ice_grd.nc
+                                ../Data/FRC/lake_ice_ini.nc
 ```
 
 ### Configuration and input scripts:
