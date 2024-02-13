@@ -32,8 +32,6 @@ It uses **ROMS**'s native, **NUOPC**-based coupling system. For more information
 visit **WikiROMS**:
 
 https://www.myroms.org/wiki/Model_Coupling_ESMF
-https://www.myroms.org/wiki/Model_Coupling_IRENE
-
 
 ### Important CPP options:
 
