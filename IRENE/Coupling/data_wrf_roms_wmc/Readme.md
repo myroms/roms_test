@@ -5,24 +5,28 @@
 This directory includes various files to run the **DATA-WRF-ROMS**
 coupling system for Hurricane Irene using the **ESMF/NUOPC** library. It
 uses our Coupled Forecast Framework (**CFF**) configuration for the
-US East Coast **`CFF-EC7`** (**ROMS** 7km grid), and the simulation is 
-only run for 42 hours as Hurricane Irene approached the Outer Banks
-of North Carolina on August 27, 2011.
+US East Coast **`CFF-EC7`** (**ROMS** 7km grid), and the simulation is only
+run for 42 hours as Hurricane Irene approached the Outer Banks
+of North Carolina on August 27, 2011. 
+
+This test is a variant of the one available in [data_wrf_roms](../data_wrf_roms)
+since **ROMS** and **DATA** export surface ocean currents to compute the
+effective surface wind forcing by subtracting surface ocean currents from
+**WRF** surface wind. 
 
 <img width="940" alt="image" src="https://github.com/myroms/roms_test/assets/23062912/43010527-1cb7-4ba0-aec4-a888f46369c4">
 
 **WRF** and **ROMS** grids are incongruent. The **WRF** grid is
 larger than the **ROMS** grid. Therefore, the **DATA** model provides
-SST values at the **WRF** grid locations not covered by the **ROMS**
-grid. Thus, both **DATA** and **ROMS** SST values are melded with a
-smooth transition at the **ROMS** domain boundaries, as shown in the
-melding weights above.
+SST and surface current values at the **WRF** grid locations are not covered
+by the **ROMS** grid. Thus, both **DATA** and **ROMS** SST and surface
+current values are melded with a smooth transition at the **ROMS** domain
+boundaries, as shown in the melding weights above.
 
-The **WRF** and **ROMS** timesteps are 20 and 60 seconds
-for stable solutions due to the strong Hurricane winds.  The
-coupling step is 60 seconds (same as **ROMS**).  The **WRF** values are
-averaged every 60 seconds by activating the **RAMS**-averaged
-diagnostics.
+Due to the strong hurricane winds, the **WRF** and **ROMS** timesteps are
+20 and 60 seconds for stable solutions. The coupling step is 60 seconds
+(same as **ROMS**).  The **WRF** values are averaged every 60 seconds by
+activating the **RAMS**-averaged diagnostics.
 
 All the components interact with the same coupling time step.
 The connector from **ROMS** to **WRF** is explicit, whereas the connector
@@ -32,6 +36,35 @@ It uses **ROMS**'s native, **NUOPC**-based coupling system. For more information
 visit **WikiROMS**:
 
 https://www.myroms.org/wiki/Model_Coupling_ESMF
+
+### Wind minus Current
+
+As shown by Renault _et al._ (2016), the feedback from surface ocean currents to
+the atmosphere is an eddy-killing effect stabilizing the Gulf Stream separation
+at Cape Hatteras in **WRF-ROMS** fully coupled applications. The result is 
+around 0.3 N/m2 weaker surface wind stress in the core of the Gulf Stream. Since
+**ROMS** doesn't cover all the ocean points in the **WRF** grid, a **DATA**
+component is used to supply those values from the hourly **HyCOM** dataset.
+**ROMS** exports surface currents at $\rho$-points instead of its regular
+staggered locations.
+
+| Surface Ocean U-velocity    | Surface Ocean V-velocity  |
+:----------------------------:|:---------------------------:
+| <img width="400" alt="image" src="https://github.com/myroms/roms/assets/23062912/0b057294-932a-4d77-b172-86b44f899f87">  | <img width="400" alt="image" src="https://github.com/myroms/roms/assets/23062912/04cc18c9-888e-409e-949e-da8f0d4661b0"> |
+| <img width="400" alt="image" src="https://github.com/myroms/roms/assets/23062912/aab93c88-108b-4afc-a32e-1ad3dfe7303c"> | <img width="400" alt="image" src="https://github.com/myroms/roms/assets/23062912/52a0de50-52a3-4738-b31c-3c86616bfc6f"> |
+| <img width="400" alt="image" src="https://github.com/myroms/roms/assets/23062912/8483e741-27c8-43c1-96d5-99d8cce57881"> | <img width="400" alt="image" src="https://github.com/myroms/roms/assets/23062912/f5e38399-ea82-46ff-9867-fb495ecc5e37"> |
+
+The surface ocean currents from **ROMS** and **DATA** components are melded using
+the weights, displayed above, in the **WRF** NUOPC cap module **`esmf_atm_wrf.h`** as:
+
+$$\mathbf{F_\hbox{WRF}(i,j) = W_\hbox{ROMS}(i,j) F_\hbox{ROMS}(i,j) +
+                              W_\hbox{DATA}(i,j) F_\hbox{DATA}(i,j)}$$
+
+with
+
+$$\mathbf{W_\hbox{ROMS}(i,j) + W_\hbox{DATA}(i,j) = 1.0}$$
+
+where **F** is the exchanged field, and **W** is the melding weights.
 
 ### Important CPP options:
 
@@ -82,36 +115,42 @@ They are activated in the build scripts.
   cbuild_roms.sh                ROMS CMake compiling and linking BASH script
   coupling_esmf_atm_sbl.in      Coupling standard input script (WRF SBL fluxes)
   coupling_esmf_atm_sbl_wmc.in  Coupling standard input script (WRF SBL fluxes)
-                                  WIND_MINUS_CURRENT option
+                                  with surface ocean current exchanges
   coupling_esmf_bulk_flux.in    Coupling standard input script (ROMS bulk fluxes)
   coupling_esmf_wrf.yaml        Coupling fields exchange YAML metadata
   irene.h                       ROMS header file
   namelist.input                WRF standard input script
+  plot_debug.m                  Matlab plotting  driver for debugging (for DebugLevel=3) 
+  plot_esmf.m                   Matlab plotting script for field maps (for DebugLevel=3)
   rbl4dvar.in                   ROMS observation input script
   roms_irene.in                 ROMS standard input script
   submit.sh                     Job submission bash script
   wrf_implicit.runconfig        ESMF coupling Run Sequence
   ```
 
-- To download **WRF** and **WPS** version 4.3, you may use:
+- To download **WRF** latest forked repository, you may use:
   ```
-    git clone  https://github.com/wrf-model/WRF WRF.4.3
-    cd WRF.4.3
-    git checkout tags/v4.3
+    git clone  https://github.com/myroms/WRF
+  ```
+  We are currently using the **WRF** code from https://github.com/myroms, which
+  applied a couple of corrections to the code submitted to its developers
+  and will appear in future releases. There will be no need to patch **WRF**
+  for each release version ads before.
 
-    git clone  https://github.com/wrf-model/WPS WPS.4.3
-    cd WPS.4.3
-    git checkout tags/v4.3
-  ```
-- The strategy is to compile **WRF** from a directory other than where the
-    source code is located. We use the **-move** option to **build_wrf.csh** or
-    **build_wrf.sh** script. To compile **WRF**, use:
+- The strategy is to compile **WRF** from a cloned **wrf** subdirectory were
+  the application is run. To compile **WRF**, use:
 
   ```
-    build_wrf.csh -j 10 -move
+    build_wrf.csh -j 10 -b
   ```
-    Please select from among the following Linux x86_64 options: for **ifort**
-    we choose the **dmpar** (distributed-memory parallel) option:
+
+  The branch option **-b** will download the **WRF** code from the **`myroms`**
+  fork of **WRF** (https://github.com/myroms/WRF) and **checkout** the given
+  branch or the **`Coupling`** branch if none is provided.
+
+
+  Please select from among the following Linux x86_64 options: for **ifort**
+  we choose the **dmpar** (distributed-memory parallel) option:
 
   ```
     1.  (serial)   2. (smpar)   3. (dmpar)   4. (dm+sm)   PGI (pgf90/gcc)
@@ -151,7 +190,7 @@ They are activated in the build scripts.
     Therefore, **bulk_flux = 0** in the build scripts.
 
     Notice that **bulk_flux = 1** activates **ROMS** CPP options: **BULK_FLUXES**, **COOL_SKIN**,
-    **WIND_MINUS_CURRENT**, **EMINUSP**, and **LONGWAVE_OUT**.
+    **EMINUSP**, and **LONGWAVE_OUT**.
 
     The option **bulk_flux = 1** in the **ROMS** build script IS NOT RECOMMENDED FOR THIS
     APPLICATION because the **bulk_flux.F** module is not tunned for Hurricane regimes,
@@ -193,3 +232,10 @@ They are activated in the build scripts.
    ```
     irene_wrf_his_d01_2011-08-27_06_00_00.nc      hourly history
    ```
+
+### References:
+
+Renault, L., M.J. Molemaker, J. Gula, S. Masson, and J.C. McWilliams, 2016:
+Control and Stabilization of the Gulf Stream by Oceanic Current Interaction
+with the Atmosphere, _J. Phys. Oceanog._, **46**, 3439-3453,
+https://doi.org/10.1175/JPO-D-16-0115.1.
