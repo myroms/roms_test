@@ -222,6 +222,8 @@ if [ $bulk_flux -eq 1 ]; then
  export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DLONGWAVE_OUT"
 fi
 
+ export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DWIND_MINUS_CURRENT"
+
  export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DESMF_LIB"
  export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DDATA_COUPLING"
  export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DWRF_COUPLING"

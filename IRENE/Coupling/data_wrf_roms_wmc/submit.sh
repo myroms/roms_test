@@ -44,7 +44,7 @@ fi
 if [ ${BULK_FLUX} -eq 1 ]; then
       ESMFpre="coupling_esmf_bulk_flux.in"   # ROMS BULK_FLUXES case
 else
-      ESMFpre="coupling_esmf_atm_sbl_wmc.in" # WRF SBL case
+      ESMFpre="coupling_esmf_atm_sbl.in"     # WRF SBL case
 fi
 
 ## If using 'gfortran', uncomment the following environmental variable:

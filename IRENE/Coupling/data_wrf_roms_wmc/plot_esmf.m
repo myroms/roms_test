@@ -1,8 +1,8 @@
-function plot_esmf(slon,slat,smask,dlon,dlat,dmask,suffix,varargin)
+function plot_esmf(slon,slat,smask,dlon,dlat,dmask,Dir,suffix,varargin)
 
 % PLOT_ESMF: Plots ESMF debugging field
 %
-% plot_esmf(slon, slat, dlon, dlat, file_date, clon, clat, doPNG);
+% plot_esmf(slon, slat, dlon, dlat, Dir, suffix, clon, clat, doPNG);
 % On Imput:
 %
 %    slon        Source coupled component longitude (2D array)
@@ -11,6 +11,7 @@ function plot_esmf(slon,slat,smask,dlon,dlat,dmask,suffix,varargin)
 %    dlon        Destination coupled component longitude (2D array)
 %    dlat        Destination coupled component latitude  (2D array)
 %    dmask       Destination coupled component land mask (2D array)
+%    Dir         NetCDF directory location (string)
 %    suffix      Filename suffix: YYYY-MM-DD_hh.mm.ss (string)
 %    clon        Coastlines longitude (1D array, OPTIONAL)
 %    clat        Coastlines latitude  (1D array, OPTIONAL)
@@ -88,10 +89,12 @@ plot_str = datestr(datenum(date_str), 31);
 
 % Set color palette.
 
- Cmap = cmap_odv('Odv_437');
+%Cmap = cmap_odv('Odv_437');
 %Cmap = cmap('R2');
-%Cmap = vivid('mvbscflyor',[0.7 0.2]);
+ Cmap = vivid('mvbscflyor',[0.8 0.25]);
 %Cmap = flipud(vivid('mvbscflyor',[0.2 1]));
+
+uv_range = [-2 2];
 
 %----------------------------------------------------------------------
 % Plot coupled components fields.
@@ -100,7 +103,7 @@ plot_str = datestr(datenum(date_str), 31);
 % ROMS export fields.
 
 figure;
-roms_exp{1} = ['roms_01_export_Usur_', suffix, '.nc'];
+roms_exp{1} = [Dir, 'roms_01_export_Usur_', suffix, '.nc'];
 roms_var{1} = 'Usur';
 
 F = nc_read(roms_exp{1}, roms_var{1});
@@ -113,7 +116,7 @@ fmin = min(f(:));
 fmax = max(f(:));
 
 pcolor(slon, slat, f); colorbar; shading interp;
-colormap(Cmap);
+colormap(Cmap); caxis(uv_range);
 title(['ROMS Export: ', roms_var{1}]);
 xlabel({['Min = ', num2str(fmin), blanks(4),'Max = ', num2str(fmax)], ...
         plot_str});
@@ -130,7 +133,7 @@ end
 
 
 figure;
-roms_exp{2} = ['roms_01_export_Vsur_', suffix, '.nc'];
+roms_exp{2} = [Dir, 'roms_01_export_Vsur_', suffix, '.nc'];
 roms_var{2} = 'Vsur';
 
 F = nc_read(roms_exp{2}, roms_var{2});
@@ -143,7 +146,7 @@ fmin = min(f(:));
 fmax = max(f(:));
 
 pcolor(slon, slat, f); colorbar; shading interp;
-colormap(Cmap);
+colormap(Cmap); caxis(uv_range);
 title(['ROMS Export: ', roms_var{2}]);
 xlabel({['Min = ', num2str(fmin), blanks(4),'Max = ', num2str(fmax)], ...
         plot_str});
@@ -160,7 +163,7 @@ end
 
 
 figure;
-roms_exp{3} = ['src_Usur_ESM_01_roms-to-wrf_', suffix, '.nc'];
+roms_exp{3} = [Dir, 'src_Usur_ESM_01_roms-to-wrf_', suffix, '.nc'];
 roms_var{3} = 'Usur';
 
 F = nc_read(roms_exp{3}, roms_var{3});
@@ -173,7 +176,7 @@ fmin = min(f(:));
 fmax = max(f(:));
 
 pcolor(slon, slat, f); colorbar; shading interp;
-colormap(Cmap);
+colormap(Cmap); caxis(uv_range);
 title(['Source ROMS-to-WRF Export: ', roms_var{3}]);
 xlabel({['Min = ', num2str(fmin), blanks(4),'Max = ', num2str(fmax)], ...
         plot_str});
@@ -190,7 +193,7 @@ end
 
 
 figure;
-roms_exp{4} = ['src_Vsur_ESM_01_roms-to-wrf_', suffix, '.nc'];
+roms_exp{4} = [Dir, 'src_Vsur_ESM_01_roms-to-wrf_', suffix, '.nc'];
 roms_var{4} = 'Vsur';
 
 F = nc_read(roms_exp{4}, roms_var{4});
@@ -203,7 +206,7 @@ fmin = min(f(:));
 fmax = max(f(:));
 
 pcolor(slon, slat, f); colorbar; shading interp;
-colormap(Cmap);
+colormap(Cmap); caxis(uv_range);
 title(['Source ROMS-to-WRF Export: ', roms_var{4}]);
 xlabel({['Min = ', num2str(fmin), blanks(4),'Max = ', num2str(fmax)], ...
         plot_str});
@@ -221,7 +224,7 @@ end
 % WRF import fields.
 
 figure;
-wrf_imp{1}  = ['wrf_01_import_Usur_', suffix, '.nc'];
+wrf_imp{1}  = [Dir, 'wrf_01_import_Usur_', suffix, '.nc'];
 wrf_var{1}  = 'Usur';
 
 F = nc_read(wrf_imp{1}, wrf_var{1});
@@ -234,7 +237,7 @@ fmin = min(f(:));
 fmax = max(f(:));
 
 pcolor(dlon, dlat, f); colorbar; shading interp;
-colormap(Cmap);
+colormap(Cmap); caxis(uv_range);
 title(['WRF Import from ROMS: ', wrf_var{1}]);
 xlabel({['Min = ', num2str(fmin), blanks(4),'Max = ', num2str(fmax)], ...
         plot_str});
@@ -252,7 +255,7 @@ end
 
 
 figure;
-wrf_imp{2}  = ['wrf_01_import_Vsur_', suffix, '.nc'];
+wrf_imp{2}  = [Dir, 'wrf_01_import_Vsur_', suffix, '.nc'];
 wrf_var{2}  = 'Vsur';
 
 F = nc_read(wrf_imp{2}, wrf_var{2});
@@ -265,7 +268,7 @@ fmin = min(f(:));
 fmax = max(f(:));
 
 pcolor(dlon, dlat, f); colorbar; shading interp;
-colormap(Cmap);
+colormap(Cmap); caxis(uv_range);
 title(['WRF Import from ROMS: ', wrf_var{2}]);
 xlabel({['Min = ', num2str(fmin), blanks(4),'Max = ', num2str(fmax)], ...
         plot_str});
@@ -283,7 +286,7 @@ end
 
 
 figure;
-wrf_imp{3}  = ['wrf_01_import_dUsur_', suffix, '.nc'];
+wrf_imp{3}  = [Dir, 'wrf_01_import_dUsur_', suffix, '.nc'];
 wrf_var{3}  = 'dUsur';
 
 F = nc_read(wrf_imp{3}, wrf_var{3});
@@ -296,7 +299,7 @@ fmin = min(f(:));
 fmax = max(f(:));
 
 pcolor(dlon, dlat, f); colorbar; shading interp;
-colormap(Cmap);
+colormap(Cmap); caxis(uv_range);
 title(['WRF Import from DATA: ', wrf_var{3}]);
 xlabel({['Min = ', num2str(fmin), blanks(4),'Max = ', num2str(fmax)], ...
         plot_str});
@@ -313,7 +316,7 @@ if (doPNG)
 end
 
 figure;
-wrf_imp{4}  = ['wrf_01_import_dVsur_', suffix, '.nc'];
+wrf_imp{4}  = [Dir, 'wrf_01_import_dVsur_', suffix, '.nc'];
 wrf_var{4}  = 'dVsur';
 
 F = nc_read(wrf_imp{4}, wrf_var{4});
@@ -326,7 +329,7 @@ fmin = min(f(:));
 fmax = max(f(:));
 
 pcolor(dlon, dlat, f); colorbar; shading interp;
-colormap(Cmap);
+colormap(Cmap); caxis(uv_range);
 title(['WRF Import from DATA: ', wrf_var{4}]);
 xlabel({['Min = ', num2str(fmin), blanks(4),'Max = ', num2str(fmax)], ...
         plot_str});
@@ -344,7 +347,7 @@ end
 
 
 figure;
-wrf_imp{5}  = ['wrf_01_merged_Usur-dUsur_', suffix, '.nc'];
+wrf_imp{5}  = [Dir, 'wrf_01_merged_Usur-dUsur_', suffix, '.nc'];
 wrf_var{5}  = 'Usur-dUsur';
 
 F = nc_read(wrf_imp{5}, wrf_var{5});
@@ -357,7 +360,7 @@ fmin = min(f(:));
 fmax = max(f(:));
 
 pcolor(dlon, dlat, f); colorbar; shading interp;
-colormap(Cmap);
+colormap(Cmap); caxis(uv_range);
 title(['WRF Import Merged DATA-ROMS: ', wrf_var{5}]);
 xlabel({['Min = ', num2str(fmin), blanks(4),'Max = ', num2str(fmax)], ...
         plot_str});
@@ -375,7 +378,7 @@ end
 
 
 figure;
-wrf_imp{6}  = ['wrf_01_merged_Vsur-dVsur_', suffix, '.nc'];
+wrf_imp{6}  = [Dir, 'wrf_01_merged_Vsur-dVsur_', suffix, '.nc'];
 wrf_var{6}  = 'Vsur-dVsur';
 
 F = nc_read(wrf_imp{6}, wrf_var{6});
@@ -388,7 +391,7 @@ fmin = min(f(:));
 fmax = max(f(:));
 
 pcolor(dlon, dlat, f); colorbar; shading interp;
-colormap(Cmap);
+colormap(Cmap); caxis(uv_range);
 title(['WRF Import Merged DATA-ROMS: ', wrf_var{6}]);
 xlabel({['Min = ', num2str(fmin), blanks(4),'Max = ', num2str(fmax)], ...
         plot_str});
@@ -406,7 +409,7 @@ end
 
 
 figure;
-wrf_imp{7}  = ['dst_Usur_ESM_01_roms-to-wrf_', suffix, '.nc'];
+wrf_imp{7}  = [Dir, 'dst_Usur_ESM_01_roms-to-wrf_', suffix, '.nc'];
 wrf_var{7}  = 'Usur';
 
 F = nc_read(wrf_imp{7}, wrf_var{7});
@@ -419,7 +422,7 @@ fmin = min(f(:));
 fmax = max(f(:));
 
 pcolor(dlon, dlat, f); colorbar; shading interp;
-colormap(Cmap);
+colormap(Cmap); caxis(uv_range);
 title(['Destination ROMS-to-WRF Import: ', wrf_var{7}]);
 xlabel({['Min = ', num2str(fmin), blanks(4),'Max = ', num2str(fmax)], ...
         plot_str});
@@ -437,7 +440,7 @@ end
 
 
 figure;
-wrf_imp{8}  = ['dst_Vsur_ESM_01_roms-to-wrf_', suffix, '.nc'];
+wrf_imp{8}  = [Dir, 'dst_Vsur_ESM_01_roms-to-wrf_', suffix, '.nc'];
 wrf_var{8}  = 'Vsur';
 
 F = nc_read(wrf_imp{8}, wrf_var{8});
@@ -450,7 +453,7 @@ fmin = min(f(:));
 fmax = max(f(:));
 
 pcolor(dlon, dlat, f); colorbar; shading interp;
-colormap(Cmap);
+colormap(Cmap); caxis(uv_range);
 title(['Destination ROMS-to-WRF Import: ', wrf_var{8}]);
 xlabel({['Min = ', num2str(fmin), blanks(4),'Max = ', num2str(fmax)], ...
         plot_str});
@@ -468,7 +471,7 @@ end
 
 
 figure;
-wrf_imp{9}  = ['dst_dUsur_ESM_01_data-to-wrf_', suffix, '.nc'];
+wrf_imp{9}  = [Dir, 'dst_dUsur_ESM_01_data-to-wrf_', suffix, '.nc'];
 wrf_var{9}  = 'dUsur';
 
 F = nc_read(wrf_imp{9}, wrf_var{9});
@@ -481,7 +484,7 @@ fmin = min(f(:));
 fmax = max(f(:));
 
 pcolor(dlon, dlat, f); colorbar; shading interp;
-colormap(Cmap);
+colormap(Cmap); caxis(uv_range);
 title(['Destination DATA-to-WRF Import: ', wrf_var{9}]);
 xlabel({['Min = ', num2str(fmin), blanks(4),'Max = ', num2str(fmax)], ...
         plot_str});
@@ -499,7 +502,7 @@ end
 
 
 figure;
-wrf_imp{10} = ['dst_dVsur_ESM_01_data-to-wrf_', suffix, '.nc'];
+wrf_imp{10} = [Dir, 'dst_dVsur_ESM_01_data-to-wrf_', suffix, '.nc'];
 wrf_var{10} = 'dVsur';
 
 F = nc_read(wrf_imp{10}, wrf_var{10});
@@ -512,7 +515,7 @@ fmin = min(f(:));
 fmax = max(f(:));
 
 pcolor(dlon, dlat, f); colorbar; shading interp;
-colormap(Cmap);
+colormap(Cmap); caxis(uv_range);
 title(['Destination DATA-to-WRF Import: ', wrf_var{10}]);
 xlabel({['Min = ', num2str(fmin), blanks(4),'Max = ', num2str(fmax)], ...
         plot_str});

@@ -1,5 +1,6 @@
 % Dirver to plot coupled fields between WRF and ROMS.
 
+Dir   = './';
 Rgrid = '../../Data/ROMS/irene_roms_grid.nc';
 Wgrid = '../../Data/WRF/irene_wrf_inp_d01_20110827.nc';
 
@@ -26,5 +27,5 @@ land  = find(wland == 1); wmask(land) = 0;
 suffix = '2011-08-27_06.00.00';
 doPNG  = true;
 
-plot_esmf(G.lon_rho, G.lat_rho, G.mask_rho, wlon, wlat, wmask, suffix, ...
-          G.lon_coast, G.lat_coast, doPNG);
+plot_esmf(G.lon_rho, G.lat_rho, G.mask_rho, wlon, wlat, wmask,      ...
+          Dir, suffix, G.lon_coast, G.lat_coast, doPNG);
