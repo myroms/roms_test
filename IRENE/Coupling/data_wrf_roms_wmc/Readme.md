@@ -113,7 +113,9 @@ They are activated in the build scripts.
   build_wrf.sh                  WRF GNU Make compiling and linking BASH script
   cbuild_roms.csh               ROMS CMake compiling and linking CSH script
   cbuild_roms.sh                ROMS CMake compiling and linking BASH script
+  coupling_esmf_atm_sbl.in      Coupling standard input script (WRF SBL fluxes)
   coupling_esmf_atm_sbl_wmc.in  Coupling standard input script (WRF SBL fluxes)
+                                  with surface ocean current exchanges
   coupling_esmf_bulk_flux.in    Coupling standard input script (ROMS bulk fluxes)
   coupling_esmf_wrf.yaml        Coupling fields exchange YAML metadata
   irene.h                       ROMS header file
