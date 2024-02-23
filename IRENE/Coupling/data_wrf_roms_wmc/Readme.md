@@ -44,7 +44,7 @@ the atmosphere is an eddy-killing effect stabilizing the Gulf Stream separation
 at Cape Hatteras in **WRF-ROMS** fully coupled applications. The result is 
 around 0.3 N/m2 weaker surface wind stress in the core of the Gulf Stream. Since
 **ROMS** doesn't cover all the ocean points in the **WRF** grid, a **DATA**
-component is used to supply those values from the hourly **HyCOM** dataset.
+component is used to supply those values from the 3-hour **HyCOM** dataset.
 **ROMS** exports surface currents at $\rho$-points instead of its regular
 staggered locations.
 
@@ -135,7 +135,7 @@ They are activated in the build scripts.
   We are currently using the **WRF** code from https://github.com/myroms, which
   applied a couple of corrections to the code submitted to its developers
   and will appear in future releases. There will be no need to patch **WRF**
-  for each release version ads before.
+  for each release version as before.
 
 - The strategy is to compile **WRF** from a cloned **wrf** subdirectory were
   the application is run. To compile **WRF**, use:
