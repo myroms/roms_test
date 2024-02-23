@@ -1,4 +1,16 @@
-% Dirver to plot coupled fields between WRF and ROMS.
+% Driver to plot coupled fields between WRF and ROMS.
+%
+% The debugging NetCDF files used here are generated
+% by the ESMF library when the "DebugLevel" in the
+% script "coupling_esmf_atm_sbl_wmc.in" is greater
+% than 2 (DebugLevel=3) and the debug_write token in
+% "coupling_esmf_wrf.yaml" for a particular exchanged
+% field is "true".
+%
+% WARNING: the debugging option should be run for a few
+%          time step since it creates several NetCDF
+%          files per model coupling step.
+
 
 Dir   = './';
 Rgrid = '../../Data/ROMS/irene_roms_grid.nc';
@@ -22,7 +34,7 @@ wmask = ones(size(wlon));
 lake  = find(wlake == 1); wmask(lake) = 0;
 land  = find(wland == 1); wmask(land) = 0;
 
-% Plot debuggin fields for selected filename suffix:
+% Plot debugging fields for selected filename suffix:
 
 suffix = '2011-08-27_06.00.00';
 doPNG  = true;
