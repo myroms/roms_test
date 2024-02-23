@@ -209,11 +209,11 @@ They are activated in the build scripts.
    
 ### Debugging:
 
-The **ROMS** native coupling framework allow writting the selected exchange fields in
+The **ROMS** native coupling framework allows writing the selected exchange fields in
 numerous NetCDF files per coupling time step.
 
 $\color{#58A6FF}\textsf{\Large\&#x24D8;\kern{0.2cm}\normalsize Note:}$ Use this
-capability wisely and for few coupling step to avoid creating a huge amount of
+capability wisely and for a few coupling steps to avoid creating a huge amount of
 files and filling your disk space.
 
 The debugging of desired exchanged fields during coupling is activated when the
@@ -249,8 +249,8 @@ example:
 ```
 
 Use the provided Matlab driver script **`plot_debug.m`** and function **`plot_esmf.m`**
-to plot the selected exchanged fields. Here, we are only interested in import and
-export surface ocean currents. An example of the figures generated and shown above.
+to plot the selected exchanged fields. Here, we are only interested in importing and
+exporting surface ocean currents. An example of the figures generated and shown above.
 
 ### The output Files:
 
