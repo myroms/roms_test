@@ -207,6 +207,51 @@ They are activated in the build scripts.
    ```
   You can modify **submit.sh** for your appropriate computer environment.
    
+### Debugging:
+
+The **ROMS** native coupling framework allows writing the selected exchange fields in
+numerous NetCDF files per coupling time step.
+
+$\color{#58A6FF}\textsf{\Large\&#x24D8;\kern{0.2cm}\normalsize Note:}$ Use this
+capability wisely and for a few coupling steps to avoid creating a huge amount of
+files and filling your disk space.
+
+The debugging of desired exchanged fields during coupling is activated when the
+flag **`DebugLevel > 2`** in input script **`coupling_esmf_atm_sbl_wmc.in`**:
+
+```
+! Coupling debug flag: [0] no debugging
+! [1] reports informative messages
+! [2] <1> and coupled components RunSequence
+! [3] <2> and writes exchange fields into NetCDF files
+! [4] <3> and writes grid information in VTK format
+
+DebugLevel = 3
+```
+and the **debug_write: true** token in metadata **`coupling_esmf_wrf.yaml`**, for
+example:
+
+```yaml
+  - standard_name:       sea_water_surface_current_zonal
+    long_name:           surface eastward momentum component
+    short_name:          Usur                                   # uoce
+    data_variables:      [Usur, time]                           # u
+    source_units:        meter second-1
+    destination_units:   meter second-1
+    source_grid:         cell_center
+    destination_grid:    cell_center
+    add_offset:          0.0d0
+    scale:               1.0d0
+    debug_write:         true
+    connected_to:        *ATM
+    regrid_method:       bilinear
+    extrapolate_method:  nearest
+```
+
+Use the provided Matlab driver script **`plot_debug.m`** and function **`plot_esmf.m`**
+to plot the selected exchanged fields. Here, we are only interested in importing and
+exporting surface ocean currents. An example of the figures generated and shown above.
+
 ### The output Files:
 
 - Standard Output Files:
