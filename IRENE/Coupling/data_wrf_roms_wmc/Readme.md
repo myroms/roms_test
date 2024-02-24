@@ -129,6 +129,7 @@ They are activated in the build scripts.
   ```
 
 - To download **WRF** latest forked repository, you may use:
+- 
   ```
     git clone  https://github.com/myroms/WRF
   ```
@@ -137,7 +138,7 @@ They are activated in the build scripts.
   and will appear in future releases. There will be no need to patch **WRF**
   for each release version as before.
 
-- The strategy is to compile **WRF** from a cloned **wrf** subdirectory were
+- The strategy is to compile **WRF** from a cloned **wrf** subdirectory where
   the application is run. To compile **WRF**, use:
 
   ```
@@ -200,7 +201,7 @@ They are activated in the build scripts.
    ```
     build_roms.csh -j 10
    ```
-  To submit the job on 32 CPUs via SLURM or not, use:
+    To submit the job on 32 CPUs via SLURM or not, use:
    ```
     sbatch submit.sh        or
     submit.sh > & log &
@@ -219,7 +220,7 @@ files and filling your disk space.
 The debugging of desired exchanged fields during coupling is activated when the
 flag **`DebugLevel > 2`** in input script **`coupling_esmf_atm_sbl_wmc.in`**:
 
-```
+```js
 ! Coupling debug flag: [0] no debugging
 ! [1] reports informative messages
 ! [2] <1> and coupled components RunSequence
