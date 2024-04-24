@@ -2,12 +2,22 @@
 
 ## Lake Decimate: ROMS Grid Extraction by Decimation Test
 
-This directory includes various files to run the idealized **`LAKE_DECIMATE`** to test **ROMS**'s
-solution extraction capabilities by decimation or horizontal interpolation, level-by-level, in
-3D fields. It is activated with the **`GRID_EXTRACTION`** option.  The user needs to provide the
-extraction fields geometry grid NetCDF file **GRXNAME** at the input. This grid needs to be created
-with tools similar to the parent ROMS application grid and contained inside. 
+This directory includes various files to run the idealized **`LAKE_DECIMATE`** to test **ROMS**'s solution extraction capabilities by decimation or horizontal interpolation, level-by-level, in 3D fields. It is activated with the **`GRID_EXTRACTION`** option. Here, we run the decimate case by coarsening the parent **1.0x1.0** km solution to **2.0x2.0** km, written into **lake_decimate_xtr.nc**.
 
+▶️ The ROMS standard input script **`roms_lake_decimate.in`** includes new parameters:
+
+ - **ExtractFlag:** ROMS solution extraction integer flag:
+
+    - **`ExtractFlag = 1`**, extraction by horizontal interpolation, level-by-level. This option is not fully developed because a special interpolation algorithm is required in applications with land/sea masks. A generic remapping using the ESMF library is currently being developed for grid-to-grid interpolation, including land/sea masks.
+    - **`ExtractFlag > 1`**, coarsening by decimation, level-by-level. For example, if **ExtractFlag=2**, the field data is sampled at every other point. This strategy is advantageous in mixed-resolution, split 4D-Var applications where the outer loop background (prior) trajectory may be computed at a higher resolution than in the inner loop minimization to accelerate the calculations. The decimated solution becomes the background nonlinear trajectory used to linearize the tangent linear (**TLM**) and adjoint (**ADM**) models.  In this case, to ensure that both fine and coarse grids at RHO points coincide at the domain boundary, the  following equalities must satisfied:
+       - **MOD(Lm+1, ExtractFlag) = 0**
+       - **MOD(Mm+1, ExtractFlag) = 0**
+
+  - **GRXNAME:** The input extraction grid geometry NetCDF filename. It must be created with tools similar to the ROMS application grid and contained inside the parent grid.
+
+   - **`XTRNAME:`** The output extracted solution NetCDF filename.
+
+▶️ We provide the extraction fields geometry grid NetCDF file **`../Data/lake_decimate_grd_2km.nc`** at the input (**GRXNAME**). This grid must be created with tools like the parent **`../Data/lake_decimate_grd_1km.nc`** application grid and contained inside. 
 
 ### Test Important CPP options:
 
@@ -53,22 +63,22 @@ They are activated in the build scripts.
 
 ### How to Compile and ROMS:
 
-- The sea ice model is only available in the GitHub branch **`feature/seaice`**. You have the option of downloading the code and checkout the branch **`feature/seaice`** or using the build script:
+- Currently, the **GRID_EXTRACTION** capability is only available in the GitHub branch **`feature/decimate`**. You have the option of downloading the code and checkout the branch **`feature/decimate`** or using the build script:
 
  ```
  git clone https://github.com/myroms/roms.git
  cd roms
- git checkout feature/seaice
+ git checkout feature/decimate
 
 or
 
- build_roms.sh -j 10 -b feature/main
- cbuild_roms.sh -j 10 -b feature/main
+ build_roms.sh -j 10 -b feature/decimate
+ cbuild_roms.sh -j 10 -b feature/decimate
   ```
 - To run, use:
 
   ```
-  mpirun -n 12 romsM < roms_lake_ice.in > & log &
+  mpirun -n 12 romsM < roms_lake_decimate.in > & log &
   ```
 
 ### The output Files:
@@ -85,3 +95,22 @@ or
 
 ### ROMS Grid Configuration:
 
+The idealized horizontal lake grid is **360x300x20** at **1.0x1.0** km resolution:
+
+<img width="600" alt="image" src="https://github.com/myroms/roms/assets/23062912/ed97d068-04f8-4e5e-9947-305c2e03b983">
+
+On principle, the **`LAKE_DECIMATE`** parent grid satisfies decimation factors of **2**, **3**, **4**, **5**, **6**, **10**, and so on. However, we are using **`ExtractFlag = 2`** to sample the solution at every other point. The issue is that decimating next to land/sea mask point and **U-** and **V-**type staggered variables is very tricky because it requires averaging.
+
+| Parent Grid  1.0x1.0 km       | Extracted Grid 2.0x2.0 km |
+:------------------------------:|:--------------------------:
+| <img width="400" alt="image" src="https://github.com/myroms/roms/assets/23062912/78cb8b22-b8d9-4949-aa3b-6bc7e3cb6bdc"> | <img width="400" alt="image" src="https://github.com/myroms/roms/assets/23062912/04858157-a92e-4dbf-8308-d7e2d6742ec1"> |
+| <img width="400" alt="image" src="https://github.com/myroms/roms/assets/23062912/7479d6b8-ed6c-4619-87be-81e336340f85"> | <img width="400" alt="image" src="https://github.com/myroms/roms/assets/23062912/17b13796-9d86-4fb9-9f9d-6ad7efdd82f0"> |
+
+### Results:
+
+- Free surface and surface temperature.
+  
+| Parent Grid  1.0x1.0 km       | Extracted Grid 2.0x2.0 km |
+:------------------------------:|:--------------------------:
+| <img width="400" alt="image" src="https://github.com/myroms/roms/assets/23062912/c4fcd1e6-a8a9-429b-a5af-19fd76c739e3"> | <img width="400" alt="image" src="https://github.com/myroms/roms/assets/23062912/4c9737be-d348-4a3b-9c35-8ca875e24b4f"> |
+| <img width="400" alt="image" src="https://github.com/myroms/roms/assets/23062912/58cb6490-85f1-42f1-a46b-f64fcf72eb95"> | <img width="400" alt="image" src="https://github.com/myroms/roms/assets/23062912/1eef1ca0-090c-4889-a645-b7003fa35b7c"> |
