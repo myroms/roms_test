@@ -100,7 +100,7 @@ The idealized horizontal lake grid is **360x300x20** at **1.0x1.0** km resolutio
 
 <img width="600" alt="image" src="https://github.com/myroms/roms/assets/23062912/ed97d068-04f8-4e5e-9947-305c2e03b983">
 
-There are two rotated higher-resolution grids to extract via interpolation:
+Two rotated higher-resolution grids, **Bay** and **Inlet**, will be extracted via interpolation. The **Bay** grid includes the coastline and island to test the interpolation in the presence of land/sea masks, while the **Inlet** grid does not.
 
 | Bay Grid  0.5x0.5 km          | Inlet Grid 0.5x0.5 km     |
 :------------------------------:|:--------------------------:
