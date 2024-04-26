@@ -2,7 +2,7 @@
 
 ## Lake Decimate: ROMS Grid Extraction by Interpolation Test
 
-This directory includes various files to run the idealized **`LAKE_DECIMATE`** to test **ROMS**'s solution extraction capabilities by decimation or horizontal interpolation, level-by-level, in 3D fields. It is activated with the **`GRID_EXTRACTION`** option. Here, we run the decimate case by coarsening the parent **1.0x1.0** km solution to **2.0x2.0** km, written into **lake_decimate_xtr.nc**.
+This directory includes various files to run the idealized **`LAKE_DECIMATE`** to test **ROMS**'s solution extraction capabilities by decimation or horizontal interpolation, level-by-level, in 3D fields. It is activated with the **`GRID_EXTRACTION`** option. Here, we run the interpolation case with **500x500 m** rotated grid **`lake_decimate_grd_bay.nc`**, which includes coastlines or **`lake_decimate_grd_inlet.nc`** without land masking.
 
 ▶️ The ROMS standard input script **`roms_lake_decimate.in`** includes new parameters:
 
@@ -17,7 +17,7 @@ This directory includes various files to run the idealized **`LAKE_DECIMATE`** t
 
    - **`XTRNAME:`** The output extracted solution NetCDF filename.
 
-▶️ We provide the extraction fields geometry grid NetCDF file **`../Data/lake_decimate_grd_2km.nc`** at the input (**GRXNAME**). This grid must be created with tools like the parent **`../Data/lake_decimate_grd_1km.nc`** application grid and contained inside. 
+▶️ We provide the extraction fields geometry grid NetCDF files **`../Data/lake_decimate_grd_bay.nc`** or **`../Data/lake_decimate_grd_inlet.nc`** at the input (**GRXNAME**). This grid must be created with tools like the parent **`../Data/lake_decimate_grd_1km.nc`** application grid and contained inside. 
 
 ### Test Important CPP options:
 
@@ -38,8 +38,9 @@ They are activated in the build scripts.
 
 ```
                                 ../Data/lake_decimate_grd_1km.nc
-                                ../Data/lake_decimate_grd_2km.nc
                                 ../Data/lake_decimate_ini_1km.nc
+                                ../Data/lake_decimate_grd_bay.nc
+                                ../Data/lake_decimate_grd_inlet.nc
 ```
 
 ### Configuration and input scripts:
@@ -99,4 +100,17 @@ The idealized horizontal lake grid is **360x300x20** at **1.0x1.0** km resolutio
 
 <img width="600" alt="image" src="https://github.com/myroms/roms/assets/23062912/ed97d068-04f8-4e5e-9947-305c2e03b983">
 
+There are two rotated higher-resolution grids to extract via interpolation:
+
+| Bay Grid  0.5x0.5 km          | Inlet Grid 0.5x0.5 km     |
+:------------------------------:|:--------------------------:
+| <img width="400" alt="image" src="https://github.com/myroms/roms/assets/23062912/53827619-f71a-4e6e-a5cf-52c1716ba1f3"> | <img width="400" alt="image" src="https://github.com/myroms/roms/assets/23062912/490c849c-3ef2-4946-b17d-de6cb58a8333"> |
+| <img width="400" alt="image" src="https://github.com/myroms/roms/assets/23062912/85ef9eea-3d96-44fb-b09a-d0ae955e53d8"> | <img width="400" alt="image" src="https://github.com/myroms/roms/assets/23062912/b6c12ddf-5fa1-4092-ad7d-e8f1797882d8"> |
+
 ### Results:
+
+This test is under development because the interpolation infrastructure inside it cannot include coastline making.  Because of the interpolation logic, it only works in **1x1** parallel decomposition. The plan is to add generic ESMF-based grid-to-grid interpolation.
+
+| Parent Grid  1.0x1.0 km       | Extracted Inlet Grid 0.5x0.5 km |
+:------------------------------:|:--------------------------:
+| <img width="400" alt="image" src="https://github.com/myroms/roms/assets/23062912/ba668916-2cbd-4eea-ac2b-43fd0e2ebd02"> | <img width="400" alt="image" src="https://github.com/myroms/roms/assets/23062912/ee37718f-9f1d-472e-a0d8-03d0c1985d23"> |
