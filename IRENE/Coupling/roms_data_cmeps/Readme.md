@@ -119,7 +119,7 @@ For example, it uses Perl to replace the value of **`MyIRENEdir`** in the templa
 
 - Clone **UFS-coastal** repository:
   ```d
-  git -c submodule.ADCIRC.update=none clone -b feature/coastal_app --recursive https://github.com/oceanmodeling/ufs-coastal
+  git clone --recursive https://github.com/oceanmodeling/ufs-weather-model.git
   ```
   It omits to clone the **ADCIRC** component since it is still private and working with the research
   branch **`feature/coastal_app`**.
@@ -137,7 +137,7 @@ For example, it uses Perl to replace the value of **`MyIRENEdir`** in the templa
   ```
   It creates the **`Build_ufs`** sub-directory and executable driver **`ufs_model`**.
 
-  In addition, you could compile with a specific **ROMS** branch from https://github.com/myroms/roms. For example:
+  In addition, you can compile it with a specific **ROMS** branch from https://github.com/myroms/roms. For example:
   ```d
   build_ufs.sh -j 10 -b feature/kernel
   ```
