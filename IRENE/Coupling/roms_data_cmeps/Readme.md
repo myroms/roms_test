@@ -121,8 +121,6 @@ For example, it uses Perl to replace the value of **`MyIRENEdir`** in the templa
   ```d
   git clone --recursive https://github.com/oceanmodeling/ufs-weather-model.git
   ```
-  It omits to clone the **ADCIRC** component since it is still private and working with the research
-  branch **`feature/coastal_app`**.
 
 - Load **Spack-Stack** modules. In Rutgers computers, we load the **JEDI Spack/Stack** modules using:
   ```
