@@ -119,17 +119,17 @@ They are activated in the build scripts.
 
 ### How to Compile and ROMS:
 
-- The sea ice model is only available in the GitHub branch **`feature/seaice`**. You have the option of downloading the code and checkout the branch **`feature/seaice`** or using the build script:
+- You have the option of downloading the code and checkout the branch **`develop`** or using the build script:
 
  ```
  git clone https://github.com/myroms/roms.git
  cd roms
- git checkout feature/seaice
+ git checkout develop
 
 or
 
- build_roms.sh -j 10 -b feature/main
- cbuild_roms.sh -j 10 -b feature/main
+ build_roms.sh -j 10 -b develop
+ cbuild_roms.sh -j 10 -b develop
   ```
 - To run, use:
 

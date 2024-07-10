@@ -187,7 +187,7 @@ export:
   - standard_name:       ocean_mask
     long_name:           mask on RHO-points
     short_name:          mask_rho                               # So_omask
-    data_variables:      [msk, time]
+    data_variables:      [mask, time]
     source_units:        nondimensional
     destination_units:   nondimensional
     source_grid:         cell_center
