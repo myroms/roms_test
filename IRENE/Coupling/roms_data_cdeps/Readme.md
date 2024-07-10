@@ -94,11 +94,11 @@ for you using the **`../mesh_esmf/create_mesh.sh`** script, and are located in t
   irene.h                       ROMS header file
   job_setup.sh                  Creates configuration scripts from templates
   model_configure               UFS coupling configuration parameters
-  nems.configure                UFS-NEMS run-time configuration paramters
   rbl4dvar.in                   ROMS observation input script
   roms_cdeps_era5.yaml          ROMS-CDEPS configuration YAML file for ECMWF-ERA5 data
   roms_cdeps_narr.yaml          ROMS-CDEPS configuration YAML file for NCEP-NARR data
   roms_irene.in                 ROMS standard input script
+  ufs.configure                 UFS run-time configuration paramters
  ```
 
 ### Configuration template scripts:
