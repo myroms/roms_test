@@ -171,6 +171,7 @@ setenv MY_PROJECT_DIR        ${PWD}
 # computers.
 
  setenv MY_UFS_SRC           ${MY_ROOT_DIR}/ufs-coastal
+ ln -sfv ${MY_UFS_SRC}/tests/parm/fd_ufs.yaml .
 
 #setenv MY_ROMS_SRC          ${MY_UFS_SRC}/ROMS-interface/ROMS
  setenv MY_ROMS_SRC          ${MY_ROOT_DIR}/roms
@@ -227,6 +228,8 @@ setenv MY_PROJECT_DIR        ${PWD}
  setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DCOLLECT_ALLREDUCE"
 #setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DREDUCE_ALLGATHER"
 
+#setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DMETADATA_REPORT"
+
 #setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DDEBUGGING"
 #setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DPOSITIVE_ZERO"
 
@@ -242,6 +245,7 @@ setenv MY_PROJECT_DIR        ${PWD}
 #setenv which_MPI            mvapich2        # compile with MVAPICH2 library
  setenv which_MPI            openmpi         # compile with OpenMPI library
 
+#setenv FORT                 ifx
  setenv FORT                 ifort
 #setenv FORT                 gfortran
 #setenv FORT                 pgi
@@ -539,6 +543,7 @@ else
   echo "ROMS source directory:         ${MY_ROMS_SRC}"
   echo "ROMS header file:              ${MY_HEADER_DIR}/${HEADER}"
   echo "ROMS build  directory:         ${BUILD_DIR}"
+  echo "UFS source directory:          ${MY_UFS_SRC}"
   if ( $branch == 1 ) then
     echo "ROMS downloaded from:          https://github.com/myroms/roms.git"
     echo "ROMS compiled branch:          $branch_name"
@@ -559,5 +564,4 @@ endif
 cd ${MY_PROJECT_DIR}
 
 cp -vf ${BUILD_DIR}/ufs_model .
-ln -sfv ${MY_UFS_SRC}/tests/parm/fd_nems.yaml .
 ln -sfv ${MY_ROMS_SRC}/ROMS/External/varinfo.yaml .

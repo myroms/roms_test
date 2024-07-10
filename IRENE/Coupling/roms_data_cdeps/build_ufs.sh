@@ -167,7 +167,8 @@ export     MY_PROJECT_DIR=${PWD}
 # This script allows for differing paths to the code and inputs on other
 # computers.
 
- export        MY_UFS_SRC=${MY_ROOT_DIR}/ufs-coastal
+ export       MY_UFS_SRC=${MY_ROOT_DIR}/ufs-coastal
+ ln -sfv ${MY_UFS_SRC}/tests/parm/fd_ufs.yaml .
 
 #export       MY_ROMS_SRC=${MY_UFS_SRC}/ROMS-interface/ROMS
  export       MY_ROMS_SRC=${MY_ROOT_DIR}/roms
@@ -224,6 +225,8 @@ export     MY_PROJECT_DIR=${PWD}
  export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DCOLLECT_ALLREDUCE"
 #export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DREDUCE_ALLGATHER"
 
+#export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DMETADATA_REPORT"
+
 #export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DDEBUGGING"
 #export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DPOSITIVE_ZERO"
 
@@ -239,8 +242,9 @@ export     MY_PROJECT_DIR=${PWD}
 #export         which_MPI=mvapich2         # compile with MVAPICH2 library
  export         which_MPI=openmpi          # compile with OpenMPI library
 
- export              FORT=ifort
-#export              FORT=gfortran
+#export              FORT=ifx
+#export              FORT=ifort
+ export              FORT=gfortran
 #export              FORT=pgi
 
 #export         USE_DEBUG=on               # use Fortran debugging flags
@@ -519,6 +523,7 @@ else
   echo "ROMS source directory:         ${MY_ROMS_SRC}"
   echo "ROMS header file:              ${MY_HEADER_DIR}/${HEADER}"
   echo "ROMS build  directory:         ${BUILD_DIR}"
+  echo "UFS source directory:          ${MY_UFS_SRC}"
   if [ $branch -eq 1 ]; then
     echo "ROMS downloaded from:          https://github.com/myroms/roms.git"
     echo "ROMS compiled branch:          $branch_name"
@@ -539,5 +544,4 @@ fi
 cd ${MY_PROJECT_DIR}
 
 cp -vf ${BUILD_DIR}/ufs_model .
-ln -sfv ${MY_UFS_SRC}/tests/parm/fd_nems.yaml .
 ln -sfv ${MY_ROMS_SRC}/ROMS/External/varinfo.yaml .

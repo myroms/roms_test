@@ -1,6 +1,6 @@
-#############################################
-####  NEMS Run-Time Configuration File  #####
-#############################################
+############################################
+####  UFS Run-Time Configuration File  #####
+############################################
 
 # ESMF #
 
@@ -30,7 +30,7 @@ ATM_attributes::
 # OCN: ROMS Component #
 
 OCN_model:                      roms 
-OCN_petlist_bounds:             0 11 
+OCN_petlist_bounds:             0 11
 OCN_omp_num_threads:            1
 OCN_attributes::
   Verbosity = 0 #max
