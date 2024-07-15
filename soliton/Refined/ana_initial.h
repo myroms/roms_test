@@ -1,4 +1,4 @@
-!!
+!
       SUBROUTINE ana_initial (ng, tile, model)
 !
 !! git $Id$
@@ -116,6 +116,7 @@
       IF (first) THEN
         first=.FALSE.
         DO i=1,SIZE(Stats,1)
+          Stats(i) % checksum=0_i8b
           Stats(i) % count=0.0_r8
           Stats(i) % min=Large
           Stats(i) % max=-Large
@@ -182,14 +183,14 @@
 !
 !  Report statistics.
 !
-      CALL stats_2dfld (ng, tile, iNLM, u2dvar, Stats(1),               &
+      CALL stats_2dfld (ng, tile, iNLM, u2dvar, Stats(1), 0,            &
      &                  LBi, UBi, LBj, UBj, ubar(:,:,1))
       IF (DOMAIN(ng)%NorthEast_Corner(tile)) THEN
         WRITE (stdout,10) TRIM(Vname(2,idUbar))//': '//                 &
      &                    TRIM(Vname(1,idUbar)),                        &
      &                     ng, Stats(1)%min, Stats(1)%max
       END IF
-      CALL stats_2dfld (ng, tile, iNLM, v2dvar, Stats(2),               &
+      CALL stats_2dfld (ng, tile, iNLM, v2dvar, Stats(2), 0,            &
      &                  LBi, UBi, LBj, UBj, vbar(:,:,1))
       IF (DOMAIN(ng)%NorthEast_Corner(tile)) THEN
         WRITE (stdout,10) TRIM(Vname(2,idVbar))//': '//                 &
@@ -235,7 +236,7 @@
 !
 !  Report statistics.
 !
-      CALL stats_2dfld (ng, tile, iNLM, r2dvar, Stats(3),               &
+      CALL stats_2dfld (ng, tile, iNLM, r2dvar, Stats(3), 0,            &
      &                  LBi, UBi, LBj, UBj, zeta(:,:,1))
       IF (DOMAIN(ng)%NorthEast_Corner(tile)) THEN
         WRITE (stdout,10) TRIM(Vname(2,idFsur))//': '//                 &
