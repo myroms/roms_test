@@ -9,11 +9,11 @@ shown in **Figure 1**.
 
 <img width="600" alt="image" src="https://github.com/myroms/roms_test/assets/23062912/e6e46069-f78a-4ffb-967f-4f45bf6960d2">
 
-**`Figure 1:`** A schematic of a typical operational analysis-forecast cycle. 
+**`Figure 1:`** A schematic of a typical operational analysis-forecast cycle.
 During the analysis cycle, an ocean state estimate is computed using
 4D-Var to assimilate all available observations. The blue curve represents
 the background circulation, **X<sub>b</sub>**, for this cycle and is derived
-from the state estimate from the previous **4D-Var** cycle. The number of 
+from the state estimate from the previous **4D-Var** cycle. The number of
 time steps during the analysis cycle is given by **NTIMES_ANA**. At the end of
 the analysis cycle, there are two possible forecasts: **FCAT** - the red forecast,
 which is initialized using the state estimate at the end of the analysis cycle,
@@ -23,7 +23,7 @@ These two forecasts can be verified against either a new analysis or against
 new observations during the `verification interval`. The red forecast **FCTA** has
 benefited from the observations assimilated during the analysis interval, while
 the **green** forecast **FCTB** has not. Therefore, the difference in forecast
-error between **FCTA** and **FCTB** can be used to quantify the impact of the 
+error between **FCTA** and **FCTB** can be used to quantify the impact of the
 observations assimilated during the analysis cycle on the subsequent forecast
 skill of **FCTA**.
 
@@ -103,7 +103,7 @@ You need to take the following steps:
   For this to work, however, any **#undef** directives **must** be
   avoided in the header file **wc13.h** since it has precedence
   during C-preprocessing.
-      
+
 - You **must** use any of the **build** scripts to compile.
 
 - Customize the **ROMS** input script **roms_wc13.in** and specify
@@ -128,7 +128,7 @@ You need to take the following steps:
   ```
      setenv ROMS_ROOT ${HOME}/ocean/repository/git/roms
   ```
-  
+
 - Execute the configuration **job_fcstat.csh** `BEFORE` running
   the model. It copies the required files and creates **rbl4dvar.in**
   input script from template **s4dvar.in**. This has to be done
@@ -165,7 +165,7 @@ You need to take the following steps:
   **2011**: The Regional Ocean Modeling System (ROMS) 4-dimensional
   variational data assimilations systems, Part II - Performance
   and application to the California Current System, *Prog.
-  Oceanogr.*, **91**, 50-73, 
+  Oceanogr.*, **91**, 50-73,
   https://doi.org/10.1016/j.pocean.2011.05.003.
 
 - Moore, A.M., H.G. Arango, G. Broquet, C. Edward, M. Veneziani,

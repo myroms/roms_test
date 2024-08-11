@@ -22,7 +22,7 @@ unix(['mv -f ',replace(CDLname,'.cdl','.nc'), blanks(1), OutName]);
 Nrec = length(nc_read(InpName, 'MT'));
 
 lon = nc_read(InpName, 'Longitude');
-lon = lon(i1:i2, j1:j2) - 360;           
+lon = lon(i1:i2, j1:j2) - 360;
 nc_write(OutName, 'Longitude', lon);
 
 lat = nc_read(InpName, 'Latitude');
@@ -41,7 +41,7 @@ for rec=1:Nrec
   nc_write(OutName, 'MT', F, rec);
 
   F = nc_read(InpName, 'Date', rec);
-  nc_write(OutName, 'Date', F, rec);  
+  nc_write(OutName, 'Date', F, rec);
 
   F = nc_read(InpName, 'temperature', rec, NaN);
   F = F(i1:i2, j1:j2);

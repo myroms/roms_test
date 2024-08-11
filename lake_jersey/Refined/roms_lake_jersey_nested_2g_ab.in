@@ -392,16 +392,16 @@ LtracerSponge == F F                            ! temperature, salinity, inert
 
 ! Generic length-scale turbulence closure parameters.
 
-       GLS_P == 2*0.0d0                         ! k-kl      
+       GLS_P == 2*0.0d0                         ! k-kl
        GLS_M == 2*1.0d0
        GLS_N == 2*1.0d0
     GLS_Kmin == 2*5.0d-06
     GLS_Pmin == 2*5.0d-06
 
     GLS_CMU0 == 2*0.5544d0
-      GLS_C1 == 2*0.9d0 
+      GLS_C1 == 2*0.9d0
       GLS_C2 == 2*0.52d0
-     GLS_C3M == 2*2.5d0 
+     GLS_C3M == 2*2.5d0
      GLS_C3P == 2*1.0d0
     GLS_SIGK == 2*1.96d0
     GLS_SIGP == 2*1.96d0

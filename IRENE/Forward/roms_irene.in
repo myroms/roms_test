@@ -1139,7 +1139,7 @@ PIO_I2C_Preq = 65                 ! Maximum pending I2C requests
 
 ! Input tidal forcing file name.
 
-     TIDENAME == ../Data/ROMS/irene_roms_tides.nc 
+     TIDENAME == ../Data/ROMS/irene_roms_tides.nc
 
 ! Input forcing NetCDF file name(s).
 !

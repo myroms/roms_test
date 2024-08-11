@@ -680,7 +680,7 @@ nDataExport(seaice) == 0                ! number of fields to export
 !                    flag to ESMF_FieldRegridStore.
 !
 !------------------------------------------------------------------------------
-! Melding weighting coefficients. 
+! Melding weighting coefficients.
 !------------------------------------------------------------------------------
 !
 ! Melding coefficients used to combine fields from DATA and ESM components.

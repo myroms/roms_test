@@ -17,7 +17,7 @@
  NEV=4;                       % eingenvector to process
 
  NC=8;                        % number of contours
- 
+
 % Read in Optimal Perturbations data.
 
 Xr=nc_read(TLMname,'x_rho');
@@ -67,7 +67,7 @@ CendT(2)=max(CiniT(2), max(D.Tend(:)));
 % Plot initial and final perturbations.
 
 figure;
-  
+
 h1=subplot(2,2,1);
 contourf(Xr,Yr,D.Zini,NC);
 colorbar; caxis(CiniZ);

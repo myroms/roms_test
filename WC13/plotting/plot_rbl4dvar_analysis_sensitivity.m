@@ -123,5 +123,5 @@ if (PRINT)
   if (exist('/opt/local/bin/convert','file'))
     unix(['/opt/local/bin/convert -verbose -crop 2100x1132+100+45',     ...
           ' +repage ', png_file, blanks(1), png_file]);
-  end 
+  end
 end

@@ -29,7 +29,7 @@ The sea ice model state variables **iSice** indices are:
 | 10    | **isUice** | Ice U-velocity (m/s) |
 | 11    | **isVice** | Ice V-velocity (m/s) |
 | 12    | **isEnth** | Enthalpy of the ice/brine system, ice heat content |
-| 13    | **isHage** | Thickness associated with the age of ice (m) |                              
+| 13    | **isHage** | Thickness associated with the age of ice (m) |
 | 14    | **isUevp** | Elastic-viscous-plastic ice U-velocity (m/s) |
 | 15    | **isVevp** | Elastic-viscous-plastic ice V-velocity (m/s) |
 
@@ -50,7 +50,7 @@ The sea ice model internal field **iFice** indices are:
 | 11   | **icPice** | Ice pressure or strength (N/m2) |
 | 12   | **icQcon** | Gradient heat conductivity over ice/snow (W/m2/K) |
 | 13   | **icQrhs** | RHS surface net heat flux over ice/snow (W/m2) |
-| 14   | **icSvis** | Ice shear viscosity |  
+| 14   | **icSvis** | Ice shear viscosity |
 | 15   | **icS0mk** | Salinity of molecular sublayer under ice (unitless) |
 | 16   | **icT0mk** | Temperature of molecular sublayer under ice (Celsius) |
 | 17   | **icUavg** | Vertically averaged mixed-layer U-velocity (m/s) |
@@ -145,7 +145,7 @@ or
  roms_lake_ice_his_0001.nc to *_0005.nc           ROMS 5-day history files
  roms_lake_ice_qck_0001.nc to *_0005.nc           ROMS daily quicksave files for sea ice model
  roms_lake_ice_rst.nc                             ROMS restart file
- roms_lake_ice_sta.nc                             ROMS hourly stations file 
+ roms_lake_ice_sta.nc                             ROMS hourly stations file
  ```
 ----
 
@@ -197,7 +197,7 @@ The **`STATION`** option was activated to output the ice model solution time ser
 :------------------------------:|:--------------------------:
 | <img width="400" alt="image" src="https://github.com/myroms/roms_test/assets/23062912/749ecf3a-c02c-41ee-a839-f26ab95c48ec"> | <img width="400" alt="image" src="https://github.com/myroms/roms_test/assets/23062912/fe67ab81-0355-4589-930e-5fcc300c8ebe"> |
 
----- 
+----
 
 **References:**
 
@@ -205,4 +205,4 @@ Durski, S.M., and A.L. Kurapov, 2019: A high-resolution coupled ice-ocean model 
 
 Durski, S.M., and A.L. Kurapov, 2020: A high-resolution coupled ice-ocean model of winter circulation on the Bering Sea Shelf. Part II: Polynyas and the shelf salinity distribution, _Ocean Modelling_, 156, 101696, **doi:**/10.1016/j.ocemod.2020.101696.
 
-Mellor, G.L. and L. Kantha, 1989: An Ice-Ocean Coupled Model, _J. Geophys. Res._, **94**, 10937-10954. 
+Mellor, G.L. and L. Kantha, 1989: An Ice-Ocean Coupled Model, _J. Geophys. Res._, **94**, 10937-10954.

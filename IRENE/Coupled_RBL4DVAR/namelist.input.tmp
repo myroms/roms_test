@@ -22,8 +22,8 @@
  input_from_file                     = .true., .false., .false.,
  force_use_old_data                  = .false.,
  input_inname                        = "MyInpName"
- bdy_inname                          = "MyBryName" 
- history_outname                     = "MyHisName" 
+ bdy_inname                          = "MyBryName"
+ history_outname                     = "MyHisName"
  history_interval                    = 60,   60,   60,       ! minutes
  frames_per_outfile                  = 1000, 1000, 1000,
  restart                             = .false.,

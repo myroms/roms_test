@@ -7,12 +7,12 @@ coupling system for Hurricane Irene using the **ESMF/NUOPC** library. It
 uses our Coupled Forecast Framework (**CFF**) configuration for the
 US East Coast **`CFF-EC7`** (**ROMS** 7km grid), and the simulation is only
 run for 42 hours as Hurricane Irene approached the Outer Banks
-of North Carolina on August 27, 2011. 
+of North Carolina on August 27, 2011.
 
 This test is a variant of the one available in [data_wrf_roms](../data_wrf_roms)
 since **ROMS** and **DATA** export surface ocean currents to compute the
 effective surface wind forcing by subtracting surface ocean currents from
-**WRF** surface wind. 
+**WRF** surface wind.
 
 <img width="940" alt="image" src="https://github.com/myroms/roms_test/assets/23062912/43010527-1cb7-4ba0-aec4-a888f46369c4">
 
@@ -30,7 +30,7 @@ activating the **RAMS**-averaged diagnostics.
 
 All the components interact with the same coupling time step.
 The connector from **ROMS** to **WRF** is explicit, whereas the connector
-from **WRF** to **ROMS** is semi-implicit. 
+from **WRF** to **ROMS** is semi-implicit.
 
 It uses **ROMS**'s native, **NUOPC**-based coupling system. For more information,
 visit **WikiROMS**:
@@ -41,7 +41,7 @@ https://www.myroms.org/wiki/Model_Coupling_ESMF
 
 As shown by Renault _et al._ (2016), the feedback from surface ocean currents to
 the atmosphere is an eddy-killing effect stabilizing the Gulf Stream separation
-at Cape Hatteras in **WRF-ROMS** fully coupled applications. The result is 
+at Cape Hatteras in **WRF-ROMS** fully coupled applications. The result is
 around 0.3 N/m2 weaker surface wind stress in the core of the Gulf Stream. Since
 **ROMS** doesn't cover all the ocean points in the **WRF** grid, a **DATA**
 component is used to supply those values from the 3-hour **HyCOM** dataset.
@@ -120,7 +120,7 @@ They are activated in the build scripts.
   coupling_esmf_wrf.yaml        Coupling fields exchange YAML metadata
   irene.h                       ROMS header file
   namelist.input                WRF standard input script
-  plot_debug.m                  Matlab plotting  driver for debugging (for DebugLevel=3) 
+  plot_debug.m                  Matlab plotting  driver for debugging (for DebugLevel=3)
   plot_esmf.m                   Matlab plotting script for field maps (for DebugLevel=3)
   rbl4dvar.in                   ROMS observation input script
   roms_irene.in                 ROMS standard input script
@@ -129,7 +129,7 @@ They are activated in the build scripts.
   ```
 
 - To download **WRF** latest forked repository, you may use:
-- 
+-
   ```
     git clone  https://github.com/myroms/WRF
   ```
@@ -183,7 +183,7 @@ They are activated in the build scripts.
     links files created by the build script and needed to run **WRF**:
   ```
     alias ltl '/bin/ls -ltHF | grep -v ^l'
-  ```      
+  ```
 ### How to Compile ROMS:
 
 - **ROMS** is the driver of the coupling system. In this application, the **WRF** Surface
@@ -196,7 +196,7 @@ They are activated in the build scripts.
     The option **bulk_flux = 1** in the **ROMS** build script IS NOT RECOMMENDED FOR THIS
     APPLICATION because the **bulk_flux.F** module is not tunned for Hurricane regimes,
     and will get the wrong solution
-   
+
     To compile **ROMS**, use:
    ```
     build_roms.csh -j 10
@@ -207,7 +207,7 @@ They are activated in the build scripts.
     submit.sh > & log &
    ```
   You can modify **submit.sh** for your appropriate computer environment.
-   
+
 ### Debugging:
 
 The **ROMS** native coupling framework allows writing the selected exchange fields in
@@ -265,7 +265,7 @@ exporting surface ocean currents. An example of the figures generated and shown 
   ```
 
 - **ROMS** NetCDF Files:
- 
+
    ```
     irene_avg.nc                                  6-hour averages
     irene_his.nc                                  hourly history
