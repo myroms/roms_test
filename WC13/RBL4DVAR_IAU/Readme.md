@@ -1,8 +1,8 @@
 <img width="600" alt="image" src="https://github.com/myroms/roms_test/assets/23062912/ad6a7ef1-1fed-4b2e-96b9-9c53615b9333">
 
-## 4D-Var Tutorial: Exercise 3 and Exercise 4
+## 4D-Var Incremental Analysis Update Test
 
-**Technical Description**: [Exercise_3.pdf](https://github.com/myroms/roms_test/edit/feature/info/WC13/RBL4DVAR/Exercise_3.pdf), [Exercise_4.pdf](https://github.com/myroms/roms_test/edit/feature/info/WC13/RBL4DVAR/Exercise_4.pdf)
+**Technical Description**: [roms PR #38](https://github.com/myroms/roms/pull/38)
 
 **Information**:  www.myroms.org/wiki/4DVar_Tutorial_Introduction
 
@@ -12,18 +12,16 @@ This directory includes various files to run the strong/weak
 constraint, dual form of 4-Dimensional Variational data (**4D-Var**)
 assimilation based on the Restricted B-preconditioned Lanczos
 (**RBL4D-Var**) algorithm in the California Current System, 1/3
-degree resolution, application (**WC13**).
+degree resolution, application (**WC13**). It activates the Incremental
+Analysis Update (IAU) to suppress the generation of inertia-gravity waves
+during the assimilation window due to initialization shocks.
 
 ### Important CPP Options:
 ```
    RBL4DVAR                RBL4D-Var driver (observation space)
    ANA_SPONGE              Analytical enhanced viscosity/diffusion sponge
    BGQC                    Background quality control of observations
-   MINRES                  Minimal Residual Method for minimization
    RPCG                    Restricted B-preconditioned Lanczos minimization
-   POSTERIOR_EOFS          Estimate posterior analysis error
-   POSTERIOR_ERROR_I       Estimate initial posterior analysis error
-   TIME_CONV               Weak-constraint 4D-Var time convolution
    WC13                    Application CPP option
 ```
 
@@ -52,32 +50,30 @@ degree resolution, application (**WC13**).
 ```
 ### Configuration and Input Scripts:
 ```
-   build_roms.csh       ROMS GNU make compiling and linking CSH script
-   build_roms.sh        ROMS GNU make compiling and linking BASH script
-   cbuild_roms.csh      ROMS CMake compiling and linking CSH script
-   cbuild_roms.sh       ROMS CMake compiling and linking BASH script
-   job_rbl4dvar.csh     job configuration script
-   roms_wc13_daily.in   ROMS standard input script for WC13, NHIS=48,
-                          daily forward trajectory snapshots
-   roms_wc13_2hours.in  ROMS standard input script for WC13, NHIS=4,
-                          two-hours forward trajectory snapshots
-   s4dvar.in            4D-Var standard input script template
-   wc13.h               WC13 header with CPP options
+   build_roms.csh         ROMS GNU make compiling and linking CSH script
+   build_roms.sh          ROMS GNU make compiling and linking BASH script
+   cbuild_roms.csh        ROMS CMake compiling and linking CSH script
+   cbuild_roms.sh         ROMS CMake compiling and linking BASH script
+   job_rbl4dvar.csh       job configuration script
+   roms_wc13_20040103.in  ROMS standard input script for WC13, NHIS=4,
+                            two-hours forward trajectory snapshots
+   s4dvar.in              4D-Var standard input script template
+   wc13.h                 WC13 header with CPP options
 ```
 
 ### How to Run this Application:
 
 You need to take the following steps:
 
-- We need to run the model application for a long period
+- We must run the model application for a long time
   to compute meaningful circulation statistics,
   like mean and standard deviations for all prognostic state
   variables (**zeta**, **u**, **v**, **T**, and **S**). The standard deviations
   are written to NetCDF files and are read by the **4D-Var**
   algorithm to convert modeled error correlations to error
-  covariances. The error covariance matrix, **D**, is very large
-  and not well known. It is modeled as the solution of a
-  diffusion equation as in Weaver and Courtier (2001).
+  covariances. The error covariance matrix, **D**, is large
+  and unknown. It is modeled as the solution of a
+  diffusion equation, as shown by Weaver and Courtier (2001).
 
   - In this application, we need standard deviations for
     initial conditions, surface forcing (**ADJUST_WSTRESS** and
