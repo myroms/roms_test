@@ -174,9 +174,9 @@
 !
 # ifdef LAKE_ICE
           LatRad=42.0_r8*deg2rad
-# else  
+# else
           LatRad=latr(i,j)*deg2rad
-# endif  
+# endif
           cff1=SIN(LatRad)*SIN(Dangle)
           cff2=COS(LatRad)*COS(Dangle)
 # if defined ALBEDO
@@ -197,9 +197,9 @@
           srflx(i,j)=0.0_r8
 # ifdef LAKE_ICE
           LonRad=-81.0_r8*deg2rad
-# else  
+# else
           LatRad=latr(i,j)*deg2rad
-# endif  
+# endif
           zenith=cff1+cff2*COS(Hangle-LonRad)
           IF (zenith.gt.0.0_r8) THEN
             cff=(0.7859_r8+0.03477_r8*Tair(i,j))/                       &

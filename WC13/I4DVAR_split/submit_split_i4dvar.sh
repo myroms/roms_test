@@ -181,7 +181,7 @@ My4DVarScript() {
 
       HereDir=${PWD}                   # current directory
 
-      DataDir="../../Data"             # data directory 
+      DataDir="../../Data"             # data directory
 
        ObsDir=${DataDir}               # observations directory
 
@@ -193,7 +193,7 @@ My4DVarScript() {
 
  if [ ${BATCH} -eq 1 ]; then
          SRUN="srun --mpi=pmi2"        # SLURM workload manager
- else    
+ else
        MPIrun="mpirunI -np"            # Basic MPI workload manager
  fi
 
@@ -465,7 +465,7 @@ while [ $SDAY -le $L_DN ]; do
 ## Start 4D-Var outer loops :::::::::::::::::::::::::::::::::::::::::::
 
   while [ $OuterLoop -lt $MyNouter ]; do
-  
+
     OuterLoop=$(( $OuterLoop + 1 ))
 
 ## Run 4D-Var 'background' phase ......................................
@@ -493,7 +493,7 @@ while [ $SDAY -le $L_DN ]; do
       fi
 
       if [ $? -ne 0 ] ; then
-        echo 
+        echo
         echo "Error while running 4D-Var System:  Cycle = ${Cycle}" \
                                                "  Outer = ${OuterLoop}" \
                                                "  Phase = ${Phase4DVAR}"
@@ -526,7 +526,7 @@ while [ $SDAY -le $L_DN ]; do
       fi
 
       if [ $? -ne 0 ] ; then
-        echo 
+        echo
         echo "Error while running 4D-Var System:  Cycle = ${Cycle}" \
                                                "  Outer = ${OuterLoop}" \
 			                       "  Phase = ${Phase4DVAR}"
@@ -558,7 +558,7 @@ while [ $SDAY -le $L_DN ]; do
       fi
 
       if [ $? -ne 0 ] ; then
-        echo 
+        echo
         echo "Error while running 4D-Var System:  Cycle = ${Cycle}" \
                                                "  Outer = ${OuterLoop}" \
 			                       "  Phase = ${Phase4DVAR}"
@@ -597,7 +597,7 @@ while [ $SDAY -le $L_DN ]; do
     fi
 
     if [ $? -ne 0 ] ; then
-      echo 
+      echo
       echo "Error while running 4D-Var System:  Cycle = ${Cycle}" \
 		                             "  Phase = ${Phase4DVAR}"
       echo "Check ${RunDir}/log.roms for details ..."

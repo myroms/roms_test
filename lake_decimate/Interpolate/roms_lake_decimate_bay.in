@@ -259,7 +259,7 @@ ad_VolCons(north) ==  F                            ! northern boundary
 
        NRREC == 0
    LcycleRST == T
-        NRST == 1440     
+        NRST == 1440
         NSTA == 1
         NFLT == 1
        NINFO == 1

@@ -83,7 +83,7 @@ a uniform distribution (drawn from a normal distribution with zero
 mean and unit variance). Then, they are scaled by the inverse
 squared-root of the cell area (2D state variable) or volume (3D state
 variable) and convolved with the squared-root adjoint and tangent
-diffusion operators over a specified number of iterations, **Nrandom**.                      
+diffusion operators over a specified number of iterations, **Nrandom**.
 
 Check the following parameters in the **4D-Var** input script **s4dvar.in**:
 ```
@@ -95,7 +95,7 @@ Check the following parameters in the **4D-Var** input script **s4dvar.in**:
 
       CnormI(isFsur) =  T       ! 2D variable at RHO-points
       CnormI(isUbar) =  T       ! 2D variable at U-points
-      CnormI(isVbar) =  T       ! 2D variable at V-points 
+      CnormI(isVbar) =  T       ! 2D variable at V-points
       CnormI(isUvel) =  T       ! 3D variable at U-points
       CnormI(isVvel) =  T       ! 3D variable at V-points
       CnormI(isTvar) =  T T     ! NT tracers
@@ -272,7 +272,7 @@ You need to take the following steps:
   **2011**: The Regional Ocean Modeling System (ROMS) 4-dimensional
   variational data assimilations systems, Part II - Performance
   and application to the California Current System, *Prog.
-  Oceanogr.*, **91**, 50-73, 
+  Oceanogr.*, **91**, 50-73,
   https://doi.org/10.1016/j.pocean.2011.05.003.
 
 - Moore, A.M., H.G. Arango, G. Broquet, C. Edward, M. Veneziani,

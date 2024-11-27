@@ -50,7 +50,7 @@ section=22:36;
 Eradius=6371315.0;
 
 lonr=ncread(Gname,'lon_rho'); lonr=lonr';
-latr=ncread(Gname,'lat_rho'); latr=latr'; 
+latr=ncread(Gname,'lat_rho'); latr=latr';
 lonv=ncread(Gname,'lon_v');   lonv=lonv';
 latv=ncread(Gname,'lat_v');   latv=latv';
 lonu=ncread(Gname,'lon_u');   lonu=lonu';
@@ -73,35 +73,35 @@ nHIS  =ncread(InpA,'nHIS');
 ntimes=ncread(InpA,'ntimes');
 %facdt1=nHIS/ntimes;
 facdt1=1/nAVG;
-  
+
 clear f;
-v='v';         
+v='v';
 fA =ncread(InpA,v);
 fB =ncread(InpB,v);
 fVA=ncread(InpVA,v);
-  
+
 clear varr;
 varr=zeros(size(fA));
-  
+
 for it=(size(fA,4)-nAVG):size(fA,4),
 
   facdt=facdt1;
-  
+
   clear z_w;
   [z_w]=depths(InpA,Gname,5,0);
-    
+
   nlevt=size(fA,3);
-    
+
   clear Hz;
   for k=1:nlevt
     Hz(:,:,k)=z_w(:,:,k+1)-z_w(:,:,k);
   end
-    
+
   clear z_v;
   [z_v]=depths(InpA,Gname,4,0);
-    
+
   clear df;
-    
+
   for k=1:nlevt
     for i=section
       if z_v(i,jlat,k) > depth
@@ -111,7 +111,7 @@ for it=(size(fA,4)-nAVG):size(fA,4),
       end
     end
   end
-    
+
 end
 
 % Compute the forecast error metrics
@@ -206,5 +206,5 @@ if (PRINT)
   if (exist('/opt/local/bin/convert','file'))
     unix(['/opt/local/bin/convert -verbose -crop 2100x1132+100+45',     ...
           ' +repage ', png_file, blanks(1), png_file]);
-  end 
+  end
 end

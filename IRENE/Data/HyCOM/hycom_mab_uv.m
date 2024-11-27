@@ -48,7 +48,7 @@ for rec = 1:Nrec
   Date  = str2num(datestr(datenum(epoch+time),'yyyymmdd'))+dfrac;
 
   disp(['Processing Date: ', dstr]);
-  
+
   Usur  = nc_read(fname, 'water_u', 1, NaN);
   Vsur  = nc_read(fname, 'water_v', 1, NaN);
 
@@ -56,7 +56,7 @@ for rec = 1:Nrec
   if (~isempty(Uind))
     Uwind(Uind)=1.0E+30;
   end
-  
+
   Vind = find(isnan(Vsur));
   if (~isempty(Vind))
     Vwind(Vind)=1.0E+30;

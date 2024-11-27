@@ -120,7 +120,7 @@
 !
       integer :: i, j
 #ifdef LAKE_DECIMATE
-      real(r8) :: cff1, mxst, ramp_d, ramp_time, ramp_u 
+      real(r8) :: cff1, mxst, ramp_d, ramp_time, ramp_u
 #endif
 
 #include "set_bounds.h"

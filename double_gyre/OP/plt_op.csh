@@ -58,7 +58,7 @@ set TITLE4=" "
 set YEAR=2011
 set YDAY=-1
 
-set VINT=0              # vertical interpolation scheme      
+set VINT=0              # vertical interpolation scheme
 
 set GRID=1.0
 set BLAT=0.0
@@ -174,7 +174,7 @@ $GRID LGRID  : Desired longitude/latitude grid spacing (degrees)
 0.0   PLAT   : projection Pole latitude (south values are negative).
 0.0   ROTA   : projection rotation angle (clockwise; degrees).
 1     LMSK   : flag to color mask land: [0] no, [1] yes
--1    NPAGE  : number of plots per page (currently 1, 2, or 4)  
+-1    NPAGE  : number of plots per page (currently 1, 2, or 4)
 F     READGRD: logical switch to read in positions from grid NetCDF file.
 F     PLTLOGO: logical switch draw Logo.
 T     WRTHDR : logical switch to write out the plot header titles.
@@ -236,7 +236,7 @@ $GRID LGRID  : Desired longitude/latitude grid spacing (degrees)
 0.0   PLAT   : projection Pole latitude (south values are negative).
 0.0   ROTA   : projection rotation angle (clockwise; degrees).
 1     LMSK   : flag to color mask land: [0] no, [1] yes
--1    NPAGE  : number of plots per page (currently 1, 2, or 4)  
+-1    NPAGE  : number of plots per page (currently 1, 2, or 4)
 F     READGRD: logical switch to read in positions from grid NetCDF file.
 F     PLTLOGO: logical switch draw Logo.
 T     WRTHDR : logical switch to write out the plot header titles.
@@ -298,7 +298,7 @@ $GRID LGRID  : Desired longitude/latitude grid spacing (degrees)
 0.0   PLAT   : projection Pole latitude (south values are negative).
 0.0   ROTA   : projection rotation angle (clockwise; degrees).
 1     LMSK   : flag to color mask land: [0] no, [1] yes
--1    NPAGE  : number of plots per page (currently 1, 2, or 4)  
+-1    NPAGE  : number of plots per page (currently 1, 2, or 4)
 F     READGRD: logical switch to read in positions from grid NetCDF file.
 F     PLTLOGO: logical switch draw Logo.
 T     WRTHDR : logical switch to write out the plot header titles.
@@ -360,7 +360,7 @@ $GRID LGRID  : Desired longitude/latitude grid spacing (degrees)
 0.0   PLAT   : projection Pole latitude (south values are negative).
 0.0   ROTA   : projection rotation angle (clockwise; degrees).
 1     LMSK   : flag to color mask land: [0] no, [1] yes
--1    NPAGE  : number of plots per page (currently 1, 2, or 4)  
+-1    NPAGE  : number of plots per page (currently 1, 2, or 4)
 F     READGRD: logical switch to read in positions from grid NetCDF file.
 F     PLTLOGO: logical switch draw Logo.
 T     WRTHDR : logical switch to write out the plot header titles.
@@ -422,7 +422,7 @@ $GRID LGRID  : Desired longitude/latitude grid spacing (degrees)
 0.0   PLAT   : projection Pole latitude (south values are negative).
 0.0   ROTA   : projection rotation angle (clockwise; degrees).
 1     LMSK   : flag to color mask land: [0] no, [1] yes
--1    NPAGE  : number of plots per page (currently 1, 2, or 4)  
+-1    NPAGE  : number of plots per page (currently 1, 2, or 4)
 F     READGRD: logical switch to read in positions from grid NetCDF file.
 F     PLTLOGO: logical switch draw Logo.
 T     WRTHDR : logical switch to write out the plot header titles.
@@ -484,7 +484,7 @@ $GRID LGRID  : Desired longitude/latitude grid spacing (degrees)
 0.0   PLAT   : projection Pole latitude (south values are negative).
 0.0   ROTA   : projection rotation angle (clockwise; degrees).
 1     LMSK   : flag to color mask land: [0] no, [1] yes
--1    NPAGE  : number of plots per page (currently 1, 2, or 4)  
+-1    NPAGE  : number of plots per page (currently 1, 2, or 4)
 F     READGRD: logical switch to read in positions from grid NetCDF file.
 F     PLTLOGO: logical switch draw Logo.
 T     WRTHDR : logical switch to write out the plot header titles.
@@ -546,7 +546,7 @@ $GRID LGRID  : Desired longitude/latitude grid spacing (degrees)
 0.0   PLAT   : projection Pole latitude (south values are negative).
 0.0   ROTA   : projection rotation angle (clockwise; degrees).
 1     LMSK   : flag to color mask land: [0] no, [1] yes
--1    NPAGE  : number of plots per page (currently 1, 2, or 4)  
+-1    NPAGE  : number of plots per page (currently 1, 2, or 4)
 F     READGRD: logical switch to read in positions from grid NetCDF file.
 F     PLTLOGO: logical switch draw Logo.
 T     WRTHDR : logical switch to write out the plot header titles.

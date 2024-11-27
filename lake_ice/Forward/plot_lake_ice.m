@@ -81,7 +81,7 @@ if (PLOT_MAPS)
     hold on;
     F = nc_read(Qname{nf}, 'Aice', Recs(ir));
     if (Contours)
-      contourf(G.x_rho/1000,G.y_rho/1000,nanland(F,G.mask_rho),20);  
+      contourf(G.x_rho/1000,G.y_rho/1000,nanland(F,G.mask_rho),20);
     else
       pcolor(G.x_rho/1000,G.y_rho/1000,nanland(F,G.mask_rho));
     end
@@ -92,13 +92,13 @@ if (PLOT_MAPS)
     caxis([0 1]);
     axis([0 200 0 100]);
     hold off;
-  
+
     subplot(2,1,2)
     set(gca, 'color', Land);
     hold on;
     F = nc_read(Qname{nf}, 'ice_age', Recs(ir));
     if (Contours)
-      contourf(G.x_rho/1000,G.y_rho/1000,nanland(F,G.mask_rho),20);  
+      contourf(G.x_rho/1000,G.y_rho/1000,nanland(F,G.mask_rho),20);
     else
       pcolor(G.x_rho/1000,G.y_rho/1000,nanland(F,G.mask_rho));
     end
@@ -124,7 +124,7 @@ if (PLOT_MAPS)
     hold on;
     F = nc_read(Qname{nf}, 'ice_thickness', Recs(ir));
     if (Contours)
-      contourf(G.x_rho/1000,G.y_rho/1000,nanland(F,G.mask_rho),20);  
+      contourf(G.x_rho/1000,G.y_rho/1000,nanland(F,G.mask_rho),20);
     else
       pcolor(G.x_rho/1000,G.y_rho/1000,nanland(F,G.mask_rho));
     end
@@ -141,7 +141,7 @@ if (PLOT_MAPS)
     hold on;
     F = nc_read(Qname{nf}, 'meltpond_thickness', Recs(ir));
     if (Contours)
-      contourf(G.x_rho/1000,G.y_rho/1000,nanland(F,G.mask_rho),20);  
+      contourf(G.x_rho/1000,G.y_rho/1000,nanland(F,G.mask_rho),20);
     else
       pcolor(G.x_rho/1000,G.y_rho/1000,nanland(F,G.mask_rho));
     end
@@ -151,7 +151,7 @@ if (PLOT_MAPS)
     colormap(flipud(vivid('mvbscflyor',[0.2 1])));
     caxis([0 0.1]);
     axis([0 200 0 100]);
-    hold off;  
+    hold off;
 
     if (doPNG)
       png_file = strcat('ice_tickness_', num2str(ir), '.png');

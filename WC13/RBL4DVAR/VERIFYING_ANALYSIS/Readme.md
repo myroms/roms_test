@@ -120,7 +120,7 @@ You need to take the following steps:
     (2D state variables) or volume (3D state variables), and
     then by convolving with the squared-root adjoint and tangent
     linear diffusion operators.
-   
+
   - The **randomization method** is cheaper and an approximation.
     The normalization coefficients are computed using the approach
     of Fisher and Courtier (1995). The coefficients are initialized
@@ -129,7 +129,7 @@ You need to take the following steps:
     they are scaled by the inverse squared root of the cell area
     (2D state variable) or volume (3D state variable) and convolved
     with the squared-root adjoint and tangent diffusion operators
-    over a specified number of iterations, **Nrandom**.                      
+    over a specified number of iterations, **Nrandom**.
 
   Check the following parameters in the **4D-Var** input script
   **s4dvar.in**:
@@ -142,14 +142,14 @@ You need to take the following steps:
 
       CnormM(isFsur) =  T       ! Model, 2D variable at RHO-points
       CnormM(isUbar) =  T       ! Model, 2D variable at U-points
-      CnormM(isVbar) =  T       ! Model, 2D variable at V-points 
+      CnormM(isVbar) =  T       ! Model, 2D variable at V-points
       CnormM(isUvel) =  T       ! Model, 3D variable at U-points
       CnormM(isVvel) =  T       ! Model, 3D variable at V-points
       CnormM(isTvar) =  T T     ! Model, NT tracers
 
       CnormI(isFsur) =  T       ! IC, 2D variable at RHO-points
       CnormI(isUbar) =  T       ! IC, 2D variable at U-points
-      CnormI(isVbar) =  T       ! IC, 2D variable at V-points 
+      CnormI(isVbar) =  T       ! IC, 2D variable at V-points
       CnormI(isUvel) =  T       ! IC, 3D variable at U-points
       CnormI(isVvel) =  T       ! IC, 3D variable at V-points
       CnormI(isTvar) =  T T     ! IC, NT tracers
@@ -297,7 +297,7 @@ You need to take the following steps:
   **2011**: The Regional Ocean Modeling System (ROMS) 4-dimensional
   variational data assimilations systems, Part II - Performance
   and application to the California Current System, *Prog.
-  Oceanogr.*, **91**, 50-73, 
+  Oceanogr.*, **91**, 50-73,
   https://doi.org/10.1016/j.pocean.2011.05.003.
 
 - Moore, A.M., H.G. Arango, G. Broquet, C. Edward, M. Veneziani,

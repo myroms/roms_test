@@ -106,7 +106,7 @@ GridsInLayer =  1
 ! Domain decomposition parameters for serial, distributed-memory or
 ! shared-memory configurations used to determine tile horizontal range
 ! indices (Istr,Iend) and (Jstr,Jend), [1:Ngrids].
- 
+
       NtileI == 3                               ! I-direction partition
       NtileJ == 4                               ! J-direction partition
 

@@ -132,7 +132,7 @@ fi
 
 echo
 echo "  Generating '${ROMS_Inp}'      from template '${TemplDir}/${ROMS_InpTmpl}'"
- 
+
 cp -f ${TemplDir}/${ROMS_InpTmpl} ${ROMS_Inp}
 
 perl -p0777 -i -e "s|MyNtileI|${nPETsX}|g"     ${ROMS_Inp}

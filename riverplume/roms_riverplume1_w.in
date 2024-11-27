@@ -64,7 +64,7 @@
 !
 ! Application title.
 
-       TITLE = River Plume Test 1, flow across w-face grid cell 
+       TITLE = River Plume Test 1, flow across w-face grid cell
 
 ! C-preprocessing Flag.
 

@@ -13,7 +13,7 @@
 **
 **
 ** Available Driver options:  choose only one and activate it in the
-**                            build.sh script (MY_CPP_FLAGS definition) 
+**                            build.sh script (MY_CPP_FLAGS definition)
 **
 ** AD_SENSITIVITY             Adjoint Sensitivity
 ** AFT_EIGENMODES             Adjoint Finite Time Eigenmodes

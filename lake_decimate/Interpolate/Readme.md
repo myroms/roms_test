@@ -17,7 +17,7 @@ This directory includes various files to run the idealized **`LAKE_DECIMATE`** t
 
    - **`XTRNAME:`** The output extracted solution NetCDF filename.
 
-▶️ We provide the extraction fields geometry grid NetCDF files **`../Data/lake_decimate_grd_bay.nc`** or **`../Data/lake_decimate_grd_inlet.nc`** at the input (**GRXNAME**). This grid must be created with tools like the parent **`../Data/lake_decimate_grd_1km.nc`** application grid and contained inside. 
+▶️ We provide the extraction fields geometry grid NetCDF files **`../Data/lake_decimate_grd_bay.nc`** or **`../Data/lake_decimate_grd_inlet.nc`** at the input (**GRXNAME**). This grid must be created with tools like the parent **`../Data/lake_decimate_grd_1km.nc`** application grid and contained inside.
 
 ### Test Important CPP options:
 
@@ -26,7 +26,7 @@ They are activated in the build scripts.
 ```
    AVERAGES                     Activates time-averaged output
    BULK_FLUXES                  Activates COARE bulk parameterization of surface fluxes
-   CHECKSUM                     Reports checksum when processing I/O     
+   CHECKSUM                     Reports checksum when processing I/O
    GLS_MIXING                   Generic Length-Scale turbulence closure
    GRID_EXTRACT                 Writing output extraction history file
    LAKE_DECIMATE                ROMS application CPP option
@@ -89,7 +89,7 @@ or
  lake_decimate_avg.nc                             ROMS 5-day average files
  lake_decimate_his.nc                             ROMS 5-day history files
  lake_decimate_rst.n                              ROMS restart file
- lake_decimate_sta.nc                             ROMS hourly stations file 
+ lake_decimate_sta.nc                             ROMS hourly stations file
  lake_decimate_xtr.nc                             ROMS extracted history by decimation
  ```
 ----

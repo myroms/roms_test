@@ -41,9 +41,9 @@
  echo ' '
  echo 'Case 2: Forecast Error in the SST Metric'
  if ($NHIS == 'daily') then
-   echo '(Processing files from daily snapshots forward trajectory)'   
+   echo '(Processing files from daily snapshots forward trajectory)'
  else
-   echo '(Processing files from every 2-hours snapshots forward trajectory)'   
+   echo '(Processing files from every 2-hours snapshots forward trajectory)'
  endif
  echo ' '
 

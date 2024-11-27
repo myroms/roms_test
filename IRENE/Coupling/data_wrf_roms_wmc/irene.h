@@ -32,7 +32,7 @@
 #define CHARNOK
 
 #define ATM_PRESS
- 
+
 
 /* Basic numerics options */
 

@@ -367,7 +367,7 @@ if [ $dprint -eq 0 ]; then
 
     # If we are using the COMPILERS from the ROMS source code
     # overide the value set above
-  
+
     if [[ ${COMPILERS} == ${MY_ROMS_SRC}* ]]; then
       export COMPILERS=${MY_PROJECT_DIR}/src/Compilers
     fi

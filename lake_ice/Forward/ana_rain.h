@@ -92,7 +92,7 @@
      &              1.47e-5_r8*COS(2.0_r8*pi*tdays(ng)/365.25_r8)
         END DO
       END DO
-# else  
+# else
       DO j=JstrT,JendT
         DO i=IstrT,IendT
           rain(i,j)=0.0_r8

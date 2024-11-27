@@ -56,7 +56,7 @@ fi
 ##---------------------------------------------------------------------
 
 if [ ${BATCH} -eq 1 ]; then
-   ${SRUN} ${ROMS_EXE} ${ESMFinp} > log.wrf 2>&1 
+   ${SRUN} ${ROMS_EXE} ${ESMFinp} > log.wrf 2>&1
 else
    ${MPIrun} ${nPETs} ${ROMS_EXE} ${ESMFinp} > log.wrf 2>&1
 fi
