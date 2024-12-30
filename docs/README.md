@@ -39,6 +39,8 @@ their respective **CPP** flags:
 | **inlet_test** | **ROMS/SWAN** coupling with **MCT** library |
 | **kelvin** | Kelvin Wave Test |
 | **lab_canyon** | Laboratory Canyon, A True Annulus Test in Polar Coordinates |
+| **lake_decimate** | Grid Coarsening by Decimation |
+| **lake_ice** | Freshwater Ice-Lake Test |
 | **lake_jersey** | Idealized Nesting Refinement Tests |
 | **lmd_test** | Large et al. (1994) **KPP** Test |
 | **riverplume** | River Plume Tests |
@@ -56,13 +58,16 @@ their respective **CPP** flags:
 
 This repository contains idealized and realistic **Test Cases** that can be used
 for testing different parts of **ROMS** kernels and algorithms. Use the following command to download the **ROMS Test** Cases repository:
-```
+
+---
+``` make
 git clone https://github.com/myroms/roms_test.git
 ```
+---
 
 Before downloading, ensure that your **`~/.gitconfig`** has the appropriate
-**`git-lfs`** configuration for correctly downloading some test input and
-observation NetCDF files. Otherwise, the **Test Cases** requiring input NetCDF
+**`git-lfs`** configuration is used to download some test input and
+observation NetCDF files correctly. Otherwise, the **Test Cases** requiring input NetCDF
 files will fail. The **Git LFS** is a command line extension and specification
 for managing large files with **Git**. A sample of the configuration file looks
 like this:
