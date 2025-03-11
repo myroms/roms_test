@@ -587,6 +587,18 @@ Hout(idBath) == F       ! bath               time-dependent bathymetry
 
 Hout(idTvar) == T T     ! temp, salt         temperature and salinity
 
+Hout(idUzsl) == F       ! u_slice            U-velocity depth slices
+Hout(idVzsl) == F       ! v_slice            V-velocity depth slices
+Hout(idUzsE) == F       ! u_eastward_slice   U-eastward  velocity depth slices
+Hout(idVzsN) == F       ! v_northward_slice  V-northward velocity depth slices
+
+Hout(id3dPV) == F       ! pvorticity         potential vorticity at PSI-points
+Hout(id3dRV) == F       ! rvorticity         relative  vorticity at PSI-points
+Hout(idPVzs) == F       ! pvorticity_slice   potential vorticity depth slices
+Hout(idRVzs) == F       ! rvorticity_slice   relative  vorticity depth slices
+
+Hout(idzslT) == F F     ! temp_slice, ...    temperature and salinity depth slices
+
 Hout(idpthR) == F       ! z_rho              time-varying depths of RHO-points
 Hout(idpthU) == F       ! z_u                time-varying depths of U-points
 Hout(idpthV) == F       ! z_v                time-varying depths of V-points
@@ -644,11 +656,11 @@ Hout(idWdis) == F       ! Dissip_roller      wave roller dissipation
 Hout(idWrol) == F       ! roller_action      wave roller action density
 
 Hout(idPair) == F       ! Pair               surface air pressure
-Hout(idTair) == T       ! Tair               surface air temperature
-Hout(idUair) == T       ! Uwind              surface U-wind
-Hout(idVair) == T       ! Vwind              surface V-wind
-Hout(idUaiE) == F       ! Uwind_eastward     surface Eastward  U-wind
-Hout(idVaiN) == F       ! Vwind_northward    surface Northward V-wind
+Hout(idTair) == T       ! Tair               near surface air temperature
+Hout(idUair) == T       ! Uwind              near surface U-wind
+Hout(idVair) == T       ! Vwind              near surface V-wind
+Hout(idUaiE) == F       ! Uwind_eastward     near surface Eastward  U-wind
+Hout(idVaiN) == F       ! Vwind_northward    near surface Northward V-wind
 
 Hout(idTsur) == F F     ! shflux, ssflux     surface net heat and salt flux
 Hout(idLhea) == F       ! latent             latent heat flux
@@ -695,12 +707,22 @@ Qout(idBath) == F      ! bath               time-dependent bathymetry
 
 Qout(idTvar) == F F     ! temp, salt         temperature and salinity
 
-Qout(idUsur) == T       ! u_sur              surface U-velocity
-Qout(idVsur) == T       ! v_sur              surface V-velocity
-Qout(idUsuE) == F       ! u_sur_eastward     surface U-eastward  velocity
-Qout(idVsuN) == F       ! v_sur_northward    surface V-northward velocity
+Qout(idUsur) == T       ! u_sur              surface level U-velocity
+Qout(idVsur) == T       ! v_sur              surface level V-velocity
+Qout(idUsuE) == F       ! u_sur_eastward     surface level U-eastward  velocity
+Qout(idVsuN) == F       ! v_sur_northward    surface level V-northward velocity
 
-Qout(idsurT) == T T     ! temp_sur, salt_sur surface temperature and salinity
+Qout(idsurT) == T T     ! temp_sur, salt_sur surface level temperature and salinity
+
+Qout(idUzsl) == F       ! u_slice            U-velocity depth slices
+Qout(idVzsl) == F       ! v_slice            V-velocity depth slices
+Qout(idUzsE) == F       ! u_eastward_slice   U-eastward  velocity depth slices
+Qout(idVzsN) == F       ! v_northward_slice  V-northward velocity depth slices
+
+Qout(idPVzs) == F       ! pvorticity_slice   potential vorticity depth slices
+Qout(idRVzs) == F       ! rvorticity_slice   relative vorticity depth slices
+
+Qout(idzslT) == F F     ! temp_slice, ...    temperature and salinity depth slices
 
 Qout(idpthR) == F       ! z_rho              time-varying depths of RHO-points
 Qout(idpthU) == F       ! z_u                time-varying depths of U-points
@@ -759,11 +781,12 @@ Qout(idWdis) == F       ! Dissip_roller      wave roller dissipation
 Qout(idWrol) == F       ! roller_action      wave roller action density
 
 Qout(idPair) == F       ! Pair               surface air pressure
-Qout(idTair) == F       ! Tair               surface air temperature
-Qout(idUair) == F       ! Uair               surface U-wind
-Qout(idVair) == F       ! Vair               surface V-wind
-Qout(idUaiE) == F       ! Uwind_eastward     surface Eastward  U-wind
-Qout(idVaiN) == F       ! Vwind_northward    surface Northward V-wind
+Qout(idPBLh) == F       ! PBLh               atmosphere boundary layer thickness
+Qout(idTair) == F       ! Tair               near surface air temperature
+Qout(idUair) == F       ! Uair               near surface U-wind
+Qout(idVair) == F       ! Vair               near surface V-wind
+Qout(idUaiE) == F       ! Uwind_eastward     near surface Eastward  U-wind
+Qout(idVaiN) == F       ! Vwind_northward    near surface Northward V-wind
 
 Qout(idTsur) == T T     ! shflux, ssflux     surface net heat and salt flux
 Qout(idLhea) == T       ! latent             latent heat flux
@@ -862,11 +885,11 @@ Aout(idWdis) == F       ! Dissip_roller      wave roller dissipation
 Aout(idWrol) == F       ! roller_action      wave roller action density
 
 Aout(idPair) == F       ! Pair               surface air pressure
-Aout(idTair) == T       ! Tair               surface air temperature
-Aout(idUair) == T       ! Uwind              surface U-wind
-Aout(idVair) == T       ! Vwind              surface V-wind
-Aout(idUaiE) == F       ! Uwind_eastward     surface Eastward  U-wind
-Aout(idVaiN) == F       ! Vwind_northward    surface Northward V-wind
+Aout(idTair) == T       ! Tair               near surface air temperature
+Aout(idUair) == T       ! Uwind              near surface U-wind
+Aout(idVair) == T       ! Vwind              near surface V-wind
+Aout(idUaiE) == F       ! Uwind_eastward     near surface Eastward  U-wind
+Aout(idVaiN) == F       ! Vwind_northward    near surface Northward V-wind
 
 Aout(idTsur) == T T     ! shflux, ssflux     surface net heat and salt flux
 Aout(idLhea) == T       ! latent             latent heat flux
@@ -989,6 +1012,17 @@ Dout(iTxdif) == T T     ! temp_xdiff, ...    horizontal XI-diffusion
 Dout(iTydif) == T T     ! temp_ydiff, ...    horizontal ETA-diffusion
 Dout(iTsdif) == T T     ! temp_sdiff, ...    horizontal S-diffusion
 Dout(iTvdif) == T T     ! temp_vdiff, ...    vertical diffusion
+
+! Number of output field horizontal slices and their depths (negative, m).
+! It is possible to extract selected state fields like temperature, salinity,
+! and velocity components at a constant depth in the QUICKSAVE and HISTORY
+! NetCDF files. Use wise depth values based on dynamics and model bathymetry
+! and make sure that "NSLICE" is small (between 1 and 4) to keep the QUICKSAVE
+! file size manageable. Order "Z_SLICE" in descending values (surface to
+! bottom).
+
+      NSLICE =  0
+     Z_SLICE =  0.0d0 -50.0d0 -100.0d0
 
 ! Generic User parameters, [1:NUSER].
 
@@ -1672,6 +1706,16 @@ PIO_I2C_Preq = 65                 ! Maximum pending I2C requests
 !                If NDEFHIS=0, the model will only process one HISTORY file.
 !                This feature is useful for extended simulations when HISTORY
 !                file get too large; it creates a new file every NDEFHIS
+!                timesteps.
+!
+! NXTR         Number of timesteps between writing fields into the EXTRACT
+!                 file, if GRID_EXTRACT is activated. Set NXTR=0 to suppress
+!                 writing of EXTRACT file.
+!
+! NDEFXTR      Number of timesteps between the creation of new EXTRACT file.
+!                If NDEFXTR=0, the model will only process one EXTRACT file.
+!                This feature is useful for extended simulations when EXTRACT
+!                file get too large; it creates a new file every EXTRACT
 !                timesteps.
 !
 ! NQCK         Number of timesteps between writing fields into QUICKSAVE file.
@@ -2644,19 +2688,31 @@ PIO_I2C_Preq = 65                 ! Maximum pending I2C requests
 !
 ! Hout(idUvel)   Write out 3D U-velocity component.
 ! Hout(idVvel)   Write out 3D V-velocity component.
-! Hout(idu3dE)   Write out 3D Eastward  velocity component at RHO-points.
-! Hout(idv3dN)   Write out 3D Northward velocity component at RHO-points.
+! Hout(idu3dE)   Write out 3D Eastward  velocity at RHO-points.
+! Hout(idv3dN)   Write out 3D Northward velocity at RHO-points.
 ! Hout(idWvel)   Write out 3D W-velocity component.
 ! Hout(idOvel)   Write out 3D omega vertical velocity.
 ! Hout(idOvil)   Write out 3D omega implicit vertical velocity.
 ! Hout(idUbar)   Write out 2D U-velocity component.
 ! Hout(idVbar)   Write out 2D V-velocity component.
-! Hout(idu2dE)   Write out 2D Eastward  velocity component at RHO-points.
-! Hout(idv2dN)   Write out 2D Northward velocity component at RHO-points.
+! Hout(idu2dE)   Write out 2D Eastward  velocity at RHO-points.
+! Hout(idv2dN)   Write out 2D Northward velocity at RHO-points.
 ! Hout(idFsur)   Write out free-surface.
 ! Hout(idBath)   Write out time-dependent bathymetry.
 !
 ! Hout(idTvar)   Write out active (NAT) tracers: temperature and salinity.
+!
+! Hout(idUzsl)   Write out U-velocity depth slices, Z_SLICE(1:NSLICE).
+! Hout(idVzsl)   Write out V-velocity depth slices, Z_SLICE(1:NSLICE).
+! Hout(idUzsE)   Write out U-eastward  velocity depth slices, Z_SLICE(1:NSLICE).
+! Hout(idVzsN)   Write out V-northward velocity depth slices, Z_SLICE(1:NSLICE).
+!
+! Hout(idzslT)   Write out temperature/salinity depth slices, Z_SLICE(1:NSLICE).
+!
+! Hout(id3dPV)   Write out potential vorticity at PSI-points.
+! Hout(id3dRV)   Write out relative  vorticity at PSI-points.
+! Hout(idPVzs)   Write out potential vorticity depth slices, Z_SLICE(1:NSLICE).
+! Hout(idRVzs)   Write out relative  vorticity depth slices, Z_SLICE(1:NSLICE).
 !
 ! Hout(idpthR)   Write out time-varying depths of RHO-points.
 ! Hout(idpthU)   Write out time-varying depths of U-points.
@@ -2715,11 +2771,11 @@ PIO_I2C_Preq = 65                 ! Maximum pending I2C requests
 ! Hout(idWrol)   Write out wave roller action density.
 !
 ! Hout(idPair)   Write out surface air pressure.
-! Hout(idTair)   Write out surface air temperature.
-! Hout(idUair)   Write out surface U-wind component.
-! Hout(idVair)   Write out surface V-wind component.
-! Hout(idUaiE)   Write out surface Eastward  U-wind component.
-! Hout(idVaiN)   Write out surface Northward V-wind component.
+! Hout(idTair)   Write out near surface air temperature.
+! Hout(idUair)   Write out near surface U-wind component.
+! Hout(idVair)   Write out near surface V-wind component.
+! Hout(idUaiE)   Write out near surface Eastward  U-wind.
+! Hout(idVaiN)   Write out near surface Northward V-wind.
 !
 ! Hout(idTsur)   Write out surface net heat and salt flux
 ! Hout(idLhea)   Write out latent heat flux.
@@ -2748,25 +2804,35 @@ PIO_I2C_Preq = 65                 ! Maximum pending I2C requests
 !
 ! Qout(idUvel)   Write out 3D U-velocity component.
 ! Qout(idVvel)   Write out 3D V-velocity component.
-! Qout(idu3dE)   Write out 3D Eastward  velocity component at RHO-points.
-! Qout(idv3dN)   Write out 3D Northward velocity component at RHO-points.
+! Qout(idu3dE)   Write out 3D Eastward  velocity at RHO-points.
+! Qout(idv3dN)   Write out 3D Northward velocity at RHO-points.
 ! Qout(idWvel)   Write out 3D W-velocity component.
 ! Qout(idOvel)   Write out 3D omega vertical velocity.
 ! Qout(idUbar)   Write out 2D U-velocity component.
 ! Qout(idVbar)   Write out 2D V-velocity component.
-! Qout(idu2dE)   Write out 2D Eastward  velocity component at RHO-points.
-! Qout(idv2dN)   Write out 2D Northward velocity component at RHO-points.
+! Qout(idu2dE)   Write out 2D Eastward  velocity at RHO-points.
+! Qout(idv2dN)   Write out 2D Northward velocity at RHO-points.
 ! Qout(idFsur)   Write out free-surface.
 ! Qout(idBath)   Write out time-dependent bathymetry.
 !
 ! Qout(idTvar)   Write out active (NAT) tracers: temperature and salinity.
 !
-! Qout(idUsur)   Write out surface U-velocity component.
-! Qout(idVsur)   Write out surface V-velocity component.
-! Qout(idUsuE)   Write out surface Eastward  velocity component at RHO-points.
-! Qout(idVsuN)   Write out surface Northward velocity component at RHO-points.
+! Qout(idUsur)   Write out surface level (k=N) U-velocity component.
+! Qout(idVsur)   Write out surface level (k=N) V-velocity component.
+! Qout(idUsuE)   Write out surface level (k=N) Eastward  velocity at RHO-points.
+! Qout(idVsuN)   Write out surface level (k=N) Northward velocity at RHO-points.
 !
-! Qout(idsurT)   Write out surface temperature and salinity
+! Qout(idsurT)   Write out surface level (k=N) temperature and salinity.
+!
+! Qout(idUzsl)   Write out U-velocity depth slices, Z_SLICE(1:NSLICE).
+! Qout(idVzsl)   Write out V-velocity depth slices, Z_SLICE(1:NSLICE).
+! Qout(idUzsE)   Write out U-eastward  velocity depth slices, Z_SLICE(1:NSLICE).
+! Qout(idVzsN)   Write out V-northward velocity depth slices, Z_SLICE(1:NSLICE).
+!
+! Qout(idPVzs)   Write out potential vorticity depth slices, Z_SLICE(1:NSLICE).
+! Qout(idRVzs)   Write out relative  vorticity depth slices, Z_SLICE(1:NSLICE).
+!
+! Qout(idzslT)   Write out temperature/salinity depth slices, Z_SLICE(1:NSLICE).
 !
 ! Qout(idpthR)   Write out time-varying depths of RHO-points.
 ! Qout(idpthU)   Write out time-varying depths of U-points.
@@ -2824,11 +2890,12 @@ PIO_I2C_Preq = 65                 ! Maximum pending I2C requests
 ! Qout(idWrol)   Write out wave roller action density.
 !
 ! Qout(idPair)   Write out surface air pressure.
-! Qout(idTair)   Write out surface air temperature.
-! Qout(idUair)   Write out surface U-wind component.
-! Qout(idVair)   Write out surface V-wind component.
-! Qout(idUaiE)   Write out surface Eastward  U-wind component.
-! Qout(idVaiN)   Write out surface Northward V-wind component.
+! Qout(idPBLh)   Write out atmosphere boundary layer height.
+! Qout(idTair)   Write out near surface air temperature.
+! Qout(idUair)   Write out near surface U-wind component.
+! Qout(idVair)   Write out near surface V-wind component.
+! Qout(idUaiE)   Write out near surface Eastward  U-wind.
+! Qout(idVaiN)   Write out near surface Northward V-wind.
 !
 ! Qout(idTsur)   Write out surface net heat and salt flux
 ! Qout(idLhea)   Write out latent heat flux.
@@ -2858,14 +2925,14 @@ PIO_I2C_Preq = 65                 ! Maximum pending I2C requests
 !
 ! Aout(idUvel)   Write out 3D U-velocity component.
 ! Aout(idVvel)   Write out 3D V-velocity component.
-! Aout(idu3dE)   Write out 3D Eastward  velocity component at RHO-points.
-! Aout(idv3dN)   Write out 3D Northward velocity component at RHO-points.
+! Aout(idu3dE)   Write out 3D Eastward  velocity at RHO-points.
+! Aout(idv3dN)   Write out 3D Northward velocity at RHO-points.
 ! Aout(idWvel)   Write out 3D W-velocity component.
 ! Aout(idOvel)   Write out 3D omega vertical velocity.
 ! Aout(idUbar)   Write out 2D U-velocity component.
 ! Aout(idVbar)   Write out 2D V-velocity component.
-! Aout(idu2dE)   Write out 2D Eastward  velocity component at RHO-points.
-! Aout(idv2dN)   Write out 2D Northward velocity component at RHO-points.
+! Aout(idu2dE)   Write out 2D Eastward  velocity at RHO-points.
+! Aout(idv2dN)   Write out 2D Northward velocity at RHO-points.
 ! Aout(idFsur)   Write out free-surface.
 ! Aout(idBath)   Write out time-dependent bathymetry.
 !
@@ -2923,11 +2990,11 @@ PIO_I2C_Preq = 65                 ! Maximum pending I2C requests
 ! Aout(idWrol)   Write out wave roller action density.
 !
 ! Aout(idPair)   Write out surface air pressure.
-! Aout(idTair)   Write out surface air temperature.
-! Aout(idUair)   Write out surface U-wind component.
-! Aout(idVair)   Write out surface V-wind component.
-! Aout(idUaiE)   Write out surface Eastward  U-wind component.
-! Aout(idVaiN)   Write out surface Northward V-wind component.
+! Aout(idTair)   Write out near surface air temperature.
+! Aout(idUair)   Write out near surface U-wind component.
+! Aout(idVair)   Write out near surface V-wind component.
+! Aout(idUaiE)   Write out near surface Eastward  U-wind.
+! Aout(idVaiN)   Write out near surface Northward V-wind.
 !
 ! Aout(idTsur)   Write out surface net heat and salt flux
 ! Aout(idLhea)   Write out latent heat flux.
@@ -3050,6 +3117,22 @@ PIO_I2C_Preq = 65                 ! Maximum pending I2C requests
 ! Dout(iTsdif)   Write out horizontal   S-diffusion, if TS_DIF2 or TS_DIF4 and
 !                  rotated tensor (MIX_GEO_TS or MIX_ISO_TS).
 ! Dout(iTvdif)   Write out vertical diffusion.
+!
+!------------------------------------------------------------------------------
+! Generic User parameters.
+!------------------------------------------------------------------------------
+!
+! Selected state variables, such as temperature, salinity, U-velocity,
+! V-velocity, U-eastward, and V-northward, can be extracted and saved at
+! specified constant depths (Z_SLICE) in the output QUICKSAVE and HISTORY
+! NetCDF files. It is advisable to limit the number of slices (NSLICE) to
+! a small value, ideally between 1 and 4, to keep the QUICKSAVE file size
+! manageable. Choose depths wisely based on the dynamics and model bathymetry.
+!
+! NSLICE       Number of horizontal contant depth slices.
+! Z_SLICE      Depths (negative, m) of desired horizontal slices ordered
+!                in decreasing values from surface to bottom.
+!                If Z_SLICE has a ZERO value, the surface field is loaded.
 !
 !------------------------------------------------------------------------------
 ! Generic User parameters.
@@ -3256,6 +3339,37 @@ PIO_I2C_Preq = 65                 ! Maximum pending I2C requests
 !                between 0 and 9.
 !
 !------------------------------------------------------------------------------
+! If GRID_EXTRACT is activated, set extraction parameters.
+!------------------------------------------------------------------------------
+!
+!  ExtracFlag  Flag to extract and write history solution into the EXTRACT
+!                file at the desired grid geometry by decimation or horizontal
+!                interpolation:
+!
+!                ExtractFlag = 0         No extraction
+!                ExtractFlag = 1         Extract via horizontal interpolation
+!                ExtractFlag > 2         Extract via coarsening by decimation
+!
+!              If decimation, ExtracTFlag is the sampling factor. For now, you
+!              must use ExtractFlag=2 so data is written at every other point.
+!              Notice that it is required to satisfy the following criteria:
+!
+!                MOD(Lm+1, ExtractFlag) = 0
+!                MOD(Mm+1, ExtractFlag) = 0
+!
+!              Grid decimation is intended for the split 4D-Var algorithms to
+!              facilitate running the inner loops at coarser resolution to
+!              accelerate the computations. The advantage of ExtractFlag=2 is
+!              that it is very trivial to decimate the staggered U- and
+!              V-variables with a simple average. Also, we need to consider
+!              special rules in the land/sea masking that limit its use to
+!              other ExtractFlag values.
+!
+!  GRXNAME     Input extract grid geometry NetCDF filename. It must be created
+!                with tools similar to the ROMS application grid and contained
+!                inside the parent grid (GRDNAME).
+!
+!------------------------------------------------------------------------------
 ! Input/output NetCDF filenames (string with a maximum of 256 characters).
 !------------------------------------------------------------------------------
 !
@@ -3275,7 +3389,6 @@ PIO_I2C_Preq = 65                 ! Maximum pending I2C requests
 !  FWDNAME     Input forward solution fields filename.
 !
 !  ADSNAME     Input adjoint sensitivity functional filename.
-!
 !
 ! Input adjoint forcing filenames for computing observations impacts
 ! during the analysis-forecast cycle when RBL4DVAR_FCT_SENSITIVITY is
@@ -3439,6 +3552,7 @@ PIO_I2C_Preq = 65                 ! Maximum pending I2C requests
 ! GSTNAME      Output GST analysis re-start filename.
 ! RSTNAME      Output re-start filename.
 ! HISNAME      Output history filename.
+! XTRNAME      Output extrated solution filename.
 ! QCKNAME      Output quicksave filename.
 ! TLFNAME      Output impulse forcing for tangent linear (TLM and RPM) models.
 ! TLMNAME      Output tangent linear filename.
