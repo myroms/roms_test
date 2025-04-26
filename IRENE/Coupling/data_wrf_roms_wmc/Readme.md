@@ -5,7 +5,7 @@
 This directory includes various files to run the **DATA-WRF-ROMS**
 coupling system for Hurricane Irene using the **ESMF/NUOPC** library. It
 uses our Coupled Forecast Framework (**CFF**) configuration for the
-US East Coast **`CFF-EC7`** (**ROMS** 7km grid), and the simulation is only
+US East Coast **`CFF-USEC7`** (**ROMS** 7km grid), and the simulation is only
 run for 42 hours as Hurricane Irene approached the Outer Banks
 of North Carolina on August 27, 2011.
 
@@ -72,9 +72,9 @@ They are activated in the build scripts.
 
   ```
    IRENE                   ROMS application CPP option
-   DATA_COUPLING           Activates DATA component
+   DATA_COUPLING           Activates the DATA component
    ESMF_LIB                ESMF/NUOPC coupling library (version 8.0 and up)
-   FRC_COUPLING            Activates surface forcing from coupled system
+   FRC_COUPLING            Activates surface forcing from the coupled system
    ROMS_STDOUT             ROMS standard output is written into 'log.roms'
    VERIFICATION            Interpolates ROMS solution at observation points
    WRF_COUPLING            Activates WRF component (version 4.1 and up)
@@ -194,7 +194,7 @@ They are activated in the build scripts.
     **EMINUSP**, and **LONGWAVE_OUT**.
 
     The option **bulk_flux = 1** in the **ROMS** build script IS NOT RECOMMENDED FOR THIS
-    APPLICATION because the **bulk_flux.F** module is not tunned for Hurricane regimes,
+    APPLICATION because the **bulk_flux.F** module is not tuned for Hurricane regimes,
     and will get the wrong solution
 
     To compile **ROMS**, use:
