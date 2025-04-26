@@ -40,7 +40,7 @@
 #     field = field (source_units) * scale + add_offset
 #
 
-git_repository: $URL: https://github.com/myroms/roms/External/varinfo_daily.yaml $
+git_repository: $URL: https://github.com/myroms/roms/External/varinfo.yaml $
 
 convention:     CF 1.10
 
@@ -50,8 +50,9 @@ convention:     CF 1.10
 #  in ROMS to modulate the shortwave radiation by the local daily cycle
 #  at each timestep.
 
+
  shortwave:      &SWRAD swrad_daily
-#shortwave:     &SWRAD swrad
+#shortwave:      &SWRAD swrad
 
 metadata:
 
