@@ -1,0 +1,79 @@
+#############################################
+####  NEMS Run-Time Configuration File  #####
+#############################################
+
+# ESMF #
+
+logKindFlag:            ESMF_LOGKIND_SINGLE     # ESMF_LOGKIND_MULTI
+globalResourceControl:  true
+
+# EARTH #
+
+EARTH_component_list: ATM OCN
+EARTH_attributes::
+  Verbosity = 0
+::
+
+# ATM: DATA component #
+
+ATM_model:                      datm 
+ATM_petlist_bounds:             0 11
+ATM_omp_num_threads:            1
+ATM_attributes::
+  Verbosity = 0 #max
+  #DumpFields = true
+  ProfileMemory = false
+  OverwriteSlice = true
+  #Diagnostic = max
+::
+
+# OCN: ROMS Component #
+
+OCN_model:                      roms 
+OCN_petlist_bounds:             0 11 
+OCN_omp_num_threads:            1
+OCN_attributes::
+  Verbosity = 0 #max
+  #DumpFields = true
+  ProfileMemory = false
+  #CouplingConfig = roms_cdeps_narr.yaml      # NCEP-NARR dataset
+  CouplingConfig = roms_cdeps_era5.yaml       # ECMWF ER5 dataset
+  #OverwriteSlice = true
+  #meshloc = element
+  #dbug = true
+  #Diagnostic = max
+::
+
+# Run Sequence for CDEPS connectors #
+
+runSeq::
+@60
+  #ATM -> OCN :remapMethod=bilinear:unmappedaction=ignore:zeroregion=select:srcTermProcessing=0:termOrder:srcseq
+  ATM -> OCN :remapMethod=nearest_stod:srcmaskvalues=0:dstMaskValues=0:unmappedaction=ignore:zeroregion=select:srcTermProcessing=0:termOrder:srcseq
+  ATM
+  OCN
+@
+::
+
+ALLCOMP_attributes::
+  ScalarFieldCount = 3
+  ScalarFieldIdxGridNX = 1
+  ScalarFieldIdxGridNY = 2
+  ScalarFieldIdxNextSwCday = 3 
+  ScalarFieldName = cpl_scalars
+  start_type = startup
+  restart_dir = ./
+  case_name = ufs.cpld
+  restart_n = 42
+  restart_option = nhours
+  restart_ymd = -999
+  orb_eccen = 1.e36
+  orb_iyear = 2000
+  orb_iyear_align = 2000
+  orb_mode = fixed_year
+  orb_mvelp = 1.e36
+  orb_obliq = 1.e36
+  stop_n = 42 
+  stop_option = nhours
+  stop_ymd = -999
+::
