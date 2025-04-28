@@ -160,13 +160,13 @@ fi
  $SUBSTITUTE $Inp4DVAR MyOuterLoop   ${OuterLoop}
  $SUBSTITUTE $Inp4DVAR MyPhase4DVAR  ${Phase4DVAR}
  $SUBSTITUTE $Inp4DVAR MyTimeIAU     ${TimeIAU}
- $SUBSTITUTE $Inp4DVAR roms_std_m.nc ${STDnameM}
  $SUBSTITUTE $Inp4DVAR roms_std_i.nc ${STDnameI}
+ $SUBSTITUTE $Inp4DVAR roms_std_m.nc ${STDnameM}
  $SUBSTITUTE $Inp4DVAR roms_std_b.nc ${STDnameB}
  $SUBSTITUTE $Inp4DVAR roms_std_f.nc ${STDnameF}
  $SUBSTITUTE $Inp4DVAR roms_std_c.nc ${STDnameC}
- $SUBSTITUTE $Inp4DVAR roms_nrm_m.nc ${NRMnameM}
  $SUBSTITUTE $Inp4DVAR roms_nrm_i.nc ${NRMnameI}
+ $SUBSTITUTE $Inp4DVAR roms_nrm_m.nc ${NRMnameM}
  $SUBSTITUTE $Inp4DVAR roms_nrm_b.nc ${NRMnameB}
  $SUBSTITUTE $Inp4DVAR roms_nrm_f.nc ${NRMnameF}
  $SUBSTITUTE $Inp4DVAR roms_obs.nc   ${OBSname}
@@ -241,7 +241,7 @@ fi
 # FRST_INI_DAY="2019-08-27"            # restart initialization date
 
 # LAST_INI_DAY="${START_DATE}"         # last cycle initialization date
-  LAST_INI_DAY="2019-09-02"            # last cycle initialization date
+  LAST_INI_DAY="2019-08-30"            # last cycle initialization date
 
   ROMS_TIMEREF="2006-01-01"            # ROMS time reference date
 
@@ -250,12 +250,12 @@ fi
         nPETsX=3                       # number PETs in the X-direction
         nPETsY=4                       # number PETs in the Y-direction
 
-#     MyNouter=1                       # number of 4D-Var outer loops
-      MyNouter=2                       # number of 4D-Var outer loops
+      MyNouter=1                       # number of 4D-Var outer loops
+#     MyNouter=2                       # number of 4D-Var outer loops
 
 #     MyNinner=32                      # number of 4D-Var inner loops: RPCG
-#     MyNinner=16                      # number of 4D-Var inner loops: RPCG
-      MyNinner=8                       # number of 4D-Var inner loops: RPCG
+      MyNinner=16                      # number of 4D-Var inner loops: RPCG
+#     MyNinner=8                       # number of 4D-Var inner loops: RPCG
 
      MyTimeIAU=0.0d0                   # Incremental Analysis Update window (days)
 #    MyTimeIAU=0.03125d0               # Incremental Analysis Update window (days)
