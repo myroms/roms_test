@@ -1,36 +1,54 @@
 <img width="600" alt="image" src="https://github.com/myroms/roms_test/assets/23062912/ad6a7ef1-1fed-4b2e-96b9-9c53615b9333">
 
-##  Hurricane Irene Test Case: ESMF/NUOPC Coupling and Weakly Coupled RBL4DVAR
+## 4D-Var Mixed-Resolution Test Case: Regional U.S. East Coast 3km and 6km Application
 
-This directory includes various files to run the **DATA-WRF-ROMS**
-coupling for Hurricane Irene using the **ESMF/NUOPC** library. The
-coupled simulation is only run for 42 hours as it approaches the
-US East Coast on August 27, 2011. It uses the split **RBL4D-Var**
-where the coupled system is run in the background **4D-Var** phase
-to compute the trajectory used to linearize the tangent linear
-adjoint kernels in the inner loops.
+This directory illustrates how to configure **ROMS** split **RBL4D-Var**
+mixed-resolution algorithm in a regional application. It uses our Coupled
+Forecast Framework (**CFF**) configuration of the U.S. East Coast (**USEC**)
+grids at 3km (**CFF-USEC3**) and 6km (**CFF-USEC6**) resolution during the
+Hurricane Dorian period Aug 27 - Sep 2, 2019. In the **mixed-resolution** scheme,
+the **4D-Var** outer loops (**Background** and **Analysis** phases) are run at 3km
+grid (**561x243x50**) resolution (**CFF-USEC3**). In contrast, the inner loops
+(**Increment** phase) are run at a coarser 6km grid (**281x122x50**) resolution to
+accelerate the computations. The coarse **grid 4D-Var increment**s are interpolated to
+the finer grid in the **Analysis** phase using the **roms_interp** and **roms2roms**
+CLASS objects. For details, please check the **roms_interp.F** and **state_regrid.F**﻿
+modules.
 
-**WRF** and **ROMS** grids are incongruent. The **WRF** grid is
-larger than the **ROMS** grid. Therefore, the **DATA** model provides
-SST values at the **WRF** grid locations are not covered by the **ROMS**
-grid. Thus, both **DATA** and **ROMS** SST values are melded with a
-smooth transition at the **ROMS** domain boundaries.
+| Hurricane Dorian | CFF-USEC3 and CFF-USEC6 Grids |
+:-----------------:|:-------------------------:
+|<img width="600" alt="image" src="https://github.com/user-attachments/assets/430d8ff1-431b-4ab1-933e-09a979d93190"> | <img width="600" alt="image" src="https://github.com/user-attachments/assets/a28d91f6-24ab-440b-bb91-0313361a25c1"> |
 
-The **WRF** and **ROMS** timesteps are 20 and 60 seconds
-for stable solutions due to the strong Hurricane winds.  The
-coupling step is 60 seconds (same as **ROMS**).  The **WRF** values are
-averaged every 60 seconds by activating the **RAMS**-averaged
-diagnostics.
+In the **Background** phase, the coarse grid trajectory needed to linearize the tangent
+linear (**TLM**) and adjoint (**ADM**) model kernels is extracted by a decimation of the
+3km grid solution using the CPP option **GRID_EXTRACT**. Grid decimation is only possible
+if the parent grid (**CFF-USEC3**, **Lm=559** and **Mm=241**) size satisfies
+**MOD(Lm+1, 2) = 0** and **MOD(Mm+1, 2) = 0**. Please check
+https://github.com/myroms/roms/pull/32 for more information. Currently, we only
+support **ExtractFlag=2** for decimation in the **mixed-resolution** split **4D-Var** scheme
+because the land/sea masking complicates extraction at factors larger than two.
 
-All the components interact with the same coupling time step.
-The connector from **ROMS** to **WRF** is explicit, whereas the connector
-from **WRF** to **ROMS** is semi-implicit.
+The **mixed-resolution** split **4D-Var** data assimilation strategy improves the
+computational efficiency as shown in the following table for a single **3**-day **4D-Var**
+data assimilation cycle from a desktop Linux box (16 CPUs and 1 GPU with 384 CUDA cores, NVIDIA)
+on **12** CPUs with a **3x4** partition compiled with **ifort** (Spack-Stack 1.9).
 
-For more information, visit **WikiROMS**:
+<img width="940" alt="image" src="https://github.com/user-attachments/assets/aaf2ba95-1378-4636-a135-360dc3186c71" />
 
-https://www.myroms.org/wiki/Model_Coupling_ESMF
-https://www.myroms.org/wiki/Model_Coupling_IRENE
+The **mixed resolution** algorithm improves this application's computational efficiency by
+over **88** percent (**Case 8**) compared to the **3**km non-splitted **4D-Var** in double precision
+(**Case 5**). In some cases, **mixed-precision** outer loops (**double**) and inner loops (**single**)
+are possible but **not recommended** because they affect the stability of the tangent linear
+and adjoint trajectories. It improves the efficiency by an additional **3** percent. However,
+stability of the solution takes precedence.
 
+In this test case, data is provided for two **3**-day data assimilation cycles:
+
+- **4D-Var Cycle 1**: Aug 27 - Aug 30, 2019 (execution creates sub-directory **2019.08.27**)
+- **4D-Var Cycle 2**: Aug 30 - Sep 02, 2019 (execution creates sub-directory **2019.08.30**)
+
+to demonstrate how to configure continuous data assimilation cycles that use the **Analysis**
+file (**DAINAME**) to initialize the next **4D-Var** cycle.
 
 ### Important CPP options:
 
