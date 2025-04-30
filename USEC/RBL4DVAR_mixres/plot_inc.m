@@ -2,8 +2,8 @@
 
 Dusec  = dir('../').folder;
 
-Gusec3 = strcat(Dusec, 'Data/GRD/usec3km_roms_grd.nc');
-Gusec6 = strcat(Dusec, 'Data/GRD/usec6km_roms_grd.nc');
+Gusec3 = strcat(Dusec, '/Data/GRD/usec3km_roms_grd.nc');
+Gusec6 = strcat(Dusec, '/Data/GRD/usec6km_roms_grd.nc');
 
 Tusec  = {'2019.08.27', '2019.08.30'};
 
