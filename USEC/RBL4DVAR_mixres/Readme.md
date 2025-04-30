@@ -371,3 +371,47 @@ Finished computations, Total time = 05:20:55
    usec6km_roms_obs_20190827.nc                   6km observation vectors
    usec6km_roms_tlf_20190827.nc                   Adjoint impulse forcing, TLM forcing
   ```
+---
+
+### Results
+
+- **4D-Var Cycle 1**: Aug 27 - Aug 30, 2019. Top-to-bottom figures showing 3km and 6km increments for free surface, potential temperature, salinity, u-velocity, and v-velocity at 20m depth. Notice that higher and lower resolution increments are indistinguishable. They are plotted with **plot_state.m** Matlab script.
+  
+| 3km Increments at z=20m   | 6km Increments at z=20m  |
+:--------------------------:|:-------------------------:
+|<img width="400" alt="image" src="https://github.com/user-attachments/assets/848ab5a3-af57-4b59-a361-f77724054f2d"> | <img width="400" alt="image" src="https://github.com/user-attachments/assets/0b462249-815a-456f-844a-4db6822417d0"> |
+|<img width="400" alt="image" src="https://github.com/user-attachments/assets/d32b2ada-f68e-44e2-8a62-e7706ce45c98"> | <img width="400" alt="image" src="https://github.com/user-attachments/assets/d1e9ea1b-2949-40fb-bf2c-0aa458380923"> |
+|<img width="400" alt="image" src="https://github.com/user-attachments/assets/17692b87-208c-44c1-a3d4-6f0cc2dad284"> | <img width="400" alt="image" src="https://github.com/user-attachments/assets/f801aacc-21e4-4fa7-92a1-0e6aa7f2298c"> |
+|<img width="400" alt="image" src="https://github.com/user-attachments/assets/c66c39ad-1e88-4c3a-aadf-b9a89d0da21f"> | <img width="400" alt="image" src="https://github.com/user-attachments/assets/7dad24ab-9a1f-4a7a-a3c5-d2ce1bf06bfc"> |
+|<img width="400" alt="image" src="https://github.com/user-attachments/assets/4eb6bb6f-5ac3-4cd1-86ff-ef6f6c682c80"> | <img width="400" alt="image" src="https://github.com/user-attachments/assets/880d475a-2fa5-4748-bd68-9e7bd295088e"> |
+
+- **4D-Var Cycle 2**: Aug 30 - Sep 2, 2019. Top-to-bottom figures showing 3km and 6km increments for free surface, potential temperature, salinity, u-velocity, and v-velocity at 20m depth. Notice that higher and lower resolution increments are indistinguishable.
+
+| 3km Increments at z=20m   | 6km Increments at z=20m  |
+:--------------------------:|:-------------------------:
+|<img width="400" alt="image" src="https://github.com/user-attachments/assets/24bcefe1-5b7f-4367-8192-794a7da96b40"> | <img width="400" alt="image" src="https://github.com/user-attachments/assets/73c68de5-703b-469d-896d-b3662bd28d47"> |
+|<img width="400" alt="image" src="https://github.com/user-attachments/assets/48f16b58-bd31-4f65-9e93-e71e4bed8f47"> | <img width="400" alt="image" src="https://github.com/user-attachments/assets/18be6301-b85c-4093-89d1-fd6922187aca"> |
+|<img width="400" alt="image" src="https://github.com/user-attachments/assets/2b2c3ef7-6986-4e96-bb7f-99a65fae4e9a"> | <img width="400" alt="image" src="https://github.com/user-attachments/assets/6afc291b-1419-4745-839c-b4e530c6ec11"> |
+|<img width="400" alt="image" src="https://github.com/user-attachments/assets/58e31ff7-181f-4a63-9ce1-084ef6a63af7"> | <img width="400" alt="image" src="https://github.com/user-attachments/assets/b68a3bdc-7270-434b-a16c-aecd2d1be293"> |
+|<img width="400" alt="image" src="https://github.com/user-attachments/assets/f4750e53-f257-47a4-ae0d-b55f83b72429"> | <img width="400" alt="image" src="https://github.com/user-attachments/assets/8a1943f7-e816-4f14-b4fd-3a13ad9c7cf8"> |
+
+- ** 4D-Var Penalty Function **: The figures below show the various cost functions for **4D-Var** cycles 1 and 2 and how they compare. Notice that the y-axis is on a logarithmic scale. They are plotted using the **plot_penalty.m** Matlab script.
+
+| 4D-Var Cycle 1            | 4D-Var Cycle 2           |
+:--------------------------:|:-------------------------:
+|<img width="400" alt="image" src="https://github.com/user-attachments/assets/9bb14821-b271-48d1-b09c-ed5c6b6aa79a"> | <img title="image" width="400" alt="image" src="https://github.com/user-attachments/assets/8ef0ce7a-6471-4ae8-9d40-dcc241d29f96"> |
+
+<img width="400" alt="image" src="https://github.com/user-attachments/assets/895e06f5-abb9-413d-8b8c-72dc111a41bf">
+
+- **Minimization control vectors**: Innovations (Observations minus Background), Increment (Analysis minus Background), Residual (observation minus Analysis), and prescribed background error standard deviations. The assimilated observations include SSH altimetry, HF Radar surface currents, satellite SST, and insitu Temperature and salinity. They are plotted with **plot_4dvar_vectors.m** Matlab script.
+
+| 4D-Var Cycle 1            | 4D-Var Cycle 2           |
+:--------------------------:|:-------------------------:
+|<img width="400" alt="image" src="https://github.com/user-attachments/assets/bc525126-b0f6-44da-8136-7474ed7adfa5"> | <img title="image" width="400" alt="image" src="https://github.com/user-attachments/assets/914e421f-848c-470f-9ed5-a720fddde6e5"> |
+|<img width="400" alt="image" src="https://github.com/user-attachments/assets/04146fba-30d5-43bb-a1ac-5d0d9154d2f2"> | <img title="image" width="400" alt="image" src="https://github.com/user-attachments/assets/adfffb46-b80d-457b-8ed4-4df1c7c3c01f"> |
+|<img width="400" alt="image" src="https://github.com/user-attachments/assets/166118ed-fc15-4f57-9b75-8de6cfb5490e"> | <img title="image" width="400" alt="image" src="https://github.com/user-attachments/assets/795745d9-61d3-4836-a76d-77ebec407e78"> |
+|<img width="400" alt="image" src="https://github.com/user-attachments/assets/ae94b5ae-d3ee-4b4b-b853-b5516b3c65fc"> | <img title="image" width="400" alt="image" src="https://github.com/user-attachments/assets/aa11aaa3-6c91-4a30-a535-0625c6754ee5"> |
+
+- **Desroziers _et al._ (2005) Diagnostics**: It computes the diagnosed observation and background variances per datum type associated with the control vector and compares them with the values used in the **4D-Var** minimization. It measures how correct or incorrect the specified error hypothesis is regarding the 4D-Var data assimilation cycles **Innovation**, **Increment**, and **Residual** vectors. Here, the diagnostics are computed for the two data assimilation cycles using **plot_desroziers.m** Matlab script.
+
+<img width="600" alt="image" src="https://github.com/user-attachments/assets/320d8da5-8a63-4281-8a38-17d4adfbfdf5">
