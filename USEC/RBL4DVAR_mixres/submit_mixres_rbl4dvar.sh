@@ -488,7 +488,7 @@ while [ $SDAY -le $L_DN ]; do
 
   cd ${RunDir}
 
-  echo "   Creating NL ROMS Standart Input Script: ${ROMS_NLinp}"
+  echo "   Creating NL ROMS Standard Input Script: ${ROMS_NLinp}"
 
   if [ -f ${ROMS_NLinp} ]; then
     /bin/rm ${ROMS_NLinp}
@@ -524,7 +524,7 @@ while [ $SDAY -le $L_DN ]; do
   $SUBSTITUTE ${ROMS_NLinp} MyININAME      "${ROMS_INI_F}"
   $SUBSTITUTE ${ROMS_NLinp} MyAPARNAM      "${Inp4DVAR_nl}"
 
-  echo "   Creating DA ROMS Standart Input Script: ${ROMS_DAinp}"
+  echo "   Creating DA ROMS Standard Input Script: ${ROMS_DAinp}"
 
   if [ -f ${ROMS_DAinp} ]; then
     /bin/rm ${ROMS_DAinp}
@@ -664,7 +664,7 @@ while [ $SDAY -le $L_DN ]; do
     FWD_traject="${FprefixC}_roms_fwd_${Fsuffix}_outer${OuterLoop}.nc"
 
     echo
-    echo "   Renaming NLM trjaectory ${FWD_extract}  to  ${FWD_traject}"
+    echo "   Renaming NLM trajectory ${FWD_extract}  to  ${FWD_traject}"
 
     if [ ${DRYRUN} -eq 0 ]; then
       mv  ${FWD_extract} ${FWD_traject} 
@@ -757,7 +757,7 @@ while [ $SDAY -le $L_DN ]; do
       FWD_traject="${FprefixC}_roms_fwd_${Fsuffix}_outer${OuterLoop}.nc"
 
       echo
-      echo "   Renaming NLM trjaectory ${FWD_extract}  to  ${FWD_traject}"
+      echo "   Renaming NLM trajectory ${FWD_extract}  to  ${FWD_traject}"
 
       if [ ${DRYRUN} -eq 0 ]; then
         mv  ${FWD_extract} ${FWD_traject} 
