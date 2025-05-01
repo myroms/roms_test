@@ -190,8 +190,10 @@ Users may modify the number of processors to use in the **submit_mixres_rbl4dvar
  sub-directories for **RBL4D-Var** Cycle **1** and Cycle **2**, respectively. It includes
  all the required input scripts to run the **mixed-resolution RBL4D-Var** system. The input
  scripts are generated from the templates.  The **submit_mixres_rbl4dvar.sh** script is
- complex and designed to run sequential data assimilation 3-day cycles. It reports the
- execution sequence with detailed information:
+ designed to run sequential data assimilation 3-day cycles. It reports the execution sequence
+ with detailed information. It can be executed in dry run mode (**DRYRUN=1**) to print its
+ configuration without running. Please do it before submitting a large job, since
+ it will take some computer resources and time.
 
 ``` d
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
