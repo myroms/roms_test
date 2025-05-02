@@ -199,9 +199,9 @@ export  WRF_BIN_DIR=${WRF_BUILD_DIR}/Bin
 if [ $branch -eq 1 ]; then
   if [ ! -d ${MY_PROJECT_DIR}/wrf ]; then
     echo ""
-    echo "Downloading WRF source code from myroms GitHub: https://www.github.com/myroms/WRF"
+    echo "Downloading WRF source code from myroms GitHub: https://github.com/myroms/WRF"
     echo ""
-    git clone https://www.github.com/myroms/WRF.git wrf
+    git clone https://github.com/myroms/WRF.git wrf
   fi
   echo ""
   echo "Checking out myroms WRF GitHub branch: $branch_name"

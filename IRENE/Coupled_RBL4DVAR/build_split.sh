@@ -52,16 +52,25 @@
 #                                                                       :::
 #                  build_split.sh -da -j 10                             :::
 #                                                                       :::
-#    -j [N]      Compile in parallel using N CPUs                       :::
-#                  omit argument for all available CPUs                 :::
-#                                                                       :::
 #    -b          Compile a specific ROMS GitHub branch                  :::
 #                                                                       :::
 #                  build_split.sh -j 5 -b feature/kernel                :::
 #                                                                       :::
+#    -g          Compile with debug flag (slower code)                  :::
+#                                                                       :::
+#                  build_split.sh -g -nl -j 10                          :::
+#                                                                       :::
+#    -j [N]      Compile in parallel using N CPUs                       :::
+#                  omit argument for all available CPUs                 :::
+#                                                                       :::
 #    -p macro    Prints any Makefile macro value. For example,          :::
 #                                                                       :::
 #                  build_split.sh -p FFLAGS                             :::
+#                                                                       :::
+#    -pio        Compile with PIO (Parallel I/O) NetCDF library         :::
+#                  Otherwise, it used standard NetCDF library (slower)  :::
+#                                                                       :::
+#                  build_split.sh -nl -pio -j 10                        :::
 #                                                                       :::
 #    -noclean    Do not clean already compiled objects                  :::
 #                                                                       :::
@@ -79,7 +88,9 @@ export which_MPI=openmpi                       # default, overwritten below
 
 nl_exe=0
 da_exe=0
+g_flags=0
 parallel=0
+pio_lib=0
 clean=1
 dprint=0
 branch=0
@@ -101,6 +112,16 @@ do
     -da )
       shift
       da_exe=1
+      ;;
+
+    -g )
+      shift
+      g_flags=1
+      ;;
+
+    -pio )
+      shift
+      pio_lib=1
       ;;
 
     -j )
@@ -146,20 +167,25 @@ do
       echo ""
       echo "Available Options:"
       echo ""
-      echo "-nl             Compile split ROMS nonlinear executable"
+      echo "-da             Compile split data assimilation executable"
       echo ""
-      echo "-da             Compile split ROMS 4D-Var executable"
+      echo "-b branch_name  Compile specific ROMS GitHub branch name"
+      echo "                  For example:  build_roms.sh -b feature/kernel"
+      echo ""
+      echo "-g              Compile with debugging flags, slower code"
+      echo ""
+      echo "-nl             Compile split nonlinear trajectory executable"
       echo ""
       echo "-j [N]          Compile in parallel using N CPUs"
       echo "                  omit argument for all avaliable CPUs"
       echo ""
-      echo "-b branch_name  Compile specific ROMS GitHub branch name"
-      echo "                  For example:  build_split.sh -b feature/kernel"
+      echo "-pio            Compile with the PIO NetCDF Library"
       echo ""
       echo "-p macro        Prints any Makefile macro value"
       echo "                  For example:  build_split.sh -p FFLAGS"
       echo ""
       echo "-noclean        Do not clean already compiled objects"
+      echo ""
       echo "${separator}"
       echo ""
       exit 1
@@ -203,6 +229,7 @@ export     MY_PROJECT_DIR=${PWD}
 # computers.
 
  export       MY_ROMS_SRC=${MY_ROOT_DIR}/roms
+
 # Set path of the directory containing makefile configuration (*.mk) files.
 # The user has the option to specify a customized version of these files
 # in a different directory than the one distributed with the source code,
@@ -269,7 +296,11 @@ if [ $da_exe -eq 1 ]; then
 # export     MY_CPP_FLAGS="${MY_CPP_FLAGS} -DSINGLE_PRECISION"
 fi
 
-  export     MY_CPP_FLAGS="${MY_CPP_FLAGS} -DWIND_MINUS_CURRENT"
+if [ $pio_lib -eq 1 ]; then
+  export     MY_CPP_FLAGS="${MY_CPP_FLAGS} -DPIO_LIB"
+fi
+
+ export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DWIND_MINUS_CURRENT"
 
  export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DROMS_STDOUT"
  export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DOUT_DOUBLE"
@@ -300,11 +331,14 @@ fi
 
 #export        USE_OpenMP=on            # shared-memory parallelism
 
+#export              FORT=ifx
  export              FORT=ifort
 #export              FORT=gfortran
 #export              FORT=pgi
 
-#export         USE_DEBUG=on            # use Fortran debugging flags
+if [ $g_flags -eq 1 ]; then
+ export         USE_DEBUG=on            # use Fortran debugging flags
+fi
  export         USE_LARGE=on            # activate 64-bit compilation
 
 #--------------------------------------------------------------------------
@@ -328,8 +362,10 @@ fi
 
  export       USE_NETCDF4=on            # compile with NetCDF-4 library
 #export   USE_PARALLEL_IO=on            # Parallel I/O with NetCDF-4/HDF5
-#export           USE_PIO=on            # Parallel I/O with PIO library
-#export       USE_SCORPIO=on            # Parallel I/O with SCORPIO library
+
+if [ $pio_lib -eq 1 ]; then
+ export           USE_PIO=on            # Parallel I/O with PIO library
+fi
 
 # If any of the coupling component use the HDF5 Fortran API for primary
 # I/O, we need to compile the main driver with the HDF5 library.
@@ -347,8 +383,8 @@ source ${MY_ROMS_SRC}/ESM/esm_libs.sh ${MY_ROMS_SRC}/ESM/esm_libs.sh
 # If applicable, use my specified library paths.
 #--------------------------------------------------------------------------
 
-#export USE_MY_LIBS=no            # use system default library paths
- export USE_MY_LIBS=yes           # use my customized library paths
+ export USE_MY_LIBS=no            # use system default library paths
+#export USE_MY_LIBS=yes           # use my customized library paths
 
 MY_PATHS=${COMPILERS}/my_build_paths.sh
 
@@ -441,9 +477,9 @@ if [ $branch -eq 1 ]; then
 
   if [ ! -d ${MY_PROJECT_DIR}/src ]; then
     echo ""
-    echo "Downloading ROMS source code from GitHub: https://www.github.com/myroms"
+    echo "Downloading ROMS source code from GitHub: https://github.com/myroms"
     echo ""
-    git clone https://www.github.com/myroms/roms.git src
+    git clone https://github.com/myroms/roms.git src
   fi
   echo ""
   echo "Checking out ROMS GitHub branch: $branch_name"
@@ -501,6 +537,7 @@ else
   echo "ROMS source directory:         ${MY_ROMS_SRC}"
   echo "ROMS header file:              ${MY_HEADER_DIR}/${HEADER}"
   echo "ROMS build  directory:         ${BUILD_DIR}"
+  echo "ROMS executable:               ${BIN}"
   if [ $branch -eq 1 ]; then
     echo "ROMS downloaded from:          https://github.com/myroms/roms.git"
     echo "ROMS compiled branch:          $branch_name"

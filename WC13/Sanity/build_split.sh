@@ -1,7 +1,6 @@
 #!/bin/bash
 #
 # git $Id$
-# svn $Id: build_roms.sh 1184 2023-07-27 20:28:19Z arango $
 #::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 # Copyright (c) 2002-2025 The ROMS Group                                :::
 #   Licensed under a MIT/X style license                                :::
@@ -24,7 +23,6 @@
 #                                                                       :::
 #                  build_split.sh -nl -j 10                             :::
 #                                                                       :::
-#                                                                       :::
 #    -tl         Compile ROMS tangent linear executable                 :::
 #                                                                       :::
 #                  build_split.sh -ad -j 10                             :::
@@ -33,8 +31,15 @@
 #                                                                       :::
 #                  build_split.sh -ad -j 10 -b feature/kernel           :::
 #                                                                       :::
+#    -g          Compile with debug flag (slower code)                  :::
+#                                                                       :::
+#                  build_split.sh -g -j 10                              :::
+#                                                                       :::
 #    -j [N]      Compile in parallel using N CPUs                       :::
 #                  omit argument for all available CPUs                 :::
+#                                                                       :::
+#    -pio        Compile with PIO (Parallel I/O) NetCDF library         :::
+#                  Otherwise, it used standard NetCDF library (slower)  :::
 #                                                                       :::
 #    -p macro    Prints any Makefile macro value. For example,          :::
 #                                                                       :::
@@ -52,7 +57,9 @@ export which_MPI=openmpi                       # default, overwritten below
 ad_exe=0
 nl_exe=0
 tl_exe=0
+g_flags=0
 parallel=0
+pio_lib=0
 clean=1
 dprint=0
 branch=0
@@ -79,6 +86,16 @@ do
     -tl )
       shift
       tl_exe=1
+      ;;
+
+    -g )
+      shift
+      g_flags=1
+      ;;
+
+    -pio )
+      shift
+      pio_lib=1
       ;;
 
     -j )
@@ -129,6 +146,8 @@ do
       echo "-b branch_name  Compile specific ROMS GitHub branch name"
       echo "                  For example:  build_roms.sh -b feature/kernel"
       echo ""
+      echo "-g              Compile with debugging flags, slower code"
+      echo ""
       echo "-nl             Compile split ROMS nonlinear executable"
       echo ""
       echo "-tl             Compile split ROMS tangent linear executable"
@@ -136,10 +155,13 @@ do
       echo "-j [N]          Compile in parallel using N CPUs"
       echo "                  omit argument for all avaliable CPUs"
       echo ""
+      echo "-pio            Compile with the PIO NetCDF Library"
+      echo ""
       echo "-p macro        Prints any Makefile macro value"
       echo "                  For example:  build_split.sh -p FFLAGS"
       echo ""
       echo "-noclean        Do not clean already compiled objects"
+      echo "${separator}"
       echo ""
       exit 1
       ;;
@@ -183,8 +205,6 @@ export     MY_PROJECT_DIR=${PWD}
 # computers.
 
  export       MY_ROMS_SRC=${MY_ROOT_DIR}/roms
-#export       MY_ROMS_SRC=${HOME}/ocean/repository/svn/branches/arango
-#export       MY_ROMS_SRC=${HOME}/ocean/repository/git/roms_src
 
 # Set path of the directory containing makefile configuration (*.mk) files.
 # The user has the option to specify a customized version of these files
@@ -247,8 +267,12 @@ if [ $tl_exe -eq 1 ]; then
   export     MY_CPP_FLAGS="${MY_CPP_FLAGS} -DFORWARD_FLUXES"
   export     MY_CPP_FLAGS="${MY_CPP_FLAGS} -DFORWARD_READ"
 
-  export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DOUT_DOUBLE"
-# export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DSINGLE_PRECISION"
+  export     MY_CPP_FLAGS="${MY_CPP_FLAGS} -DOUT_DOUBLE"
+# export     MY_CPP_FLAGS="${MY_CPP_FLAGS} -DSINGLE_PRECISION"
+fi
+
+if [ $pio_lib -eq 1 ]; then
+  export     MY_CPP_FLAGS="${MY_CPP_FLAGS} -DPIO_LIB"
 fi
 
  export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DFORWARD_MIXING"
@@ -281,11 +305,14 @@ fi
 
 #export        USE_OpenMP=on            # shared-memory parallelism
 
+#export              FORT=ifx
  export              FORT=ifort
 #export              FORT=gfortran
 #export              FORT=pgi
 
-#export         USE_DEBUG=on            # use Fortran debugging flags
+if [ $g_flags -eq 1 ]; then
+ export         USE_DEBUG=on            # use Fortran debugging flags
+fi
  export         USE_LARGE=on            # activate 64-bit compilation
 
 #--------------------------------------------------------------------------
@@ -309,8 +336,10 @@ fi
 
  export       USE_NETCDF4=on            # compile with NetCDF-4 library
 #export   USE_PARALLEL_IO=on            # Parallel I/O with NetCDF-4/HDF5
-#export           USE_PIO=on            # Parallel I/O with PIO library
-#export       USE_SCORPIO=on            # Parallel I/O with SCORPIO library
+
+if [ $pio_lib -eq 1 ]; then
+ export           USE_PIO=on            # Parallel I/O with PIO library
+fi
 
 # If any of the coupling component use the HDF5 Fortran API for primary
 # I/O, we need to compile the main driver with the HDF5 library.
@@ -421,9 +450,9 @@ if [ $branch -eq 1 ]; then
 
   if [ ! -d ${MY_PROJECT_DIR}/src ]; then
     echo ""
-    echo "Downloading ROMS source code from GitHub: https://www.github.com/myroms"
+    echo "Downloading ROMS source code from GitHub: https://github.com/myroms"
     echo ""
-    git clone https://www.github.com/myroms/roms.git src
+    git clone https://github.com/myroms/roms.git src
   fi
   echo ""
   echo "Checking out ROMS GitHub branch: $branch_name"
@@ -473,11 +502,15 @@ else
     make
   fi
 
+  HEADER=`echo ${ROMS_APPLICATION} | tr '[:upper:]' '[:lower:]'`.h
+
   echo ""
   echo "${separator}"
   echo "GNU Build script command:      ${command}"
   echo "ROMS source directory:         ${MY_ROMS_SRC}"
+  echo "ROMS header file:              ${MY_HEADER_DIR}/${HEADER}"
   echo "ROMS build  directory:         ${BUILD_DIR}"
+  echo "ROMS executable:               ${BIN}"
   if [ $branch -eq 1 ]; then
     echo "ROMS downloaded from:          https://github.com/myroms/roms.git"
     echo "ROMS compiled branch:          $branch_name"

@@ -29,21 +29,31 @@
 #                                                                       :::
 # Options:                                                              :::
 #                                                                       :::
-#    -sp         Compile ROMS single precision executable               :::
+#    -b          Compile a specific ROMS GitHub branch                  :::
 #                                                                       :::
-#                  build_split.csh -sp -j 5                             :::
-#                                                                       :::   
+#                  build_split.csh -nl -j 10 -b feature/kernel          :::
+#                                                                       :::
+#    -g          Compile with debug flag (slower code)                  :::
+#                                                                       :::
+#                  build_split.csh -g -nl -j 10                         :::
+#                                                                       :::
 #    -j [N]      Compile in parallel using N CPUs                       :::
 #                  omit argument for all available CPUs                 :::
 #                                                                       :::
-#    -b          Compile a specific ROMS GitHub branch                  :::
-#                                                                       :::
-#                  build_split.csh -j 5 -b feature/kernel               :::
 #                                                                       :::
 #    -p macro    Prints any Makefile macro value. For example,          :::
 #                                                                       :::
 #                  build_split.csh -p FFLAGS                            :::
 #                                                                       :::
+#    -pio        Compile with PIO (Parallel I/O) NetCDF library         :::
+#                  Otherwise, it used standard NetCDF library (slower)  :::
+#                                                                       :::
+#                  build_split.csh -nl -pio -j 10                       :::
+#                                                                       :::
+#    -sp         Compile ROMS single precision executable               :::
+#                                                                       :::
+#                  build_split.csh -sp -j 5                             :::
+#                                                                       :::   
 #    -noclean    Do not clean already compiled objects                  :::
 #                                                                       :::
 # Notice that sometimes the parallel compilation fail to find MPI       :::
@@ -59,7 +69,9 @@
 setenv which_MPI openmpi                      #  default, overwritten below
 
 set sp_exe = 0
+set g_flags = 0
 set parallel = 0
+set pio_lib = 0
 set clean = 1
 set dprint = 0
 set branch = 0
@@ -72,6 +84,16 @@ setenv MY_CPP_FLAGS ''
 
 while ( ($#argv) > 0 )
   switch ($1)
+    case "-g"
+      shift
+      set g_flags = 1
+    breaksw
+
+    case "-pio"
+      shift
+      set pio_lib = 1
+    breaksw
+
     case "-noclean"
       shift
       set clean = 0
@@ -120,18 +142,23 @@ while ( ($#argv) > 0 )
       echo ""
       echo "Available Options:"
       echo ""
-      echo "-j [N]          Compile in parallel using N CPUs"
-      echo "                  omit argument for all avaliable CPUs"
-      echo ""
-      echo "-sp             Compile ROMS single precision executable"
-      echo ""
       echo "-b branch_name  Compile specific ROMS GitHub branch name"
       echo "                  For example:  build_split.csh -b feature/kernel"
+      echo ""
+      echo "-g              Compile with debugging flags, slower code"
+      echo ""
+      echo "-j [N]          Compile in parallel using N CPUs"
+      echo "                  omit argument for all avaliable CPUs"
       echo ""
       echo "-p macro        Prints any Makefile macro value"
       echo "                  For example:  build_split.csh -p FFLAGS"
       echo ""
+      echo "-pio            Compile with the PIO NetCDF Library"
+      echo ""
+      echo "-sp             Compile ROMS single precision executable"
+      echo ""
       echo "-noclean        Do not clean already compiled objects"
+      echo ""
       echo "${separator}"
       echo ""
       exit 1
@@ -198,6 +225,14 @@ setenv   MY_PROJECT_DIR     ${PWD}
 # can be used to write time-averaged fields. Notice that you can have as
 # many definitions as you want by appending values.
 
+if ( $pio_lib == 1 ) then
+ setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DPIO_LIB"
+endif
+
+if ( $sp_exe == 1 ) then
+ setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DSINGLE_PRECISION"
+endif
+
  setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DSPLIT_RBL4DVAR"
  setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DANA_SPONGE"
 
@@ -225,10 +260,6 @@ setenv   MY_PROJECT_DIR     ${PWD}
 #setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DDEBUGGING"
 #setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DPOSITIVE_ZERO"
 
-if ( $sp_exe == 1 ) then
- setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DSINGLE_PRECISION"
-endif
-
 #--------------------------------------------------------------------------
 # Compiler options.
 #--------------------------------------------------------------------------
@@ -249,11 +280,14 @@ endif
 
 #setenv USE_OpenMP          on          # shared-memory parallelism
 
+#setenv FORT                ifx
  setenv FORT                ifort
 #setenv FORT                gfortran
 #setenv FORT                pgi
 
-#setenv USE_DEBUG           on          # use Fortran debugging flags
+if ( $g_flags == 1 ) then
+ setenv USE_DEBUG           on          # use Fortran debugging flags
+endif
  setenv USE_LARGE           on          # activate 64-bit compilation
 
 #--------------------------------------------------------------------------
@@ -277,8 +311,10 @@ endif
 
  setenv USE_NETCDF4         on          # compile with NetCDF-4 library
 #setenv USE_PARALLEL_IO     on          # Parallel I/O with NetCDF-4/HDF5
-#setenv USE_PIO             on          # Parallel I/O with PIO library
-#setenv USE_SCORPIO         on          # Parallel I/O with SCORPIO library
+
+if ( $pio_lib == 1 ) then
+ setenv USE_PIO             on          # Parallel I/O with PIO library
+endif
 
 # If any of the coupling component use the HDF5 Fortran API for primary
 # I/O, we need to compile the main driver with the HDF5 library.
@@ -387,9 +423,9 @@ if ( $branch == 1 ) then
 
   if ( ! -d ${MY_PROJECT_DIR}/src ) then
     echo ""
-    echo "Downloading ROMS source code from GitHub: https://www.github.com/myroms"
+    echo "Downloading ROMS source code from GitHub: https://github.com/myroms"
     echo ""
-    git clone https://www.github.com/myroms/roms.git src
+    git clone https://github.com/myroms/roms.git src
   endif
   echo ""
   echo "Checking out ROMS GitHub branch: $branch_name"
@@ -447,6 +483,7 @@ else
   echo "ROMS source directory:         ${MY_ROMS_SRC}"
   echo "ROMS header file:              ${MY_HEADER_DIR}/${HEADER}"
   echo "ROMS build  directory:         ${BUILD_DIR}"
+  echo "ROMS executable:               ${BIN}"
   if ( $branch == 1 ) then
     echo "ROMS downloaded from:          https://github.com/myroms/roms.git"
     echo "ROMS compiled branch:          $branch_name"

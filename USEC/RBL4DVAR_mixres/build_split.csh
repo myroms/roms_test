@@ -443,9 +443,9 @@ if ( $branch == 1 ) then
 
   if ( ! -d ${MY_PROJECT_DIR}/src ) then
     echo ""
-    echo "Downloading ROMS source code from GitHub: https://www.github.com/myroms"
+    echo "Downloading ROMS source code from GitHub: https://github.com/myroms"
     echo ""
-    git clone https://www.github.com/myroms/roms.git src
+    git clone https://github.com/myroms/roms.git src
   endif
   echo ""
   echo "Checking out ROMS GitHub branch: $branch_name"
