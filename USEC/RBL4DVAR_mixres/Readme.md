@@ -419,7 +419,7 @@ Finished computations, Total time = 05:18:59
 |<img width="400" alt="image" src="https://github.com/user-attachments/assets/58e31ff7-181f-4a63-9ce1-084ef6a63af7"> | <img width="400" alt="image" src="https://github.com/user-attachments/assets/b68a3bdc-7270-434b-a16c-aecd2d1be293"> |
 |<img width="400" alt="image" src="https://github.com/user-attachments/assets/f4750e53-f257-47a4-ae0d-b55f83b72429"> | <img width="400" alt="image" src="https://github.com/user-attachments/assets/8a1943f7-e816-4f14-b4fd-3a13ad9c7cf8"> |
 
-- **4D-Var Penalty Function**: The figures below show the various cost functions for **NAM** forced **4D-Var** cycles 1 and 2 and how they compare with **Nouuter=2** and **Ninner=8** solutions. Notice that the y-axis is on a logarithmic scale. They are plotted using the **plot_penalty.m** Matlab script.
+- **4D-Var Penalty Function**: The figures below show the various cost functions for **NAM** forced **4D-Var** cycles 1 and 2 and how they compare with **Nouter=2** and **Ninner=8** solutions. Notice that the y-axis is on a logarithmic scale. They are plotted using the **plot_penalty.m** Matlab script.
 
 | 4D-Var Cycle 1            | 4D-Var Cycle 2           |
 :--------------------------:|:-------------------------:
