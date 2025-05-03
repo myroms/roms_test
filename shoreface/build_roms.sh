@@ -247,7 +247,7 @@ fi
 #export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DZOS_HSIG"
 #export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DTKE_WAVEDISS"
 
- export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DMY25_MIXING"
+#export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DMY25_MIXING"
 
  export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DUV_QDRAG"
 #export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DSSW_BBL"
