@@ -184,7 +184,6 @@ setenv   MY_PROJECT_DIR     ${PWD}
 # computers.
 
  setenv  MY_ROMS_SRC        ${MY_ROOT_DIR}/roms
-#setenv  MY_ROMS_SRC        ${OCEANHOME}/repository/svn/branches/arango
 
 # Set path of the directory containing makefile configuration (*.mk) files.
 # The user has the option to specify a customized version of these files
