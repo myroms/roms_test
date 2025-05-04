@@ -498,6 +498,12 @@ Sigma_max(isTvar) == 0.33d0   0.056d0  ! 1:NT tracers maximum STD
        OIFnameA == roms_oif_a.nc
        OIFnameB == roms_oif_b.nc
 
+! Input coarser grid increment file name, [1:Ngrids]. It is used in
+! mixed-resolution split 4D-Var for regridding (coarse-to-fine), where
+! the inner loops are run at lower resolution to accelerate the computations.
+
+        INCname == roms_inc.nc
+
 !
 !  GLOSSARY:
 !  =========
@@ -727,6 +733,25 @@ Sigma_max(isTvar) == 0.33d0   0.056d0  ! 1:NT tracers maximum STD
 !                 (m2/s).  NT values are expected.
 !
 !------------------------------------------------------------------------------
+! Incremental Analysis Update (IAU)
+!------------------------------------------------------------------------------
+!
+!  timeIAU        Duration of the Incremental Analysis Update (days),
+!                 [1:Ngrids]. It controls the time interval over which
+!                 the IAU is applied.
+!
+!                 This option is only available for RBL4DVAR and when using
+!                 RPCG minimizer.
+!
+!                 In SPLIT_RBL4DVAR, you can the analysis phase multiple 
+!                 times experimenting with different values of timeIAU
+!                 to see which works best, without having to rerun the
+!                 inner-loops again (increment phase). You can only do
+!                 this if SPLIT_RBL4DVAR is first run with a non-zero
+!                 value of timeIAU, otherwise the initial condition will
+!                 get overwritten in the initial NetCDF file.
+!
+!------------------------------------------------------------------------------
 ! Background/model correlation parameters.
 !------------------------------------------------------------------------------
 !
@@ -912,7 +937,7 @@ Sigma_max(isTvar) == 0.33d0   0.056d0  ! 1:NT tracers maximum STD
 !
 ! Sigma_ml(:)       Minimum STD at mixed layer
 !
-! Sigma_do(:)       Minimum STD in deep ocean 
+! Sigma_do(:)       Minimum STD in deep ocean
 !
 ! Sigma_dz(:)       Vertical profile displacement
 !
@@ -1053,13 +1078,19 @@ Sigma_max(isTvar) == 0.33d0   0.056d0  ! 1:NT tracers maximum STD
 !
 !  ERRname        Output posterior error covariance matrix file name.
 !
+! Input coarser grid increment file name, [1:Ngrids]. It is used in
+! mixed-resolution split 4D-Var for regridding (coarse-to-fine), where
+! the inner loops are run at lower resolution to accelerate the computations.
+!
+!  INCname        Coarse grid increment file name.
+!
 ! Input forcing filenames at observation locations for computing observations
 ! impacts during the analysis-forecast cycle when RBL4DVAR_FCT_SENSITIVITY and
 ! OBS_SPACE are activated:
 !
 ! (See www.myroms.org/wiki/Analysis-Forecast_Cycle_Observation_Impacts)
 !
-!  OIFnameA    Forecast initialized with 4D-Var analysis (red curve)
+!  OIFnameA       Forecast initialized with 4D-Var analysis (red curve).
 !
-!  OIFnameB    Forecast initialized with 4D_Var background (blue curve)
+!  OIFnameB       Forecast initialized with 4D_Var background (blue curve).
 !
