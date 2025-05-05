@@ -56,7 +56,7 @@ Gname='wc13_grd.nc';
 Eradius=6371315.0;
 
 lonr=nc_read(Gname,'lon_rho'); lonr=lonr';
-latr=nc_read(Gname,'lat_rho'); latr=latr'; 
+latr=nc_read(Gname,'lat_rho'); latr=latr';
 lonv=nc_read(Gname,'lon_v');   lonv=lonv';
 latv=nc_read(Gname,'lat_v');   latv=latv';
 lonu=nc_read(Gname,'lon_u');   lonu=lonu';
@@ -79,36 +79,36 @@ nHIS=nc_read(InpA,'nHIS');
 ntimes=nc_read(InpA,'ntimes');
 %facdt1=nHIS/ntimes;
 facdt1=1/nAVG;
-  
+
 clear f;
-v='v';         
+v='v';
 fA =nc_read(InpA,v);
 fB =nc_read(InpB,v);
 fVA=nc_read(InpVA,v);
-  
+
 clear varr;
 varr=zeros(size(fA));
-  
- 
+
+
 for it=(size(fA,4)-nAVG):size(fA,4),
 
   facdt=facdt1;
-  
+
   clear z_w;
   [z_w]=depths(InpA,Gname,5,0);
-    
+
   nlevt=size(fA,3);
-    
+
   clear Hz;
   for k=1:nlevt
     Hz(:,:,k)=z_w(:,:,k+1)-z_w(:,:,k);
   end
-    
+
   clear z_v;
   [z_v]=depths(InpA,Gname,4,0);
-    
+
   clear df;
-    
+
   for k=1:nlevt,
     for i=section,
       if z_v(i,jlat,k) > depth
@@ -118,7 +118,7 @@ for it=(size(fA,4)-nAVG):size(fA,4),
       end
     end
   end
-    
+
 end
 
 % Compute dJA and dJB.
@@ -160,7 +160,7 @@ for var = Vmasks
 end
 
 % Write out zero state variables.
-	
+
 for var = Vstate
   v = char(var);
   f = nc_read (InpA, v);
@@ -216,4 +216,4 @@ end
 % for the upper 500 m.
 
 s=nc_write(Out,'v',varrB);
-  
+

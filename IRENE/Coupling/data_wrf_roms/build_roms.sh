@@ -29,12 +29,21 @@
 #                                                                       :::
 # Options:                                                              :::
 #                                                                       :::
+#    -b          Compile a specific ROMS GitHub branch                  :::
+#                                                                       :::
+#                  build_roms.sh -j 10 -b feature/kernel                :::
+#                                                                       :::
+#    -g          Compile with debug flag (slower code)                  :::
+#                                                                       :::
+#                  build_roms.sh -g -j 10                               :::
+#                                                                       :::
 #    -j [N]      Compile in parallel using N CPUs                       :::
 #                  omit argument for all available CPUs                 :::
 #                                                                       :::
-#    -b          Compile a specific ROMS GitHub branch                  :::
+#    -pio        Compile with PIO (Parallel I/O) NetCDF library         :::
+#                  Otherwise, it used standard NetCDF library (slower)  :::
 #                                                                       :::
-#                  build_roms.sh -j 5 -b feature/kernel                 :::
+#                  build_roms.sh -pio -j 10                             :::
 #                                                                       :::
 #    -p macro    Prints any Makefile macro value. For example,          :::
 #                                                                       :::
@@ -54,7 +63,9 @@
 
 export which_MPI=openmpi                       # default, overwritten below
 
+g_flags=0
 parallel=0
+pio_lib=0
 clean=1
 dprint=0
 branch=0
@@ -68,6 +79,16 @@ export MY_CPP_FLAGS=
 while [ $# -gt 0 ]
 do
   case "$1" in
+    -g )
+      shift
+      g_flags=1
+      ;;
+
+    -pio )
+      shift
+      pio_lib=1
+      ;;
+
     -j )
       shift
       parallel=1
@@ -111,16 +132,21 @@ do
       echo ""
       echo "Available Options:"
       echo ""
+      echo "-b branch_name  Compile specific ROMS GitHub branch name"
+      echo "                  For example:  build_roms.sh -b feature/kernel"
+      echo ""
+      echo "-g              Compile with debugging flags, slower code"
+      echo ""
       echo "-j [N]          Compile in parallel using N CPUs"
       echo "                  omit argument for all avaliable CPUs"
       echo ""
-      echo "-b branch_name  Compile specific ROMS GitHub branch name"
-      echo "                  For example:  build_roms.sh -b feature/kernel"
+      echo "-pio            Compile with the PIO NetCDF Library"
       echo ""
       echo "-p macro        Prints any Makefile macro value"
       echo "                  For example:  build_roms.sh -p FFLAGS"
       echo ""
       echo "-noclean        Do not clean already compiled objects"
+      echo ""
       echo "${separator}"
       echo ""
       exit 1
@@ -185,6 +211,10 @@ export     MY_PROJECT_DIR=${PWD}
 # can be used to write time-averaged fields. Notice that you can have as
 # many definitions as you want by appending values.
 
+if [ $pio_lib -eq 1 ]; then
+  export     MY_CPP_FLAGS="${MY_CPP_FLAGS} -DPIO_LIB"
+fi
+
  bulk_flux=0                      # use WRF atmosphere boundary layer
 #bulk_flux=1                      # use ROMS bulk fluxes formulation
 
@@ -231,11 +261,15 @@ fi
 
 #export        USE_OpenMP=on            # shared-memory parallelism
 
+#export              FORT=ifx
  export              FORT=ifort
 #export              FORT=gfortran
 #export              FORT=pgi
 
-#export         USE_DEBUG=on            # use Fortran debugging flags
+if [ $g_flags -eq 1 ]; then
+ export         USE_DEBUG=on            # use Fortran debugging flags
+fi
+
  export         USE_LARGE=on            # activate 64-bit compilation
 
 #--------------------------------------------------------------------------
@@ -259,8 +293,10 @@ fi
 
  export       USE_NETCDF4=on            # compile with NetCDF-4 library
 #export   USE_PARALLEL_IO=on            # Parallel I/O with NetCDF-4/HDF5
-#export           USE_PIO=on            # Parallel I/O with PIO library
-#export       USE_SCORPIO=on            # Parallel I/O with SCORPIO library
+
+if [ $pio_lib -eq 1 ]; then
+ export           USE_PIO=on            # Parallel I/O with PIO library
+fi
 
 # If any of the coupling component use the HDF5 Fortran API for primary
 # I/O, we need to compile the main driver with the HDF5 library.
@@ -351,9 +387,9 @@ if [ $branch -eq 1 ]; then
 
   if [ ! -d ${MY_PROJECT_DIR}/src ]; then
     echo ""
-    echo "Downloading ROMS source code from GitHub: https://www.github.com/myroms"
+    echo "Downloading ROMS source code from GitHub: https://github.com/myroms"
     echo ""
-    git clone https://www.github.com/myroms/roms.git src
+    git clone https://github.com/myroms/roms.git src
   fi
   echo ""
   echo "Checking out ROMS GitHub branch: $branch_name"

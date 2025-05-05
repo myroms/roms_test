@@ -23,7 +23,7 @@ structured and unstructured grids.
 The **mesh** NetCDF files are created for you:
 
 - **DATA** component: **ECMWF-ERA5** dataset
-  
+
   - **era5_IRENE_ESMFmesh.nc**
 
 - **DATA** component: **NCEP-NARR** dataset
@@ -38,9 +38,9 @@ The **mesh** NetCDF files are created for you:
   - **Tair_narr_IRENE_ESMFmesh.nc**
   - **Uwind_narr_IRENE_ESMFmesh.nc**
   - **Vwind_narr_IRENE_ESMFmesh.nc**
-  
+
 - **ROMS** component:
-  
+
   - **irene_roms_grid_rho_ESMFmesh.nc**
 
 ### How to Run:

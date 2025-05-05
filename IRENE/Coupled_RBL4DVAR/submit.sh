@@ -450,7 +450,7 @@ while [ "$(bc <<< "$SDAY <= $L_DN")" == "1" ]; do
   done
 
   end=()                                      # WRF end simulation time
-  i=0                                         # integer vector 
+  i=0                                         # integer vector
   for element in ${StopTime// / }; do         # (YYYY MM DD hh mm ss)
     end[$i]=${element}
     ((i=$i+1))

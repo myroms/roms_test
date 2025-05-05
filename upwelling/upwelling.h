@@ -39,7 +39,7 @@
 
 #if defined BIO_FENNEL  || defined ECOSIM      || \
     defined NEMURO      || defined NPZD_FRANKS || \
-    defined NPZD_IRON   || defined NPZD_POWELL 
+    defined NPZD_IRON   || defined NPZD_POWELL
 # define ANA_BIOLOGY
 # define ANA_SPFLUX
 # define ANA_BPFLUX

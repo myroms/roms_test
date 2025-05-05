@@ -3,11 +3,11 @@
 ## Hurricane Irene: CDEPS Coupling Connectors
 
 This directory includes various files to run the **DATA-ROMS** coupling for Hurricane Irene
-using **CDEPS** **NUOPC**-based connectors. The **DATA** component is replacing the 
+using **CDEPS** **NUOPC**-based connectors. The **DATA** component is replacing the
 Atmosphere Model, using datasets from **NCEP-NARR** or **ECMWF-ERA5** products. It
 uses our Coupled Forecast Framework (**CFF**) configuration for the
-US East Coast **`CFF-EC7`** (**ROMS** 7km grid), and the simulation is 
-only run for 42 hours as Hurricane Irene approached the Outer Banks
+U.S. East Coast **`CFF-USEC7`** (**ROMS** 7km grid), and the simulation is
+only ran for 42 hours as Hurricane Irene approached the Outer Banks
 of North Carolina on August 27, 2011.
 
 <img width="897" alt="image" src="https://github.com/myroms/roms_test/assets/23062912/5ecba382-289a-4871-b472-2e632282b440">
@@ -26,7 +26,7 @@ They are activated in the build scripts.
    BULK_FLUXES             Activates COARE bulk parameterization of surface fluxes
    CMEPS                   Activates the UFS coupling with the CMEPS interface
    ESMF_LIB                ESMF/NUOPC coupling library (version 8.0 and up)
-   FRC_COUPLING            Activates surface forcing from coupled system
+   FRC_COUPLING            Activates surface forcing from the coupled system
    ROMS_STDOUT             ROMS standard output is written into 'log.roms'
    VERIFICATION            Interpolates ROMS solution at observation points
 ```

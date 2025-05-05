@@ -50,7 +50,7 @@ convention:     CF 1.10
 #  in ROMS to modulate the shortwave radiation by the local daily cycle
 #  at each timestep.
 
-#shortwave:     &SWRAD swrad_daily
+#shortwave:      &SWRAD swrad_daily
 shortwave:      &SWRAD swrad
 
 metadata:
@@ -358,7 +358,6 @@ metadata:
 
   - variable:       salt_slice                                       # Output
     standard_name:  sea_water_practical_salinity
-    standard_name:  sea_surface_salinity
     long_name:      salinity
     units:          nondimensional                                   # [PSS]
     field:          salinity constant depth slices
@@ -1687,6 +1686,17 @@ metadata:
     field:          surface air pressure
     time:           pair_time
     index_code:     idPair
+    type:           r2dvar
+    add_offset:     0.0d0
+    scale:          1.0d0
+
+  - variable:       PBLh                                             # Input
+    standard_name:  atmosphere_boundary_layer_thickness
+    long_name:      atmosphere boundary layer thickness
+    units:          m                                                # [m]
+    field:          planetary boundary layer height
+    time:           pblh_time
+    index_code:     idPBLh
     type:           r2dvar
     add_offset:     0.0d0
     scale:          1.0d0
@@ -3040,7 +3050,7 @@ metadata:
     field:          sediment mud_
     time:           mud_time
     index_code:     idTbry(iwest,idmud(i))
-    type:           r3dvar
+    type:           nulvar
     add_offset:     0.0d0
     scale:          1.0d0
 

@@ -41,7 +41,7 @@
  echo ' '
  echo 'Case 1: Forecast Error in the 37N Transport Metric'
  if ($NHIS == 'daily') then
-   echo '(Processing files from daily snapshots forward trajectory)'   
+   echo '(Processing files from daily snapshots forward trajectory)'
  else
    echo '(Processing files from every 2-hours snapshots forward trajectory)'
  endif

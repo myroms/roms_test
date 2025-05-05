@@ -5,8 +5,8 @@
 This directory includes various files to run the **DATA-WRF-ROMS**
 coupling system for Hurricane Irene using the **ESMF/NUOPC** library. It
 uses our Coupled Forecast Framework (**CFF**) configuration for the
-US East Coast **`CFF-EC7`** (**ROMS** 7km grid), and the simulation is 
-only run for 42 hours as Hurricane Irene approached the Outer Banks
+U.S. East Coast **`CFF-USEC7`** (**ROMS** 7km grid), and the simulation is
+only ran for 42 hours as Hurricane Irene approached the Outer Banks
 of North Carolina on August 27, 2011.
 
 <img width="940" alt="image" src="https://github.com/myroms/roms_test/assets/23062912/43010527-1cb7-4ba0-aec4-a888f46369c4">
@@ -18,15 +18,15 @@ grid. Thus, both **DATA** and **ROMS** SST values are melded with a
 smooth transition at the **ROMS** domain boundaries, as shown in the
 melding weights above.
 
-The **WRF** and **ROMS** timesteps are 20 and 60 seconds
-for stable solutions due to the strong Hurricane winds.  The
+Due to the strong hurricane winds, the **WRF** and **ROMS** timesteps
+are 20 and 60 seconds for stable solutions.  The
 coupling step is 60 seconds (same as **ROMS**).  The **WRF** values are
 averaged every 60 seconds by activating the **RAMS**-averaged
 diagnostics.
 
 All the components interact with the same coupling time step.
 The connector from **ROMS** to **WRF** is explicit, whereas the connector
-from **WRF** to **ROMS** is semi-implicit. 
+from **WRF** to **ROMS** is semi-implicit.
 
 It uses **ROMS**'s native, **NUOPC**-based coupling system. For more information,
 visit **WikiROMS**:
@@ -39,9 +39,9 @@ They are activated in the build scripts.
 
   ```
    IRENE                   ROMS application CPP option
-   DATA_COUPLING           Activates DATA component
+   DATA_COUPLING           Activates the DATA component
    ESMF_LIB                ESMF/NUOPC coupling library (version 8.0 and up)
-   FRC_COUPLING            Activates surface forcing from coupled system
+   FRC_COUPLING            Activates surface forcing from the coupled system
    ROMS_STDOUT             ROMS standard output is written into 'log.roms'
    VERIFICATION            Interpolates ROMS solution at observation points
    WRF_COUPLING            Activates WRF component (version 4.1 and up)
@@ -143,7 +143,7 @@ They are activated in the build scripts.
     links files created by the build script and needed to run **WRF**:
   ```
     alias ltl '/bin/ls -ltHF | grep -v ^l'
-  ```      
+  ```
 ### How to Compile ROMS:
 
 - **ROMS** is the driver of the coupling system. In this application, the **WRF** Surface
@@ -154,9 +154,9 @@ They are activated in the build scripts.
     **WIND_MINUS_CURRENT**, **EMINUSP**, and **LONGWAVE_OUT**.
 
     The option **bulk_flux = 1** in the **ROMS** build script IS NOT RECOMMENDED FOR THIS
-    APPLICATION because the **bulk_flux.F** module is not tunned for Hurricane regimes,
+    APPLICATION because the **bulk_flux.F** module is not tuned for Hurricane regimes,
     and will get the wrong solution
-   
+
     To compile **ROMS**, use:
    ```
     build_roms.csh -j 10
@@ -167,7 +167,7 @@ They are activated in the build scripts.
     submit.sh > & log &
    ```
   You can modify **submit.sh** for your appropriate computer environment.
-   
+
 ### The output Files:
 
 - Standard Output Files:
@@ -180,7 +180,7 @@ They are activated in the build scripts.
   ```
 
 - **ROMS** NetCDF Files:
- 
+
    ```
     irene_avg.nc                                  6-hour averages
     irene_his.nc                                  hourly history

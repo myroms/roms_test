@@ -16,7 +16,7 @@ function  fig = soliton_movie(Dir, Vname, type, varargin)
 %    type          Input file prefix (string)
 %                    type = 'avg'    => average file
 %                    type = 'his'    => history file
-%  
+%
 %    Caxis         Color axis bounds (optional; vector)
 %
 %    mytitle       Plot title (optional, string)
@@ -25,10 +25,10 @@ function  fig = soliton_movie(Dir, Vname, type, varargin)
 %
 % Example:
 %
-%   soliton_movie('r01','zeta','his',[0 0.16]) 
-%   soliton_movie('r01','zeta','his',[Inf Inf],'FB AB3-AM4','zeta_fb.gif') 
-%   soliton_movie('r01','ubar','his') 
-%   soliton_movie('r01','rvorticity_bar','avg') 
+%   soliton_movie('r01','zeta','his',[0 0.16])
+%   soliton_movie('r01','zeta','his',[Inf Inf],'FB AB3-AM4','zeta_fb.gif')
+%   soliton_movie('r01','ubar','his')
+%   soliton_movie('r01','rvorticity_bar','avg')
 
 % git $Id$
 %=========================================================================%
@@ -38,7 +38,7 @@ function  fig = soliton_movie(Dir, Vname, type, varargin)
 %=========================================================================%
 
 % Read in requested variable.
-  
+
 Cncname = strcat(Dir,'/soliton_',type,'_coarse.nc');
 Fncname = strcat(Dir,'/soliton_',type,'_fine.nc');
 
@@ -50,7 +50,7 @@ F = nc_read(Fncname, Vname);
 Ctime = nc_read(Cncname, 'ocean_time');
 Ftime = nc_read(Fncname, 'ocean_time');
 
-long_name = nc_getatt(Cncname, 'long_name', Vname); 
+long_name = nc_getatt(Cncname, 'long_name', Vname);
 
 switch Vname
   case {'ubar'}
@@ -138,14 +138,14 @@ Fmin=min(min(squeeze(F(:,:,1))));
 Fmax=max(max(squeeze(F(:,:,1))));
 xlabel(['Min = ', num2str(Fmin), blanks(4), 'Max = ', num2str(Fmax)]);
 
-frame = getframe(fig); 
+frame = getframe(fig);
 im = frame2im(frame);
-[imind,cm] = rgb2ind(im,256); 
+[imind,cm] = rgb2ind(im,256);
 
-% Write to the GIF File. 
+% Write to the GIF File.
 
 count = 1;
-imwrite(imind, cm, GIFname, 'gif', 'Loopcount', inf); 
+imwrite(imind, cm, GIFname, 'gif', 'Loopcount', inf);
 
 % Plot the rest of the time frames.
 
@@ -180,11 +180,11 @@ for rec=2:length(Ctime)
   drawnow
   pause(0.5)
 
-  frame = getframe(fig); 
-  im = frame2im(frame); 
-  [imind,cm] = rgb2ind(im,256); 
+  frame = getframe(fig);
+  im = frame2im(frame);
+  [imind,cm] = rgb2ind(im,256);
 
-  imwrite(imind, cm, GIFname, 'gif', 'WriteMode', 'append'); 
+  imwrite(imind, cm, GIFname, 'gif', 'WriteMode', 'append');
 end
 
 return

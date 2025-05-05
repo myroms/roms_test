@@ -155,7 +155,7 @@ They are activated in the build scripts.
     links files created by the build script and needed to run **WRF**:
   ```
     alias ltl '/bin/ls -ltHF | grep -v ^l'
-  ```      
+  ```
 ### How to Compile ROMS:
 
 - **ROMS** is the driver of the coupling system. In this application, the **WRF** Surface
@@ -168,7 +168,7 @@ They are activated in the build scripts.
     The option **bulk_flux = 1** in the **ROMS** build script IS NOT RECOMMENDED FOR THIS
     APPLICATION because the **bulk_flux.F** module is not tunned for Hurricane regimes,
     and will get the wrong solution
-   
+
     To compile **ROMS** coupling (nonlinear kernel) and data assimilation kernels, use:
    ```
     build_split.csh -nl -j 10                     creates executable romsM_nl
@@ -187,7 +187,7 @@ They are activated in the build scripts.
     submit.sh > & log &
    ```
     You can modify **submit.sh** for your appropriate computer environment.
-  
+
     The **submit.sh** script creates the sub-directory **2011.08.27** and includes all
     the required input scripts to run the **coupled/RBL4D-Var** system. The input
     scripts are generated from the templates.  The **submit.sh** script is quite

@@ -5,7 +5,7 @@
 This directory includes various files to run the **DATA-ROMS**
 coupling for Hurricane Irene using the **ESMF/NUOPC** library.  It
 uses our Coupled Forecast Framework (**CFF**) configuration for the
-US East Coast **`CFF-EC7`** (**ROMS** 7km grid), and the simulation is 
+US East Coast **`CFF-EC7`** (**ROMS** 7km grid), and the simulation is
 only run for 42 hours as Hurricane Irene approached the Outer Banks
 of North Carolina on August 27, 2011.
 
@@ -94,7 +94,7 @@ They are activated in the build scripts.
   roms_irene.in                 ROMS standard input script
   data_explicit.runconfig       ESMF coupling Run Sequence
  ```
-     
+
 ### How to Compile ROMS:
 
 - **ROMS** is the driver of the coupling system.

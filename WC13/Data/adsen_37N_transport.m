@@ -20,7 +20,7 @@ gname='wc13_grd.nc';
 Eradius=6371315.0;
 
 lonr=nc_read(gname,'lon_rho'); lonr=lonr';
-latr=nc_read(gname,'lat_rho'); latr=latr'; 
+latr=nc_read(gname,'lat_rho'); latr=latr';
 lonv=nc_read(gname,'lon_v');   lonv=lonv';
 latv=nc_read(gname,'lat_v');   latv=latv';
 lonu=nc_read(gname,'lon_u');   lonu=lonu';
@@ -42,15 +42,15 @@ facsverd=1./1e6; % nbr exact ?
 nHIS=nc_read(Inp,'nHIS');
 ntimes=nc_read(Inp,'ntimes');
 facdt1=nHIS/ntimes;
-  
+
 clear f;
-v='v';         
+v='v';
 f=nc_read(Inp,v);
-  
+
 clear varr;
 varr=zeros(size(f));
-  
- 
+
+
 for it=1:size(f,4),
 
   if it==1 | it==size(f,4),
@@ -58,22 +58,22 @@ for it=1:size(f,4),
   else,
     facdt=facdt1;
   end,
-  
+
   clear z_w;
   [z_w]=depths(Inp,gname,5,0);
-    
+
   nlevt=size(f,3);
-    
+
   clear Hz;
   for k=1:nlevt
     Hz(:,:,k)=z_w(:,:,k+1)-z_w(:,:,k);
   end
-    
+
   clear z_v;
   [z_v]=depths(Inp,gname,4,0);
-    
+
   clear df;
-    
+
   for k=1:nlevt,
     for i=section,
       if z_v(i,jlat,k) > depth
@@ -83,18 +83,18 @@ for it=1:size(f,4),
       end,
     end,
   end,
-    
+
 end,
 
 % Create adjoint sensitivy NetCDF file.
 
 Out='wc13_ads.nc';
 unix('ncgen -b adsen.cdl');
-  
+
 % Write out information variables.
 
 v='spherical';    f=nc_read(Inp,v);  s=nc_write(Out,v,f);
-  
+
 v='Vtransform';   f=nc_read(Inp,v);  s=nc_write(Out,v,f);
 v='Vstretching';  f=nc_read(Inp,v);  s=nc_write(Out,v,f);
 v='theta_s';      f=nc_read(Inp,v);  s=nc_write(Out,v,f);
@@ -107,7 +107,7 @@ v='Cs_r';         f=nc_read(Inp,v);  s=nc_write(Out,v,f);
 v='Cs_w';         f=nc_read(Inp,v);  s=nc_write(Out,v,f);
 
 v='h';            f=nc_read(Inp,v);  s=nc_write(Out,v,f);
-  
+
 v='lon_rho';      f=nc_read(Inp,v);  s=nc_write(Out,v,f);
 v='lat_rho';      f=nc_read(Inp,v);  s=nc_write(Out,v,f);
 v='lon_u';        f=nc_read(Inp,v);  s=nc_write(Out,v,f);
@@ -121,11 +121,11 @@ v='lat_v';        f=nc_read(Inp,v);  s=nc_write(Out,v,f);
 v='mask_rho';     f=nc_read(Inp,v);  s=nc_write(Out,'scope_rho',f);
 v='mask_u';       f=nc_read(Inp,v);  s=nc_write(Out,'scope_u',f);
 v='mask_v';       f=nc_read(Inp,v);  s=nc_write(Out,'scope_v',f);
-  
+
 % Write out zero state variables.
 
 v='ocean_time';   f=nc_read(Inp,v);  s=nc_write(Out,v,f);
-  
+
 v='zeta';         f=nc_read(Inp,v);  s=nc_write(Out,v,zeros(size(f)));
 v='ubar';         f=nc_read(Inp,v);  s=nc_write(Out,v,zeros(size(f)));
 v='vbar';         f=nc_read(Inp,v);  s=nc_write(Out,v,zeros(size(f)));
@@ -133,10 +133,10 @@ v='u';            f=nc_read(Inp,v);  s=nc_write(Out,v,zeros(size(f)));
 v='v';            f=nc_read(Inp,v);  s=nc_write(Out,v,zeros(size(f)));
 v='temp';         f=nc_read(Inp,v);  s=nc_write(Out,v,zeros(size(f)));
 v='salt';         f=nc_read(Inp,v);  s=nc_write(Out,v,zeros(size(f)));
-  
+
 % Over-write v-momentum sensitivity functional for the California
 % Current System: sensitivity of meridional transport along 37N
 % for the upper 500 m.
 
 s=nc_write(Out,'v',varr);
-  
+

@@ -1,4 +1,4 @@
-% 
+%
 %  ECOSIM_OPTICS: Plots EcoSim optical diagnostics for BIO_TOY
 %
 
@@ -31,7 +31,7 @@ count5  = [1 1 1 Inf Inf];
 stride5 = [1 1 1 1 dt];
 
 time = ncread(Dname, 'ocean_time', T, Inf, dt)./86400;
-wavelength = ncread(Dname, 'light');        
+wavelength = ncread(Dname, 'light');
 
 Nrec   = length(time);
 Nbands = length(wavelength);

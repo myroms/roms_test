@@ -448,16 +448,16 @@ LtracerSponge == F F                            ! temperature, salinity, inert
 
 ! Generic length-scale turbulence closure parameters.
 
-       GLS_P == 4*0.0d0                         ! k-kl      
+       GLS_P == 4*0.0d0                         ! k-kl
        GLS_M == 4*1.0d0
        GLS_N == 4*1.0d0
     GLS_Kmin == 4*5.0d-06
     GLS_Pmin == 4*5.0d-06
 
     GLS_CMU0 == 4*0.5544d0
-      GLS_C1 == 4*0.9d0 
+      GLS_C1 == 4*0.9d0
       GLS_C2 == 4*0.52d0
-     GLS_C3M == 4*2.5d0 
+     GLS_C3M == 4*2.5d0
      GLS_C3P == 4*1.0d0
     GLS_SIGK == 4*1.96d0
     GLS_SIGP == 4*1.96d0
@@ -765,6 +765,7 @@ Hout(idMtls) == 4*F     ! gls                turbulent length scale
 ! switches can be activated using compact parameter specification.
 
  Hout(inert) == T       ! dye_01, ...        inert passive tracers
+ Hout(Znert) == F       ! dye_01_slice, ...  inert tracer constant depth slices
 
 ! Logical switches (TRUE/FALSE) to activate writing of fields into
 ! QUICKSAVE output file.
@@ -891,6 +892,7 @@ Qout(idMtls) == 4*F     ! gls                turbulent length scale
 ! switches can be activated using compact parameter specification.
 
  Qout(inert) == F       ! dye_01, ...        inert passive tracers
+ Qout(Znert) == F       ! dye_01_slice, ...  inert tracer constant depth slices
  Qout(Snert) == F       ! dye_01_sur, ...    surface inert passive tracers
 
 ! Logical switches (TRUE/FALSE) to activate writing of time-averaged
@@ -2929,7 +2931,8 @@ PIO_I2C_Preq = 65                 ! Maximum pending I2C requests
 ! Hout(idMtke)   Write out turbulent kinetic energy.
 ! Hout(idMtls)   Write out turbulent kinetic energy times length scale.
 !
-! Hout(inert)    Write out extra inert passive tracers.
+! Hout(inert)    Write out inert passive tracers.
+! Hout(Znert)    Write out inert passive tracers constant depth slices.
 !
 !------------------------------------------------------------------------------
 ! Logical switches (T/F) to activate writing of instantaneous fields into
@@ -3050,6 +3053,7 @@ PIO_I2C_Preq = 65                 ! Maximum pending I2C requests
 ! Qout(idMtls)   Write out turbulent kinetic energy times length scale.
 !
 ! Qout(inert)    Write out inert passive tracers.
+! Qout(Znert)    Write out inert passive tracers constant depth slices.
 ! Qout(Snert)    Write out surface inert passive tracers.
 !
 !------------------------------------------------------------------------------
