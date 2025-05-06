@@ -30,20 +30,29 @@
 #                                                                       :::
 # Options:                                                              :::
 #                                                                       :::
-#    -j [N]         Compile in parallel using N CPUs                    :::
-#                     omit argument for all available CPUs              :::
+#    -b          Compile a specific ROMS GitHub branch                  :::
 #                                                                       :::
-#    -b             Compile a specific ROMS GitHub branch               :::
+#                  build_ufs.sh -j 10 -b feature/kernel                 :::
 #                                                                       :::
-#                     build_ufs.sh -j 5 -b feature/kernel               :::
+#    -g          Compile with debug flag (slower code)                  :::
 #                                                                       :::
-#    -p macro       Prints any Makefile macro value. For example,       :::
+#                  build_ufs.sh -g -j 10                                :::
 #                                                                       :::
-#                     build_ufs.sh -p MY_CPP_FLAGS                      :::
+#    -j [N]      Compile in parallel using N CPUs                       :::
+#                  omit argument for all available CPUs                 :::
 #                                                                       :::
-#    -noclean       Do not clean already compiled objects               :::
+#    -pio        Compile with PIO (Parallel I/O) NetCDF library         :::
+#                  Otherwise, it used standard NetCDF library (slower)  :::
 #                                                                       :::
-#    -v             Compile in verbose mode (VERBOSE=1)                 :::
+#                  build_ufs.sh -pio -j 10                              :::
+#                                                                       :::
+#    -p macro    Prints any Makefile macro value. For example,          :::
+#                                                                       :::
+#                  build_ufs.sh -p MY_CPP_FLAGS                         :::
+#                                                                       :::
+#    -noclean    Do not clean already compiled objects                  :::
+#                                                                       :::
+#    -v          Compile in verbose mode (VERBOSE=1)                    :::
 #                                                                       :::
 # The branch option -b is only possible for ROMS source code from       :::
 # https://github.com/myroms. Such versions are under development        :::
@@ -54,7 +63,9 @@
 
 export which_MPI=openmpi                       # default, overwritten below
 
+g_flags=0
 parallel=0
+pio_lib=0
 clean=1
 dprint=0
 Verbose=0
@@ -69,6 +80,16 @@ export MY_CPP_FLAGS=
 while [ $# -gt 0 ]
 do
   case "$1" in
+    -g )
+      shift
+      g_flags=1
+      ;;
+
+    -pio )
+      shift
+      pio_lib=1
+      ;;
+
     -j )
       shift
       parallel=1
@@ -117,11 +138,15 @@ do
       echo ""
       echo "Available Options:"
       echo ""
+      echo "-b branch_name  Compile specific ROMS GitHub branch name"
+      echo "                  For example:  build_roms.sh -b feature/kernel"
+      echo ""
+      echo "-g              Compile with debugging flags, slower code"
+      echo ""
       echo "-j [N]          Compile in parallel using N CPUs"
       echo "                  omit argument for all avaliable CPUs"
       echo ""
-      echo "-b branch_name  Compile specific ROMS GitHub branch name"
-      echo "                  For example:  build_ufs.sh -b feature/kernel"
+      echo "-pio            Compile with the PIO NetCDF Library"
       echo ""
       echo "-p macro        Prints any Makefile macro value"
       echo "                  For example:  build_ufs.sh -p FFLAGS"
@@ -167,8 +192,7 @@ export     MY_PROJECT_DIR=${PWD}
 # This script allows for differing paths to the code and inputs on other
 # computers.
 
- export       MY_UFS_SRC=${MY_ROOT_DIR}/ufs-coastal
- ln -sfv ${MY_UFS_SRC}/tests/parm/fd_ufs.yaml .
+ export        MY_UFS_SRC=${MY_ROOT_DIR}/ufs-coastal
 
 #export       MY_ROMS_SRC=${MY_UFS_SRC}/ROMS-interface/ROMS
  export       MY_ROMS_SRC=${MY_ROOT_DIR}/roms
@@ -218,14 +242,16 @@ export     MY_PROJECT_DIR=${PWD}
 # can be used to write time-averaged fields. Notice that you can have as
 # many definitions as you want by appending values.
 
+if [ $pio_lib -eq 1 ]; then
+  export     MY_CPP_FLAGS="${MY_CPP_FLAGS} -DPIO_LIB"
+fi
+
  export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DBULK_FLUXES"
 
 #export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DDIURNAL_SRFLUX"
 
  export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DCOLLECT_ALLREDUCE"
 #export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DREDUCE_ALLGATHER"
-
-#export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DMETADATA_REPORT"
 
 #export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DDEBUGGING"
 #export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DPOSITIVE_ZERO"
@@ -243,11 +269,13 @@ export     MY_PROJECT_DIR=${PWD}
  export         which_MPI=openmpi          # compile with OpenMPI library
 
 #export              FORT=ifx
-#export              FORT=ifort
- export              FORT=gfortran
+ export              FORT=ifort
+#export              FORT=gfortran
 #export              FORT=pgi
 
-#export         USE_DEBUG=on               # use Fortran debugging flags
+if [ $g_flags -eq 1 ]; then
+ export         USE_DEBUG=on               # use Fortran debugging flags
+fi
 
 # ROMS I/O choices and combinations. A more complete description of the
 # available options can be found in the wiki (https://myroms.org/wiki/IO).
@@ -257,8 +285,10 @@ export     MY_PROJECT_DIR=${PWD}
 
 #export       USE_NETCDF4=on               # compile with NetCDF-4 library
 #export   USE_PARALLEL_IO=on               # Parallel I/O with NetCDF-4/HDF5
-#export           USE_PIO=on               # Parallel I/O with PIO library
-#export       USE_SCORPIO=on               # Parallel I/O with SCORPIO library
+
+if [ $pio_lib -eq 1 ]; then
+ export           USE_PIO=on               # Parallel I/O with PIO library
+fi
 
 #--------------------------------------------------------------------------
 # Build definitions and options.
@@ -398,7 +428,7 @@ else
   arpack_ldir=""
 fi
 
-if [ ! -z "${USE_SCORPIO}" ]; then
+if [ ! -z "${USE_PIO}" ]; then
   if [[ ! -z "${PIO_LIBDIR}" && ! -z "${PIO_INCDIR}" ]]; then
     pio_ldir="-DPIO_LIBDIR=${PIO_LIBDIR}"
     pio_idir="-DPIO_INCDIR=${PIO_INCDIR}"
@@ -544,4 +574,5 @@ fi
 cd ${MY_PROJECT_DIR}
 
 cp -vf ${BUILD_DIR}/ufs_model .
+ln -sfv ${MY_UFS_SRC}/tests/parm/fd_nems.yaml .
 ln -sfv ${MY_ROMS_SRC}/ROMS/External/varinfo.yaml .
