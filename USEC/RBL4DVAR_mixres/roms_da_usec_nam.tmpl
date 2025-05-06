@@ -2775,7 +2775,7 @@ PIO_I2C_Preq = 65                 ! Maximum pending I2C requests
 ! Hout(idWrol)   Write out wave roller action density.
 !
 ! Hout(idPair)   Write out surface air pressure.
-! Hout(idTair)   Write out surface air temperature.
+! Hout(idTair)   Write out near surface air temperature.
 ! Hout(idUair)   Write out near surface U-wind component.
 ! Hout(idVair)   Write out near surface V-wind component.
 ! Hout(idUaiE)   Write out near surface Eastward  U-wind.
@@ -2799,7 +2799,8 @@ PIO_I2C_Preq = 65                 ! Maximum pending I2C requests
 ! Hout(idMtke)   Write out turbulent kinetic energy.
 ! Hout(idMtls)   Write out turbulent kinetic energy times length scale.
 !
-! Hout(inert)    Write out extra inert passive tracers.
+! Hout(inert)    Write out inert passive tracers.
+! Hout(Znert)    Write out inert passive tracers constant depth slices.
 !
 !------------------------------------------------------------------------------
 ! Logical switches (T/F) to activate writing of instantaneous fields into
@@ -2821,12 +2822,12 @@ PIO_I2C_Preq = 65                 ! Maximum pending I2C requests
 !
 ! Qout(idTvar)   Write out active (NAT) tracers: temperature and salinity.
 !
-! Qout(idUsur)   Write out surface level U-velocity component.
-! Qout(idVsur)   Write out surface level V-velocity component.
-! Qout(idUsuE)   Write out surface level Eastward  velocity at RHO-points.
-! Qout(idVsuN)   Write out surface level Northward velocity at RHO-points.
+! Qout(idUsur)   Write out surface level (k=N) U-velocity component.
+! Qout(idVsur)   Write out surface level (k=N) V-velocity component.
+! Qout(idUsuE)   Write out surface level (k=N) Eastward  velocity at RHO-points.
+! Qout(idVsuN)   Write out surface level (k=N) Northward velocity at RHO-points.
 !
-! Qout(idsurT)   Write out surface level temperature and salinity.
+! Qout(idsurT)   Write out surface level (k=N) temperature and salinity.
 !
 ! Qout(idUzsl)   Write out U-velocity depth slices, Z_SLICE(1:NSLICE).
 ! Qout(idVzsl)   Write out V-velocity depth slices, Z_SLICE(1:NSLICE).
@@ -2894,7 +2895,8 @@ PIO_I2C_Preq = 65                 ! Maximum pending I2C requests
 ! Qout(idWrol)   Write out wave roller action density.
 !
 ! Qout(idPair)   Write out surface air pressure.
-! Qout(idTair)   Write out surface air temperature.
+! Qout(idPBLh)   Write out atmosphere boundary layer height.
+! Qout(idTair)   Write out near surface air temperature.
 ! Qout(idUair)   Write out near surface U-wind component.
 ! Qout(idVair)   Write out near surface V-wind component.
 ! Qout(idUaiE)   Write out near surface Eastward  U-wind.
@@ -2919,6 +2921,7 @@ PIO_I2C_Preq = 65                 ! Maximum pending I2C requests
 ! Qout(idMtls)   Write out turbulent kinetic energy times length scale.
 !
 ! Qout(inert)    Write out inert passive tracers.
+! Qout(Znert)    Write out inert passive tracers constant depth slices.
 ! Qout(Snert)    Write out surface inert passive tracers.
 !
 !------------------------------------------------------------------------------
@@ -2993,7 +2996,7 @@ PIO_I2C_Preq = 65                 ! Maximum pending I2C requests
 ! Aout(idWrol)   Write out wave roller action density.
 !
 ! Aout(idPair)   Write out surface air pressure.
-! Aout(idTair)   Write out surface air temperature.
+! Aout(idTair)   Write out near surface air temperature.
 ! Aout(idUair)   Write out near surface U-wind component.
 ! Aout(idVair)   Write out near surface V-wind component.
 ! Aout(idUaiE)   Write out near surface Eastward  U-wind.
@@ -3176,19 +3179,15 @@ PIO_I2C_Preq = 65                 ! Maximum pending I2C requests
 !
 ! The ROMS input and output NetCDF files can be processed using the standard
 ! NetCDF library developed by UNIDATA, the Parallel-IO (PIO) library developed
-! at NCAR, or the SCORPIO library available in E3SM (Sreepathi et al., 2013;
-! doi:10.1109/HiPC.2013.6799128). The SCORPIO library was forked from the PIO
-! library several years ago, and they have evolved separately. In addition to
-! the standard NetCDF library, ROMS can be compiled with either the PIO or
-! SCORPIO libraries. Check  www.myroms.org/wiki/External_Libraries  for more
-! information on how to obtain and install these libraries. The user has the
-! choice to select which library is used to process input and output NetCDF
-! files. For parallel I/O, we recommend using the PIO library because it is
-! more efficient than the SCORPIO library in our benchmark tests.
+! at NCAR. In addition to the standard NetCDF library, ROMS can be compiled
+! with either the PIO library. Check  www.myroms.org/wiki/External_Libraries
+! for more information on how to obtain and install these libraries. The user
+! has the choice to select which library is used to process input and output
+! NetCDF files. For parallel I/O, we recommend using the PIO library because
+! it is more efficient than other options in ROMS.
 !
-! The Parallel I/O using the PIO or SCORPIO libraries is restricted to
-! distributed-memory applications because it uses MPI-IO implementations
-! like ROMIO.
+! The Parallel I/O using the PIO library is restricted to distributed-memory
+! applications because it uses MPI-IO implementations like ROMIO.
 !
 ! * ROMS Input and Output NetCDF library to use flag: [1 or 2]
 !
