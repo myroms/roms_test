@@ -261,7 +261,6 @@ setenv MY_PROJECT_DIR        ${PWD}
  setenv USE_NETCDF4          on              # compile with NetCDF4 library
 #setenv USE_PARALLEL_IO      on              # Parallel I/O with NetCDF-4/HDF5
 #setenv USE_PIO              on              # Parallel I/O with PIO library
-#setenv USE_SCORPIO          on              # Parallel I/O with SCORPIO library
 
 # Set location of the application header file.
 

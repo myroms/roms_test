@@ -258,7 +258,6 @@ export     MY_PROJECT_DIR=${PWD}
 #export       USE_NETCDF4=on               # compile with NetCDF-4 library
 #export   USE_PARALLEL_IO=on               # Parallel I/O with NetCDF-4/HDF5
 #export           USE_PIO=on               # Parallel I/O with PIO library
-#export       USE_SCORPIO=on               # Parallel I/O with SCORPIO library
 
 #--------------------------------------------------------------------------
 # Build definitions and options.
@@ -398,7 +397,7 @@ else
   arpack_ldir=""
 fi
 
-if [ ! -z "${USE_SCORPIO}" ]; then
+if [ ! -z "${USE_PIO}" ]; then
   if [[ ! -z "${PIO_LIBDIR}" && ! -z "${PIO_INCDIR}" ]]; then
     pio_ldir="-DPIO_LIBDIR=${PIO_LIBDIR}"
     pio_idir="-DPIO_INCDIR=${PIO_INCDIR}"

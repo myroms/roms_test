@@ -2595,19 +2595,31 @@ Dout(iTvdif) == T T     ! temp_vdiff, ...    vertical diffusion
 !
 ! Hout(idUvel)   Write out 3D U-velocity component.
 ! Hout(idVvel)   Write out 3D V-velocity component.
-! Hout(idu3dE)   Write out 3D Eastward  velocity component at RHO-points.
-! Hout(idv3dN)   Write out 3D Northward velocity component at RHO-points.
+! Hout(idu3dE)   Write out 3D Eastward  velocity at RHO-points.
+! Hout(idv3dN)   Write out 3D Northward velocity at RHO-points.
 ! Hout(idWvel)   Write out 3D W-velocity component.
 ! Hout(idOvel)   Write out 3D omega vertical velocity.
 ! Hout(idOvil)   Write out 3D omega implicit vertical velocity.
 ! Hout(idUbar)   Write out 2D U-velocity component.
 ! Hout(idVbar)   Write out 2D V-velocity component.
-! Hout(idu2dE)   Write out 2D Eastward  velocity component at RHO-points.
-! Hout(idv2dN)   Write out 2D Northward velocity component at RHO-points.
+! Hout(idu2dE)   Write out 2D Eastward  velocity at RHO-points.
+! Hout(idv2dN)   Write out 2D Northward velocity at RHO-points.
 ! Hout(idFsur)   Write out free-surface.
 ! Hout(idBath)   Write out time-dependent bathymetry.
 !
 ! Hout(idTvar)   Write out active (NAT) tracers: temperature and salinity.
+!
+! Hout(idUzsl)   Write out U-velocity depth slices, Z_SLICE(1:NSLICE).
+! Hout(idVzsl)   Write out V-velocity depth slices, Z_SLICE(1:NSLICE).
+! Hout(idUzsE)   Write out U-eastward  velocity depth slices, Z_SLICE(1:NSLICE).
+! Hout(idVzsN)   Write out V-northward velocity depth slices, Z_SLICE(1:NSLICE).
+!
+! Hout(idzslT)   Write out temperature/salinity depth slices, Z_SLICE(1:NSLICE).
+!
+! Hout(id3dPV)   Write out potential vorticity at PSI-points.
+! Hout(id3dRV)   Write out relative  vorticity at PSI-points.
+! Hout(idPVzs)   Write out potential vorticity depth slices, Z_SLICE(1:NSLICE).
+! Hout(idRVzs)   Write out relative  vorticity depth slices, Z_SLICE(1:NSLICE).
 !
 ! Hout(idpthR)   Write out time-varying depths of RHO-points.
 ! Hout(idpthU)   Write out time-varying depths of U-points.
@@ -2666,11 +2678,11 @@ Dout(iTvdif) == T T     ! temp_vdiff, ...    vertical diffusion
 ! Hout(idWrol)   Write out wave roller action density.
 !
 ! Hout(idPair)   Write out surface air pressure.
-! Hout(idTair)   Write out surface air temperature.
-! Hout(idUair)   Write out surface U-wind component.
-! Hout(idVair)   Write out surface V-wind component.
-! Hout(idUaiE)   Write out surface Eastward  U-wind component.
-! Hout(idVaiN)   Write out surface Northward V-wind component.
+! Hout(idTair)   Write out near surface air temperature.
+! Hout(idUair)   Write out near surface U-wind component.
+! Hout(idVair)   Write out near surface V-wind component.
+! Hout(idUaiE)   Write out near surface Eastward  U-wind.
+! Hout(idVaiN)   Write out near surface Northward V-wind.
 !
 ! Hout(idTsur)   Write out surface net heat and salt flux
 ! Hout(idLhea)   Write out latent heat flux.
@@ -2690,7 +2702,8 @@ Dout(iTvdif) == T T     ! temp_vdiff, ...    vertical diffusion
 ! Hout(idMtke)   Write out turbulent kinetic energy.
 ! Hout(idMtls)   Write out turbulent kinetic energy times length scale.
 !
-! Hout(inert)    Write out extra inert passive tracers.
+! Hout(inert)    Write out inert passive tracers.
+! Hout(Znert)    Write out inert passive tracers constant depth slices.
 !
 !------------------------------------------------------------------------------
 ! Logical switches (T/F) to activate writing of instantaneous fields into
@@ -2699,25 +2712,35 @@ Dout(iTvdif) == T T     ! temp_vdiff, ...    vertical diffusion
 !
 ! Qout(idUvel)   Write out 3D U-velocity component.
 ! Qout(idVvel)   Write out 3D V-velocity component.
-! Qout(idu3dE)   Write out 3D Eastward  velocity component at RHO-points.
-! Qout(idv3dN)   Write out 3D Northward velocity component at RHO-points.
+! Qout(idu3dE)   Write out 3D Eastward  velocity at RHO-points.
+! Qout(idv3dN)   Write out 3D Northward velocity at RHO-points.
 ! Qout(idWvel)   Write out 3D W-velocity component.
 ! Qout(idOvel)   Write out 3D omega vertical velocity.
 ! Qout(idUbar)   Write out 2D U-velocity component.
 ! Qout(idVbar)   Write out 2D V-velocity component.
-! Qout(idu2dE)   Write out 2D Eastward  velocity component at RHO-points.
-! Qout(idv2dN)   Write out 2D Northward velocity component at RHO-points.
+! Qout(idu2dE)   Write out 2D Eastward  velocity at RHO-points.
+! Qout(idv2dN)   Write out 2D Northward velocity at RHO-points.
 ! Qout(idFsur)   Write out free-surface.
 ! Qout(idBath)   Write out time-dependent bathymetry.
 !
 ! Qout(idTvar)   Write out active (NAT) tracers: temperature and salinity.
 !
-! Qout(idUsur)   Write out surface U-velocity component.
-! Qout(idVsur)   Write out surface V-velocity component.
-! Qout(idUsuE)   Write out surface Eastward  velocity component at RHO-points.
-! Qout(idVsuN)   Write out surface Northward velocity component at RHO-points.
+! Qout(idUsur)   Write out surface level (k=N) U-velocity component.
+! Qout(idVsur)   Write out surface level (k=N) V-velocity component.
+! Qout(idUsuE)   Write out surface level (k=N) Eastward  velocity at RHO-points.
+! Qout(idVsuN)   Write out surface level (k=N) Northward velocity at RHO-points.
 !
-! Qout(idsurT)   Write out surface temperature and salinity
+! Qout(idsurT)   Write out surface level (k=N) temperature and salinity.
+!
+! Qout(idUzsl)   Write out U-velocity depth slices, Z_SLICE(1:NSLICE).
+! Qout(idVzsl)   Write out V-velocity depth slices, Z_SLICE(1:NSLICE).
+! Qout(idUzsE)   Write out U-eastward  velocity depth slices, Z_SLICE(1:NSLICE).
+! Qout(idVzsN)   Write out V-northward velocity depth slices, Z_SLICE(1:NSLICE).
+!
+! Qout(idPVzs)   Write out potential vorticity depth slices, Z_SLICE(1:NSLICE).
+! Qout(idRVzs)   Write out relative  vorticity depth slices, Z_SLICE(1:NSLICE).
+!
+! Qout(idzslT)   Write out temperature/salinity depth slices, Z_SLICE(1:NSLICE).
 !
 ! Qout(idpthR)   Write out time-varying depths of RHO-points.
 ! Qout(idpthU)   Write out time-varying depths of U-points.
@@ -2775,11 +2798,12 @@ Dout(iTvdif) == T T     ! temp_vdiff, ...    vertical diffusion
 ! Qout(idWrol)   Write out wave roller action density.
 !
 ! Qout(idPair)   Write out surface air pressure.
-! Qout(idTair)   Write out surface air temperature.
-! Qout(idUair)   Write out surface U-wind component.
-! Qout(idVair)   Write out surface V-wind component.
-! Qout(idUaiE)   Write out surface Eastward  U-wind component.
-! Qout(idVaiN)   Write out surface Northward V-wind component.
+! Qout(idPBLh)   Write out atmosphere boundary layer height.
+! Qout(idTair)   Write out near surface air temperature.
+! Qout(idUair)   Write out near surface U-wind component.
+! Qout(idVair)   Write out near surface V-wind component.
+! Qout(idUaiE)   Write out near surface Eastward  U-wind.
+! Qout(idVaiN)   Write out near surface Northward V-wind.
 !
 ! Qout(idTsur)   Write out surface net heat and salt flux
 ! Qout(idLhea)   Write out latent heat flux.
@@ -2800,6 +2824,7 @@ Dout(iTvdif) == T T     ! temp_vdiff, ...    vertical diffusion
 ! Qout(idMtls)   Write out turbulent kinetic energy times length scale.
 !
 ! Qout(inert)    Write out inert passive tracers.
+! Qout(Znert)    Write out inert passive tracers constant depth slices.
 ! Qout(Snert)    Write out surface inert passive tracers.
 !
 !------------------------------------------------------------------------------
@@ -2809,14 +2834,14 @@ Dout(iTvdif) == T T     ! temp_vdiff, ...    vertical diffusion
 !
 ! Aout(idUvel)   Write out 3D U-velocity component.
 ! Aout(idVvel)   Write out 3D V-velocity component.
-! Aout(idu3dE)   Write out 3D Eastward  velocity component at RHO-points.
-! Aout(idv3dN)   Write out 3D Northward velocity component at RHO-points.
+! Aout(idu3dE)   Write out 3D Eastward  velocity at RHO-points.
+! Aout(idv3dN)   Write out 3D Northward velocity at RHO-points.
 ! Aout(idWvel)   Write out 3D W-velocity component.
 ! Aout(idOvel)   Write out 3D omega vertical velocity.
 ! Aout(idUbar)   Write out 2D U-velocity component.
 ! Aout(idVbar)   Write out 2D V-velocity component.
-! Aout(idu2dE)   Write out 2D Eastward  velocity component at RHO-points.
-! Aout(idv2dN)   Write out 2D Northward velocity component at RHO-points.
+! Aout(idu2dE)   Write out 2D Eastward  velocity at RHO-points.
+! Aout(idv2dN)   Write out 2D Northward velocity at RHO-points.
 ! Aout(idFsur)   Write out free-surface.
 ! Aout(idBath)   Write out time-dependent bathymetry.
 !
@@ -2874,11 +2899,11 @@ Dout(iTvdif) == T T     ! temp_vdiff, ...    vertical diffusion
 ! Aout(idWrol)   Write out wave roller action density.
 !
 ! Aout(idPair)   Write out surface air pressure.
-! Aout(idTair)   Write out surface air temperature.
-! Aout(idUair)   Write out surface U-wind component.
-! Aout(idVair)   Write out surface V-wind component.
-! Aout(idUaiE)   Write out surface Eastward  U-wind component.
-! Aout(idVaiN)   Write out surface Northward V-wind component.
+! Aout(idTair)   Write out near surface air temperature.
+! Aout(idUair)   Write out near surface U-wind component.
+! Aout(idVair)   Write out near surface V-wind component.
+! Aout(idUaiE)   Write out near surface Eastward  U-wind.
+! Aout(idVaiN)   Write out near surface Northward V-wind.
 !
 ! Aout(idTsur)   Write out surface net heat and salt flux
 ! Aout(idLhea)   Write out latent heat flux.
@@ -3006,6 +3031,22 @@ Dout(iTvdif) == T T     ! temp_vdiff, ...    vertical diffusion
 ! Generic User parameters.
 !------------------------------------------------------------------------------
 !
+! Selected state variables, such as temperature, salinity, U-velocity,
+! V-velocity, U-eastward, and V-northward, can be extracted and saved at
+! specified constant depths (Z_SLICE) in the output QUICKSAVE and HISTORY
+! NetCDF files. It is advisable to limit the number of slices (NSLICE) to
+! a small value, ideally between 1 and 4, to keep the QUICKSAVE file size
+! manageable. Choose depths wisely based on the dynamics and model bathymetry.
+!
+! NSLICE       Number of horizontal contant depth slices.
+! Z_SLICE      Depths (negative, m) of desired horizontal slices ordered
+!                in decreasing values from surface to bottom.
+!                If Z_SLICE has a ZERO value, the surface field is loaded.
+!
+!------------------------------------------------------------------------------
+! Generic User parameters.
+!------------------------------------------------------------------------------
+!
 ! NUSER        Number of User parameters to consider (integer).
 !
 ! USER         Vector containing user parameters (real array). This array
@@ -3041,19 +3082,15 @@ Dout(iTvdif) == T T     ! temp_vdiff, ...    vertical diffusion
 !
 ! The ROMS input and output NetCDF files can be processed using the standard
 ! NetCDF library developed by UNIDATA, the Parallel-IO (PIO) library developed
-! at NCAR, or the SCORPIO library available in E3SM (Sreepathi et al., 2013;
-! doi:10.1109/HiPC.2013.6799128). The SCORPIO library was forked from the PIO
-! library several years ago, and they have evolved separately. In addition to
-! the standard NetCDF library, ROMS can be compiled with either the PIO or
-! SCORPIO libraries. Check  www.myroms.org/wiki/External_Libraries  for more
-! information on how to obtain and install these libraries. The user has the
-! choice to select which library is used to process input and output NetCDF
-! files. For parallel I/O, we recommend using the PIO library because it is
-! more efficient than the SCORPIO library in our benchmark tests.
+! at NCAR. In addition to the standard NetCDF library, ROMS can be compiled
+! with either the PIO library. Check  www.myroms.org/wiki/External_Libraries
+! for more information on how to obtain and install these libraries. The user
+! has the choice to select which library is used to process input and output
+! NetCDF files. For parallel I/O, we recommend using the PIO library because
+! it is more efficient than other options in ROMS.
 !
-! The Parallel I/O using the PIO or SCORPIO libraries is restricted to
-! distributed-memory applications because it uses MPI-IO implementations
-! like ROMIO.
+! The Parallel I/O using the PIO library is restricted to distributed-memory
+! applications because it uses MPI-IO implementations like ROMIO.
 !
 ! * ROMS Input and Output NetCDF library to use flag: [1 or 2]
 !
