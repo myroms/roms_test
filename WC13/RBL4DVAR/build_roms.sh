@@ -225,7 +225,7 @@ fi
  export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DANA_SPONGE"
 
 #export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DMINRES"
-#export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DRPCG"
+ export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DRPCG"
 #export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DTIME_CONV"
 
 #export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DBGQC"
