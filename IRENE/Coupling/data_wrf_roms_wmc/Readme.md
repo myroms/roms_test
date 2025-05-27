@@ -76,7 +76,7 @@ They are activated in the build scripts.
    ESMF_LIB                ESMF/NUOPC coupling library (version 8.0 and up)
    FRC_COUPLING            Activates surface forcing from the coupled system
    ROMS_STDOUT             ROMS standard output is written into 'log.roms'
-   VERIFICATION            Interpolates ROMS solution at observation points
+   VERIFICATION            Interpolates the ROMS solution at observation points
    WRF_COUPLING            Activates WRF component (version 4.1 and up)
    WRF_TIMEAVG             WRF exporting 60-sec time-averaged fields
   ```
@@ -179,7 +179,7 @@ They are activated in the build scripts.
   ```
 - **The WRF** executables will located in the sub-directory **Build_wrf/Bin**
 
-- It is useful to define a **ltl** macro at login to avoid showing all the
+- It is useful to define an **ltl** macro at login to avoid showing all the
     links files created by the build script and needed to run **WRF**:
   ```
     alias ltl '/bin/ls -ltHF | grep -v ^l'
@@ -206,16 +206,16 @@ They are activated in the build scripts.
     sbatch submit.sh        or
     submit.sh > & log &
    ```
-  You can modify **submit.sh** for your appropriate computer environment.
+  You can modify **submit.sh** to suit your specific computer environment.
 
 ### Debugging:
 
 The **ROMS** native coupling framework allows writing the selected exchange fields in
 numerous NetCDF files per coupling time step.
 
-$\color{#58A6FF}\textsf{\Large\&#x24D8;\kern{0.2cm}\normalsize Note:}$ Use this
-capability wisely and for a few coupling steps to avoid creating a huge amount of
-files and filling your disk space.
+> [!CAUTION]
+> Use this capability wisely and for a few coupling steps to avoid creating a huge number
+> of files filling your disk space.
 
 The debugging of desired exchanged fields during coupling is activated when the
 flag **`DebugLevel > 2`** in input script **`coupling_esmf_atm_sbl_wmc.in`**:
