@@ -1,6 +1,5 @@
 /*
 ** git $Id$
-** svn $Id$
 *******************************************************************************
 ** Copyright (c) 2002-2025 The ROMS Group                                    **
 **   Licensed under a MIT/X style license                                    **
@@ -63,8 +62,6 @@
 # define ANA_SRFLUX
 #endif
 
-#undef GLS_MIXING
-#undef MY25_MIXING
 #if defined GLS_MIXING || defined MY25_MIXING
 # define KANTHA_CLAYSON
 # define N2S2_HORAVG

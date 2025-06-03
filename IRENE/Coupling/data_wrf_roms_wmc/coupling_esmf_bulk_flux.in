@@ -252,6 +252,7 @@ WeightsFile(atmos) =  ../../Data/WRF/irene_wrf_meld_weights.nc
 ! Vwind       atmos   roms, cice, waves  surface V-wind component
 ! Ustr        atmos   roms, cice         surface U-momentum stress
 ! Vstr        atmos   roms, cice         surface V-momentum stress
+! pblh        atmos   roms               atmosphere boundary layer thickness
 !
 ! zlvl        atmos   cice               atmspheric height lowest level
 ! rhoa        atmos   cice               surface air density

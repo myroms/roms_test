@@ -42,6 +42,8 @@ export which_MPI=openmpi                      # default, overwritten below
 
 # Initialize.
 
+command="build_roms.sh $@"
+
 separator=`perl -e "print ':' x 100;"`
 
 parallel=0
@@ -207,6 +209,7 @@ if [ $branch -eq 1 ]; then
   echo "Checking out myroms WRF GitHub branch: $branch_name"
   echo ""
   cd wrf
+  git submodule update --init --recursive
   git checkout $branch_name
   export WRF_ROOT_DIR=${PWD}
 else
@@ -386,3 +389,23 @@ ${ROMS_SRC_DIR}/ESM/wrf_move.sh
 if [[ "$WRF_CASE" == "em_real" ]]; then
   ${ROMS_SRC_DIR}/ESM/wrf_links.sh
 fi
+
+echo ""
+echo "${separator}"
+echo "GNU Build script command:      ${command}"
+echo "WRF build directory:           ${WRF_BUILD_DIR}"
+if [ $branch -eq 1 ]; then
+   echo "WRF downloaded from:           https://github.com/wrf-model/WRF"
+   echo "WRF compiled branch:           $branch_name"
+   echo "WRF source directory:          ${MY_PROJECT_DIR}/wrf" 
+else
+   echo "WRF source directory:          WRF_ROOT_DIR"
+fi
+echo "Fortran compiler:              ${FORT}"
+echo "Configuration flags:           ${CONFIG_FLAGS}"
+echo "Compiling script:              ${WRF_ROOT_DIR}/compile ${WRF_CASE}"
+echo "WRF_DA_CORE:                   ${WRF_DA_CORE},  Data Assimilation core"
+echo "WRF_EM_CORE:                   ${WRF_EM_CORE},  Eurelian Mass-coordinate core"
+echo "WRF_NMM_CORE:                  ${WRF_NMM_CORE},  Nonhydrostatic Mesoscale Model core"
+echo "${separator}"
+echo ""

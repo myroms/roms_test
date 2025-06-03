@@ -2,11 +2,10 @@
       SUBROUTINE ana_initial (ng, tile, model)
 !
 !! git $Id$
-!! svn $Id$
 !!======================================================================
 !! Copyright (c) 2002-2025 The ROMS Group                              !
 !!   Licensed under a MIT/X style license                              !
-!!   See License_ROMS.txt                                              !
+!!   See License_ROMS.md                                               !
 !=======================================================================
 !                                                                      !
 !  This subroutine sets initial conditions for momentum and tracer     !
