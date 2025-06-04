@@ -1,50 +1,48 @@
 <img width="600" alt="image" src="https://github.com/myroms/roms_test/assets/23062912/ad6a7ef1-1fed-4b2e-96b9-9c53615b9333">
 
-## Shoreface Test Case: An Idealized Planar Beach Test 
+## Vegetation Test Case: Idealized Aquatic Vegetation Test 
 
-This directory includes various files to run an idealized coastal domain
-configured with north-south periodic lateral boundary conditions and a
-linearly sloping beach on the eastern boundary. It is forced with wave data from
-the **SWAN** Model, which is read from an input NetCDF file. It is used to
-test the **ROMS** Waves Effect on Currents (**WEC**) algorithm originally
-reported by Uchiyama _et al._ (2010) and implemented in **ROMS** by Kumar _et al._
-(2012) as part of the **COAWST** framework.
+This directory contains various files to simulate an idealized vegetation patch,
+along with a marsh face at the southern edge. It tests the effect of vegetation
+on the inducing momentum changes to hydrodynamics and wave-current interactions.
+The presence of the marsh cells is used to compute the impact of wave thrust on
+the marsh face (Beudin _et al._, 2017).
 
-The following CPP options are available **`Vortex Force`** formulation of Uchiyama
-_et al._ (2010) and Kumar _et al._ (2012) algorithm:
+<img width="800" alt="image" src="https://github.com/user-attachments/assets/8c99e256-0bef-4e17-84e5-4a4c2ac8ad8a" />
+
+---
+
+The following CPP options are available **`vegetation`** model algorithm (Beudin _et al._,
+2017; Kalra _et al._, 2021):
 
 | CPP Option                  | Description               |
 |-----------------------------|---------------------------|
-| **BOTTOM_STREAMING**        | If wave current bottom streaming term |
-| **ROLLER_SVENDSEN**         | If wave energy roller based on Svendsen (1984) |
-| **ROLLER_MONO**             | if wave energy roller from monochromatic waves |
-| **ROLLER_RENIERS**          | If wave energy roller based on Reniers (2004) |
-| **SURFACE_STREAMERS**       | If wave current surface streaming term |
-| **WAVE_MIXING**             | If enhanced vertical viscosity mixing from waves|
-| **WDISS_CHURTHOR**          | If wave dissipation from Church and Thornton (1993) |
-| **WDISS_GAMMA**             | If wave dissipation when using the **InWave** model |
-| **WDISS_ROELVINK**          | If wave dissipation from Roelvink when using the **InWave** model |
-| **WDISS_THORGUZA**          | If wave dissipation from Thornton and Guza (1986) |
-| **WDISS_WAVEMOD**           | If wave dissipation is acquired from a coupled wave model |
-| **WEC_VF**                  | If wave-current vortex force from Uchiyma _et al._  (2010) |
-| **WEC**                     | **ROMS** internal option, which is activated in **globaldefs.h** |
-| **WET_DRY**                 | If wetting and drying land/sea mask |
+| **ANA_VEGETATION**          | If analytical vegetation initial conditions |
+| **MARSH_DYNAMICS**          | If marsh dynamics: erosion, accretion, or retreat |
+| **MARSH_SED_EROSION**       | If marsh sediment export via bedload exchange |
+| **MARSH_TIDAL_RANGE**       | If tallying marsh mean tidal range |
+| **MARSH_VERT_GROWTH**       | If marsh vertical growth through biomass production |
+| **MARSH_WAVE_THRUST**       | If lateral wave thrust effects on marsh cells |
+| **VEGETATION**              | If activating submerged/emergent aquatic vegetation model |  
+| **VEG_DRAG**                | If activating drag effects due to waves and vegetation |
+| **WVEG_STREAMING**          | If currents and wave dissipation due to vegetation |
 
 ### Important CPP Options:
 ```
-   WEC_VF                   Waves Effects on Currents, Vortex Force formulation
+   DIAGNOSTICS_UV           Computing and writing momentum diagnostic terms
    GSL_MIXING               Generic Length-Scale turbulence closure
    MASKING                  Land/Sea masking
-   SEDIMENT                 Cohesive and noncohesive sediments
-   SHOREFACE                Application CPP option
-   STATIONS                 Write out station data    
-   UV_QDRAG                 Quadratic bottom stress
+   UV_LOGDRAG               Logarithmic bottom stress
+   VEGETATION               Activating the submerged/emergent aquatic vegetation model
+   VEGETATION_TEST          Application CPP option
+   VEG_DRAG                 Computing drag effects due to waves and vegetation   
    WET_DRY                  Wetting and drying masks 
 ```
 
 ### Input NetCDF Files:
 ```
-   Forcing File 01:         Data/swan_shoreface_angle_forc.nc
+   Grid File                roms_vegetation_test_grd.nc
+   Initial Conditions File  roms_vegetation_test_ini.nc
 ```
 ### Configuration and Input Scripts:
 ```
@@ -52,11 +50,9 @@ _et al._ (2010) and Kumar _et al._ (2012) algorithm:
    build_roms.sh            ROMS GNU make compiling and linking BASH script
    cbuild_roms.csh          ROMS CMake compiling and linking CSH script
    cbuild_roms.sh           ROMS CMake compiling and linking BASH script
-   plot_shoreface.m         Matlab plotting script
-   roms_shoreface.in        ROMS standard input script for SHOREFACE
-   sediment_shoreface.in.   ROMS sediment input configuration parameters
-   shoreface.h              SHOREFACE header file with CPP options
-   stations.in              Output station configuration parameters
+   roms_vegetation_test.in  ROMS standard input script for VEGETATION_TEST
+   vegetation_test.h        VEGETATION_TEST header file with CPP options
+   vegetation_test.in.      Vegetation model standard input script
 ```
 
 ### How to Run this Application:
@@ -68,7 +64,7 @@ _et al._ (2010) and Kumar _et al._ (2012) algorithm:
 
 - Run **ROMS** with data assimilation:
   ```
-  mpirun -np 2 romsM shoreface.in > & log &
+  mpirun -np 8 romsM roms_vegetation_test.in > & log &
   ```
 
 ### Results:
@@ -77,19 +73,14 @@ The figure below shows the free-surface solution at **j=5** and time record **8*
 is plotted with the **plot_shoreface.m** Matlab script.
 
 
-![shoreface](https://github.com/user-attachments/assets/60d532da-2db0-46d9-b8d3-132dbf2ec841)
-
  ---
 
 ### References:
 
-- Kumar, N., G. Voulgaris, J.C. Warner, J.C., and M., Olabarrieta, 2012:
-  Implementation of a vortex force formalism in the coupled 
-  ocean-atmosphere-wave-sediment transport (COAWST) modeling system for
-  inner-shelf and surf-zone applications, _Ocean Modeling_, **47**, 65-95,
-  **doi**:10.1016/j.ocemod.2012.01.003
+- Beudin, A.,  Kalra, T.S., Ganju, N.K., Warner, J.C., 2017: Development of a
+  coupled wave-flow-vegetation interaction model, _Computers & Geosciences_,
+  Vol **100**, 76-86, **doi**:10.1016/j.cageo.2016.12.010.
 
-- Uchiyama, Y., J.C. McWilliams, and A.F. Shchepetkin, 2010:  Wave current
-  interaction in an oceanic circulation model with a  vortex-force formalism:
-  Applications to surf zone, _Ocean Modeling_, **34**, 16-35,
- **doi:** 10.1016/j.ocemod.2010.04.002.
+- Kalra, T.S., Ganju, N.K., Aretxabaleta, A.L., Carr, J.A., Zafer, D., Moriarty,
+  J.M., 2021: Modeling Marsh Dynamics Using a 3-D Coupled Wave-Flow-Sediment Model,
+  _Front. Mar. Sci._, Vol **8**, **doi**:10.3389/fmars.2021.740921.
