@@ -76,7 +76,7 @@ _et al._ (2010) and Kumar _et al._ (2012) algorithm:
 
 - Run **ROMS** with data assimilation:
   ```
-  mpirun -np 2 romsM shoreface.in > & log &
+  mpirun -np 4 romsM roms_ducknc.in > & log &
   ```
 
 ### Results:
