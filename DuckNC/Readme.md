@@ -1,14 +1,17 @@
 <img width="600" alt="image" src="https://github.com/myroms/roms_test/assets/23062912/ad6a7ef1-1fed-4b2e-96b9-9c53615b9333">
 
-## Shoreface Test Case: An Idealized Planar Beach Test 
+## DuckNC Test Case: An Idealized Realistic Beach Test 
 
 This directory includes various files to run an idealized coastal domain
 configured with north-south periodic lateral boundary conditions and a
-linearly sloping beach on the eastern boundary. It is forced with wave data from
-the **SWAN** Model, which is read from an input NetCDF file. It is used to
+sloping beach on the western boundary that represents the bathymetry XZ-slice at
+Duck, North Carolina, USA. This test is adapted from **COAWST**. It is forced with
+wave data from the **SWAN** Model, which is read from an input NetCDF file. It is used to
 test the **ROMS** Waves Effect on Currents (**WEC**) algorithm originally
 reported by Uchiyama _et al._ (2010) and implemented in **ROMS** by Kumar _et al._
 (2012) as part of the **COAWST** framework.
+
+![ducknc_grd](https://github.com/user-attachments/assets/17739f45-a6f7-4c43-8755-987f4f84060e)
 
 The following CPP options are available **`Vortex Force`** formulation of Uchiyama
 _et al._ (2010) and Kumar _et al._ (2012) algorithm:
@@ -32,19 +35,26 @@ _et al._ (2010) and Kumar _et al._ (2012) algorithm:
 
 ### Important CPP Options:
 ```
+   DUCKNC                   Application CPP option
    WEC_VF                   Waves Effects on Currents, Vortex Force formulation
+   DIAGNOSTICS_UV           Computing and writing momentum diagnostic terms
    GSL_MIXING               Generic Length-Scale turbulence closure
    MASKING                  Land/Sea masking
-   SEDIMENT                 Cohesive and noncohesive sediments
-   SHOREFACE                Application CPP option
-   STATIONS                 Write out station data    
-   UV_QDRAG                 Quadratic bottom stress
+   ROLLER_RENIERS           Wave energy roller based on Reniers 2004
+   SSW_BBL                  Sherwood/Signell/Warner Bottom Boundary Layer
+   SSW_CALC_ZNOT            Internal computation of bottom roughness
+   SSW_LOGINT               Bottom currents logarithmic interpolation
+   SSW_LOGINT_WBL           Bottom currents logarithmic interpolation at wbl
+   STATIONS                 Write out station data
    WET_DRY                  Wetting and drying masks 
 ```
 
 ### Input NetCDF Files:
 ```
-   Forcing File 01:         Data/swan_shoreface_angle_forc.nc
+   Grid File                Data/roms_duck94_grd.nc
+   Initial Conditions File  Data/roms_duck94_ini_08302010.nc
+   Forcing File 01:         Data/duck94_wind_08302010.nc
+   Forcing File 02:         Data/wave_forcing_duck_02132010.nc
 ```
 ### Configuration and Input Scripts:
 ```
@@ -52,11 +62,9 @@ _et al._ (2010) and Kumar _et al._ (2012) algorithm:
    build_roms.sh            ROMS GNU make compiling and linking BASH script
    cbuild_roms.csh          ROMS CMake compiling and linking CSH script
    cbuild_roms.sh           ROMS CMake compiling and linking BASH script
-   plot_shoreface.m         Matlab plotting script
-   roms_shoreface.in        ROMS standard input script for SHOREFACE
-   sediment_shoreface.in.   ROMS sediment input configuration parameters
-   shoreface.h              SHOREFACE header file with CPP options
-   stations.in              Output station configuration parameters
+   ducknc.h                 DUCKNC header file with CPP options
+   plot_ducknc.m            Matlab plotting script
+   roms_ducknc.in           ROMS standard input script for DUCKNC
 ```
 
 ### How to Run this Application:
@@ -73,11 +81,23 @@ _et al._ (2010) and Kumar _et al._ (2012) algorithm:
 
 ### Results:
 
-The figure below shows the free-surface solution at **j=5** and time record **8**. It
-is plotted with the **plot_shoreface.m** Matlab script.
+- The figures below show the 2D slices from the **history NetCDF** file at **j=4** and
+time record **10**. It is plotted using **plot_ducknc.m** Matlab script.
+ 
+  |   NLM model               |  WEC model               |
+  :--------------------------:|:-------------------------:
+  |<img width="400" alt="image" src="https://github.com/user-attachments/assets/f5ddeeeb-c20a-488e-b0c6-cf4ccad12d9d"> | <img width="400" alt="image"  src="https://github.com/user-attachments/assets/5fbec408-457d-44e3-9dbd-38ad67f0d6e9"> |
+  |<img width="400" alt="image" src="https://github.com/user-attachments/assets/7397d967-6607-453f-89cb-befc7b26e9b8"> | <img width="400" alt="image" src="https://github.com/user-attachments/assets/3b2f3d88-03da-46d1-9dd1-894b7fe5d89f"> |
 
+- The figures below show the 2D slices from the **diagnostic NetCDF** file at **j=4** and
+time record **10**. It plots various right-hand-side terms from the **u**-momentum governing equation.
+They are also plotted using the **plot_ducknc.m** Matlab script.
 
-![shoreface](https://github.com/user-attachments/assets/60d532da-2db0-46d9-b8d3-132dbf2ec841)
+  |   u-momentum Diagnostics  | u-momentum Diagnostics   |
+  :--------------------------:|:-------------------------:
+  |<img width="400" alt="image" src="https://github.com/user-attachments/assets/5c02c495-f902-4f3a-a152-b171b5503ff5"> | <img width="400" alt="image" src="https://github.com/user-attachments/assets/badfd967-961f-4b58-8804-016932734e63"> |
+  |<img width="400" alt="image" src="https://github.com/user-attachments/assets/7edcc8dd-3728-4db2-934c-1c4231802775"> | <img width="400" alt="image" src="https://github.com/user-attachments/assets/7b10cd3f-816e-406c-af30-95780d1200c2"> |
+
 
  ---
 
