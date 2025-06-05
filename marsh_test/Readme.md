@@ -32,12 +32,13 @@ The following CPP options are available **`vegetation`** model algorithm (Beudin
 
 ### Important CPP Options:
 ```
-   BEDLOAD_SOULSBY                   Activates bed load sediment transport, Soulsby formula
-   BEDLOAD_VANDERA                   Activates bed load sediment transport, Van Der A. formula
-   BEDLOAD_VANDERA_ASYM_LIMITS       Activates bed load Van Der A. asymmetry limits
-   BEDLOAD_VANDERA_SURFACE_WAVE      Activates bed load Van Der A. surface wave
-   BEDLOAD_VANDERA_WAVE_AVGD_STRESS  Activates bed load Van Der A. wave avg stress
-   BEDLOAD_VANDERA_MADSEN_UDELTA     Activates bed load Madsen current calculation
+   MARSH_TEST                        Application CPP option
+   BEDLOAD_SOULSBY                   Activate bed load sediment transport, Soulsby formula
+   BEDLOAD_VANDERA                   Activate bed load sediment transport, Van Der A. formula
+   BEDLOAD_VANDERA_ASYM_LIMITS       Activate bed load Van Der A. asymmetry limits
+   BEDLOAD_VANDERA_SURFACE_WAVE      Activate bed load Van Der A. surface wave
+   BEDLOAD_VANDERA_WAVE_AVGD_STRESS  Activate bed load Van Der A. wave avg stress
+   BEDLOAD_VANDERA_MADSEN_UDELTA     Activate bed load Madsen current calculation
    DIAGNOSTICS_UV                    Computing and writing momentum diagnostic terms
    GSL_MIXING                        Generic Length-Scale turbulence closure
    MASKING                           Land/Sea masking
@@ -54,7 +55,6 @@ The following CPP options are available **`vegetation`** model algorithm (Beudin
    SSW_LOGINT                        Bottom currents logarithmic interpolation
    SSW_LOGINT_WBL                    Bottom currents logarithmic interpolation at wbl
    VEGETATION                        Activating the submerged/emergent aquatic vegetation model
-   VEGETATION_TEST                   Application CPP option
    VEG_DRAG                          Computing drag effects due to waves and vegetation   
    WET_DRY                           Wetting and drying masks 
 ```
@@ -72,6 +72,7 @@ The following CPP options are available **`vegetation`** model algorithm (Beudin
    cbuild_roms.sh                    ROMS CMake compiling and linking BASH script
    plot_marsh_test.m                 A Matlab script to plot the solution
    roms_vegetation_test.in           ROMS standard input script for MARSH_TEST
+   sediment_marsh_test.in            Sediment model input script for MARSH_TEST
    vegetation_test.h                 MARSH_TEST header file with CPP options
    vegetation_marsh_test.in.         Vegetation model standard input script
 ```
@@ -85,7 +86,7 @@ The following CPP options are available **`vegetation`** model algorithm (Beudin
 
 - Run **ROMS** with data assimilation:
   ```
-  mpirun -np 9 romsM roms_vegetation_test.in > & log &
+  mpirun -np 9 romsM roms_marsh_test.in > & log &
   ```
 ### Results:
 
