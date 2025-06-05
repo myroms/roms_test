@@ -95,9 +95,8 @@ They are also plotted using the **plot_ducknc.m** Matlab script.
 
   |   u-momentum Diagnostics  | u-momentum Diagnostics   |
   :--------------------------:|:-------------------------:
-  |<img width="400" alt="image" src="https://github.com/user-attachments/assets/5c02c495-f902-4f3a-a152-b171b5503ff5"> | <img width="400" alt="image" src="https://github.com/user-attachments/assets/badfd967-961f-4b58-8804-016932734e63"> |
-  |<img width="400" alt="image" src="https://github.com/user-attachments/assets/7edcc8dd-3728-4db2-934c-1c4231802775"> | <img width="400" alt="image" src="https://github.com/user-attachments/assets/7b10cd3f-816e-406c-af30-95780d1200c2"> |
-
+  |<img width="400" alt="image" src="https://github.com/user-attachments/assets/5c02c495-f902-4f3a-a152-b171b5503ff5"> | <img width="400" alt="image" src="https://github.com/user-attachments/assets/7edcc8dd-3728-4db2-934c-1c4231802775"> |
+  |<img width="400" alt="image" src="https://github.com/user-attachments/assets/badfd967-961f-4b58-8804-016932734e63"> | <img width="400" alt="image" src="https://github.com/user-attachments/assets/7b10cd3f-816e-406c-af30-95780d1200c2"> |
 
  ---
 
