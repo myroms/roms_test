@@ -152,8 +152,8 @@
 
   Nthreads(roms)   == 12                    ! ocean model PETs
   Nthreads(atmos)  == 12                    ! atmosphere model PETs
-  Nthreads(seaice) =  12                    ! sea-ice model PETs
-  Nthreads(waves)  =  12                    ! wave model PETs
+  Nthreads(seaice) =  1                     ! sea-ice model PETs
+  Nthreads(waves)  =  1                     ! wave model PETs
 
 ! Set ESM coupling driver clock. If not re-starting, set StartTime and
 ! RestartTime to the same values.  Set coupling time interval (TimeStep)
@@ -257,6 +257,7 @@ WeightsFile(atmos) =  ../../Data/WRF/irene_wrf_meld_weights.nc
 ! Ustr        atmos   roms, cice         surface U-momentum stress
 ! Vstr        atmos   roms, cice         surface V-momentum stress
 ! Wstar       atmos   roms               rutbulent frictional wind magnitude
+! pblh        atmos   roms               atmosphere boundary layer thickness
 !
 ! zlvl        atmos   cice               atmspheric height lowest level
 ! rhoa        atmos   cice               surface air density

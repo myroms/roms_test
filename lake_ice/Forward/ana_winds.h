@@ -1,8 +1,7 @@
-!!
+!
       SUBROUTINE ana_winds (ng, tile, model)
 !
 !! git $Id$
-!! svn $Id$
 !!======================================================================
 !! Copyright (c) 2002-2025 The ROMS Group                              !
 !!   Licensed under a MIT/X style license                              !
