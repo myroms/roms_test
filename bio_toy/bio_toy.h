@@ -9,8 +9,9 @@
 ** Options one-dimensional (vertical) Biology Toy.
 **
 ** Application flag:   BIO_TOY
-** Input script:       roms_bio_toy.in
-**                     bioFennel.in, ecosim.in, npzd_Franks.in, npzd_Powell.in
+** Input scripts:      roms_bio_toy_*.in
+**                     bio_Fennel.in, bio_ECB.in, ecosim.in, npzd_Franks.in,
+**                     npzd_Powell.in, npzd_iron.in
 */
 
 #define UV_ADV
@@ -60,7 +61,15 @@
 # define DIAGNOSTICS_BIO
 #endif
 
-#if defined ECOSIM || defined BIO_FENNEL
+#ifdef ECB
+# define CARBON
+# define DENITRIFICATION
+# define BIO_SEDIMENT
+# define DIAGNOSTICS_BIO
+# define OXYGEN
+#endif
+
+#if defined BIO_FENNEL || defined ECB || defined ECOSIM
 # define ANA_SPFLUX
 # define ANA_BPFLUX
 # define ANA_CLOUD

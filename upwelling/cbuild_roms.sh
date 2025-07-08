@@ -265,6 +265,7 @@ fi
  export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DANA_DRAG"
 
  export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DBIO_FENNEL"
+#export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DECB"
 #export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DECOSIM"
 #export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DNEMURO"
 #export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DNPZD_FRANKS"

@@ -224,6 +224,7 @@ endif
 
 #setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DDEBUGGING"
 #setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DOUT_DOUBLE"
+#setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DOUTPUT_STATS"
 #setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DPOSITIVE_ZERO"
 
  setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DUV_VIS2"
@@ -242,6 +243,7 @@ endif
 #setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DANA_DRAG"
 
  setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DBIO_FENNEL"
+#setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DECB"
 #setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DECOSIM"
 #setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DNEMURO"
 #setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DNPZD_FRANKS"
@@ -366,13 +368,17 @@ endif
 
 if ($?USE_DEBUG) then
   setenv BUILD_DIR          ${MY_PROJECT_DIR}/Build_romsG
+  setenv myBIN              ${BINDIR}/romsG
 else
   if ($?USE_OpenMP) then
     setenv BUILD_DIR        ${MY_PROJECT_DIR}/Build_romsO
+    setenv myBIN            ${BINDIR}/romsO
   else if ($?USE_MPI) then
     setenv BUILD_DIR        ${MY_PROJECT_DIR}/Build_romsM
+    setenv myBIN            ${BINDIR}/romsM
   else
     setenv BUILD_DIR        ${MY_PROJECT_DIR}/Build_roms
+    setenv myBIN            ${BINDIR}/romsS
   endif
 endif
 
@@ -459,6 +465,7 @@ else
   echo "ROMS source directory:         ${MY_ROMS_SRC}"
   echo "ROMS header file:              ${MY_HEADER_DIR}/${HEADER}"
   echo "ROMS build  directory:         ${BUILD_DIR}"
+  echo "ROMS executable:               ${myBIN}"
   if ( $branch == 1 ) then
     echo "ROMS downloaded from:          https://github.com/myroms/roms.git"
     echo "ROMS compiled branch:          $branch_name"
