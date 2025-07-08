@@ -223,6 +223,7 @@ fi
 #export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DPOSITIVE_ZERO"
 
  export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DBIO_FENNEL"
+#export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DECB"
 #export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DECOSIM"
 #export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DNEMURO"
 #export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DNPZD_FRANKS"

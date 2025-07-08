@@ -240,6 +240,7 @@ fi
  export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DANA_DRAG"
 
  export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DBIO_FENNEL"
+#export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DECB"
 #export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DECOSIM"
 #export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DNEMURO"
 #export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DNPZD_FRANKS"
@@ -364,13 +365,17 @@ fi
 
 if [ -n "${USE_DEBUG:+1}" ]; then
  export         BUILD_DIR=${MY_PROJECT_DIR}/Build_romsG
+ export             myBIN=${BINDIR}/romsG
 else
   if [ -n "${USE_OpenMP:+1}" ]; then
     export      BUILD_DIR=${MY_PROJECT_DIR}/Build_romsO
+    export          myBIN=${BINDIR}/romsO
   elif [ -n "${USE_MPI:+1}" ]; then
     export      BUILD_DIR=${MY_PROJECT_DIR}/Build_romsM
+    export          myBIN=${BINDIR}/romsM
   else
     export      BUILD_DIR=${MY_PROJECT_DIR}/Build_roms
+    export          myBIN=${BINDIR}/romsS
   fi
 fi
 
@@ -457,6 +462,7 @@ else
   echo "ROMS source directory:         ${MY_ROMS_SRC}"
   echo "ROMS header file:              ${MY_HEADER_DIR}/${HEADER}"
   echo "ROMS build  directory:         ${BUILD_DIR}"
+  echo "ROMS executable:               ${myBIN}"
   if [ $branch -eq 1 ]; then
     echo "ROMS downloaded from:          https://github.com/myroms/roms.git"
     echo "ROMS compiled branch:          $branch_name"
