@@ -3,7 +3,7 @@
 !
 ! git $Id$
 !========================================================= Hernan G. Arango ===
-!  Copyright (c) 2002-2025 The ROMS Group                                     !
+!  Copyright (c) 2002-2026 The ROMS Group                                     !
 !    Licensed under a MIT/X style license                                     !
 !    See License_ROMS.md                                                      !
 !==============================================================================
@@ -130,11 +130,11 @@ GridsInLayer =  1
 ! two letters, regardless if using uppercase or lowercase. If nested
 ! grids, specify values for each grid (see glossary below).
 
-   Hadvection == HSIMT    \                     ! temperature
-                 HSIMT                          ! salinity
+   Hadvection == U3       \                     ! temperature
+                 U3                             ! salinity
 
-   Vadvection == HSIMT    \                     ! temperature
-                 HSIMT                          ! salinity
+   Vadvection == C4       \                     ! temperature
+                 C4                             ! salinity
 
 ! Adjoint-based algorithms can have different horizontal and schemes
 ! for active and inert tracers.
@@ -267,7 +267,7 @@ ad_VolCons(north) ==  F                            ! northern boundary
 
      LDEFOUT == T
         NHIS == MyNHIS
-     NDEFHIS == 0
+     NDEFHIS == MyNDEFHIS
         NXTR == MyNHIS
      NDEFXTR == 0
         NQCK == MyNQCK
@@ -646,10 +646,10 @@ Hout(idEmPf) == T       ! EminusP            E-P flux
 Hout(idevap) == T       ! evaporation        evaporation rate
 Hout(idrain) == T       ! rain               precipitation rate
 
-Hout(idDano) == T       ! rho                density anomaly
-Hout(idVvis) == F       ! AKv                vertical viscosity
-Hout(idTdif) == F       ! AKt                vertical T-diffusion
-Hout(idSdif) == F       ! AKs                vertical Salinity diffusion
+Hout(idDano) == F       ! rho                density anomaly
+Hout(idVvis) == T       ! AKv                vertical viscosity
+Hout(idTdif) == T       ! AKt                vertical T-diffusion
+Hout(idSdif) == T       ! AKs                vertical Salinity diffusion
 Hout(idHsbl) == F       ! Hsbl               depth of surface boundary layer
 Hout(idHbbl) == F       ! Hbbl               depth of bottom boundary layer
 Hout(idMtke) == F       ! tke                turbulent kinetic energy
@@ -678,7 +678,7 @@ Qout(idVbar) == T       ! vbar               2D V-velocity
 Qout(idu2dE) == F       ! ubar_eastward      2D U-eastward  at RHO-points
 Qout(idv2dN) == F       ! vbar_northward     2D V-northward at RHO-points
 Qout(idFsur) == T       ! zeta               free-surface
-Qout(idBath) == T       ! bath               time-dependent bathymetry
+Qout(idBath) == F       ! bath               time-dependent bathymetry
 
 Qout(idTvar) == F F     ! temp, salt         temperature and salinity
 
@@ -948,6 +948,7 @@ Dout(M2zeta) == T       ! ubar_zeta, ...     2D Eulerian SSH adjustment
 Dout(M2zetw) == T       ! ubar_zetaw, ...    2D quasi-static SSH adjustment
 Dout(M2zqsp) == T       ! ubar_zqsp, ...     2D quasi-static pressure
 Dout(M2zbeh) == T       ! ubar_zbeh, ...     2D Bernoulli head adjustment
+Dout(M2fsgr) == T       ! ubar_fsgr, ...     2D seagrass drag force
 
 Dout(M3hjvf) == T       ! u_hjvf, ...        3D horizontal J vortex force
 Dout(M3vjvf) == T       ! u_vjvf, ...        3D vertical J vortex force
@@ -978,7 +979,70 @@ Dout(iTvdif) == T T     ! temp_vdiff, ...    vertical diffusion
        NUSER =  1
         USER =  5.d0                       ! sponge parameter
 
-! NetCDF-4/HDF5 compression parameters for output files.
+! Input and Output files processing library to use:
+!
+!   [1] Standard NetCDF-3 or NetCDF-4 library
+!   [2] Serial or Parallel I/O with Parallel-IO (PIO) library (MPI only)
+
+     INP_LIB =  MyINP_LIB
+     OUT_LIB =  MyOUT_LIB
+
+! PIO library methods for reading/writing NetCDF files:
+!
+!   [0] parallel read and write of PnetCDF (CDF-5, not recommended)
+!   [1] parallel read and write of NetCDF3 (64-bit offset)
+!   [2] serial   read and write of NetCDF3 (64-bit offset)
+!   [3] parallel read and serial write of NetCDF4/HDF5
+!   [4] parallel read and write of NETCDF4/HDF5
+
+  PIO_METHOD =  MyPIO_METHOD
+
+! PIO library MPI processes set-up:
+
+ PIO_IOTASKS =  MyPIO_IOTASKS                 ! number of I/O tasks to define
+  PIO_STRIDE =  MyPIO_STRIDE                 ! stride in the MPI-rank between I/O tasks
+    PIO_BASE =  MyPIO_BASE                 ! offset for the first I/O task
+  PIO_AGGREG =  1                 ! number of MPI-aggregators to use
+
+! PIO library rearranger methods for moving data between computational and I/O
+! processes:
+!
+!   [1] Box rearrangement
+!   [2] Subset rearrangement
+
+   PIO_REARR =  MyPIO_REARR
+
+! PIO library rearranger flag for MPI communications between computational
+! and I/O processes:
+!
+!   [0] Point-to-Point (low-level communications)
+!   [1] Collective (high-level grouped communications)
+
+PIO_REARRCOM =  MyPIO_REARRCOM
+
+! PIO library rearranger flow control direction flag for MPI communications
+! between computational and I/O processes:
+!
+!   [0] Enable computational to I/O processes, and vice versa
+!   [2] Enable computational to I/O processes only
+!   [3] Enable I/O to computational processes only
+!   [4] Disable flow control
+
+PIO_REARRDIR =  MyPIO_REARRDIR
+
+! PIO rearranger options for computational to I/O processes (C2I):
+
+  PIO_C2I_HS = T                  ! Enable C2I handshake (T/F)
+PIO_C2I_Send = T                  ! Enable C2I Isends (T/F)
+PIO_C2I_Preq = 64                 ! Maximum pending C2I requests
+
+! PIO rearranger options for I/O to computational processes (I2C):
+
+  PIO_I2C_HS = T                  ! Enable I2C handshake (T/F)
+PIO_I2C_Send = T                  ! Enable I2C Isends (T/F)
+PIO_I2C_Preq = 65                 ! Maximum pending I2C requests
+
+! If OUT_LIB=1, NetCDF-4/HDF5 compression parameters for output files.
 
   NC_SHUFFLE =  1                 ! if non-zero, turn on shuffle filter
   NC_DEFLATE =  1                 ! if non-zero, turn on deflate filter
@@ -1001,7 +1065,7 @@ Dout(iTvdif) == T T     ! temp_vdiff, ...    vertical diffusion
 
  ExtractFlag == 0
 
-     GRXNAME == MyFprefix_extract_grd.nc
+     GRXNAME == wc13_extract_grd.nc
 
 ! Input NetCDF file names, [1:Ngrids].
 

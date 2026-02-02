@@ -2,7 +2,7 @@
 #
 #  git $Id$
 #######################################################################
-## Copyright (c) 2002-2025 The ROMS Group                             #
+## Copyright (c) 2002-2026 The ROMS Group                             #
 ##   Licensed under a MIT/X style license                             #
 ##   See License_ROMS.md                                              #
 ################################################## Hernan G. Arango ###
@@ -117,6 +117,11 @@ My4DVarScript() {
  STDnameB=${DataDir}/wc13_std_b.nc
  STDnameF=${DataDir}/wc13_std_f.nc
 
+## Set output file for standard deviation computed/modeled from background
+## (prior) state.
+
+ STDnameC=wc13_std_computed.nc
+
 ## Set model, initial conditions, boundary conditions and surface
 ## forcing error covariance normalization factors files.
 
@@ -139,6 +144,7 @@ My4DVarScript() {
  $SUBSTITUTE $Inp4DVAR roms_std_i.nc ${STDnameI}
  $SUBSTITUTE $Inp4DVAR roms_std_b.nc ${STDnameB}
  $SUBSTITUTE $Inp4DVAR roms_std_f.nc ${STDnameF}
+ $SUBSTITUTE $Inp4DVAR roms_std_c.nc ${STDnameC}
  $SUBSTITUTE $Inp4DVAR roms_nrm_m.nc ${NRMnameM}
  $SUBSTITUTE $Inp4DVAR roms_nrm_i.nc ${NRMnameI}
  $SUBSTITUTE $Inp4DVAR roms_nrm_b.nc ${NRMnameB}
@@ -157,102 +163,115 @@ My4DVarScript() {
 ## Control switches: What do you want to do?
 ##---------------------------------------------------------------------
 
-#      DRYRUN=1                # Print configuration but do not execute
-       DRYRUN=0                # Run 4D-Var cycle
+#       DRYRUN=1               # Print configuration but do not execute
+        DRYRUN=0               # Run 4D-Var cycle
 
-        BATCH=0                # No batch system submission
-#       BATCH=1                # Use batch system SLURM to submit
+         BATCH=0               # No batch system submission
+#        BATCH=1               # Use batch system SLURM to submit
 
-    POSTERIOR=0                # DO NOT compute 4D-Var posterior error
-#   POSTERIOR=1                # compute 4D-Var posterior error
+     POSTERIOR=0               # DO NOT compute 4D-Var posterior error
+#    POSTERIOR=1               # compute 4D-Var posterior error
 
 ##---------------------------------------------------------------------
 ## User tunable parameters. If you follow recommendations, this is
 ## the only section that you need to customize..
 ##---------------------------------------------------------------------
 
-     ROMS_APP="WC13"                   # ROMS Application CPP
+      ROMS_APP="WC13"                  # ROMS Application CPP
 
-     roms_app=`echo ${ROMS_APP} | tr '[:upper:]' '[:lower:]'` # lowercase
+      roms_app=`echo ${ROMS_APP} | tr '[:upper:]' '[:lower:]'` # lowercase
 
-    ROMS_ROOT=${HOME}/ocean/repository/4dvar
+     ROMS_ROOT=${HOME}/ocean/repository/git/roms
 
-      HereDir=${PWD}                   # current directory
+       HereDir=${PWD}                  # current directory
 
-      DataDir="../../Data"             # data directory
+       DataDir="../../Data"            # data directory
 
-       ObsDir=${DataDir}               # observations directory
+        ObsDir=${DataDir}              # observations directory
 
  if [[ "$OSTYPE" == "darwin"* ]]; then
-     DATE_EXE=gdate                    # macOS system GNU date
+      DATE_EXE=gdate                   # macOS system GNU date
  else
-     DATE_EXE=date                     # Linux system date
+      DATE_EXE=date                    # Linux system date
  fi
 
  if [ ${BATCH} -eq 1 ]; then
-         SRUN="srun --mpi=pmi2"        # SLURM workload manager
- else
-       MPIrun="mpirunI -np"            # Basic MPI workload manager
+          SRUN="srun --mpi=pmi2"       # SLURM workload manager
+ else    
+        MPIrun="mpirun -np"            # Basic MPI workload manager
  fi
 
-   ROMS_EXE_A="romsM"                  # ROMS executable A
-   ROMS_EXE_B="romsM"                  # ROMS executable B
+    ROMS_EXE_A="romsM"                 # ROMS executable A
+    ROMS_EXE_B="romsM"                 # ROMS executable B
 
-   START_DATE="2004-01-03"             # 4D-Var starting date
+    START_DATE="2004-01-03"            # 4D-Var starting date
 
- FRST_INI_DAY="${START_DATE}"          # first cycle initialization date
-#FRST_INI_DAY="2004-01-07"             # restart initialization date
+  FRST_INI_DAY="${START_DATE}"         # first cycle initialization date
+# FRST_INI_DAY="2004-01-07"            # restart initialization date
 
- LAST_INI_DAY="${START_DATE}"          # last cycle initialization date
-#LAST_INI_DAY="2017-12-27"             # last cycle initialization date
+  LAST_INI_DAY="${START_DATE}"         # last cycle initialization date
+# LAST_INI_DAY="2017-12-27"            # last cycle initialization date
 
- ROMS_TIMEREF="1968-05-23"             # ROMS time reference date
+  ROMS_TIMEREF="1968-05-23"            # ROMS time reference date
 
-     INTERVAL=4                        # 4D-Var interval window (days)
+      INTERVAL=4                       # 4D-Var interval window (days)
 
-       nPETsX=3                        # number PETs in the X-direction
-       nPETsY=4                        # number PETs in the Y-direction
+        nPETsX=3                       # number PETs in the X-direction
+        nPETsY=4                       # number PETs in the Y-direction
 
-     MyNouter=1                        # number of 4D-Var outer loops
-#    MyNouter=2                        # number of 4D-Var outer loops
+      MyNouter=1                       # number of 4D-Var outer loops
+#     MyNouter=2                       # number of 4D-Var outer loops
 
-#    MyNinner=25                       # number of 4D-Var inner loops: CONGRAD, MINRES
-     MyNinner=26                       # number of 4D-Var inner loops: RPCG
+#     MyNinner=13                      # number of 4D-Var inner loops: RPCG
+#     MyNinner=25                      # number of 4D-Var inner loops: CONGRAD, MINRES
+      MyNinner=26                      # number of 4D-Var inner loops: RPCG
 
-       MyNHIS=4                        # NLM trajectory is saved every 2 hours
-    MyNDEFHIS=0                        # No multi-file NLM trajectory
-#      MyNHIS=48                       # NLM trajectory is saved every 24 hours
+        MyNHIS=4                       # NLM trajectory is saved every 2 hours
+     MyNDEFHIS=0                       # No multi-file NLM trajectory
+#    MyNDEFHIS=48                      # Multi-file NLM trajectory: daily files
 
-       MyNQCK=4                        # NLM quicksave trajectory is saved every 2 hours
+        MyNQCK=4                       # NLM quicksave trajectory is saved every 2 hours
 
-#      MyNADJ=48                       # weak constraint, ADM trajectory daily
-       MyNADJ=192                      # strong contraint, ADM saved at end
+#       MyNADJ=48                      # weak constraint, ADM trajectory daily 
+        MyNADJ=192                     # strong contraint, ADM saved at end
 
-      restart=0                        # restart 4D-Var cycle (0:no, 1:yes)
-#     restart=1                        # restart 4D-Var cycle (0:no, 1:yes)
+#    MyINP_LIB=1                       # reading library: [1] standard [2] PIO
+     MyINP_LIB=2                       # reading library: [1] standard [2] PIO
+#    MyOUT_LIB=1                       # writing library: [1] standard [2] PIO
+     MyOUT_LIB=2                       # writing library: [1] standard [2] PIO
+  MyPIO_METHOD=2                       # PIO Library Methods [0, 1, 2, 3, 4]
+ MyPIO_IOTASKS=1                       # number of I/O processes
+  MyPIO_STRIDE=1                       # stride in MPI-rank between I/O tasks
+    MyPIO_BASE=0                       # offset for the first I/O task
+   MyPIO_REARR=1                       # rearranger method: [1] box [2] subset
+MyPIO_REARRCOM=1                       # rearranger communications: [0] p2p [1] coll
+MyPIO_REARRDIR=0                       # rearranger direction: [0] I2C/C2I, ... [3]
 
-   ROMS_NLpre="roms_nl_${roms_app}"    # ROMS NLM stdinp prefix
-   ROMS_NLtmp="${ROMS_NLpre}.tmp"      # ROMS NLM stdinp template
+       restart=0                       # restart 4D-Var cycle (0:no, 1:yes)
+#      restart=1                       # restart 4D-Var cycle (0:no, 1:yes)
 
-   ROMS_DApre="roms_da_${roms_app}"    # ROMS ADM/TLM stdinp prefix
-   ROMS_DAtmp="${ROMS_DApre}.tmp"      # ROMS ADM/TLM stdinp template
+    ROMS_NLpre="roms_nl_${roms_app}"   # ROMS NLM stdinp prefix
+    ROMS_NLtmp="${ROMS_NLpre}.tmp"     # ROMS NLM stdinp template
+
+    ROMS_DApre="roms_da_${roms_app}"   # ROMS ADM/TLM stdinp prefix
+    ROMS_DAtmp="${ROMS_DApre}.tmp"     # ROMS ADM/TLM stdinp template
 
  if [ ${restart} -eq 0 ]; then
-      ROMSini="wc13_roms_ini_20040103.nc"    # ROMS IC
-   ROMSiniDir=${DataDir}                     # ROMS IC directory
+       ROMSini="wc13_roms_ini_20040103.nc"    # ROMS IC
+    ROMSiniDir=${DataDir}                     # ROMS IC directory
  else
-      ROMSini="wc13_roms_dai_20040103.nc"    # restart ROMS IC
-   ROMSiniDir=../2004.01.03                  # restart ROMS IC directory
+       ROMSini="wc13_roms_dai_20040103.nc"    # restart ROMS IC
+    ROMSiniDir=../2004.01.03                  # restart ROMS IC directory
  fi
 
-     Inp4DVAR="rbl4dvar.in"                  # ROMS 4D-Var input script
+      Inp4DVAR="rbl4dvar.in"                  # ROMS 4D-Var input script
 
  if [ ${BATCH} -eq 1 ]; then
-        etime=00:00:00                       # elapsed time
-        ptime=${etime}                       # previous time
+         etime=00:00:00                       # elapsed time
+         ptime=${etime}                       # previous time
  else
-        stime=`${DATE_EXE} -u +"%s"`         # start time (sec) since epoch
-        ptime=$stime                         # previous time
+         stime=`${DATE_EXE} -u +"%s"`         # start time (sec) since epoch
+         ptime=$stime                         # previous time
  fi
 
 #######################################################################
@@ -390,19 +409,28 @@ while [ $SDAY -le $L_DN ]; do
   fi
   cp -f ../${ROMS_NLtmp} ${ROMS_NLinp}
 
-  $SUBSTITUTE ${ROMS_NLinp} MyNtileI  ${nPETsX}
-  $SUBSTITUTE ${ROMS_NLinp} MyNtileJ  ${nPETsY}
-  $SUBSTITUTE ${ROMS_NLinp} MyNouter  ${MyNouter}
-  $SUBSTITUTE ${ROMS_NLinp} MyNinner  ${MyNinner}
-  $SUBSTITUTE ${ROMS_NLinp} MyNHIS    ${MyNHIS}
-  $SUBSTITUTE ${ROMS_NLinp} MyNDEFHIS ${MyNDEFHIS}
-  $SUBSTITUTE ${ROMS_NLinp} MyNQCK    ${MyNQCK}
-  $SUBSTITUTE ${ROMS_NLinp} MyNADJ    ${MyNADJ}
-  $SUBSTITUTE ${ROMS_NLinp} MyDSTART  "${DSTART}.0d0"
-  $SUBSTITUTE ${ROMS_NLinp} MyFprefix "${Fprefix}"
-  $SUBSTITUTE ${ROMS_NLinp} MyFsuffix "${Fsuffix}"
-  $SUBSTITUTE ${ROMS_NLinp} MyININAME "${ROMS_INI}"
-  $SUBSTITUTE ${ROMS_NLinp} MyAPARNAM "${Inp4DVAR}"
+  $SUBSTITUTE ${ROMS_NLinp} MyNtileI       ${nPETsX}
+  $SUBSTITUTE ${ROMS_NLinp} MyNtileJ       ${nPETsY}
+  $SUBSTITUTE ${ROMS_NLinp} MyNouter       ${MyNouter}
+  $SUBSTITUTE ${ROMS_NLinp} MyNinner       ${MyNinner}
+  $SUBSTITUTE ${ROMS_NLinp} MyNHIS         ${MyNHIS}
+  $SUBSTITUTE ${ROMS_NLinp} MyNDEFHIS      ${MyNDEFHIS}
+  $SUBSTITUTE ${ROMS_NLinp} MyNQCK         ${MyNQCK}
+  $SUBSTITUTE ${ROMS_NLinp} MyNADJ         ${MyNADJ}
+  $SUBSTITUTE ${ROMS_NLinp} MyDSTART       "${DSTART}.0d0"
+  $SUBSTITUTE ${ROMS_NLinp} MyINP_LIB      ${MyINP_LIB}
+  $SUBSTITUTE ${ROMS_NLinp} MyOUT_LIB      ${MyOUT_LIB}
+  $SUBSTITUTE ${ROMS_NLinp} MyPIO_METHOD   ${MyPIO_METHOD}
+  $SUBSTITUTE ${ROMS_NLinp} MyPIO_IOTASKS  ${MyPIO_IOTASKS}
+  $SUBSTITUTE ${ROMS_NLinp} MyPIO_STRIDE   ${MyPIO_STRIDE}
+  $SUBSTITUTE ${ROMS_NLinp} MyPIO_BASE     ${MyPIO_BASE}
+  $SUBSTITUTE ${ROMS_NLinp} MyPIO_REARRCOM ${MyPIO_REARRCOM}
+  $SUBSTITUTE ${ROMS_NLinp} MyPIO_REARRDIR ${MyPIO_REARRDIR}
+  $SUBSTITUTE ${ROMS_NLinp} MyPIO_REARR    ${MyPIO_REARR}
+  $SUBSTITUTE ${ROMS_NLinp} MyFprefix      "${Fprefix}"
+  $SUBSTITUTE ${ROMS_NLinp} MyFsuffix      "${Fsuffix}"
+  $SUBSTITUTE ${ROMS_NLinp} MyININAME      "${ROMS_INI}"
+  $SUBSTITUTE ${ROMS_NLinp} MyAPARNAM      "${Inp4DVAR}"
 
   echo "   Creating DA ROMS Standart Input Script: ${ROMS_DAinp}"
 
@@ -411,19 +439,28 @@ while [ $SDAY -le $L_DN ]; do
   fi
   cp -f ../${ROMS_DAtmp} ${ROMS_DAinp}
 
-  $SUBSTITUTE ${ROMS_DAinp} MyNtileI  ${nPETsX}
-  $SUBSTITUTE ${ROMS_DAinp} MyNtileJ  ${nPETsY}
-  $SUBSTITUTE ${ROMS_DAinp} MyNouter  ${MyNouter}
-  $SUBSTITUTE ${ROMS_DAinp} MyNinner  ${MyNinner}
-  $SUBSTITUTE ${ROMS_DAinp} MyNHIS    ${MyNHIS}
-  $SUBSTITUTE ${ROMS_DAinp} MyNDEFHIS ${MyNDEFHIS}
-  $SUBSTITUTE ${ROMS_DAinp} MyNQCK    ${MyNQCK}
-  $SUBSTITUTE ${ROMS_DAinp} MyNADJ    ${MyNADJ}
-  $SUBSTITUTE ${ROMS_DAinp} MyDSTART  "${DSTART}.0d0"
-  $SUBSTITUTE ${ROMS_DAinp} MyFprefix "${Fprefix}"
-  $SUBSTITUTE ${ROMS_DAinp} MyFsuffix "${Fsuffix}"
-  $SUBSTITUTE ${ROMS_DAinp} MyININAME "${ROMS_INI}"
-  $SUBSTITUTE ${ROMS_DAinp} MyAPARNAM "${Inp4DVAR}"
+  $SUBSTITUTE ${ROMS_DAinp} MyNtileI       ${nPETsX}
+  $SUBSTITUTE ${ROMS_DAinp} MyNtileJ       ${nPETsY}
+  $SUBSTITUTE ${ROMS_DAinp} MyNouter       ${MyNouter}
+  $SUBSTITUTE ${ROMS_DAinp} MyNinner       ${MyNinner}
+  $SUBSTITUTE ${ROMS_DAinp} MyNHIS         ${MyNHIS}
+  $SUBSTITUTE ${ROMS_DAinp} MyNDEFHIS      ${MyNDEFHIS}
+  $SUBSTITUTE ${ROMS_DAinp} MyNQCK         ${MyNQCK}
+  $SUBSTITUTE ${ROMS_DAinp} MyNADJ         ${MyNADJ}
+  $SUBSTITUTE ${ROMS_DAinp} MyDSTART       "${DSTART}.0d0"
+  $SUBSTITUTE ${ROMS_DAinp} MyINP_LIB      ${MyINP_LIB}
+  $SUBSTITUTE ${ROMS_DAinp} MyOUT_LIB      ${MyOUT_LIB}
+  $SUBSTITUTE ${ROMS_DAinp} MyPIO_METHOD   ${MyPIO_METHOD}
+  $SUBSTITUTE ${ROMS_DAinp} MyPIO_IOTASKS  ${MyPIO_IOTASKS}
+  $SUBSTITUTE ${ROMS_DAinp} MyPIO_STRIDE   ${MyPIO_STRIDE}
+  $SUBSTITUTE ${ROMS_DAinp} MyPIO_BASE     ${MyPIO_BASE}
+  $SUBSTITUTE ${ROMS_DAinp} MyPIO_REARRCOM ${MyPIO_REARRCOM}
+  $SUBSTITUTE ${ROMS_DAinp} MyPIO_REARRDIR ${MyPIO_REARRDIR}
+  $SUBSTITUTE ${ROMS_DAinp} MyPIO_REARR    ${MyPIO_REARR}
+  $SUBSTITUTE ${ROMS_DAinp} MyFprefix      "${Fprefix}"
+  $SUBSTITUTE ${ROMS_DAinp} MyFsuffix      "${Fsuffix}"
+  $SUBSTITUTE ${ROMS_DAinp} MyININAME      "${ROMS_INI}"
+  $SUBSTITUTE ${ROMS_DAinp} MyAPARNAM      "${Inp4DVAR}"
 
 ##---------------------------------------------------------------------
 ## Run RBL4D-Var for the current time window
