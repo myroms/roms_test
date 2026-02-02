@@ -2,7 +2,7 @@
 #
 # git $Id$
 #::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-# Copyright (c) 2002-2024 The ROMS/TOMS Group                           :::
+# Copyright (c) 2002-2026 The ROMS Group                                :::
 #   Licensed under a MIT/X style license                                :::
 #   See License_ROMS.md                                                 :::
 #:::::::::::::::::::::::::::::::::::::::::::::::::::::: David Robertson :::
@@ -23,8 +23,8 @@
 #                                                                       :::
 #::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-search="2002-2023 The ROMS/TOMS"
-replace="2002-2024 The ROMS/TOMS"
+search="2002-2025 The ROMS"
+replace="2002-2026 The ROMS"
 
 # Directories to search for replacements.
 
@@ -38,7 +38,9 @@ c_dirs="$c_dirs channel"
 c_dirs="$c_dirs DAMEE_4"
 c_dirs="$c_dirs docs"
 c_dirs="$c_dirs dogbone"
+c_dirs="$c_dirs DuckNC"
 c_dirs="$c_dirs double_gyre"
+c_dirs="$c_dirs DuckNC"
 c_dirs="$c_dirs estuary_test"
 c_dirs="$c_dirs flt_test"
 c_dirs="$c_dirs grav_adj"
@@ -46,8 +48,11 @@ c_dirs="$c_dirs inlet_test"
 c_dirs="$c_dirs IRENE"
 c_dirs="$c_dirs kelvin"
 c_dirs="$c_dirs lab_canyon"
+c_dirs="$c_dirs lake_decimate"
+c_dirs="$c_dirs lake_ice"
 c_dirs="$c_dirs lake_jersey"
 c_dirs="$c_dirs lmd_test"
+c_dirs="$c_dirs marsh_test"
 c_dirs="$c_dirs riverplume"
 c_dirs="$c_dirs seamount"
 c_dirs="$c_dirs sed_test"
@@ -56,6 +61,8 @@ c_dirs="$c_dirs soliton"
 c_dirs="$c_dirs test_chan"
 c_dirs="$c_dirs test_head"
 c_dirs="$c_dirs upwelling"
+c_dirs="$c_dirs USEC"
+c_dirs="$c_dirs vegetation_test"
 c_dirs="$c_dirs WC13"
 c_dirs="$c_dirs weddell"
 c_dirs="$c_dirs windbasin"
