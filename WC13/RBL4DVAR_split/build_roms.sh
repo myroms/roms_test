@@ -2,7 +2,7 @@
 #
 # git $Id$
 #::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-# Copyright (c) 2002-2025 The ROMS Group                                :::
+# Copyright (c) 2002-2026 The ROMS Group                                :::
 #   Licensed under a MIT/X style license                                :::
 #   See License_ROMS.md                                                 :::
 #::::::::::::::::::::::::::::::::::::::::::::::::::::: Hernan G. Arango :::
@@ -216,20 +216,35 @@ if [ $pio_lib -eq 1 ]; then
   export     MY_CPP_FLAGS="${MY_CPP_FLAGS} -DPIO_LIB"
 fi
 
-#export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DRBL4DVAR"
  export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DSPLIT_RBL4DVAR"
  export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DANA_SPONGE"
+#export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DUV_DESTAGGERED"
+
+#export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DOMEGA_IMPLICIT"
+
+ export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DARCHAIC_OBS"
+#export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DMODERN_OBS"
 
  export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DROMS_STDOUT"
-#export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DSUPPRESS_REPORT"
+ export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DSUPPRESS_REPORT"
  export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DINITIALIZE_AUTOMATIC"
  export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DCHECKSUM"
+#export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DOUTPUT_STATS"
 
 #export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DMINRES"
  export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DRPCG"
 #export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DTIME_CONV"
 
 #export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DBGQC"
+
+#export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DBALANCE_OPERATOR"
+
+ export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DADJUST_BOUNDARY"
+ export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DADJUST_STFLUX"
+ export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DADJUST_WSTRESS"
+
+#export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DSTD_MODEL"
+#export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DCOMPUTE_MLD"
 
 #export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DPOSTERIOR_EOFS"     # Nouter=1
 #export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DPOSTERIOR_ERROR_I"  # Nouter=1
@@ -239,6 +254,8 @@ fi
 
 #export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DDEBUGGING"
 #export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DPOSITIVE_ZERO"
+
+#export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DCHECK_OPEN_FILES"
 
 #export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DSINGLE_PRECISION"
 

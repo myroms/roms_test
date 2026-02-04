@@ -2,7 +2,7 @@
 #
 # git $Id$
 #::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-# Copyright (c) 2002-2025 The ROMS Group                                :::
+# Copyright (c) 2002-2026 The ROMS Group                                :::
 #   Licensed under a MIT/X style license                                :::
 #   See License_ROMS.md                                                 :::
 #::::::::::::::::::::::::::::::::::::::::::::::::::::: Hernan G. Arango :::
@@ -452,6 +452,8 @@ endif
 if ( $?FORT ) then
   if ( "${FORT}" == "ifort" ) then
     set compiler="-DCMAKE_Fortran_COMPILER=ifort"
+  else if ( "${FORT}" == "ifx" ) then
+    set compiler="-DCMAKE_Fortran_COMPILER=ifx"
   else if ( "${FORT}" == "gfortran" ) then
     set compiler="-DCMAKE_Fortran_COMPILER=gfortran"
   else

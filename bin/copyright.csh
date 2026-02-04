@@ -2,7 +2,7 @@
 #
 # git $Id$
 #::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-# Copyright (c) 2002-2024 The ROMS/TOMS Group                           :::
+# Copyright (c) 2002-2026 The ROMS Group                                :::
 #   Licensed under a MIT/X style license                                :::
 #   See License_ROMS.md                                                 :::
 #:::::::::::::::::::::::::::::::::::::::::::::::::::::: David Robertson :::
@@ -23,8 +23,8 @@
 #                                                                       :::
 #::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-set search = "2002-2023 The ROMS/TOMS"
-set replace = "2002-2024 The ROMS/TOMS"
+set search = "2002-2025 The ROMS"
+set replace = "2002-2026 The ROMS"
 
 # Directories to search for replacements.
 
@@ -39,6 +39,7 @@ set c_dirs = "$c_dirs DAMEE_4"
 set c_dirs = "$c_dirs docs"
 set c_dirs = "$c_dirs dogbone"
 set c_dirs = "$c_dirs double_gyre"
+set c_dirs = "$c_dirs DuckNC"
 set c_dirs = "$c_dirs estuary_test"
 set c_dirs = "$c_dirs flt_test"
 set c_dirs = "$c_dirs grav_adj"
@@ -46,8 +47,11 @@ set c_dirs = "$c_dirs inlet_test"
 set c_dirs = "$c_dirs IRENE"
 set c_dirs = "$c_dirs kelvin"
 set c_dirs = "$c_dirs lab_canyon"
+set c_dirs = "$c_dirs lake_decimate"
+set c_dirs = "$c_dirs lake_ice"
 set c_dirs = "$c_dirs lake_jersey"
 set c_dirs = "$c_dirs lmd_test"
+set c_dirs = "$c_dirs marsh_test"
 set c_dirs = "$c_dirs riverplume"
 set c_dirs = "$c_dirs seamount"
 set c_dirs = "$c_dirs sed_test"
@@ -56,6 +60,8 @@ set c_dirs = "$c_dirs soliton"
 set c_dirs = "$c_dirs test_chan"
 set c_dirs = "$c_dirs test_head"
 set c_dirs = "$c_dirs upwelling"
+set c_dirs = "$c_dirs USEC"
+set c_dirs = "$c_dirs vegetation_test"
 set c_dirs = "$c_dirs WC13"
 set c_dirs = "$c_dirs weddell"
 set c_dirs = "$c_dirs windbasin"

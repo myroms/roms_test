@@ -2,7 +2,7 @@
 #
 # git $Id$
 #::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-# Copyright (c) 2002-2025 The ROMS Group                                :::
+# Copyright (c) 2002-2026 The ROMS Group                                :::
 #   Licensed under a MIT/X style license                                :::
 #   See License_ROMS.md                                                 :::
 #::::::::::::::::::::::::::::::::::::::::::::::::::::: Hernan G. Arango :::
@@ -216,17 +216,33 @@ endif
 
  setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DSPLIT_RBL4DVAR"
  setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DANA_SPONGE"
+#setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DUV_DESTAGGERED"
+
+#setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DOMEGA_IMPLICIT"
+
+ setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DARCHAIC_OBS"
+#setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DMODERN_OBS"
 
  setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DROMS_STDOUT"
-#setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DSUPPRESS_REPORT"
+ setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DSUPPRESS_REPORT"
  setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DINITIALIZE_AUTOMATIC"
  setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DCHECKSUM"
+#setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DOUTPUT_STATS"
 
 #setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DMINRES"
  setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DRPCG"
 #setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DTIME_CONV"
 
 #setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DBGQC"
+
+#setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DBALANCE_OPERATOR"
+
+ setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DADJUST_BOUNDARY"
+ setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DADJUST_STFLUX"
+ setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DADJUST_WSTRESS"
+
+#setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DSTD_MODEL"
+#setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DCOMPUTE_MLD"
 
 #setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DPOSTERIOR_EOFS"     # Nouter=1 only
 #setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DPOSTERIOR_ERROR_I"  # Nouter=1 only
@@ -236,6 +252,8 @@ endif
 
 #setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DDEBUGGING"
 #setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DPOSITIVE_ZERO"
+
+#setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DCHECK_OPEN_FILES"
 
 #setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DSINGLE_PRECISION"
 
