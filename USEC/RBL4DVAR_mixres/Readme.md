@@ -31,7 +31,9 @@ because the land/sea masking complicates extraction at factors larger than two.
 The **mixed-resolution** split **4D-Var** data assimilation strategy improves the
 computational efficiency as shown in the following table for a single **3**-day **4D-Var**
 data assimilation cycle from a desktop Linux box (16 CPUs and 1 GPU with 384 CUDA cores, NVIDIA)
-on **12** CPUs with a **3x4** partition compiled with **ifort** (Spack-Stack 1.9).
+on **12** CPUs with a **3x4** partition compiled with **ifort** (Spack-Stack 1.9). The
+benchmarks were computed using the **ROMS** option to output **NetCDF3** 64-bit offset files
+(with **`OUT_NETCDF4`** set to off).
 
 <img width="940" alt="image" src="https://github.com/user-attachments/assets/aaf2ba95-1378-4636-a135-360dc3186c71" />
 
@@ -39,7 +41,7 @@ The **mixed resolution** algorithm improves this application's computational eff
 over **88** percent (**Case 8**) compared to the **3**km non-splitted **4D-Var** in double precision
 (**Case 5**). In some cases, **mixed-precision** outer loops (**double**) and inner loops (**single**)
 are possible but **not recommended** because they affect the stability of the tangent linear
-and adjoint trajectories. It improves the efficiency by an additional **3** percent. However,
+and adjoint trajectories. It improves efficiency by an additional 3 percent. However,
 stability of the solution takes precedence.
 
 In this test case, data is provided for two **3**-day data assimilation cycles:
@@ -60,16 +62,22 @@ They are activated in the build scripts.
 
   ``` d
    USEC                    ROMS application CPP option
+   ATM_PRESS               Impose inverse barometer effect in the pressure gradient term
    BGQC                    Background quality control of observations
    BULK_FLUXES             Surface bulk fluxes parameterization, latest COARE 3.5
+   DEFLATE                 Setting compression in output NetCDF-4/HDF5 files
+   DELAYED_SYNC_NF90       Delaying file disk synchronization until calling nf90_close
+   DELAYED_SYNC_PIO        Delaying file disk synchronization until calling PIO_closefile
    DIURNAL_SRFLUX          Modulates shortwave radiation by the local diurnal cycle, if NAM forcing
    GRID_EXTRACT            Activates writing a decimated nonlinear trajectory for inner loops
    OMEGA_IMPLICIT          Adaptive, Courant-number-based implicit vertical advection, NLM kernel
    OUT_DOUBLE              Double precision output fields in NetCDF files
+   OUT_NETCDF4             Creating output compressed Netcdf4/HDF5 files
    PIO_LIB                 Using Parallel-IO from the PIO library
    RPCG                    Restricted B-preconditioned Lanczos minimization
    SPLIT_EXECUTABLE        Split 4D-Var executable for background/analysis phases
    SPLIT_RBL4DVAR          Split RBL4D-Var algorithm driver
+   WTYPE_GRID              Spatially varying Jerlov water type index
   ```
 
 The CPP option **SPLIT_EXECUTABLE** avoids allocating the control vectors and adjoint
@@ -80,52 +88,56 @@ fit into the computer's memory. Notice that the **outer loop** grid is twice as 
 the **inner loop** grid.
 
 ### ROMS Input NetCDF files:
+
+The input **NetCDF** files were changed on Feb 2026 to compressed **NetCDF4/HDF4** to reduce they size
+by around 50% and improve downloading bandwidth from GitHub.
+
   ``` d
-                       Grid File:  ../Data/GRD/usec3km_roms_grd.nc
-                                   ../Data/GRD/usec6km_roms_grd.nc
-                    Initial File:  ../Data/INI/usec3km_roms_dai_20190827.nc
-                                   ../Data/INI/usec6km_roms_ini.nc (generic)
-                   Boundary File:  ../Data/BRY/usec3km_roms_bry.nc
-                                   ../Data/BRY/usec6km_roms_bry_empty.nc
-                Climatology File:  ../Data/CLM/usec3km_roms_mercator_clm.nc
-       Nudging Coefficients File:  ../Data/GRD/usec3km_roms_nudgcoef.nc
-              River Forcing File:  ../Data/GRD/usec3km_roms_rivers.nc
-              Tidal Forcing File:  ../Data/GRD/usec3km_roms_tides.nc
+                       Grid File:  ../Data/GRD/usec3km_roms_grd.nc4
+                                   ../Data/GRD/usec6km_roms_grd.nc4
+                    Initial File:  ../Data/INI/usec3km_roms_ini_20190827.nc4
+                                   ../Data/INI/usec6km_roms_ini.nc4 (generic)
+                   Boundary File:  ../Data/BRY/usec3km_roms_bry.nc4
+                                   ../Data/BRY/usec6km_roms_bry_empty.nc4
+                Climatology File:  ../Data/CLM/usec3km_roms_mercator_clm.nc4
+       Nudging Coefficients File:  ../Data/GRD/usec3km_roms_nudgcoef.nc4
+              River Forcing File:  ../Data/GRD/usec3km_roms_rivers.nc4
+              Tidal Forcing File:  ../Data/GRD/usec3km_roms_tides.nc4
 
-  ERA5 Atmospheric Forcing Files:  ../Data/FRC/era5_0825_0909_2019.nc
+  ERA5 Atmospheric Forcing Files:  ../Data/FRC/era5_0825_0909_2019.nc4
 
-   NAM Atmospheric Forcing Files:  ../Data/FRC/lwrad_down_nam_0815_0915_2019.nc
-                                   ../Data/FRC/swrad_daily_nam_0815_0915_2019.nc
-                                   ../Data/FRC/Pair_nam_0815_0915_2019.nc
-                                   ../Data/FRC/Qair_nam_0815_0915_2019.nc
-                                   ../Data/FRC/Tair_nam_0815_0915_2019.nc
-                                   ../Data/FRC/rain_nam_0815_0915_2019.nc
-                                   ../Data/FRC/Uwind_nam_0815_0915_2019.nc
-                                   ../Data/FRC/Vwind_nam_0815_0915_2019.nc
+   NAM Atmospheric Forcing Files:  ../Data/FRC/lwrad_down_nam_0815_0915_2019.nc4
+                                   ../Data/FRC/swrad_daily_nam_0815_0915_2019.nc4
+                                   ../Data/FRC/Pair_nam_0815_0915_2019.nc4
+                                   ../Data/FRC/Qair_nam_0815_0915_2019.nc4
+                                   ../Data/FRC/Tair_nam_0815_0915_2019.nc4
+                                   ../Data/FRC/rain_nam_0815_0915_2019.nc4
+                                   ../Data/FRC/Uwind_nam_0815_0915_2019.nc4
+                                   ../Data/FRC/Vwind_nam_0815_0915_2019.nc4
 
-     Initial Conditions STD File:  ../Data/STD/usec3km_roms_std_i_20190827.nc
-                                   ../Data/STD/usec3km_roms_std_i_20190830.nc
-                                   ../Data/STD/usec6km_roms_std_i_20190827.nc
-                                   ../Data/STD/usec6km_roms_std_i_20190830.nc
-    Boundary Conditions STD File:  ../Data/STD/usec3km_roms_std_b_20190827.nc
-                                   ../Data/STD/usec3km_roms_std_b_20190830.nc
-                                   ../Data/STD/usec6km_roms_std_b_20190827.nc
-                                   ../Data/STD/usec6km_roms_std_b_20190830.nc
-        Surface Forcing STD File:  ../Data/STD/usec3km_roms_std_f_20190827.nc
-                                   ../Data/STD/usec3km_roms_std_f_20190830.nc
-                                   ../Data/STD/usec6km_roms_std_f_20190827.nc
-                                   ../Data/STD/usec6km_roms_std_f_20190830.nc
+     Initial Conditions STD File:  ../Data/STD/usec3km_roms_std_i_20190827.nc4
+                                   ../Data/STD/usec3km_roms_std_i_20190830.nc4
+                                   ../Data/STD/usec6km_roms_std_i_20190827.nc4
+                                   ../Data/STD/usec6km_roms_std_i_20190830.nc4
+    Boundary Conditions STD File:  ../Data/STD/usec3km_roms_std_b_20190827.nc4
+                                   ../Data/STD/usec3km_roms_std_b_20190830.nc4
+                                   ../Data/STD/usec6km_roms_std_b_20190827.nc4
+                                   ../Data/STD/usec6km_roms_std_b_20190830.nc4
+        Surface Forcing STD File:  ../Data/STD/usec3km_roms_std_f_20190827.nc4
+                                   ../Data/STD/usec3km_roms_std_f_20190830.nc4
+                                   ../Data/STD/usec6km_roms_std_f_20190827.nc4
+                                   ../Data/STD/usec6km_roms_std_f_20190830.nc4
 
-    Initial Conditions Norm File:  ../Data/NRM/usec3km_roms_nrm_i.nc
-                                   ../Data/NRM/usec6km_roms_nrm_i.nc
-   Boundary Conditions Norm File:  ../Data/NRM/usec3km_roms_nrm_b.nc
-                                   ../Data/NRM/usec6km_roms_nrm_b.nc
-       Surface Forcing Norm File:  ../Data/NRM/usec3km_roms_nrm_f.nc
-                                   ../Data/NRM/usec6km_roms_nrm_f.nc
-               Observations File:  ../Data/OBS/usec3km_roms_obs_20190827.nc
-                                   ../Data/OBS/usec3km_roms_obs_20190830.nc
-                                   ../Data/OBS/usec6km_roms_obs_20190827.nc
-                                   ../Data/OBS/usec6km_roms_obs_20190830.nc
+    Initial Conditions Norm File:  ../Data/NRM/usec3km_roms_nrm_i.nc4
+                                   ../Data/NRM/usec6km_roms_nrm_i.nc4
+   Boundary Conditions Norm File:  ../Data/NRM/usec3km_roms_nrm_b.nc4
+                                   ../Data/NRM/usec6km_roms_nrm_b.nc4
+       Surface Forcing Norm File:  ../Data/NRM/usec3km_roms_nrm_f.nc4
+                                   ../Data/NRM/usec6km_roms_nrm_f.nc4
+               Observations File:  ../Data/OBS/usec3km_roms_obs_20190827.nc4
+                                   ../Data/OBS/usec3km_roms_obs_20190830.nc4
+                                   ../Data/OBS/usec6km_roms_obs_20190827.nc4
+                                   ../Data/OBS/usec6km_roms_obs_20190830.nc4
   ```
 
 ### Configuration and input scripts:
@@ -171,7 +183,7 @@ computations. Also, the **4D-Var split** scheme uses two different executables f
 
       romsM_da       Data assimilation driver for RBL4D-Var Increment phase, inner loops
   ```
-Please review the **build** script because it contains **CPP** options for each executable. Also, it
+Please review the **build** script, as it includes **CPP** options for each executable. Also, it
 sets standard **CPP** options for both executables. This strategy is preferable to having a **ROMS**
 header file for the 3km and 6km grids.
 
@@ -239,8 +251,8 @@ Users may modify the number of processors to use in the **submit_mixres_rbl4dvar
               ReferenceTime: 2006 01 01 00 00 00
         RBL4D-Var StartTime: 2019 08 27 00 00 00
         RBL4D-Var  StopTime: 2019 08 30 00 00 00
-   ROMS outer loops Grid IC: ../../Data/INI/usec3km_roms_ini_20190827.nc
-   ROMS inner loops Grid IC: ../../Data/INI/usec6km_roms_ini_20190827.nc
+   ROMS outer loops Grid IC: ../../Data/INI/usec3km_roms_ini_20190827.nc4
+   ROMS inner loops Grid IC: ../../Data/INI/usec6km_roms_ini_20190827.nc4
    NL Standard Input Script: roms_nl_usec_nam_20190827.in   (outer loops grid)
    DA Standard Input Script: roms_da_usec_nam_20190827.in   (inner loops grid)
   NL RBL4D-Var Input Script: rbl4dvar_nl.in  (outer loops grid)
@@ -252,10 +264,10 @@ Changing to directory: /home/arango/ROMS/Projects/USEC/RBL4DVAR_mixres/2019.08.2
 
    Creating NL ROMS Standard Input Script: roms_nl_usec_nam_20190827.in
    Creating DA ROMS Standard Input Script: roms_da_usec_nam_20190827.in
-   Copying NLM IC file ../../Data/INI/usec3km_roms_ini_20190827.nc  as  usec3km_roms_ini_20190827.nc
-   Copying NLM IC file ../../Data/INI/usec6km_roms_ini.nc  as  usec6km_roms_ini_20190827.nc
-   Copying OBS    file ../../Data/OBS/usec3km_roms_obs_20190827.nc  as  usec3km_roms_obs_20190827.nc
-   Copying OBS    file ../../Data/OBS/usec6km_roms_obs_20190827.nc  as  usec6km_roms_obs_20190827.nc
+   Copying NLM IC file ../../Data/INI/usec3km_roms_ini_20190827.nc4  as  usec3km_roms_ini_20190827.nc4
+   Copying NLM IC file ../../Data/INI/usec6km_roms_ini.nc4  as  usec6km_roms_ini_20190827.nc4
+   Copying OBS    file ../../Data/OBS/usec3km_roms_obs_20190827.nc4  as  usec3km_roms_obs_20190827.nc4
+   Copying OBS    file ../../Data/OBS/usec6km_roms_obs_20190827.nc4  as  usec6km_roms_obs_20190827.nc4
 
 Running 4D-Var System:  Cycle = 1   Outer = 0   Phase = background
 
@@ -326,9 +338,9 @@ Changing to directory: /home/arango/ROMS/Projects/USEC/RBL4DVAR_mixres/2019.08.3
    Creating NL ROMS Standard Input Script: roms_nl_usec_nam_20190830.in
    Creating DA ROMS Standard Input Script: roms_da_usec_nam_20190830.in
    Copying NLM IC file ../2019.08.27/usec3km_roms_dai_20190827.nc  as  usec3km_roms_dai_20190827.nc
-   Copying NLM IC file ../../Data/INI/usec6km_roms_ini.nc  as  usec6km_roms_ini_20190830.nc
-   Copying OBS    file ../../Data/OBS/usec3km_roms_obs_20190830.nc  as  usec3km_roms_obs_20190830.nc
-   Copying OBS    file ../../Data/OBS/usec6km_roms_obs_20190830.nc  as  usec6km_roms_obs_20190830.nc
+   Copying NLM IC file ../../Data/INI/usec6km_roms_ini.nc4  as  usec6km_roms_ini_20190830.nc4
+   Copying OBS    file ../../Data/OBS/usec3km_roms_obs_20190830.nc4  as  usec3km_roms_obs_20190830.nc4
+   Copying OBS    file ../../Data/OBS/usec6km_roms_obs_20190830.nc4  as  usec6km_roms_obs_20190830.nc4
 
 Running 4D-Var System:  Cycle = 2   Outer = 0   Phase = background
 
@@ -399,7 +411,7 @@ Finished computations, Total time = 05:18:59
 
 ### Results
 
-- **4D-Var Cycle 1**: Aug 27 - Aug 30, 2019, **NAM** forcing. Top-to-bottom figures showing 3km and 6km increments for free surface, potential temperature, salinity, u-velocity, and v-velocity at 20m depth. Notice that higher and lower resolution increments are indistinguishable. They are plotted with the provided **plot_state.m** Matlab script.
+- **4D-Var Cycle 1**: Aug 27 - Aug 30, 2019, **NAM** forcing. Top-to-bottom figures showing 3km and 6km increments for free surface, potential temperature, salinity, u-velocity, and v-velocity at 20m depth. Notice that higher- and lower-resolution increments are indistinguishable. They are plotted with the provided **plot_state.m** Matlab script.
   
 | 3km Increments at z=20m   | 6km Increments at z=20m  |
 :--------------------------:|:-------------------------:
@@ -409,7 +421,7 @@ Finished computations, Total time = 05:18:59
 |<img width="400" alt="image" src="https://github.com/user-attachments/assets/c66c39ad-1e88-4c3a-aadf-b9a89d0da21f"> | <img width="400" alt="image" src="https://github.com/user-attachments/assets/7dad24ab-9a1f-4a7a-a3c5-d2ce1bf06bfc"> |
 |<img width="400" alt="image" src="https://github.com/user-attachments/assets/4eb6bb6f-5ac3-4cd1-86ff-ef6f6c682c80"> | <img width="400" alt="image" src="https://github.com/user-attachments/assets/880d475a-2fa5-4748-bd68-9e7bd295088e"> |
 
-- **4D-Var Cycle 2**: Aug 30 - Sep 2, 2019, **NAM** forcing. Top-to-bottom figures showing 3km and 6km increments for free surface, potential temperature, salinity, u-velocity, and v-velocity at 20m depth. Notice that higher and lower resolution increments are indistinguishable.
+- **4D-Var Cycle 2**: Aug 30 - Sep 2, 2019, **NAM** forcing. Top-to-bottom figures showing 3km and 6km increments for free surface, potential temperature, salinity, u-velocity, and v-velocity at 20m depth. Notice that higher- and lower-resolution increments are indistinguishable.
 
 | 3km Increments at z=20m   | 6km Increments at z=20m  |
 :--------------------------:|:-------------------------:
