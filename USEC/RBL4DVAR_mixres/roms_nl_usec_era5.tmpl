@@ -73,7 +73,7 @@
 ! Input variable information file name.  This file needs to be processed
 ! first so all information arrays can be initialized properly.
 
-     VARNAME = ../../External/varinfo.yaml
+     VARNAME = ../../../External/varinfo.yaml
 
 ! Number of nested grids.
 
@@ -1101,11 +1101,11 @@ PIO_I2C_Preq = 65                 ! Maximum pending I2C requests
 
  ExtractFlag == 2
 
-     GRXNAME == ../../Data/GRD/usec6km_roms_grd.nc
+     GRXNAME == ../../Data/GRD/usec6km_roms_grd.nc4
 
 ! Input NetCDF file names, [1:Ngrids].
 
-     GRDNAME == ../../Data/GRD/usec3km_roms_grd.nc
+     GRDNAME == ../../Data/GRD/usec3km_roms_grd.nc4
      ININAME == MyININAME
      ITLNAME == MyFprefix_roms_itl_MyFsuffix.nc
      IRPNAME == MyFprefix_roms_irp_MyFsuffix.nc
@@ -1148,7 +1148,7 @@ PIO_I2C_Preq = 65                 ! Maximum pending I2C requests
 
     NBCFILES == 1                          ! number of boundary files
 
-     BRYNAME == ../../Data/BRY/usec3km_roms_bry.nc
+     BRYNAME == ../../Data/BRY/usec3km_roms_bry.nc4
 
 ! Input climatology file names. The USER has the option to separate the
 ! climatology variables into individual NetCDF files (NCLMFILES > 1),
@@ -1160,19 +1160,19 @@ PIO_I2C_Preq = 65                 ! Maximum pending I2C requests
 
    NCLMFILES == 1                          ! number of climatology files
 
-     CLMNAME == ../../Data/CLM/usec3km_roms_mercator_clm.nc
+     CLMNAME == ../../Data/CLM/usec3km_roms_mercator_clm.nc4
 
 ! Input climatology nudging coefficients file name.
 
-     NUDNAME == ../../Data/GRD/usec3km_roms_nudgcoef.nc
+     NUDNAME == ../../Data/GRD/usec3km_roms_nudgcoef.nc4
 
 ! Input Sources/Sinks forcing (like river runoff) file name.
 
-     SSFNAME == ../../Data/GRD/usec3km_roms_rivers.nc
+     SSFNAME == ../../Data/GRD/usec3km_roms_rivers.nc4
 
 ! Input tidal forcing file name.
 
-     TIDENAME == ../../Data/GRD/usec3km_roms_tides.nc
+     TIDENAME == ../../Data/GRD/usec3km_roms_tides.nc4
 
 ! Input forcing NetCDF file name(s).
 !
@@ -1194,7 +1194,7 @@ PIO_I2C_Preq = 65                 ! Maximum pending I2C requests
 
      NFFILES == 1                          ! number of unique forcing files
 
-     FRCNAME == ../../Data/FRC/era5_0825_0909_2019.nc
+     FRCNAME == ../../Data/FRC/era5_0825_0909_2019.nc4
 
 ! Output NetCDF file names, [1:Ngrids].
 
@@ -1220,6 +1220,7 @@ PIO_I2C_Preq = 65                 ! Maximum pending I2C requests
      FPOSNAM =  floats.in
      BPARNAM =  bio_Fennel.in
      SPARNAM =  sediment.in
+     VEGNAME =  vegetation.in
      USRNAME =  MyFile.dat
 
 !
@@ -3567,5 +3568,6 @@ PIO_I2C_Preq = 65                 ! Maximum pending I2C requests
 ! FPOSNAM      Input initial drifters positions filename.
 ! BPARNAM      Input biological parameters filename.
 ! SPARNAM      Input sediment transport parameters filename.
+! VEGNAME      Input vegetation filename.
 ! USRNAME      USER's input generic filename.
 !

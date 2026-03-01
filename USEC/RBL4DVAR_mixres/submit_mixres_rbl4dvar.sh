@@ -112,24 +112,24 @@ My4DVarScript() {
 ## running in weak-constraint mode.
 
 if [[ $res -eq 6 ]]; then
- STDnameM=${DataDir}/STD/usec6km_roms_std_i_${Fsuffix}.nc
- STDnameI=${DataDir}/STD/usec6km_roms_std_i_${Fsuffix}.nc
- STDnameB=${DataDir}/STD/usec6km_roms_std_b_${Fsuffix}.nc
- STDnameF=${DataDir}/STD/usec6km_roms_std_f_${Fsuffix}.nc
+ STDnameM=${DataDir}/STD/usec6km_roms_std_i_${Fsuffix}.nc4
+ STDnameI=${DataDir}/STD/usec6km_roms_std_i_${Fsuffix}.nc4
+ STDnameB=${DataDir}/STD/usec6km_roms_std_b_${Fsuffix}.nc4
+ STDnameF=${DataDir}/STD/usec6km_roms_std_f_${Fsuffix}.nc4
 else
- STDnameM=${DataDir}/STD/usec3km_roms_std_i_${Fsuffix}.nc
- STDnameI=${DataDir}/STD/usec3km_roms_std_i_${Fsuffix}.nc
- STDnameB=${DataDir}/STD/usec3km_roms_std_b_${Fsuffix}.nc
- STDnameF=${DataDir}/STD/usec3km_roms_std_f_${Fsuffix}.nc
+ STDnameM=${DataDir}/STD/usec3km_roms_std_i_${Fsuffix}.nc4
+ STDnameI=${DataDir}/STD/usec3km_roms_std_i_${Fsuffix}.nc4
+ STDnameB=${DataDir}/STD/usec3km_roms_std_b_${Fsuffix}.nc4
+ STDnameF=${DataDir}/STD/usec3km_roms_std_f_${Fsuffix}.nc4
 fi
 
 ## Set output file for standard deviation computed/modeled from background
 ## (prior) state.
 
 if [[ $res -eq 6 ]]; then
- STDnameC=usec6km_roms_std_computed.nc
+ STDnameC=usec6km_roms_std_computed.nc4
 else
- STDnameC=usec3km_roms_std_computed.nc
+ STDnameC=usec3km_roms_std_computed.nc4
 fi
 
 ## Set model, initial conditions, boundary conditions and surface
@@ -138,15 +138,15 @@ fi
 ## running in weak-constraint mode.
 
 if [[ $res -eq 6 ]]; then
- NRMnameM=${DataDir}/NRM/usec6km_roms_nrm_i.nc
- NRMnameI=${DataDir}/NRM/usec6km_roms_nrm_i.nc
- NRMnameB=${DataDir}/NRM/usec6km_roms_nrm_b.nc
- NRMnameF=${DataDir}/NRM/usec6km_roms_nrm_f.nc
+ NRMnameM=${DataDir}/NRM/usec6km_roms_nrm_i.nc4
+ NRMnameI=${DataDir}/NRM/usec6km_roms_nrm_i.nc4
+ NRMnameB=${DataDir}/NRM/usec6km_roms_nrm_b.nc4
+ NRMnameF=${DataDir}/NRM/usec6km_roms_nrm_f.nc4
 else
- NRMnameM=${DataDir}/NRM/usec3km_roms_nrm_i.nc
- NRMnameI=${DataDir}/NRM/usec3km_roms_nrm_i.nc
- NRMnameB=${DataDir}/NRM/usec3km_roms_nrm_b.nc
- NRMnameF=${DataDir}/NRM/usec3km_roms_nrm_f.nc
+ NRMnameM=${DataDir}/NRM/usec3km_roms_nrm_i.nc4
+ NRMnameI=${DataDir}/NRM/usec3km_roms_nrm_i.nc4
+ NRMnameB=${DataDir}/NRM/usec3km_roms_nrm_b.nc4
+ NRMnameF=${DataDir}/NRM/usec3km_roms_nrm_f.nc4
 fi
 
 ## Modify 4D-Var template input script and specify above files.
@@ -276,9 +276,9 @@ fi
 
      MyINP_LIB=2                       # reading library: [1] standard [2] PIO
      MyOUT_LIB=2                       # writing library: [1] standard [2] PIO
-  MyPIO_METHOD=2                       # [1] NetCDF3, ...
- MyPIO_IOTASKS=1                       # number of I/O processes
-  MyPIO_STRIDE=1                       # stride in MPI-rank between I/O tasks
+  MyPIO_METHOD=3                       # [1] NetCDF3, ...
+ MyPIO_IOTASKS=2                       # number of I/O processes
+  MyPIO_STRIDE=5                       # stride in MPI-rank between I/O tasks
     MyPIO_BASE=0                       # offset for the first I/O task
    MyPIO_REARR=1                       # rearranger method: [1] box [2] subset
 MyPIO_REARRCOM=1                       # rearranger communications: [0] p2p [1] coll
@@ -287,17 +287,17 @@ MyPIO_REARRDIR=0                       # rearranger direction: [0] I2C/C2I, ... 
        restart=0                       # restart 4D-Var cycle (0:no, 1:yes)
 #      restart=1                       # restart 4D-Var cycle (0:no, 1:yes)
 
-#   ROMS_NLpre="roms_nl_${roms_app}_era5"          # ROMS NLM stdinp prefix, ERA5
-    ROMS_NLpre="roms_nl_${roms_app}_nam"           # ROMS NLM stdinp prefix, NAM
+    ROMS_NLpre="roms_nl_${roms_app}_era5"          # ROMS NLM stdinp prefix, ERA5
+#   ROMS_NLpre="roms_nl_${roms_app}_nam"           # ROMS NLM stdinp prefix, NAM
     ROMS_NLtmp="${ROMS_NLpre}.tmpl"                # ROMS NLM stdinp template
 
-#   ROMS_DApre="roms_da_${roms_app}_era5"          # ROMS ADM/TLM stdinp prefix, ERA5
-    ROMS_DApre="roms_da_${roms_app}_nam"           # ROMS ADM/TLM stdinp prefix, NAM
+    ROMS_DApre="roms_da_${roms_app}_era5"          # ROMS ADM/TLM stdinp prefix, ERA5
+#   ROMS_DApre="roms_da_${roms_app}_nam"           # ROMS ADM/TLM stdinp prefix, NAM
     ROMS_DAtmp="${ROMS_DApre}.tmpl"                # ROMS ADM/TLM stdinp template
 
  if [[ ${restart} -eq 0 ]]; then
-      ROMSiniF="usec3km_roms_ini_20190827.nc"      # ROMS outer loop IC
-   ROMSgeniniC="usec6km_roms_ini.nc"               # ROMS Generic inner loop IC
+      ROMSiniF="usec3km_roms_ini_20190827.nc4"     # ROMS outer loop IC
+   ROMSgeniniC="usec6km_roms_ini.nc4"              # ROMS Generic inner loop IC
     ROMSiniDir=${DataDir}/INI                      # ROMS IC directory
  else
        ROMSini="usec3km_roms_dai_20190827.nc"      # restart ROMS IC
@@ -427,7 +427,7 @@ while [ $SDAY -le $L_DN ]; do
         Fsuffix=`${DATE_EXE} -d "${SDATE}" '+%Y%m%d'`
          RunDir=`${DATE_EXE} -d "${SDATE}" '+%Y.%m.%d'`
      ROMS_INI_F="${ROMSiniF}"
-     ROMS_INI_C="${FprefixC}_roms_ini_${Fsuffix}.nc"
+     ROMS_INI_C="${FprefixC}_roms_ini_${Fsuffix}.nc4"
 
   echo "${separator2}"
   echo
@@ -569,8 +569,8 @@ while [ $SDAY -le $L_DN ]; do
 
 ## Set observations NetCDF filename.
 
-  OBSnameF="${FprefixF}_roms_obs_${Fsuffix}.nc"
-  OBSnameC="${FprefixC}_roms_obs_${Fsuffix}.nc"
+  OBSnameF="${FprefixF}_roms_obs_${Fsuffix}.nc4"
+  OBSnameC="${FprefixC}_roms_obs_${Fsuffix}.nc4"
 
 ## Copy outer loops nonlinear model initial conditions file.
 
@@ -651,7 +651,7 @@ while [ $SDAY -le $L_DN ]; do
       echo "Error while running 4D-Var System:  Cycle = ${Cycle}" \
                                              "  Outer = ${OuterLoop}" \
                                              "  Phase = ${Phase4DVAR}"
-      echo "Check ${RunDir}/log.roms for details ..."
+      echo "Check ${nl_log} for details ..."
       exit 1
     fi
   fi
@@ -709,7 +709,7 @@ while [ $SDAY -le $L_DN ]; do
         echo "Error while running 4D-Var System:  Cycle = ${Cycle}" \
                                                "  Outer = ${OuterLoop}" \
 			                       "  Phase = ${Phase4DVAR}"
-        echo "Check ${RunDir}/log.roms for details ..."
+        echo "Check ${da_log} for details ..."
         exit 1
       fi
     fi
@@ -744,7 +744,7 @@ while [ $SDAY -le $L_DN ]; do
         echo "Error while running 4D-Var System:  Cycle = ${Cycle}" \
                                                "  Outer = ${OuterLoop}" \
 			                       "  Phase = ${Phase4DVAR}"
-        echo "Check ${RunDir}/log.roms for details ..."
+        echo "Check ${nl_log} for details ..."
         exit 1
       fi
     fi
