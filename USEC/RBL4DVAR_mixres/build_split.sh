@@ -249,7 +249,7 @@ if [ $nl_exe -eq 1 ]; then
 
   export     MY_CPP_FLAGS="${MY_CPP_FLAGS} -DOMEGA_IMPLICIT"
 
-  export     MY_CPP_FLAGS="${MY_CPP_FLAGS} -DDIURNAL_SRFLUX"   # NAM forcing
+# export     MY_CPP_FLAGS="${MY_CPP_FLAGS} -DDIURNAL_SRFLUX"   # NAM forcing
 
   export     MY_CPP_FLAGS="${MY_CPP_FLAGS} -DOUT_DOUBLE"
 # export     MY_CPP_FLAGS="${MY_CPP_FLAGS} -DSINGLE_PRECISION"
@@ -267,7 +267,7 @@ fi
  export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DRPCG"
 #export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DTIME_CONV"
 
-#export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DADJUST_BOUNDARY"
+ export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DADJUST_BOUNDARY"
 #export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DADJUST_STFLUX"
 #export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DADJUST_WSTRESS"
 
@@ -276,6 +276,15 @@ fi
 #export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DCHECKSUM"
 #export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DOUTPUT_STATS"
 #export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DCHECK_OPEN_FILES"
+
+if [ $pio_lib -eq 1 ]; then
+  echo " "
+  export     MY_CPP_FLAGS="${MY_CPP_FLAGS} -DDELAYED_SYNC_PIO"
+fi
+
+ export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DDEFLATE"
+ export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DDELAYED_SYNC_NF90"
+ export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DOUT_NETCDF4"
 
 #export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DDEBUGGING"
 #export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DPOSITIVE_ZERO"

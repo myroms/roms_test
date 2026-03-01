@@ -1,12 +1,12 @@
 /*
-** svn $Id
+** git $Id
 *******************************************************************************
 ** Copyright (c) 2002-2026 The ROMS Group                                    **
 **   Licensed under a MIT/X style license                                    **
 **   See License_ROMS.md                                                     **
 *******************************************************************************
 **
-** Mid-Atlantic Bight Application
+** East Coast Community Ocean Forecast System
 **
 ** Application flag:   USEC
 ** Input script:       roms_nl_usec.in     ! not yet created
@@ -19,14 +19,15 @@
 #define UV_ADV
 #define UV_COR
 #define UV_VIS2
-#define MIX_S_UV                  /* momentum mixing on s-surfaces */
+#define MIX_S_UV
 #define TS_DIF2
-#define MIX_GEO_TS                /* tracer mixing on constant z surfaces */
+#define MIX_GEO_TS
 #define SOLVE3D
 #define SALINITY
 #define NONLIN_EOS
 
 #define ATM_PRESS
+#define PRESS_COMPENSATE
 
 /* Basic numerics options */
 
@@ -35,12 +36,7 @@
 #define DJ_GRADPS
 #define CURVGRID
 #define MASKING
-
-
-/* The following options are appropriate for NENA when run with 
-   (1) HYCOM initial and open boundary data 
-   (2) NCEP daily average surface marine atmospheric forcing data
-   (3) tides */
+#define WTYPE_GRID
 
 /* Surface and bottom boundary conditions */
 
@@ -50,19 +46,18 @@
 
 #define CRAIG_BANNER
 #define CHARNOK
+#define LIMIT_STFLX_COOLING
 #define WIND_MINUS_CURRENT
 
-#define PRIOR_BULK_FLUXES
-
 #ifdef BULK_FLUXES
-# undef  LONGWAVE        /* undef forces read net longwave */
-# define LONGWAVE_OUT    /* define to read downward longwave, compute outgoing */
-# define EMINUSP         /* evap from latent heat and combine with NCEP rain */
+# define COOL_SKIN
+# undef  LONGWAVE
+# define LONGWAVE_OUT
+# define EMINUSP
 # undef  SRELAXATION
 # undef  QCORRECTION
-# undef  ANA_WINDS
 #endif
-#define SOLAR_SOURCE     /* solar shortwave distributed over water column */
+#define SOLAR_SOURCE
 #define ANA_BSFLUX
 #define ANA_BTFLUX
 
@@ -80,50 +75,34 @@
 
 /* Open boundary condition settings */
 
-#define SSH_TIDES          /* Activated tides for initial, simple case */
-#define UV_TIDES           /* Reactivated when tidal data acquired     */
-
-#undef TIDE_GENERATING_FORCES
+#define SSH_TIDES
+#define UV_TIDES
+#define TIDE_GENERATING_FORCES
 
 #ifdef SSH_TIDES
 # undef RAMP_TIDES
-# define ADD_FSOBC         /* Tide data is added to OBC from HYCOM */
+# define ADD_FSOBC
 #endif
 #ifdef UV_TIDES
-# define ADD_M2OBC         /* Tide data is added to OBC from HYCOM */
+# define ADD_M2OBC
 #endif
 
 /*
 **  Common options to all 4DVAR algorithms.
 */
 
-#if defined ARRAY_MODES              || \
-    defined CLIPPING                 || \
-    defined I4DVAR                   || \
-    defined I4DVAR_ANA_SENSITIVITY   || \
-    defined RBL4DVAR                 || \
-    defined RBL4DVAR_ANA_SENSITIVITY || \
-    defined RBL4DVAR_FCT_SENSITIVITY || \
-    defined R4DVAR                   || \
-    defined R4DVAR_ANA_SENSITIVITY   || \
-    defined SPLIT_I4DVAR             || \
-    defined SPLIT_RBL4DVAR           || \
-    defined SPLIT_R4DVAR
-# define PRIOR_BULK_FLUXES
-# define FORWARD_FLUXES
-# define VCONVOLUTION
-# define IMPLICIT_VCONV
-# ifdef BALANCE_OPERATOR
-#  define ZETA_ELLIPTIC
-# endif
-# define FORWARD_WRITE
-# define FORWARD_READ
-# define FORWARD_MIXING
-#endif
+#define PRIOR_BULK_FLUXES
+#define FORWARD_FLUXES
+#define FORWARD_WRITE
+#define VCONVOLUTION
+#define IMPLICIT_VCONV
+#define FORWARD_READ
+#define FORWARD_MIXING
 
 /*
 **  I/O files.
 */
 
 #define NO_LBC_ATT
+#undef  STATIONS
 
