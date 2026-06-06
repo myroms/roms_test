@@ -6,18 +6,52 @@
 
 **Results**:      www.myroms.org/wiki/4DVar_Normalization_Tutorial
 
-This directory includes various files to compute the 4-Dimensional
-Variational (**4D-Var**) data assimilation error covariance
-normalization coefficients for the California Current System,
-1/3 degree resolution, application (**WC13**).
+This directory includes various files needed to model the spreading of the background-error covariance matrix (**B**) in 4-dimensional data assimilation applications for the California Current System at 1/3-degree resolution (**WC13**). It also tests the associated error hypothesis for **B** using Dirac delta functions, with the specified correlation functions for each variable in the control vector.
 
-The computation of **4D-Var** error covariance normalization
-coefficients is very expensive. It depends on the grid size.
-The ones computed here use the expensive **exact** method. For
-large grids, we need to use the **randomization** approach. The
-normalization coefficients must be computed only once for
-a particular application, provided that the grid, land/sea
-masking (if any), and decorrelation scales remain the same.
+In **ROMS**, the **B** matrix is factorized according to Weaver and Courtier (2001) as follows:
+
+$$ \boldsymbol{B = K_{b} \Sigma C \Sigma{^T} {K_{b}}^{T}} $$
+
+Here, $\boldsymbol{K_b}$ represents the balanced components of the background error, $\boldsymbol{\Sigma}$ denotes the diagonal matrix of standard deviations, and $\boldsymbol{C}$ is the correlation matrix. Spreading is commonly modeled using pseudo-diffusion operators in the spatial correlation space, as outlined by Weaver and Coutier (2001), Weaver and Mirouze (2013), and Weaver et al. (2016, 2018). In these models, the diffusion coefficient, $\kappa$, is proportional to the square of the correlation length scale:
+
+$$ {\delta\eta\over\delta{s}} - \nabla(\kappa\nabla\eta) = 0$$
+
+
+A square root factorization of the correlation matrix $\boldsymbol{C}$ is employed to maintain symmetry despite rounding errors,
+
+$$ \boldsymbol{ C = \Lambda {\mathcal{L}^{1/2}} {W^{-1}} {\mathcal{L}^{T/2}} \Lambda } $$
+
+In this context, $\boldsymbol{\Lambda}$ is a diagonal matrix of the normalization factors ensuring that $\boldsymbol{C}$ ranges $\pm 1$, $\boldsymbol{\mathcal{L}}$ represents the matrix obtained by solving the linearized diffusion operator, and $\boldsymbol{W}$ is a diagonal matrix corresponding to the grid cell area or volume.
+
+The objective is to compute the $\boldsymbol{\Lambda}$ normalization coefficients, which remain invariant for a fixed application grid and specified correlation scales. It is **advisable** to compute these coefficients independently of the 4D-Var application, as computational costs increase with grid size. The normalization coefficients may be determined using either an **exact** or an **approximate** method. The **exact** approach is computationally intensive, as $\boldsymbol{\Lambda}$ is obtained by perturbing each model grid cell with a delta function scaled by the area (for 2D factors) or volume (for 3D factors), followed by convolution with the square-root diffusion operators. The **approximate** method is more computationally efficient and employs the **randomization** technique described by Fisher and Courtier (1995). In this approach, the grid is initialized with random numbers drawn from a normal distribution with zero mean and unit variance. These values are then scaled by the inverse of the square root of the cell area (for 2D factors) or volume (for 3D factors) and convolved with the square-root diffusion operator over a specified number of iterations, denoted as **Nrandom**.
+
+Within **ROMS**, the background error covariance matrix may be represented using either a multi-scale or a mono-scale approach. The multi-scale formulation expresses **B** as a linear combination of distinct spatial scales, allowing representation of both broad structures and fine-scale features and reducing scale aliasing in the data assimilation cost function (Weaver et al., 2016). In contrast, the mono-scale formulation employs a single spatial scale. The multi-scale approach, as described by Weaver _et al._ (2016), employs an implicit horizontal pseudo-diffusion operator implemented via a Lanczos formulation of the Conjugate Gradient (**CG**) and Chebyshev Iteration (**CI**) solvers, whereas the mono-scale default method uses an explicit horizontal algorithm. The **CG** solver computes the Ritz extrema eigenvalues required by the **CI** algorithm, which remain invariant for a fixed application grid and a given value of $\kappa$, allowing these estimates to be precomputed and stored. The **CG** algorithm is initialized with random vectors when computing the normalization factors, $\boldsymbol{\Lambda}$, which are computationally intensive. Error correlations are assumed to be separable in the horizontal and vertical directions. The vertical diffusion operator is implicit in both approaches. The multi-scale algorithm is activated by selecting the **MULTI_SCALE_B** option.
+
+The multi-scale concept, represented as $\boldsymbol{B = \sum_{i}^{ns} {W_i} {B_i}}$, involves a weighted sum of $\boldsymbol{B_i}$ values across multiple $\boldsymbol{ns}$ scales. In practical applications, two or more distinct scales are typically combined. The weight coefficients must sum to unity, $\boldsymbol{\sum_{i}^{ns} {W_i}= 1}$.
+
+A key advantage of the implicit horizontal multi-scale operator is its capacity to accommodate spatially varying correlation length scales for the $\kappa$-diffusion coefficient tensor. When the **NONUNIFORM_SCALES** option is enabled, a horizontal map of **isotropic** or **anisotropic** correlations can be specified and imported from an input NetCDF file.
+
+For the **WC13** configuration, **B**-spreading and smoothing are scaled in proportion to the local Rossby radius, as described below. Currently, the spatially varying correlations are strictly two-dimensional, and their values are replicated at each vertical level for three-dimensional variables in the control vector. The distribution of horizontal correlation scales is obtained from the input NetCDF file. For temperature, the following applies:
+
+``` d
+	double temp_Bcorr(Nscale, axis, eta_rho, xi_rho) ;
+		temp_Bcorr:long_name = "potential temperature horizontal background-error decorrelation length scales" ;
+		temp_Bcorr:units = "meter" ;
+		temp_Bcorr:standard_name = "sea_water_potential_temperature" ;
+		temp_Bcorr:grid = "grid" ;
+		temp_Bcorr:location = "face" ;
+		temp_Bcorr:axis = "1: abscissa, 2: ordinate" ;
+		temp_Bcorr:depth = "replicated" ;
+		temp_Bcorr:coordinates = "lon_rho lat_rho axis Nscale" ;
+		temp_Bcorr:_FillValue = 1.e+37 ;
+```
+
+The **axis** dimension is set to **2**, where **1** corresponds to the **x**-axis (abscissa, **i**-index) and **2** to the **y**-axis (ordinate, **j**-index) of the correlation map. If the values for the **x**- and **y**-axes are identical, the resulting correlation shapes are **isotropic**. Otherwise, the map produces **anisotropic** correlations. Several input files are provided as follows:
+
+- Isotropic correlation with spatially varying Rossby radius in both the **x**- and **y**-directions, where the values are equal (**`wc13_Bcorr_xy.nc`** file).
+- Anisotropic correlation with a spatially varying Rossby radius in the **x**-direction and a constant value of 30 km in the **y**-direction (**`wc13_Bcorr_x.nc`** file).
+- Anisotropic correlation with a spatially varying Rossby radius in the **y**-direction and a constant value of 30 km in the **x**-direction (**`wc13_Bcorr_y.nc`** file).
+
 
 ### Important CPP Options:
 ```
