@@ -23,7 +23,7 @@
 #       files.                                                        #
 #   (5) Specify model, initial conditions, boundary conditions, and   #
 #       surface forcing error convariance input/output normalization  #
-#       factors files.                                                #
+#       factors filenames.                                            #
 #   (6) Copy a clean copy of the observations NetCDF file.            #
 #   (7) Create 4D-Var input script "r4dvar.in" from template and      #
 #       specify the error covariance standard deviation, error        #
@@ -81,13 +81,68 @@
 
  set STDnameC=wc13_std_computed.nc
 
-# Set model, initial conditions, boundary conditions and surface
-# forcing error covariance normalization factors files.
+# Set spatially-varying background-error correlation length scales.
+# The spatial variability in the file is either is X- or Y-directions.
+# The opposite axis has constant length scales.
 
+ set multiscale = 0
+#set multiscale = 1
+
+ set b_axis = 0;                           # uniform, no variability file
+#set b_axis = 1;                           # x- and y-axis variability
+#set b_axis = 2;                           # x-axis variability
+#set b_axis = 3;                           # y-axis variability
+
+if ( ${b_axis} == 1) then
+ set SVCname=../Data/wc13_Bcorr_xy.nc      # isotropic
+else if ( ${b_axis} == 2) then
+ set SVCname=../Data/wc13_Bcorr_x.nc       # anisotropic
+else if ( ${b_axis} == 3) then
+ set SVCname=../Data/wc13_Bcorr_y.nc       # anisotropic
+else
+ set SVCname=../Data/wc13_Bcorr.nc         # isotropic
+endif
+
+# Set model, initial conditions, boundary conditions and surface
+# forcing error covariance normalization factors filenames.
+
+if ( ${multiscale} == 1) then
+ echo "Multi-scale configuration, multiscale = ${multiscale}"
+ echo "b_axis = ${b_axis}"
+ echo "SVCname = ${SVCname}"
+
+ if ( ${b_axis} == 1) then
+  echo "Spatially-varying correlation: x- and y-axis"
+  set NRMnameM=../Data/wc13_nrm_xy_multiscale_i.nc
+  set NRMnameI=../Data/wc13_nrm_xy_multiscale_i.nc
+  set NRMnameB=../Data/wc13_nrm_xy_multiscale_b.nc
+  set NRMnameF=../Data/wc13_nrm_xy_multiscale_f.nc
+ else if ( ${b_axis} == 2) then
+  echo "Spatially-varying correlation: x-axis"
+  set NRMnameM=../Data/wc13_nrm_x_multiscale_i.nc
+  set NRMnameI=../Data/wc13_nrm_x_multiscale_i.nc
+  set NRMnameB=../Data/wc13_nrm_x_multiscale_b.nc
+  set NRMnameF=../Data/wc13_nrm_x_multiscale_f.nc
+ else if ( ${b_axis} == 3) then
+  echo "Spatially-varying correlation: y-axis"
+  set NRMnameM=../Data/wc13_nrm_y_multiscale_i.nc
+  set NRMnameI=../Data/wc13_nrm_y_multiscale_i.nc
+  set NRMnameB=../Data/wc13_nrm_y_multiscale_b.nc
+  set NRMnameF=../Data/wc13_nrm_y_multiscale_f.nc
+ else 
+  echo "Uniform correlation: x- and y-axis"
+  set NRMnameM=../Data/wc13_nrm_uniform_multiscale_i.nc
+  set NRMnameI=../Data/wc13_nrm_uniform_multiscale_i.nc
+  set NRMnameB=../Data/wc13_nrm_uniform_multiscale_b.nc
+  set NRMnameF=../Data/wc13_nrm_uniform_multiscale_f.nc
+ endif
+else
+ echo "Mono-scale configuration, multiscale = ${multiscale}"
  set NRMnameM=../Data/wc13_nrm_m.nc
  set NRMnameI=../Data/wc13_nrm_i.nc
  set NRMnameB=../Data/wc13_nrm_b.nc
  set NRMnameF=../Data/wc13_nrm_f.nc
+endif
 
 # Set observations file.
 
@@ -106,6 +161,7 @@
  endif
  cp -v s4dvar.in $RBL4DVAR
 
+ $SUBSTITUTE $RBL4DVAR roms_svc.nc   $SVCname
  $SUBSTITUTE $RBL4DVAR roms_std_m.nc $STDnameM
  $SUBSTITUTE $RBL4DVAR roms_std_i.nc $STDnameI
  $SUBSTITUTE $RBL4DVAR roms_std_b.nc $STDnameB
