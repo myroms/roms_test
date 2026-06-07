@@ -1,3 +1,4 @@
+<img width="1845" height="2146" alt="temp_Bcorr_RR" src="https://github.com/user-attachments/assets/693f74aa-28b3-488f-8df6-6c019b8ffbc3" />
 <img width="600" alt="image" src="https://github.com/myroms/roms_test/assets/23062912/ad6a7ef1-1fed-4b2e-96b9-9c53615b9333">
 
 ## 4D-Var Tutorial:
@@ -51,6 +52,9 @@ The **axis** dimension is set to **2**, where **1** corresponds to the **x**-axi
 - Isotropic correlation with spatially varying Rossby radius in both the **x**- and **y**-directions, where the values are equal (**`wc13_Bcorr_xy.nc`** file).
 - Anisotropic correlation with a spatially varying Rossby radius in the **x**-direction and a constant value of 30 km in the **y**-direction (**`wc13_Bcorr_x.nc`** file).
 - Anisotropic correlation with a spatially varying Rossby radius in the **y**-direction and a constant value of 30 km in the **x**-direction (**`wc13_Bcorr_y.nc`** file).
+
+<img width="600" alt="temp_Bcorr_RR" src="https://github.com/user-attachments/assets/c72c774e-9b92-4fd7-ac24-ec342c3c9971" />
+
 
 
 ### Important CPP Options:
