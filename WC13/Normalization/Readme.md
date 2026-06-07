@@ -62,39 +62,38 @@ The following figure shows a map of the first baroclinic Rossby radius, with a l
 > Users are responsible for generating the input spatially varying decorrelation scales NetCDF file. The metadata schema, provided as a **CDL** file, is available in [s4dvar_Bcorrelation.cdl](https://github.com/myroms/roms/blob/develop/Data/ROMS/CDL/s4dvar_Bcorrelation.cdl).
 
 
-
-
 ### Important CPP Options:
 ```
    NORMALIZATION         4D-Var error covariance normalization factors
+   ADJUST_BOUNDARY       Including boundary conditions in 4D-Var state estimation
+   ADJUST_STFLUX         Including surface tracer flux in 4D-Var state estimation
+   ADJUST_WSTRESS        Including surface wind stress in 4D-Var state estimation
+   DIRAC                 Background-error covariance spreading with Dirac delta functions
+   MULTI_SCALE_B         Multi-scale background error covariance matrix modeling
+   MULTI_SCALE_DEBUG     Multi-scale implicit solvers convergence reporting, fort.45
+   NONUNIFORM_SCALES     Spatially-varying decorrelation length scales from the NetCDF file
    WC13                  Application CPP option
 ```
 
 ### Input NetCDF Files:
 ```
                        Grid File:  ../Data/wc13_grd.nc
-          Nonlinear Initial File:  wc13_ini.nc
-                 Forcing File 01:  ../Data/coamps_wc13_lwrad_down.nc
-                 Forcing File 02:  ../Data/coamps_wc13_Pair.nc
-                 Forcing File 03:  ../Data/coamps_wc13_Qair.nc
-                 Forcing File 04:  ../Data/coamps_wc13_rain.nc
-                 Forcing File 05:  ../Data/coamps_wc13_swrad.nc
-                 Forcing File 06:  ../Data/coamps_wc13_Tair.nc
-                 Forcing File 07:  ../Data/coamps_wc13_wind.nc
-                   Boundary File:  ../Data/wc13_ecco_bry.nc
 
      Initial Conditions STD File:  ../Data/wc13_std_i.nc
                   Model STD File:  ../Data/wc13_std_m.nc
     Boundary Conditions STD File:  ../Data/wc13_std_b.nc
         Surface Forcing STD File:  ../Data/wc13_std_f.nc
+
+  Correlation Length Scales File:  ../Data/wc13_Bcorr_{xy, x, y}.nc
 ```
 
-### Output NetCDF Files:
+### Output NetCDF Files: (depends on configuration)
 ```
-    Initial Conditions Norm File:  wc13_nrm_i.nc
-                 Model Norm File:  wc13_nrm_m.nc
-   Boundary Conditions Norm File:  wc13_nrm_b.nc
-       Surface Forcing Norm File:  wc13_nrm_f.nc
+    Initial Conditions Norm File:  wc13_nrm_i.nc, wc13_nrm_monoscale_i.nc, wc13_nrm_{xy, x, y}_multiscale_i.nc
+                 Model Norm File:  wc13_nrm_m.nc, wc13_nrm_monoscale_m.nc, wc13_nrm_{xy, x, y}_multiscale_m.nc
+   Boundary Conditions Norm File:  wc13_nrm_b.nc, wc13_nrm_monoscale_b.nc, wc13_nrm_{xy, x, y}_multiscale_b.nc
+       Surface Forcing Norm File:  wc13_nrm_f.nc, wc13_nrm_monoscale_f.nc, wc13_nrm_{xy, x, y}_multiscale_f.nc
+       Dirac Tangent Linear File:  wc13_tlm.nc
 ```
 ### Configuration and Input Scripts:
 ```
@@ -109,72 +108,62 @@ The following figure shows a map of the first baroclinic Rossby radius, with a l
 ```
 ### Important Parameters:
 
-Since we are modeling the error covariance matrix, **D**, we need to
-compute the normalization coefficients to ensure that the diagonal
-elements of the associated correlation matrix **C** are equal to unity.
-There are two methods to compute normalization coefficients: **exact**
-and **randomization** (an approximation).
-
-The **exact method** is very expensive on large grids. The normalization
-coefficients are computed by perturbing each model grid cell with a
-delta function scaled by the area (2D state variables) or volume
-(3D state variables), and then by convolving with the squared-root
-adjoint and tangent linear diffusion operators.
-
-The **randomization method** is cheaper. The normalization coefficients
-are computed using the approach of Fisher and Courtier
-(1995). The coefficients are initialized with random numbers having
-a uniform distribution (drawn from a normal distribution with zero
-mean and unit variance). Then, they are scaled by the inverse
-squared-root of the cell area (2D state variable) or volume (3D state
-variable) and convolved with the squared-root adjoint and tangent
-diffusion operators over a specified number of iterations, **Nrandom**.
-
 Check the following parameters in the **4D-Var** input script **s4dvar.in**:
 ```
-      Nmethod  == 0             ! normalization method
-      Nrandom  == 5000          ! randomization iterations
+      Nmethod  == 0               ! normalization method (0: exact, 1:randomization)
+      Nrandom  == 5000            ! randomization iterations
 
-      LdefNRM == T T T T        ! Create a new normalization files
-      LwrtNRM == T T T T        ! Compute and write normalization
+      LdefNRM == T F T T          ! Create a new normalization file(s)
+      LwrtNRM == T F T T          ! Compute and write normalization
 
-      CnormI(isFsur) =  T       ! 2D variable at RHO-points
-      CnormI(isUbar) =  T       ! 2D variable at U-points
-      CnormI(isVbar) =  T       ! 2D variable at V-points
-      CnormI(isUvel) =  T       ! 3D variable at U-points
-      CnormI(isVvel) =  T       ! 3D variable at V-points
-      CnormI(isTvar) =  T T     ! NT tracers
+      CnormI(isFsur) =  T         ! 2D variable at RHO-points
+      CnormI(isUbar) =  T         ! 2D variable at U-points
+      CnormI(isVbar) =  T         ! 2D variable at V-points
+      CnormI(isUvel) =  T         ! 3D variable at U-points
+      CnormI(isVvel) =  T         ! 3D variable at V-points
+      CnormI(isTvar) =  T T       ! NT tracers
 
-      CnormB(isFsur) =  T       ! 2D variable at RHO-points
-      CnormB(isUbar) =  T       ! 2D variable at U-points
-      CnormB(isVbar) =  T       ! 2D variable at V-points
-      CnormB(isUvel) =  T       ! 3D variable at U-points
-      CnormB(isVvel) =  T       ! 3D variable at V-points
-      CnormB(isTvar) =  T T     ! NT tracers
+      CnormB(isFsur) =  T          ! 2D variable at RHO-points
+      CnormB(isUbar) =  T          ! 2D variable at U-points
+      CnormB(isVbar) =  T          ! 2D variable at V-points
+      CnormB(isUvel) =  T          ! 3D variable at U-points
+      CnormB(isVvel) =  T          ! 3D variable at V-points
+      CnormB(isTvar) =  T T        ! NT tracers
 
-      CnormF(isUstr) =  T       ! surface U-momentum stress
-      CnormF(isVstr) =  T       ! surface V-momentum stress
-      CnormF(isTsur) =  T T     ! NT surface tracers flux
+      CnormF(isUstr) =  T          ! surface U-momentum stress
+      CnormF(isVstr) =  T          ! surface V-momentum stress
+      CnormF(isTsur) =  T T        ! NT surface tracers flux
+
+       Dirac(isFsur) == 25 20      ! free-surface (i,j)
+       Dirac(isUbar) == 15 30      ! 2D U-momentum (i,j)
+       Dirac(isVbar) == 15 35      ! 2D V-momentum (i,j)
+
+       Dirac(isUvel) == 15 30 30   ! 3D U-momentum (i,j,k)
+       Dirac(isVvel) == 15 35 30   ! 3D V-momentum (i,j,k)
+       Dirac(isTvar) == 30 20 30 \ ! temperature (i,j,k)
+                        20 40 30   ! salinity (i,j,k)
+
+       Dirac(isTsur) == 20  15   \ ! surface heat flux (i,j)
+                        25  20     ! surface salt flux (i,j)
+
+       Dirac(isUstr) == 18  30     ! surface U-momentum stress (i,j)
+       Dirac(isVstr) == 18  35     ! surface V-momentum stress (i,j)
+
+              Nscale ==  1         ! number of B-multiscales
+             NiterCG == 20         ! number of Lanczos CG solver iterations
+             NiterCI == 20         ! number of Chebyshev Iterations (CI) steps
+        Mlap(is....) == 10         ! number of implicit smoother applications
+
+        Bwgt(is....) == 1.0d0      ! B-multiscales combination weights
 ```
 
-This directory computes the normalization coefficients using the
-**exact** method since this application has a small grid (**54x53x30**)
-and creates the following files:
+If **NONUNIFORM_SCALES** is not enabled, you must specify the horizontal **isotropic** decorrelation scales **HdecayM**, **HdecayI**, and **HdecayF** (default monoscale case) in the **`s4dvar.in`** input script. If, in addition, **MULTI_SCALE_B** is enabled, **ROMS** will read the uniform **X**- and **Y**-direction decorrelation pairs (**HdecayMX**, **HdecayMY**), (**HdecayIX**, **HdecayIY**), and (**HdecayFX**, **HdecayFY**) from the **`s4dvar.in`** script for the multiscale case. When the **X**- and **Y**-direction scales differ, the resulting correlation shapes are **anisotropic**. Otherwise, they will be **isotropic**. The multiscale correlation concept does not apply to the unidirectional lateral boundary condition scales (**HdecayB**) in the control vector.
 
-```
-      wc13_nrm_i.nc             initial conditions
-      wc13_nrm_m.nc             model error (weak constraint)
-      wc13_nrm_b.nc             open boundary conditions
-      wc13_nrm_f.nc             surface forcing (wind stress and net heat flux)
-```
+If **Nscale** is greater than **1**, you must specify distinct decorrelation scales in the **X**- and **Y**-directions for the cumulative multiscale **B**. This is necessary because broad structures and fine-scale features are combined in the data assimilation error hypothesis.
 
-The normalization coefficients need to be computed only once
-for a particular application provided that the grid, land/sea
-masking (if any), and decorrelation scales (**HdecayI**, **VdecayI**,
-**HdecayB**, **VdecayV**, and **HdecayF**) remain the same. Notice that
-large spatial changes in the normalization coefficient
-structure are observed near the open boundaries and land/sea
-masking regions.
+Because background-error correlations are treated as separable in the horizontal and vertical directions, you must always specify the vertical decorrelation scales **VdecayM**, **VdecayI**, and **VdecayB** in the **`s4dvar.in`** input script. The multiscale concept does not apply to the vertical pseudo-diffusion operators.
+
+### Requirements
 
 ### How to Run this Application:
 
@@ -292,15 +281,7 @@ You need to take the following steps:
   The Normalization coefficients have already been computed for
   the **WC13** application using the exact method.
 
-- Analyze the results using the plotting scripts (**ROMS** plotting
-  package) provided in the **`../plotting`** directory:
 
-  - **`ccnt_normalization_f.in`**:  plots error covariance normalization
-                                    coefficients for surface forcing.
-
-  - **`ccnt_normalization_i.in`**:  plots error covariance normalization
-                                    coefficients for initial conditions
-                                    at the surface or at **z=-100m**.
 
 ---
 
