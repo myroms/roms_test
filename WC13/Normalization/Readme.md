@@ -165,121 +165,13 @@ Because background-error correlations are treated as separable in the horizontal
 
 ### Requirements
 
+Before executing this driver, relevant circulation statistics, including the mean and standard deviation, $\boldsymbol{\Sigma}$, for all variables in the control vector (**zeta**, **u**, **v**, **T**, and **S**) must be determined. These statistical fields are extracted from **ROMS** long, nonlinear climatological solutions corresponding to the intended data-assimilation application grid. The standard deviations for the prior (initial conditions), model error (weak constraint formulation), surface forcing (**ADJUST_STFLUX** and **ADJUST_WSTRESS**), and lateral open boundary conditions (**ADJUST_BOUNDARY**) are read from separate input NetCDF files, as mentioned above.
+
+If the **BALANCE_OPERATOR** is enabled, $\boldsymbol{K_b}$, the standard deviations are defined based on the unbalanced background-error covariance. The balance operator imposes a multivariate constraint on the background-error covariance, enabling the extraction of information about unobserved variables from observed data by establishing balance relationships, such as **T-S** empirical formulas, hydrostatic balance, and geostrophic balance, with other state variables (Weaver et al., 2005).
+
 ### How to Run this Application:
 
-You need to take the following steps:
 
-- We need to run the model application for a period that is
-  long enough to compute meaningful circulation statistics,
-  like mean and standard deviations for all prognostic state
-  variables (**zeta**, **u**, **v**, **T**, and **S**). The standard deviations
-  are written to NetCDF files and are read by the **4D-Var**
-  algorithm to convert modeled error correlations to error
-  covariances. The error covariance matrix, **D**, is very large
-  and not well known. It is modeled as the solution of a
-  diffusion equation as in Weaver and Courtier (2001).
-
-  - In this application, we need standard deviations for
-    initial conditions, surface forcing (**ADJUST_WSTRESS** and
-    **ADJUST_STFLUX**), and open boundary conditions (**ADJUST_BOUNDARY**).
-    The standard deviations for the initial and open boundary
-    conditions are in terms of the unbalanced error covariance
-    (**K D<sub>u</sub> K<sup>T</sup>**) since the balanced operator is activated
-    (**BALANCE_OPERATOR** and **ZETA_ELLIPTIC**).
-
-  - The balance operator imposes a multivariate constraint on
-    the error covariance such that the unobserved variable
-    information is extracted from observed data by establishing
-    balance relationships (*i.e.*, **T-S** empirical formulas,
-    hydrostatic balance, and geostrophic balance) with other
-    state variables (Weaver *et al.*, 2005).
-
-  - These standard deviations `have already been created` for you:
-    ```
-      ../Data/wc13_std_m.nc     model error
-      ../Data/wc13_std_i.nc     initial conditions
-      ../Data/wc13_std_b.nc     open boundary conditions
-      ../Data/wc13_std_f.nc     surface forcing (wind stress and net heat flux)
-    ```
-
-- The model error normalization coefficients are computed if
-  **NADJ < NTIMES** in **roms_wc13.in**. In this application,
-  **NADJ = 48** to force the computation of model error, **Q**,
-  normalization coefficients.
-  ```
-      NTIMES == 192
-      ...
-        NADJ == 48      ! force to compute model error normalization factors
-      ! NADJ == 192     ! avoid computing  model error normalization factors
-  ```
-- Customize your preferred **build** script and provide the
-  appropriate values for:
-
-  - Root directory, **MY_ROOT_DIR**
-  - **ROMS** source code path, **MY_ROMS_SRC**
-  - Fortran compiler, **FORT**
-  - MPI flags, **USE_MPI** and **USE_MPIF90**
-  - Path of **MPI**, **NetCDF**, and **ARPACK** libraries according to
-    the compiler. Notice that you need to provide the
-    correct locations of these libraries for your computer.
-    If you want to ignore this section, comment (turn off) the
-    assignment for the macro **USE_MY_LIBS**.
-
-- Notice that the most important CPP options for this application
-  are specified in the **build** script instead of the header file
-  **wc13.h** allows flexibility with different CPP options:
-  ```
-      setenv MY_CPP_FLAGS "${MY_CPP_FLAGS} -DNORMALIZATION"
-  ```
-  For this to work, however, any **#undef** directives **must** be
-  avoided in the header file **wc13.h** since it has precedence
-  during C-preprocessing.
-
-- You **must** use any of the **build** scripts to compile.
-
-- Customize the **ROMS** input script **roms_wc13.in** and specify
-  the appropriate values for the distributed-memory tile partition.
-  It is set by default to:
-  ```
-      NtileI == 1                               ! I-direction partition
-      NtileJ == 8                               ! J-direction partition
-  ```
-  Notice that the adjoint-based algorithms can only be run
-  in parallel using **MPI**.  This is because of the way that the
-  adjoint model is constructed.
-
-- Customize the configuration script **job_normalization.csh** and provide
-  the appropriate place for the **substitute** Perl script:
-  ```
-      set SUBSTITUTE=${ROMS_ROOT}/ROMS/Bin/substitute
-  ```
-  This Perl script is distributed with **ROMS**, and it is found in the
-  **ROMS/Bin** sub-directory. Alternatively, you can define
-  **ROMS_ROOT** environmental variable in your login script. For example,
-  I have:
-  ```
-      setenv ROMS_ROOT ${HOME}/ocean/repository/git/roms
-  ```
-- Execute the configuration **job_normalization.csh** `BEFORE`
-  running the model.  It copies the required files and
-  creates **c4dvar.in** input script from template **s4dvar.in**.
-
-- Run **ROMS** data assimilation normalization:
-  ```
-      mpirun -np 8 romsM roms_wc13.in > & log &
-  ```
-
-- We recommend creating a new subdirectory **exact** or **random**,
-  and saving the solution in it for analysis and plotting to avoid
-  overwriting output files when playing with different CPP options
-  and parameters. For example:
-  ```
-      mkdir exact
-      mv Build_roms c4dvar.in *.nc log exact
-      cp -p romsM roms_wc13.in exact
-  ```
-  The Normalization coefficients have already been computed for
-  the **WC13** application using the exact method.
 
 
 
@@ -287,24 +179,14 @@ You need to take the following steps:
 
 ### References:
 
-- Moore, A.M., H.G. Arango, G. Broquet, B.S. Powell, A.T. Weaver,
-  and J. Zavala-Garay, **2011**: The Regional Ocean Modeling System
-  (ROMS)  4-dimensional variational data assimilation systems,
-  Part I - System overview and formulation, *Prog. Oceanogr.*,
-  **91**, 34-49, https://doi.org/10.1016/j.pocean.2011.05.004.
+Moore, A.M., H.G. Arango, G. Broquet, B.S. Powell, A.T. Weaver, and J. Zavala-Garay, **2011**: The Regional Ocean Modeling System (ROMS)  4-dimensional variational data assimilation systems, Part I - System overview and formulation, *Prog. Oceanogr.*, **91**, 34-49, [doi:10.1016/j.pocean.2011.05.004](https://doi.org/10.1016/j.pocean.2011.05.004).
 
-- Moore, A.M., H.G. Arango, G. Broquet, C. Edward, M. Veneziani,
-  B. Powell, D. Foley, J.D. Doyle, D. Costa, and P. Robinson,
-  **2011**: The Regional Ocean Modeling System (ROMS) 4-dimensional
-  variational data assimilations systems, Part II - Performance
-  and application to the California Current System, *Prog.
-  Oceanogr.*, **91**, 50-73,
-  https://doi.org/10.1016/j.pocean.2011.05.003.
+Moore, A.M., H.G. Arango, G. Broquet, C. Edward, M. Veneziani, B. Powell, D. Foley, J.D. Doyle, D. Costa, and P. Robinson, **2011**: The Regional Ocean Modeling System (ROMS) 4-dimensional variational data assimilations systems, Part II - Performance and application to the California Current System, *Prog.Oceanogr.*, **91**, 50-73,
+  [doi:10.1016/j.pocean.2011.05.003](https://doi.org/10.1016/j.pocean.2011.05.003).
 
-- Moore, A.M., H.G. Arango, G. Broquet, C. Edward, M. Veneziani,
-  B. Powell, D. Foley, J.D. Doyle, D. Costa, and P. Robinson,
-  **2011**: The Regional Ocean Modeling System (ROMS) 4-dimensional
-  variational data assimilations systems, Part III - Observation
-  impact and observation sensitivity in the California Current
-  System, *Prog. Oceanogr.*, **91**, 74-94,
-  https://doi.org/10.1016/j.pocean.2011.05.005.
+Moore, A.M., H.G. Arango, G. Broquet, C. Edward, M. Veneziani, B. Powell, D. Foley, J.D. Doyle, D. Costa, and P. Robinson, **2011**: The Regional Ocean Modeling System (ROMS) 4-dimensional variational data assimilations systems, Part III - Observation impact and observation sensitivity in the California Current System, *Prog. Oceanogr.*, **91**, 74-94, [doi:10.1016/j.pocean.2011.05.005](https://doi.org/10.1016/j.pocean.2011.05.005).
+  
+Weaver, A.T. and I. Mirouze, **2013**: On the diffusion equation and its application to isotropic and anisotropic correlation modeling in variational assimilation, _Q. J. R. Meteorol. Soc._, **139,** 242-260, [doi:10.1002/qj.1955](https://doi.org/10.1002/qj.1955).
+
+Weaver, A.T., Tshimanga, J., and A. Piacentini, **2016**: Correlation operators based on an implicitly formulated diffusion equation solved with the Chebyshev iteration, _Q. J. R. Meteorol. Soc._, **142**, 455-471, [doi: 10.1002/qj.2664](https://doi.org/10.1002/qj.2664).
+
