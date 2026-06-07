@@ -1,6 +1,6 @@
 <img width="600" alt="image" src="https://github.com/myroms/roms_test/assets/23062912/ad6a7ef1-1fed-4b2e-96b9-9c53615b9333">
 
-## 4D-Var Tutorial:
+## 4D-Var Tutorial: B-Normalization Factors and Dirac Testing
 
 **Information**:  www.myroms.org/wiki/4DVar_Tutorial_Introduction
 
