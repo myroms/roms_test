@@ -175,12 +175,49 @@ The following figures show the **WC13** standard deviation for free surface (m),
 :--------------------------:|:------------------------:|:-----------------------:
 |<img width="400" alt="zeta+std" src="https://github.com/user-attachments/assets/928b52e9-26f7-41e4-83ff-c2a9f4ff4aab"> | <img width="400" alt="temp_std" src="https://github.com/user-attachments/assets/c28665e9-62cd-49eb-80bb-a95369bb1baa"> | <img width="400" alt="salt_std" src="https://github.com/user-attachments/assets/a3c42ac2-c40a-406e-ae9b-a424c9b40530"> |
 
+### How to Compile ROMS:
 
-### How to Run this Application:
+- To compile **ROMS** background-error covariance matrix normalization factors and Dirac testing driver, use:
+  ``` d
+    build_split.sh -j 10                          creates executable romsM using the standard NetCDF library
+    build_split.sh -pio -j 10                     creates executable romsM using both the standard NetCDF and PIO libraries
+  ```
 
+ Please review the **build** script, as it includes **CPP** options that the user can enable or disable.
 
+- Examine the provided **`job_normalization.csh`** configuration script to turn on the desired option and generate the **`c4dvar.in`** input script from its template **`s4dvar.in`**. Then, execute the script before running:
+  
+  ``` d
+    ./job_normalization.csh
+  ```
+  I am getting the following report for my modified set of options:
 
+  ``` d
+  4D-Var Error Covariance Normalization Coefficients Configuration:
 
+  Multi-scale configuration, multiscale = 1
+  b_axis = 1
+  SVCname = ../Data/wc13_Bcorr_xy.nc
+  Spatially-varying correlation: x- and y-axis
+  's4dvar_norm.in' -> 'c4dvar.in'
+  ```
+
+- To execute **ROMS**, use:
+  
+   ``` d
+   mpirun -n 12 romsM roms_wc13.in > & nrm.log &
+   ``` 
+
+> [!IMPORTANT]  
+> The **`Nmethod=0`** (exact normalization approach) driver requires significant computational resources. For large application grids, **`Nmethod=1`** (approximated randomization approach) is recommended. Typically, the **`LdefNRM`** and **`Cnorm*(is…)`** switches are adjusted, and multiple jobs are submitted to compute normalization factors for each variable in the control vector.
+>
+>* Initially, submit a job to generate the output files required for computing normalization factors for the free-surface, 2D u-momentum, and 2D v-momentum. Enable **`CnormI(isFsur)`**, **`CnormI(isUbar)`**, and **`CnormI(isVbar)`**, while disabling all other **`Cnorm*`** switches. This step produces the necessary NetCDF files for the prior, model, surface-forcing adjustment, and lateral boundary condition adjustments.
+>* Subsequently, disable all **`LdefNRM`** switches.
+>* Submit additional jobs as required for the remaining variables in the control vector by enabling the corresponding **`Cnorm*(is…)`** switch. Note that computation of the 3D variables in the control vector may require additional time.
+
+---
+
+### Results
 
 ---
 
@@ -192,8 +229,11 @@ Moore, A.M., H.G. Arango, G. Broquet, C. Edward, M. Veneziani, B. Powell, D. Fol
   [doi:10.1016/j.pocean.2011.05.003](https://doi.org/10.1016/j.pocean.2011.05.003).
 
 Moore, A.M., H.G. Arango, G. Broquet, C. Edward, M. Veneziani, B. Powell, D. Foley, J.D. Doyle, D. Costa, and P. Robinson, **2011**: The Regional Ocean Modeling System (ROMS) 4-dimensional variational data assimilations systems, Part III - Observation impact and observation sensitivity in the California Current System, *Prog. Oceanogr.*, **91**, 74-94, [doi:10.1016/j.pocean.2011.05.005](https://doi.org/10.1016/j.pocean.2011.05.005).
+
+Weaver, A. and P. Courtier, **2001**: Correlation modeling on the sphere using a generalized diffusion equation, *Q.J.R. Meteorol. Soc.* **127**, 1815-1846, [doi:10.1002/qj.49712757518](https://doir.org/10.1002/qj.49712757518).
   
 Weaver, A.T. and I. Mirouze, **2013**: On the diffusion equation and its application to isotropic and anisotropic correlation modeling in variational assimilation, _Q. J. R. Meteorol. Soc._, **139,** 242-260, [doi:10.1002/qj.1955](https://doi.org/10.1002/qj.1955).
 
 Weaver, A.T., Tshimanga, J., and A. Piacentini, **2016**: Correlation operators based on an implicitly formulated diffusion equation solved with the Chebyshev iteration, _Q. J. R. Meteorol. Soc._, **142**, 455-471, [doi: 10.1002/qj.2664](https://doi.org/10.1002/qj.2664).
 
+Weaver, A.T., Gürol, S., Tshimanga, J., Chrust, M., and A. Piacentini, **2018**: "Time"-parallel diffusion-based correlation operators, _Q. J. R. Meteorol. Soc._, **144**, 2067-2088, [doi: 10.1002/qj.3302](https://doi.org/10.1002/qj.3302).
