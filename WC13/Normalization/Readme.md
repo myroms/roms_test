@@ -169,10 +169,11 @@ Before executing this driver, relevant circulation statistics, including the mea
 
 If the **BALANCE_OPERATOR** is enabled, $\boldsymbol{K_b}$, the standard deviations are defined based on the unbalanced background-error covariance. The balance operator imposes a multivariate constraint on the background-error covariance, enabling the extraction of information about unobserved variables from observed data by establishing balance relationships, such as **T-S** empirical formulas, hydrostatic balance, and geostrophic balance, with other state variables (Weaver et al., 2005).
 
-<img width="600" alt="temp_std" src="https://github.com/user-attachments/assets/c28665e9-62cd-49eb-80bb-a95369bb1baa" />
+The following figures show the **WC13** standard deviation for free surface (m), surface temperature (Celsius), and surface salinity:
 
-<img width="600" alt="salt_std" src="https://github.com/user-attachments/assets/a3c42ac2-c40a-406e-ae9b-a424c9b40530" />
-<img width="600" alt="zeta_std" src="https://github.com/user-attachments/assets/928b52e9-26f7-41e4-83ff-c2a9f4ff4aab" />
+| Free Surface              | Surface Temperature      | Surface Salinity       |
+:--------------------------:|:------------------------:|:-----------------------:
+|<img width="400" alt="zeta+std" src="https://github.com/user-attachments/assets/928b52e9-26f7-41e4-83ff-c2a9f4ff4aab"> | <img width="400" alt="temp_std" src="https://github.com/user-attachments/assets/c28665e9-62cd-49eb-80bb-a95369bb1baa"> | <img width="400" alt="salt_std" src="https://github.com/user-attachments/assets/a3c42ac2-c40a-406e-ae9b-a424c9b40530"> |
 
 
 ### How to Run this Application:
