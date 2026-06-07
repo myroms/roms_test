@@ -1,4 +1,3 @@
-<img width="1845" height="2146" alt="temp_Bcorr_RR" src="https://github.com/user-attachments/assets/693f74aa-28b3-488f-8df6-6c019b8ffbc3" />
 <img width="600" alt="image" src="https://github.com/myroms/roms_test/assets/23062912/ad6a7ef1-1fed-4b2e-96b9-9c53615b9333">
 
 ## 4D-Var Tutorial:
@@ -30,9 +29,9 @@ Within **ROMS**, the background error covariance matrix may be represented using
 
 The multi-scale concept, represented as $\boldsymbol{B = \sum_{i}^{ns} {W_i} {B_i}}$, involves a weighted sum of $\boldsymbol{B_i}$ values across multiple $\boldsymbol{ns}$ scales. In practical applications, two or more distinct scales are typically combined. The weight coefficients must sum to unity, $\boldsymbol{\sum_{i}^{ns} {W_i}= 1}$.
 
-A key advantage of the implicit horizontal multi-scale operator is its capacity to accommodate spatially varying correlation length scales for the $\kappa$-diffusion coefficient tensor. When the **NONUNIFORM_SCALES** option is enabled, a horizontal map of **isotropic** or **anisotropic** correlations can be specified and imported from an input NetCDF file.
+A primary advantage of the implicit horizontal multi-scale operator is its ability to accommodate spatially varying correlation length scales for the $\kappa$-diffusion coefficient tensor. When the **NONUNIFORM_SCALES** option is enabled, a horizontal map of **isotropic** or **anisotropic** correlations can be specified and imported from an input NetCDF file.
 
-For the **WC13** configuration, **B**-spreading and smoothing are scaled in proportion to the local Rossby radius, as described below. Currently, the spatially varying correlations are strictly two-dimensional, and their values are replicated at each vertical level for three-dimensional variables in the control vector. The distribution of horizontal correlation scales is obtained from the input NetCDF file. For temperature, the following applies:
+In the **WC13** configuration, **B**-spreading and smoothing are scaled according to the local Rossby radius, as described below. At present, the spatially varying correlations are strictly two-dimensional, and their values are replicated at each vertical level for three-dimensional variables in the control vector. The distribution of horizontal correlation scales is read from the input NetCDF file. For temperature, the following NetCDF schema applies:
 
 ``` d
 	double temp_Bcorr(Nscale, axis, eta_rho, xi_rho) ;
@@ -47,13 +46,21 @@ For the **WC13** configuration, **B**-spreading and smoothing are scaled in prop
 		temp_Bcorr:_FillValue = 1.e+37 ;
 ```
 
-The **axis** dimension is set to **2**, where **1** corresponds to the **x**-axis (abscissa, **i**-index) and **2** to the **y**-axis (ordinate, **j**-index) of the correlation map. If the values for the **x**- and **y**-axes are identical, the resulting correlation shapes are **isotropic**. Otherwise, the map produces **anisotropic** correlations. Several input files are provided as follows:
+The **axis** dimension is set to **2**, where **1** corresponds to the **x**-axis (abscissa, **i**-index) and **2** to the **y**-axis (ordinate, **j**-index) of the correlation map. The **Nscale** dimension specifies the number ($\boldsymbol{ns}$) of **B** scales to be combined. If the values for the **x**- and **y**-axes are identical, the resulting correlation shapes are **isotropic**. Otherwise, the map yields **anisotropic** correlations. Several input files are provided as follows:
 
-- Isotropic correlation with spatially varying Rossby radius in both the **x**- and **y**-directions, where the values are equal (**`wc13_Bcorr_xy.nc`** file).
-- Anisotropic correlation with a spatially varying Rossby radius in the **x**-direction and a constant value of 30 km in the **y**-direction (**`wc13_Bcorr_x.nc`** file).
-- Anisotropic correlation with a spatially varying Rossby radius in the **y**-direction and a constant value of 30 km in the **x**-direction (**`wc13_Bcorr_y.nc`** file).
+- Isotropic correlation with a spatially varying Rossby radius in both the **x**- and **y**-directions, where the values are equal (**`wc13_Bcorr_xy.nc`** file).
+- Anisotropic correlation with a spatially varying Rossby radius in the **x**-direction and a constant value of **30** km in the **x**-direction (**`wc13_Bcorr_x.nc`** file).
+- Anisotropic correlation with a spatially varying Rossby radius in the **y**-direction and a constant value of **30** km in the **y**-direction (**`wc13_Bcorr_y.nc`** file).
 
-<img width="600" alt="temp_Bcorr_RR" src="https://github.com/user-attachments/assets/c72c774e-9b92-4fd7-ac24-ec342c3c9971" />
+The following figure shows a map of the first baroclinic Rossby radius, with a lower limit of **30** km imposed by grid resolution. The spatially varying Rossby radius functions as a horizontal correlation scale.
+
+<p align="center">
+  <img width="600" alt="temp_Bcorr_RR" src="https://github.com/user-attachments/assets/c72c774e-9b92-4fd7-ac24-ec342c3c9971" />
+</p>
+
+> [!IMPORTANT]  
+> Users are responsible for generating the input spatially varying decorrelation scales NetCDF file. The metadata schema, provided as a **CDL** file, is available in [s4dvar_Bcorrelation.cdl](https://github.com/myroms/roms/blob/develop/Data/ROMS/CDL/s4dvar_Bcorrelation.cdl).
+
 
 
 
