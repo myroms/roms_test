@@ -61,6 +61,19 @@ The following figure shows a map of the first baroclinic Rossby radius, with a l
 > [!IMPORTANT]  
 > Users are responsible for generating the input spatially varying decorrelation scales NetCDF file. The metadata schema, provided as a **CDL** file, is available in [s4dvar_Bcorrelation.cdl](https://github.com/myroms/roms/blob/develop/Data/ROMS/CDL/s4dvar_Bcorrelation.cdl).
 
+The following table shows the uniform values of the horizontal and vertical correlation scales specified in the input data assimilation **`s4dvar.in`** script. It also includes the number of implicit applications ($M$) of the inverse horizontal diffusion operator for the multiscale background-error covariance solver. For two-dimensional correlation functions in **ROMS**, $M$ must be **even** and greater than **two**, due to square-root convolutions that iterate for only half $M$ steps in the tangent linear $\boldsymbol{\mathcal{L}^{1/2}}$ and adjoint $\boldsymbol{\mathcal{L}^{T/2}}$ diffusion operators. For $M\geq 10$, the correlation function approaches a Gaussian (asymptotic limit) and matches the explicit solution of the diffusion equation, which is the current default model for **B** in **ROMS**.
+
+| Control Variable     | Hdecay (km)      | Hdecay-X  (km)   |  Hdecay-Y (km)      |  Vdecay (m)    |  M (Mlab) |
+:---------------------:|:----------------:|:----------------:|:-------------------:|:--------------:|:----------:
+| zeta                 | 50               | 50               | 50                  | N/A            | 10        |
+| u                    | 50               | 50               | 50                  | 30             | 10        |
+| v                    | 50               | 50               | 50                  | 30             | 10        |
+| temp                 | 50               | 50               | 50                  | 30             | 10        |
+| salt                 | 50               | 50               | 50                  | 30             | 10        |
+| sustr                | 100              | 100              | 100                 | N/A            | 10        |
+| svstr                | 100              | 100              | 100                 | N/A            | 10        |
+| stflux               | 100              | 100              | 100                 | N/A            | 10        |
+| ssflux               | 100              | 100              | 100                 | N/A            | 10        |
 
 ### Important CPP Options:
 ```
