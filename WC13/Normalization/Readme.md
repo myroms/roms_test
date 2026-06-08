@@ -239,6 +239,10 @@ The normalization factors for the forcing control variables **sustr**, **svstr**
 
 ### Results: Correlation Dirac Testing
 
+Evaluating the Dirac delta function results for each control vector variable facilitates assessment of the correlation parameters that model the effects of the background-error covariance matrix. The location of each delta function indicates how a specific observation influences the geometry of adjacent grid points and the associated dynamic features at that site during state estimation. Assuming that error correlations are separable in the horizontal and vertical directions, plotting horizontal and cross-sectional profiles is necessary to assess the spatial extent of influence under the specified hypothesis of data-assimilation error. This separability assumption poses substantial challenges for data assimilation and often requires extensive fine-tuning.
+
+The following horizontal maps depict the influence of the background-error covariance matrix at hypothetical observation sites for each data-assimilation control-vector variable: free surface, u-momentum, v-momentum, potential temperature, salinity, surface u-stress, surface v-stress, surface heat flux, and surface freshwater flux. For variables defined in three dimensions, only surface values are shown.
+
 
 | Default              | Case 1           | Case 2           |  Case 3            |
 :---------------------:|:----------------:|:----------------:|:-------------------:
@@ -252,6 +256,7 @@ The normalization factors for the forcing control variables **sustr**, **svstr**
 |<img width="400" alt="shflux_mono_dirac" src="https://github.com/user-attachments/assets/2b9acb96-b915-4f7c-932b-0fd9254e20eb" > | <img width="400" alt="shflux_xy_dirac" src="https://github.com/user-attachments/assets/0adea52d-3cb8-467b-91d2-c74efdb778ea" > | <img width="400" alt="shflux_x_dirac" src="https://github.com/user-attachments/assets/c77797e9-5331-4737-b94e-97e131a48dbc" > | <img width="400" alt="shflux_y_dirac" src="https://github.com/user-attachments/assets/89e2b730-6bf5-4fa6-8d10-4128e2f5e4ef" > |
 |<img width="400" alt="ssflux_mono_dirac" src="https://github.com/user-attachments/assets/a54b1914-947b-4969-af2b-d190f0ea7045" > | <img width="400" alt="ssflux_xy_dirac" src="https://github.com/user-attachments/assets/4d9e9fae-d695-4af5-97d1-87d436988684" > | <img width="400" alt="ssflux_x_dirac" src="https://github.com/user-attachments/assets/e2652173-18ab-4957-a50f-05663893efd6" > | <img width="400" alt="ssflux_y_dirac" src="https://github.com/user-attachments/assets/bbf368bc-8d45-4a4b-bc3f-c10f57761d68" > |
 
+Here are the associated cross-sections indicating the vertical influence extent for observations located at the surface:
 
 | Default              | Case 1           | Case 2           |  Case 3            |
 :---------------------:|:----------------:|:----------------:|:-------------------:
@@ -259,13 +264,6 @@ The normalization factors for the forcing control variables **sustr**, **svstr**
 |<img width="400" alt="v_sec_mono_dirac" src="https://github.com/user-attachments/assets/7b59956e-77c5-4ca3-9bd8-aaddcf903100" > | <img width="400" alt="v_sec_xy_dirac" src="https://github.com/user-attachments/assets/96a94810-0ba3-4e15-8a4c-aef88925bb8a" > | <img width="400" alt="v_sec_x_dirac" src="https://github.com/user-attachments/assets/be94eb39-2e2d-47b4-9622-c1c268f08b8b" > | <img width="400" alt="v_sec_y_dirac" src="https://github.com/user-attachments/assets/0e88a343-f3dd-4e96-83b7-117f5a6cd54a" > |
 |<img width="400" alt="temp_sec_mono_dirac" src="https://github.com/user-attachments/assets/cf7d353d-1c46-43dc-a85a-cfdc8848a396" > | <img width="400" alt="temp_sec_xy_dirac" src="https://github.com/user-attachments/assets/1e204a54-6f91-4254-baa1-eb4b3b48b7fb" > | <img width="400" alt="temp_sec_x_dirac" src="https://github.com/user-attachments/assets/1b97281f-d816-40e4-ade5-2ce486154a16" > | <img width="400" alt="temp_sec_y_dirac" src="https://github.com/user-attachments/assets/169e6ec0-66a0-4637-a5c2-e7c38609da8a" > |
 |<img width="400" alt="salt_sec_mono_dirac" src="https://github.com/user-attachments/assets/44370bf2-b8c9-45ad-8852-0adc7049d36f" > | <img width="400" alt="salt_sec_xy_dirac" src="https://github.com/user-attachments/assets/ff68140e-1ce4-45f8-ab45-e734f07e2739" > | <img width="400" alt="salt_sec_x_dirac" src="https://github.com/user-attachments/assets/e09dabad-cc9e-42bf-9e4c-ba39ece24e59" > | <img width="400" alt="salt_sec_y_dirac" src="https://github.com/user-attachments/assets/44342c17-f1c8-41f5-a5be-e6c4284cfa2a" > |
-
-
-
-
-
-
-
 
 ---
 
