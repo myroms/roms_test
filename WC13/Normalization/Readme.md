@@ -219,6 +219,10 @@ The following figures show the **WC13** standard deviation for free surface (m),
 
 ### Results: B-Normalization Factors
 
+The following maps display the normalization factors necessary to model the spread of the background-error covariance matrix for the data-assimilation control vector, which includes free surface, u-momentum, v-momentum, potential temperature, salinity, surface u-stress, surface v-stress, surface heat flux, and surface freshwater flux. For three-dimensional variables, only surface values are presented. The normalization factors are calculated using the **exact** method. Each table column provides alternative distribution options for the spatially varying correlation length scales, including the **default** isotropic uniform distribution used in **ROMS** since its inception.
+
+The normalization factors for the forcing control variables **sustr**, **svstr**, **shflux**, and **ssflux** are isotropic and uniformly distributed. These factors are included to demonstrate that the new multiscale implicit algorithms yield a distribution comparable to that produced by the explicit **default** pseudo-diffusion operators.
+
 | Default              | Case 1           | Case 2           |  Case 3            |
 :---------------------:|:----------------:|:----------------:|:-------------------:
 |<img width="400" alt="zeta_mono" src="https://github.com/user-attachments/assets/1dbe157e-bea0-47e2-8c41-eb7d46869fbe"  > | <img width="400" alt="zeta_xy_multi" src="https://github.com/user-attachments/assets/1bd59987-285e-47de-bf23-f8c952053930" > | <img width="400" alt="zeta_x_multi" src="https://github.com/user-attachments/assets/cfd19f2e-ecd3-40f0-a89e-60bc2fd3ba39" > | <img width="400" alt="zeta_y_multi" src="https://github.com/user-attachments/assets/6af3b9aa-f833-402c-b335-59cd85cf7df5"  > |
@@ -226,35 +230,10 @@ The following figures show the **WC13** standard deviation for free surface (m),
 |<img width="400" alt="v_mono" src="https://github.com/user-attachments/assets/d08f3ac7-2433-406a-844e-a8b3b1bee806" > | <img width="400" alt="v_xy_multi" src="https://github.com/user-attachments/assets/8657d517-da62-46f5-943a-5e7f4285ebb9" > | <img width="400" alt="v_x_multi" src="https://github.com/user-attachments/assets/87ca41e0-6ca8-406a-a77d-90a5097647e2"  > | <img width="400" alt="v_y_multi" src="https://github.com/user-attachments/assets/c511d340-6909-4d0f-a7bb-2c940f155db4" > |
 |<img width="400" alt="temp_mono" src="https://github.com/user-attachments/assets/26be5485-6876-4d77-ae44-fc5553bf5afc"  > | <img width="400" alt="temp_xy_multi" src="https://github.com/user-attachments/assets/26c57bbe-5d70-405f-9d59-63ba0569ac48" > | <img width="400" alt="temp_x_multi" src="https://github.com/user-attachments/assets/aa4beacb-4ca5-4a14-8ce1-5af716a47fcb" > | <img width="400" alt="temp_y_multi" src="https://github.com/user-attachments/assets/540820eb-9323-41fe-b46c-7dac98184368" > |
 |<img width="400" alt="salt_mono" src="https://github.com/user-attachments/assets/7fbd1530-1b71-4092-bcfe-958b95cf5c25" > | <img width="400" alt="salt_xy_multi" src="https://github.com/user-attachments/assets/1871a7dd-9148-4813-b63d-d826cba40d4f" > | <img width="400" alt="salt_x_multi" src="https://github.com/user-attachments/assets/40648e7e-143a-41b5-9f9a-44f71e02b358" > | <img width="400" lt="salt_y_multi" src="https://github.com/user-attachments/assets/596850ca-0806-4623-93b7-365bff8cd57b"  > |
-|<img width="400"  > | <img width="400"  > | <img width="400"  > | <img width="400"  > |
-|<img width="400"  > | <img width="400"  > | <img width="400"  > | <img width="400"  > |
-|<img width="400"  > | <img width="400"  > | <img width="400"  > | <img width="400"  > |
-|<img width="400"  > | <img width="400"  > | <img width="400"  > | <img width="400"  > |
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+|<img width="400" alt="sustr_mono" src="https://github.com/user-attachments/assets/f329eb3a-a9ff-481d-84a5-cd58151647d5" > | <img width="400" alt="sustr_xy_multi" src="https://github.com/user-attachments/assets/d77868ac-b90f-439a-be46-7ed85e757e99" > | <img width="400" alt="sustr_x_multi" src="https://github.com/user-attachments/assets/fb177dd4-04be-4634-954a-ab2312c4d466" > | <img width="400" alt="sustr_y_multi" src="https://github.com/user-attachments/assets/0fdc8a94-5c53-4f25-88b0-cd75fcf14393" > |
+|<img width="400" alt="svstr_mono" src="https://github.com/user-attachments/assets/c68a2081-2582-42bd-8dfe-291887e83840" > | <img width="400" alt="svstr_xy_multi" src="https://github.com/user-attachments/assets/dd0122f6-2c21-4ce3-b51a-3a3cbb8390b8" > | <img width="400" alt="svstr_x_multi" src="https://github.com/user-attachments/assets/0b41ff1f-01f8-4c82-9139-240ee7c72a0d" > | <img width="400" alt="svstr_y_multi" src="https://github.com/user-attachments/assets/f94cc20f-7d86-449a-a787-6d73c162c40f" > |
+|<img width="400" alt="shflux_mono" src="https://github.com/user-attachments/assets/f5c1aeed-0a7b-4004-a8c6-aad8a0c56977" > | <img width="400" alt="shflux_xy_multi" src="https://github.com/user-attachments/assets/c64a97bc-6536-4b2e-817d-9fb7e28a4d5e" > | <img width="400" alt="shflux_x_multi" src="https://github.com/user-attachments/assets/4b14b6d9-56cc-4707-abb7-a5153b3c5e6c" > | <img width="400" alt="shflux_y_multi" src="https://github.com/user-attachments/assets/9e128cdf-8884-47e8-a006-213cec4a1f93" > |
+|<img width="400" alt="ssflux_mono" src="https://github.com/user-attachments/assets/6af3778e-7cb0-4414-b50b-5e866ede3db9"  > | <img width="400" alt="ssflux_xy_multi" src="https://github.com/user-attachments/assets/3156490d-38ca-4ae7-b354-9aa1ed1ca3aa" > | <img width="400" alt="ssflux_x_multi" src="https://github.com/user-attachments/assets/ee700642-a2dd-45e1-8c65-557711bdf9b9" > | <img width="400" alt="ssflux_y_multi" src="https://github.com/user-attachments/assets/1f288379-aea5-4868-a6fd-24cc32905f51" > |
 
 ---
 
