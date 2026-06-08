@@ -1,12 +1,12 @@
 <img width="600" alt="image" src="https://github.com/myroms/roms_test/assets/23062912/ad6a7ef1-1fed-4b2e-96b9-9c53615b9333">
 
-## 4D-Var Tutorial: B-Normalization Factors and Dirac Testing
+## 4D-Var Tutorial: B-Normalization Factors and Correlation Dirac Testing
 
 **Information**:  www.myroms.org/wiki/4DVar_Tutorial_Introduction
 
 **Results**:      www.myroms.org/wiki/4DVar_Normalization_Tutorial
 
-This directory includes various files needed to model the spreading of the background-error covariance matrix (**B**) in 4-dimensional data assimilation applications for the California Current System at 1/3-degree resolution (**WC13**). It also tests the associated error hypothesis for **B** using Dirac delta functions, with the specified correlation functions for each variable in the control vector.
+This directory generates various files needed to model the spreading of the background-error covariance matrix (**B**) in 4-dimensional data assimilation applications for the California Current System at 1/3-degree resolution (**WC13**). It also tests the associated error hypothesis for **B** using Dirac delta functions, with the specified correlation functions for each variable in the control vector.
 
 In **ROMS**, the **B** matrix is factorized according to Weaver and Courtier (2001) as follows:
 
@@ -48,9 +48,9 @@ In the **WC13** configuration, **B**-spreading and smoothing are scaled accordin
 
 The **axis** dimension is set to **2**, where **1** corresponds to the **x**-axis (abscissa, **i**-index) and **2** to the **y**-axis (ordinate, **j**-index) of the correlation map. The **Nscale** dimension specifies the number ($\boldsymbol{ns}$) of **B** scales to be combined. If the values for the **x**- and **y**-axes are identical, the resulting correlation shapes are **isotropic**. Otherwise, the map yields **anisotropic** correlations. Several input files are provided as follows:
 
-- Isotropic correlation with a spatially varying Rossby radius in both the **x**- and **y**-directions, where the values are equal (**`wc13_Bcorr_xy.nc`** file).
-- Anisotropic correlation with a spatially varying Rossby radius in the **x**-direction and a constant value of **30** km in the **x**-direction (**`wc13_Bcorr_x.nc`** file).
-- Anisotropic correlation with a spatially varying Rossby radius in the **y**-direction and a constant value of **30** km in the **y**-direction (**`wc13_Bcorr_y.nc`** file).
+- **Case 1**: Isotropic correlation with a spatially varying Rossby radius in both the **x**- and **y**-directions, where the values are equal (**`wc13_Bcorr_xy.nc`** file).
+- **Case 2**: Anisotropic correlation with a spatially varying Rossby radius in the **x**-direction and a constant value of **30** km in the **x**-direction (**`wc13_Bcorr_x.nc`** file).
+- **Case 3**: Anisotropic correlation with a spatially varying Rossby radius in the **y**-direction and a constant value of **30** km in the **y**-direction (**`wc13_Bcorr_y.nc`** file).
 
 The following figure shows a map of the first baroclinic Rossby radius, with a lower limit of **30** km imposed by grid resolution. The spatially varying Rossby radius functions as a horizontal correlation scale.
 
@@ -173,7 +173,7 @@ The following figures show the **WC13** standard deviation for free surface (m),
 
 | Free Surface              | Surface Temperature      | Surface Salinity       |
 :--------------------------:|:------------------------:|:-----------------------:
-|<img width="400" alt="zeta+std" src="https://github.com/user-attachments/assets/928b52e9-26f7-41e4-83ff-c2a9f4ff4aab"> | <img width="400" alt="temp_std" src="https://github.com/user-attachments/assets/c28665e9-62cd-49eb-80bb-a95369bb1baa"> | <img width="400" alt="salt_std" src="https://github.com/user-attachments/assets/a3c42ac2-c40a-406e-ae9b-a424c9b40530"> |
+|<img width="400" alt="zeta_std" src="https://github.com/user-attachments/assets/928b52e9-26f7-41e4-83ff-c2a9f4ff4aab"> | <img width="400" alt="temp_std" src="https://github.com/user-attachments/assets/c28665e9-62cd-49eb-80bb-a95369bb1baa"> | <img width="400" alt="salt_std" src="https://github.com/user-attachments/assets/a3c42ac2-c40a-406e-ae9b-a424c9b40530"> |
 
 ### How to Compile ROMS:
 
@@ -217,7 +217,48 @@ The following figures show the **WC13** standard deviation for free surface (m),
 
 ---
 
-### Results
+### Results: B-Normalization Factors
+
+| Default              | Case 1           | Case 2           |  Case 3            |
+:---------------------:|:----------------:|:----------------:|:-------------------:
+|<img width="400" alt="zeta_mono" src="https://github.com/user-attachments/assets/1dbe157e-bea0-47e2-8c41-eb7d46869fbe"  > | <img width="400" alt="zeta_xy_multi" src="https://github.com/user-attachments/assets/1bd59987-285e-47de-bf23-f8c952053930" > | <img width="400" alt="zeta_x_multi" src="https://github.com/user-attachments/assets/cfd19f2e-ecd3-40f0-a89e-60bc2fd3ba39" > | <img width="400" alt="zeta_y_multi" src="https://github.com/user-attachments/assets/6af3b9aa-f833-402c-b335-59cd85cf7df5"  > |
+|<img width="400" alt="u_mono" src="https://github.com/user-attachments/assets/98927754-b888-4855-9bba-55a0db5e427a"  > | <img width="400" alt="u_xy_multi" src="https://github.com/user-attachments/assets/d69274bb-8a16-43e7-a73a-4418e56aa727" > | <img width="400" alt="u_x_multi" src="https://github.com/user-attachments/assets/33b1d6ce-8a1c-4869-addd-178500c8704c" > | <img width="400" alt="u_y_multi" src="https://github.com/user-attachments/assets/724cbe8f-5ae8-4f42-828f-1b9a466a997b" > |
+|<img width="400" alt="v_mono" src="https://github.com/user-attachments/assets/d08f3ac7-2433-406a-844e-a8b3b1bee806" > | <img width="400" alt="v_xy_multi" src="https://github.com/user-attachments/assets/8657d517-da62-46f5-943a-5e7f4285ebb9" > | <img width="400" alt="v_x_multi" src="https://github.com/user-attachments/assets/87ca41e0-6ca8-406a-a77d-90a5097647e2"  > | <img width="400" alt="v_y_multi" src="https://github.com/user-attachments/assets/c511d340-6909-4d0f-a7bb-2c940f155db4" > |
+|<img width="400" alt="temp_mono" src="https://github.com/user-attachments/assets/26be5485-6876-4d77-ae44-fc5553bf5afc"  > | <img width="400" alt="temp_xy_multi" src="https://github.com/user-attachments/assets/26c57bbe-5d70-405f-9d59-63ba0569ac48" > | <img width="400" alt="temp_x_multi" src="https://github.com/user-attachments/assets/aa4beacb-4ca5-4a14-8ce1-5af716a47fcb" > | <img width="400" alt="temp_y_multi" src="https://github.com/user-attachments/assets/540820eb-9323-41fe-b46c-7dac98184368" > |
+|<img width="400" alt="salt_mono" src="https://github.com/user-attachments/assets/7fbd1530-1b71-4092-bcfe-958b95cf5c25" > | <img width="400" alt="salt_xy_multi" src="https://github.com/user-attachments/assets/1871a7dd-9148-4813-b63d-d826cba40d4f" > | <img width="400" alt="salt_x_multi" src="https://github.com/user-attachments/assets/40648e7e-143a-41b5-9f9a-44f71e02b358" > | <img width="400" lt="salt_y_multi" src="https://github.com/user-attachments/assets/596850ca-0806-4623-93b7-365bff8cd57b"  > |
+|<img width="400"  > | <img width="400"  > | <img width="400"  > | <img width="400"  > |
+|<img width="400"  > | <img width="400"  > | <img width="400"  > | <img width="400"  > |
+|<img width="400"  > | <img width="400"  > | <img width="400"  > | <img width="400"  > |
+|<img width="400"  > | <img width="400"  > | <img width="400"  > | <img width="400"  > |
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+
+### Results: Correlation Dirac Testing
 
 ---
 
