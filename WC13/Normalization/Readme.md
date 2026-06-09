@@ -50,9 +50,10 @@ In the **WC13** configuration, **B**-spreading and smoothing are scaled accordin
 
 The **axis** dimension is set to **2**, where **1** corresponds to the **x**-axis (abscissa, **i**-index) and **2** to the **y**-axis (ordinate, **j**-index) of the correlation map. The **Nscale** dimension specifies the number ($\boldsymbol{ns}$) of **B** scales to be combined. If the values for the **x**- and **y**-axes are identical, the resulting correlation shapes are **isotropic**. Otherwise, the map yields **anisotropic** correlations. Several input files are provided as follows:
 
-- **Case 1**: Isotropic correlation with a spatially varying Rossby radius in both the **x**- and **y**-directions, where the values are equal (**`wc13_Bcorr_xy.nc`** file).
-- **Case 2**: Anisotropic correlation with a spatially varying Rossby radius in the **x**-direction and a constant value of **30** km in the **x**-direction (**`wc13_Bcorr_x.nc`** file).
-- **Case 3**: Anisotropic correlation with a spatially varying Rossby radius in the **y**-direction and a constant value of **30** km in the **y**-direction (**`wc13_Bcorr_y.nc`** file).
+- **Case 0:** Default isotropic and uniform correlation in both the **x**- and **y**-directions (parameters specified in **`s4dvar.in`**).
+- **Case 1**: Isotropic correlation with a spatially varying Rossby radius in both the **x**- and **y**-directions, where the values are equal (correlation file: **`wc13_Bcorr_xy.nc`**).
+- **Case 2**: Anisotropic correlation with a spatially varying Rossby radius in the **x**-direction and a constant value of **30** km in the **y**-direction (correlation file: **`wc13_Bcorr_x.nc`**).
+- **Case 3**: Anisotropic correlation with a spatially varying Rossby radius in the **y**-direction and a constant value of **30** km in the **x**-direction (correlation file: **`wc13_Bcorr_y.nc`**).
 
 The following figure shows a map of the first baroclinic Rossby radius, with a lower limit of **30** km imposed by grid resolution. The spatially varying Rossby radius functions as a horizontal correlation scale.
 
@@ -239,7 +240,7 @@ The following maps display the normalization factors necessary to model the spre
 
 The normalization factors for the forcing control variables **sustr**, **svstr**, **shflux**, and **ssflux** are isotropic and uniformly distributed. These factors are included to demonstrate that the new multiscale implicit algorithms yield a distribution comparable to that produced by the explicit **default** pseudo-diffusion operators.
 
-| Default              | Case 1           | Case 2           |  Case 3            |
+| Case 0               | Case 1           | Case 2           |  Case 3            |
 :---------------------:|:----------------:|:----------------:|:-------------------:
 |<img width="400" alt="zeta_mono" src="https://github.com/user-attachments/assets/1dbe157e-bea0-47e2-8c41-eb7d46869fbe"  > | <img width="400" alt="zeta_xy_multi" src="https://github.com/user-attachments/assets/1bd59987-285e-47de-bf23-f8c952053930" > | <img width="400" alt="zeta_x_multi" src="https://github.com/user-attachments/assets/cfd19f2e-ecd3-40f0-a89e-60bc2fd3ba39" > | <img width="400" alt="zeta_y_multi" src="https://github.com/user-attachments/assets/6af3b9aa-f833-402c-b335-59cd85cf7df5"  > |
 |<img width="400" alt="u_mono" src="https://github.com/user-attachments/assets/98927754-b888-4855-9bba-55a0db5e427a"  > | <img width="400" alt="u_xy_multi" src="https://github.com/user-attachments/assets/d69274bb-8a16-43e7-a73a-4418e56aa727" > | <img width="400" alt="u_x_multi" src="https://github.com/user-attachments/assets/33b1d6ce-8a1c-4869-addd-178500c8704c" > | <img width="400" alt="u_y_multi" src="https://github.com/user-attachments/assets/724cbe8f-5ae8-4f42-828f-1b9a466a997b" > |
@@ -260,7 +261,7 @@ Evaluating the Dirac delta function results for each control vector variable fac
 The following horizontal maps depict the influence of the background-error covariance matrix at hypothetical observation sites for each data-assimilation control-vector variable: free surface, u-momentum, v-momentum, potential temperature, salinity, surface u-stress, surface v-stress, surface heat flux, and surface freshwater flux. For variables defined in three dimensions, only surface maps are shown.
 
 
-| Default              | Case 1           | Case 2           |  Case 3            |
+| Case 0               | Case 1           | Case 2           |  Case 3            |
 :---------------------:|:----------------:|:----------------:|:-------------------:
 |<img width="400" alt="zeta_mono_dirac" src="https://github.com/user-attachments/assets/fa1cba03-8ba6-49c6-9f2f-c2042e3eab30" > | <img width="400" alt="zeta_xy_dirac" src="https://github.com/user-attachments/assets/b16936b5-626c-4e6d-a205-45570a655dcb" > | <img width="400" alt="zeta_x_dirac" src="https://github.com/user-attachments/assets/f64b2019-48aa-4a3e-9ea0-e876dc5f3126" > | <img width="400" alt="zeta_y_dirac" src="https://github.com/user-attachments/assets/0e30f6dd-ef03-497b-9bee-5da5bcaaebcb" > |
 |<img width="400" alt="u_mono_dirac" src="https://github.com/user-attachments/assets/6be36465-1b5f-4657-b747-e62514dd467b" > | <img width="400" alt="u_xy_dirac" src="https://github.com/user-attachments/assets/53e94791-3e7c-4bb2-93df-ea45d0c6edad" > | <img width="400" alt="u_x_dirac" src="https://github.com/user-attachments/assets/58524db2-49a0-453b-9f47-d782919ccdbd" > | <img width="400" alt="u_y_dirac" src="https://github.com/user-attachments/assets/da23251d-2817-407e-9c67-299eff82885a" > |
