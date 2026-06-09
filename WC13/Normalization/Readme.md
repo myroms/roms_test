@@ -8,11 +8,13 @@
 
 This directory generates various files needed to model the spreading of the background-error covariance matrix (**B**) in 4-dimensional data assimilation applications for the California Current System at 1/3-degree resolution (**WC13**). It also tests the associated error hypothesis for **B** using Dirac delta functions, with the specified correlation functions for each variable in the control vector.
 
+Users can apply these instructions to model the background-error covariance in their applications. This is the first step in configuring a **ROMS 4D-Var** application. The algorithms used are complex. Several literature references are provided, and users are encouraged to review them to better understand the main objectives of this driver.
+
 In **ROMS**, the **B** matrix is factorized according to Weaver and Courtier (2001) as follows:
 
 $$ \boldsymbol{B = K_{b} \Sigma C \Sigma{^T} {K_{b}}^{T}} $$
 
-Here, $\boldsymbol{K_b}$ represents the balanced components of the background error, $\boldsymbol{\Sigma}$ denotes the diagonal matrix of standard deviations, and $\boldsymbol{C}$ is the correlation matrix. Spreading is commonly modeled using pseudo-diffusion operators in the spatial correlation space, as outlined by Weaver and Coutier (2001), Weaver and Mirouze (2013), and Weaver et al. (2016, 2018). In these models, the diffusion coefficient, $\kappa$, is proportional to the square of the correlation length scale:
+Here, $\boldsymbol{K_b}$ represents the balanced components of the background error, $\boldsymbol{\Sigma}$ denotes the diagonal matrix of standard deviations, and $\boldsymbol{C}$ is the correlation matrix. Spreading is commonly modeled using pseudo-diffusion operators in the spatial correlation space, as outlined by Weaver and Coutier (2001), Weaver and Mirouze (2013), and Weaver *et al.* (2016, 2018). In these models, the diffusion coefficient, $\kappa$, is proportional to the square of the correlation length scale:
 
 $$ {\delta\eta\over\delta{s}} - \nabla(\kappa\nabla\eta) = 0$$
 
@@ -23,9 +25,9 @@ $$ \boldsymbol{ C = \Lambda {\mathcal{L}^{1/2}} {W^{-1}} {\mathcal{L}^{T/2}} \La
 
 In this context, $\boldsymbol{\Lambda}$ is a diagonal matrix of the normalization factors ensuring that $\boldsymbol{C}$ ranges $\pm 1$, $\boldsymbol{\mathcal{L}}$ represents the matrix obtained by solving the linearized diffusion operator, and $\boldsymbol{W}$ is a diagonal matrix corresponding to the grid cell area or volume.
 
-The objective is to compute the $\boldsymbol{\Lambda}$ normalization coefficients, which remain invariant for a fixed application grid and specified correlation scales. It is **advisable** to compute these coefficients independently of the 4D-Var application, as computational costs increase with grid size. The normalization coefficients may be determined using either an **exact** or an **approximate** method. The **exact** approach is computationally intensive, as $\boldsymbol{\Lambda}$ is obtained by perturbing each model grid cell with a delta function scaled by the area (for 2D factors) or volume (for 3D factors), followed by convolution with the square-root diffusion operators. The **approximate** method is more computationally efficient and employs the **randomization** technique described by Fisher and Courtier (1995). In this approach, the grid is initialized with random numbers drawn from a normal distribution with zero mean and unit variance. These values are then scaled by the inverse of the square root of the cell area (for 2D factors) or volume (for 3D factors) and convolved with the square-root diffusion operator over a specified number of iterations, denoted as **Nrandom**.
+The objective is to compute the $\boldsymbol{\Lambda}$ normalization coefficients, which remain invariant for a fixed application grid and specified correlation scales. It is **advisable** to compute these coefficients independently of the **4D-Var** application, as computational costs increase with grid size. The normalization coefficients may be determined using either an **exact** or an **approximate** method. The **exact** approach is computationally intensive, as $\boldsymbol{\Lambda}$ is obtained by perturbing each model grid cell with a delta function scaled by the area (for 2D factors) or volume (for 3D factors), followed by convolution with the square-root diffusion operators. The **approximate** method is more computationally efficient and employs the **randomization** technique described by Fisher and Courtier (1995). In this approach, the grid is initialized with random numbers drawn from a normal distribution with zero mean and unit variance. These values are then scaled by the inverse of the square root of the cell area (for 2D factors) or volume (for 3D factors) and convolved with the square-root diffusion operator over a specified number of iterations, denoted as **Nrandom**.
 
-Within **ROMS**, the background error covariance matrix may be represented using either a multi-scale or a mono-scale approach. The multi-scale formulation expresses **B** as a linear combination of distinct spatial scales, allowing representation of both broad structures and fine-scale features and reducing scale aliasing in the data assimilation cost function (Weaver et al., 2016). In contrast, the mono-scale formulation employs a single spatial scale. The multi-scale approach, as described by Weaver _et al._ (2016), employs an implicit horizontal pseudo-diffusion operator implemented via a Lanczos formulation of the Conjugate Gradient (**CG**) and Chebyshev Iteration (**CI**) solvers, whereas the mono-scale default method uses an explicit horizontal algorithm. The **CG** solver computes the Ritz extrema eigenvalues required by the **CI** algorithm, which remain invariant for a fixed application grid and a given value of $\kappa$, allowing these estimates to be precomputed and stored. The **CG** algorithm is initialized with random vectors when computing the normalization factors, $\boldsymbol{\Lambda}$, which are computationally intensive. Error correlations are assumed to be separable in the horizontal and vertical directions. The vertical diffusion operator is implicit in both approaches. The multi-scale algorithm is activated by selecting the **MULTI_SCALE_B** option.
+Within **ROMS**, the background error covariance matrix may be represented using either a multi-scale or a mono-scale approach. The multi-scale formulation expresses **B** as a linear combination of distinct spatial scales, allowing representation of both broad structures and fine-scale features and reducing scale aliasing in the data assimilation cost function (Weaver *et al.*, 2016). In contrast, the mono-scale formulation employs a single spatial scale. The multi-scale approach, as described by Weaver *et al.* (2016), employs an implicit horizontal pseudo-diffusion operator implemented via a Lanczos formulation of the Conjugate Gradient (**CG**) and Chebyshev Iteration (**CI**) solvers, whereas the mono-scale default method uses an explicit horizontal algorithm. The **CG** solver computes the Ritz extrema eigenvalues required by the **CI** algorithm, which remain invariant for a fixed application grid and a given value of $\kappa$, allowing these estimates to be precomputed and stored. The **CG** algorithm is initialized with random vectors when computing the normalization factors, $\boldsymbol{\Lambda}$, which are computationally intensive. Error correlations are assumed to be separable in the horizontal and vertical directions. The vertical diffusion operator is implicit in both approaches. The multi-scale algorithm is activated by selecting the **MULTI_SCALE_B** option.
 
 The multi-scale concept, represented as $\boldsymbol{B = \sum_{i}^{ns} {W_i} {B_i}}$, involves a weighted sum of $\boldsymbol{B_i}$ values across multiple $\boldsymbol{ns}$ scales. In practical applications, two or more distinct scales are typically combined. The weight coefficients must sum to unity, $\boldsymbol{\sum_{i}^{ns} {W_i}= 1}$.
 
@@ -55,7 +57,7 @@ The **axis** dimension is set to **2**, where **1** corresponds to the **x**-axi
 The following figure shows a map of the first baroclinic Rossby radius, with a lower limit of **30** km imposed by grid resolution. The spatially varying Rossby radius functions as a horizontal correlation scale.
 
 <p align="center">
-  <img width="600" alt="temp_Bcorr_RR" src="https://github.com/user-attachments/assets/c72c774e-9b92-4fd7-ac24-ec342c3c9971" />
+  <img width=50% height=50% alt="temp_Bcorr_RR" src="https://github.com/user-attachments/assets/c72c774e-9b92-4fd7-ac24-ec342c3c9971" />
 </p>
 
 > [!IMPORTANT]  
@@ -81,10 +83,11 @@ The following table shows the uniform values of the horizontal and vertical corr
    ADJUST_BOUNDARY       Including boundary conditions in 4D-Var state estimation
    ADJUST_STFLUX         Including surface tracer flux in 4D-Var state estimation
    ADJUST_WSTRESS        Including surface wind stress in 4D-Var state estimation
+   BALANCE_OPERATOR      Error covariance multivariate Balance Operator
    DIRAC                 Background-error covariance spreading with Dirac delta functions
    MULTI_SCALE_B         Multi-scale background error covariance matrix modeling
    MULTI_SCALE_DEBUG     Multi-scale implicit solvers convergence reporting, fort.45
-   NONUNIFORM_SCALES     Spatially-varying decorrelation length scales from the NetCDF file
+   NONUNIFORM_SCALES     Spatially varying decorrelation length scales from the NetCDF file
    WC13                  Application CPP option
 ```
 
@@ -180,7 +183,7 @@ Because background-error correlations are treated as separable in the horizontal
 
 Before executing this driver, relevant circulation statistics, including the mean and standard deviation, $\boldsymbol{\Sigma}$, for all variables in the control vector (**zeta**, **u**, **v**, **T**, and **S**) must be determined. These statistical fields are extracted from **ROMS** long, nonlinear climatological solutions corresponding to the intended data-assimilation application grid. The standard deviations for the prior (initial conditions), model error (weak constraint formulation), surface forcing (**ADJUST_STFLUX** and **ADJUST_WSTRESS**), and lateral open boundary conditions (**ADJUST_BOUNDARY**) are read from separate input NetCDF files, as mentioned above.
 
-If the **BALANCE_OPERATOR** is enabled, $\boldsymbol{K_b}$, the standard deviations are defined based on the unbalanced background-error covariance. The balance operator imposes a multivariate constraint on the background-error covariance, enabling the extraction of information about unobserved variables from observed data by establishing balance relationships, such as **T-S** empirical formulas, hydrostatic balance, and geostrophic balance, with other state variables (Weaver et al., 2005).
+If the **BALANCE_OPERATOR** is enabled, $\boldsymbol{K_b}$, the standard deviations are defined based on the unbalanced background-error covariance. The balance operator imposes a multivariate constraint on the background-error covariance, enabling the extraction of information about unobserved variables from observed data by establishing balance relationships, such as **T-S** empirical formulas, hydrostatic balance, and geostrophic balance, with other state variables (Weaver *et al.*, 2005).
 
 The following figures show the **WC13** standard deviation for free surface (m), surface temperature (Celsius), and surface salinity:
 
@@ -198,7 +201,7 @@ The following figures show the **WC13** standard deviation for free surface (m),
 
  Please review the **build** script, as it includes **CPP** options that the user can enable or disable.
 
-- Examine the provided **`job_normalization.csh`** configuration script to turn on the desired option and generate the **`c4dvar.in`** input script from its template **`s4dvar.in`**. Then, execute the script before running:
+- Examine the provided **`job_normalization.csh`** configuration script to turn on the desired options and generate the **`c4dvar.in`** input script from its template **`s4dvar.in`**. Then, execute the script before running:
   
   ``` d
     ./job_normalization.csh
@@ -254,7 +257,7 @@ The normalization factors for the forcing control variables **sustr**, **svstr**
 
 Evaluating the Dirac delta function results for each control vector variable facilitates assessment of the correlation parameters that model the effects of the background-error covariance matrix. The location of each delta function indicates how a specific observation influences the geometry of adjacent grid points and the associated dynamic features at that site during state estimation. Assuming that error correlations are separable in the horizontal and vertical directions, plotting horizontal and cross-sectional profiles is necessary to assess the spatial extent of influence under the specified hypothesis of data-assimilation error. This separability assumption poses substantial challenges for data assimilation and often requires extensive fine-tuning.
 
-The following horizontal maps depict the influence of the background-error covariance matrix at hypothetical observation sites for each data-assimilation control-vector variable: free surface, u-momentum, v-momentum, potential temperature, salinity, surface u-stress, surface v-stress, surface heat flux, and surface freshwater flux. For variables defined in three dimensions, only surface values are shown.
+The following horizontal maps depict the influence of the background-error covariance matrix at hypothetical observation sites for each data-assimilation control-vector variable: free surface, u-momentum, v-momentum, potential temperature, salinity, surface u-stress, surface v-stress, surface heat flux, and surface freshwater flux. For variables defined in three dimensions, only surface maps are shown.
 
 
 | Default              | Case 1           | Case 2           |  Case 3            |
@@ -269,7 +272,7 @@ The following horizontal maps depict the influence of the background-error covar
 |<img width="400" alt="shflux_mono_dirac" src="https://github.com/user-attachments/assets/2b9acb96-b915-4f7c-932b-0fd9254e20eb" > | <img width="400" alt="shflux_xy_dirac" src="https://github.com/user-attachments/assets/0adea52d-3cb8-467b-91d2-c74efdb778ea" > | <img width="400" alt="shflux_x_dirac" src="https://github.com/user-attachments/assets/c77797e9-5331-4737-b94e-97e131a48dbc" > | <img width="400" alt="shflux_y_dirac" src="https://github.com/user-attachments/assets/89e2b730-6bf5-4fa6-8d10-4128e2f5e4ef" > |
 |<img width="400" alt="ssflux_mono_dirac" src="https://github.com/user-attachments/assets/a54b1914-947b-4969-af2b-d190f0ea7045" > | <img width="400" alt="ssflux_xy_dirac" src="https://github.com/user-attachments/assets/4d9e9fae-d695-4af5-97d1-87d436988684" > | <img width="400" alt="ssflux_x_dirac" src="https://github.com/user-attachments/assets/e2652173-18ab-4957-a50f-05663893efd6" > | <img width="400" alt="ssflux_y_dirac" src="https://github.com/user-attachments/assets/bbf368bc-8d45-4a4b-bc3f-c10f57761d68" > |
 
-Here are the associated cross-sections indicating the vertical influence extent for observations located at the surface:
+The following cross-sections show the vertical extent of influence for observations at the surface:
 
 | Default              | Case 1           | Case 2           |  Case 3            |
 :---------------------:|:----------------:|:----------------:|:-------------------:
@@ -281,6 +284,8 @@ Here are the associated cross-sections indicating the vertical influence extent 
 ---
 
 ### References:
+
+Fisher, M. and P. Courtier, **1995**: Estimating the covariance matrices of analysis and forecast error in variational data assimilation, *ECMWF Technical Memoranda*, **220**, [doi:10.21957/1dxrasjit](https://doi.org/10.21957/1dxrasjit).
 
 Moore, A.M., H.G. Arango, G. Broquet, B.S. Powell, A.T. Weaver, and J. Zavala-Garay, **2011**: The Regional Ocean Modeling System (ROMS)  4-dimensional variational data assimilation systems, Part I - System overview and formulation, *Prog. Oceanogr.*, **91**, 34-49, [doi:10.1016/j.pocean.2011.05.004](https://doi.org/10.1016/j.pocean.2011.05.004).
 
