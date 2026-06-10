@@ -224,6 +224,10 @@ fi
 #export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DOBS_SPACE"           # Case 2
 
  export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DRPCG"
+
+#export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DMULTI_SCALE_B"
+#export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DNONUNIFORM_SCALES"
+
 #export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DBGQC"
 
  export      MY_CPP_FLAGS="${MY_CPP_FLAGS} -DCOLLECT_ALLREDUCE"
