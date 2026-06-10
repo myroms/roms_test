@@ -559,7 +559,7 @@ Moore, A.M., H.G. Arango, G. Broquet, C. Edward, M. Veneziani, B. Powell, D. Fol
 
 Moore, A.M., H.G. Arango, G. Broquet, C. Edward, M. Veneziani, B. Powell, D. Foley, J.D. Doyle, D. Costa, and P. Robinson, **2011**: The Regional Ocean Modeling System (ROMS) 4-dimensional variational data assimilations systems, Part III - Observation impact and observation sensitivity in the California Current System, *Prog. Oceanogr.*, **91**, 74-94, [doi:10.1016/j.pocean.2011.05.005](https://doi.org/10.1016/j.pocean.2011.05.005).
 
-Weaver, A. and P. Courtier, **2001**: Correlation modeling on the sphere using a generalized diffusion equation, *Q.J.R. Meteorol. Soc.* **127**, 1815-1846, [doi:10.1002/qj.49712757518](https://doir.org/10.1002/qj.49712757518).
+Weaver, A. and P. Courtier, **2001**: Correlation modeling on the sphere using a generalized diffusion equation, *Q.J.R. Meteorol. Soc.* **127**, 1815-1846, [doi:10.1002/qj.49712757518](https://doi.org/10.1002/qj.49712757518).
   
 Weaver, A.T. and I. Mirouze, **2013**: On the diffusion equation and its application to isotropic and anisotropic correlation modeling in variational assimilation, _Q. J. R. Meteorol. Soc._, **139,** 242-260, [doi:10.1002/qj.1955](https://doi.org/10.1002/qj.1955).
 
