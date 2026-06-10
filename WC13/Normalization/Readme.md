@@ -522,6 +522,8 @@ CG_2d: Convergence for 'zeta', B-MultiScale = 1
        K-LAP  => iterDiff = 007  iter = 020  deps =  2.13038E-13
        K-LAP  => iterDiff = 008  iter = 020  deps =  1.47236E-13
        K-LAP  => iterDiff = 009  iter = 020  deps =  1.01729E-13
+       K-LAP  => iterDiff = 010  iter = 020  deps =  7.03380E-14
+
        K-DIFF => iterDiff = 010  iter = 000  deps =  1.00000E+00
        K-DIFF => iterDiff = 010  iter = 001  deps =  6.36514E-02
        K-DIFF => iterDiff = 010  iter = 002  deps =  7.98343E-03
@@ -542,7 +544,6 @@ CG_2d: Convergence for 'zeta', B-MultiScale = 1
        K-DIFF => iterDiff = 010  iter = 017  deps =  4.70342E-12
        K-DIFF => iterDiff = 010  iter = 018  deps =  1.14870E-12
        K-DIFF => iterDiff = 010  iter = 019  deps =  2.80783E-13
-       K-LAP  => iterDiff = 010  iter = 020  deps =  7.03380E-14
        K-DIFF => iterDiff = 010  iter = 020  deps =  7.03380E-14
 ```	   
 ---
