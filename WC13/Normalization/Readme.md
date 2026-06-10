@@ -6,7 +6,7 @@
 
 **Results**:      www.myroms.org/wiki/4DVar_Normalization_Tutorial
 
-This directory generates various files needed to model the spreading of the background-error covariance matrix (**B**) in 4-dimensional data assimilation applications for the California Current System at 1/3-degree resolution (**WC13**). It also tests the associated error hypothesis for **B** using Dirac delta functions, with the specified correlation functions for each variable in the control vector.
+This directory generates various files needed to model the spreading of the background-error covariance matrix (**B**) in 4-dimensional data assimilation applications for the California Current System at 1/3-degree resolution ( :earth_americas: **WC13**). It also tests the associated error hypothesis for **B** using Dirac delta functions, with the specified correlation functions for each variable in the control vector.
 
 Users can apply these instructions to model the background-error covariance in their applications. This is the first step in configuring a **ROMS 4D-Var** application. The algorithms used are complex. Several literature references are provided, and users are encouraged to review them to better understand the main objectives of this driver.
 
@@ -62,7 +62,7 @@ The following figure shows a map of the first baroclinic Rossby radius, with a l
 </p>
 
 > [!IMPORTANT]  
-> Users are responsible for generating the input spatially varying decorrelation scales NetCDF file. The metadata schema, provided as a **CDL** file, is available in [s4dvar_Bcorrelation.cdl](https://github.com/myroms/roms/blob/develop/Data/ROMS/CDL/s4dvar_Bcorrelation.cdl).
+> :globe_with_meridians: Users are responsible for generating the input spatially varying decorrelation scales NetCDF file. The metadata schema, provided as a **CDL** file, is available in [s4dvar_Bcorrelation.cdl](https://github.com/myroms/roms/blob/develop/Data/ROMS/CDL/s4dvar_Bcorrelation.cdl).
 
 The following table shows the uniform values of the horizontal and vertical correlation scales specified in the input data assimilation **`s4dvar.in`** script. It also includes the number of implicit applications ($M$) of the inverse horizontal diffusion operator for the multiscale background-error covariance solver. For two-dimensional correlation functions in **ROMS**, $M$ must be **even** and greater than **two**, due to square-root convolutions that iterate for only half $M$ steps in the tangent linear $\boldsymbol{\mathcal{L}^{1/2}}$ and adjoint $\boldsymbol{\mathcal{L}^{T/2}}$ diffusion operators. For $M\geq 10$, the correlation function approaches a Gaussian (asymptotic limit) and matches the explicit solution of the diffusion equation, which is the current default model for **B** in **ROMS**.
 
@@ -226,7 +226,7 @@ The following figures show the **WC13** standard deviation for free surface (m),
    ``` 
 
 > [!IMPORTANT]  
-> The **`Nmethod=0`** (exact normalization approach) driver requires significant computational resources. For large application grids, **`Nmethod=1`** (approximated randomization approach) is recommended. Typically, the **`LdefNRM`** and **`Cnorm*(is…)`** switches are adjusted, and multiple jobs are submitted to compute normalization factors for each variable in the control vector.
+> :dragon The **`Nmethod=0`** (exact normalization approach) driver requires significant computational resources. For large application grids, **`Nmethod=1`** (approximated randomization approach) is recommended. Typically, the **`LdefNRM`** and **`Cnorm*(is…)`** switches are adjusted, and multiple jobs are submitted to compute normalization factors for each variable in the control vector.
 >
 >* Initially, submit a job to generate the output files required for computing normalization factors for the free-surface, 2D u-momentum, and 2D v-momentum. Enable **`CnormI(isFsur)`**, **`CnormI(isUbar)`**, and **`CnormI(isVbar)`**, while disabling all other **`Cnorm*`** switches. This step produces the necessary NetCDF files for the prior, model, surface-forcing adjustment, and lateral boundary condition adjustments.
 >* Subsequently, disable all **`LdefNRM`** switches.
@@ -284,6 +284,268 @@ The following cross-sections show the vertical extent of influence for observati
 
 ---
 
+### ROMS Standard Output:
+
+**ROMS** provides detailed information in its standard output file, which is redirected to **`norm.log`**. Please review this file to confirm that the configuration is correct.
+
+``` d
+ GET_STATE_NF90   - STD: IC correlation standard deviation,
+                      (Grid 01, t = 13008.0000, File: wc13_std_i.nc, Rec=0001, Index=1)
+                   - free-surface
+                      (Min =  0.00000000E+00 Max =  8.78295600E-02)
+                   - vertically integrated u-momentum component
+                      (Min =  0.00000000E+00 Max =  0.00000000E+00)
+                   - vertically integrated v-momentum component
+                      (Min =  0.00000000E+00 Max =  0.00000000E+00)
+                   - u-momentum component
+                      (Min =  0.00000000E+00 Max =  2.83949524E-01)
+                   - v-momentum component
+                      (Min =  0.00000000E+00 Max =  5.92493832E-01)
+                   - potential temperature
+                      (Min =  0.00000000E+00 Max =  1.42421246E+00)
+                   - salinity
+                      (Min =  0.00000000E+00 Max =  7.37198234E-01)
+
+  GET_STATE_NF90   - STD: OBC correlation standard deviation,
+                      (Grid 01, t = 13008.0000, File: wc13_std_b.nc, Rec=0001, Index=1)
+                   - zeta_obc
+                      (Min =  0.00000000E+00 Max =  3.46887300E-02)
+                   - ubar_obc
+                      (Min =  0.00000000E+00 Max =  7.33580182E-03)
+                   - vbar_obc
+                      (Min =  0.00000000E+00 Max =  1.58224189E-02)
+                   - u_obc
+                      (Min =  0.00000000E+00 Max =  3.36119906E-02)
+                   - v_obc
+                      (Min =  0.00000000E+00 Max =  4.96306742E-02)
+                   - temp_obc
+                      (Min =  0.00000000E+00 Max =  1.18352115E+00)
+                   - salt_obc
+                      (Min =  0.00000000E+00 Max =  1.34063814E-01)
+
+  GET_STATE_NF90   - STD: surface forcing correlation standard deviation,
+                      (Grid 01, t = 13008.0000, File: wc13_std_f.nc, Rec=0001, Index=1)
+                   - surface u-momentum stress
+                      (Min =  0.00000000E+00 Max =  1.14277172E-04)
+                   - surface v-momentum stress
+                      (Min =  0.00000000E+00 Max =  1.54091192E-04)
+                   - surface net heat flux
+                      (Min =  0.00000000E+00 Max =  2.33505487E-05)
+                   - kinematic surface net salt flux, SALT (E-P)/rhow
+                      (Min =  0.00000000E+00 Max =  5.25535461E-06)
+
+ MULTISCALE_GET_SCALES - SVC: Reading horizontal correlation length scales file:
+                          (Grid 01, File: ../Data/wc13_Bcorr_xy.nc)
+                       - free-surface horizontal background-error decorrelation length scales
+                          (Bscale = 01, Xmin =  3.00000000E+04, Xmax =  6.39802453E+04
+                                        Ymin =  3.00000000E+04, Ymax =  6.39802453E+04)
+                       - u-barotropic horizontal background-error decorrelation length scales
+                          (Bscale = 01, Xmin =  3.00000000E+04, Xmax =  6.39802453E+04
+                                        Ymin =  3.00000000E+04, Ymax =  6.39802453E+04)
+                       - u-barotropic horizontal background-error decorrelation length scales
+                          (Bscale = 01, Xmin =  3.00000000E+04, Xmax =  6.39802453E+04
+                                        Ymin =  3.00000000E+04, Ymax =  6.39802453E+04)
+                       - u-velocity horizontal background-error decorrelation length scales
+                          (Bscale = 01, Xmin =  3.00000000E+04, Xmax =  6.39802453E+04
+                                        Ymin =  3.00000000E+04, Ymax =  6.39802453E+04)
+                       - v-velocity horizontal background-error decorrelation length scales
+                          (Bscale = 01, Xmin =  3.00000000E+04, Xmax =  6.39802453E+04
+                                        Ymin =  3.00000000E+04, Ymax =  6.39802453E+04)
+                       - potential temperature horizontal background-error decorrelation length scales
+                          (Bscale = 01, Xmin =  3.00000000E+04, Xmax =  6.39802453E+04
+                                        Ymin =  3.00000000E+04, Ymax =  6.39802453E+04)
+                       - salinity horizontal background-error decorrelation length scales
+                          (Bscale = 01, Xmin =  3.00000000E+04, Xmax =  6.39802453E+04
+                                        Ymin =  3.00000000E+04, Ymax =  6.39802453E+04)
+                       - surface u-stress horizontal background-error decorrelation length scales
+                          (Bscale = 01, Xmin =  1.00000000E+05, Xmax =  1.00000000E+05
+                                        Ymin =  1.00000000E+05, Ymax =  1.00000000E+05)
+                       - surface v-stress horizontal background-error decorrelation length scales
+                          (Bscale = 01, Xmin =  1.00000000E+05, Xmax =  1.00000000E+05
+                                        Ymin =  1.00000000E+05, Ymax =  1.00000000E+05)
+                       - surface heat flux horizontal background-error decorrelation length scales
+                          (Bscale = 01, Xmin =  1.00000000E+05, Xmax =  1.00000000E+05
+                                        Ymin =  1.00000000E+05, Ymax =  1.00000000E+05)
+                       - surface salt flux horizontal background-error decorrelation length scales
+                          (Bscale = 01, Xmin =  1.00000000E+05, Xmax =  1.00000000E+05
+                                        Ymin =  1.00000000E+05, Ymax =  1.00000000E+05)
+
+  DEF_NORM_NF90    - Creating prior B-normalization file:       ../Data/wc13_nrm_xy_multiscale_i.nc
+  DEF_NORM_NF90    - Creating boundary B-normalization file:    ../Data/wc13_nrm_xy_multiscale_b.nc
+  DEF_NORM_NF90    - Creating forcing B-normalization file:     ../Data/wc13_nrm_xy_multiscale_f.nc
+
+ Ritz Extrema Eigenvalues Required by Implicit Chebyshev Iterations (CI) Solver:
+
+    B-scale = 01, computing eigenspectrum for: zeta
+    B-scale = 01, computing eigenspectrum for: ubar
+    B-scale = 01, computing eigenspectrum for: vbar
+    B-scale = 01, computing eigenspectrum for: u
+    B-scale = 01, computing eigenspectrum for: v
+    B-scale = 01, computing eigenspectrum for: temp
+    B-scale = 01, computing eigenspectrum for: salt
+    B-scale = 01, computing eigenspectrum for: zeta lateral boundaries
+    B-scale = 01, computing eigenspectrum for: ubar lateral boundaries
+    B-scale = 01, computing eigenspectrum for: vbar lateral boundaries
+    B-scale = 01, computing eigenspectrum for: u lateral boundaries
+    B-scale = 01, computing eigenspectrum for: v lateral boundaries
+    B-scale = 01, computing eigenspectrum for: temp lateral boundaries
+    B-scale = 01, computing eigenspectrum for: salt lateral boundaries
+    B-scale = 01, computing eigenspectrum for: sustr
+    B-scale = 01, computing eigenspectrum for: svstr
+    B-scale = 01, computing eigenspectrum for: shflux
+    B-scale = 01, computing eigenspectrum for: ssflux
+
+ Writing extrema Ritz eigenvalues into prior B-normalization file:  ../Data/wc13_nrm_xy_multiscale_i.nc
+   (Required by Implicit Chebyshev Iterations, CI, Solver)
+
+    - zeta_eigen:                 Min =  1.00278458E+00,  Max =  2.76295931E+00
+    - ubar_eigen:                 Min =  1.00399850E+00,  Max =  2.76359758E+00
+    - vbar_eigen:                 Min =  1.00117970E+00,  Max =  2.77166712E+00
+    - u_eigen:                    Min =  1.00137687E+00,  Max =  2.76375612E+00
+    - v_eigen:                    Min =  1.00120604E+00,  Max =  2.77175571E+00
+    - temp_eigen:                 Min =  1.00120847E+00,  Max =  2.76331804E+00
+    - salt_eigen:                 Min =  1.00120847E+00,  Max =  2.76331804E+00
+
+ Writing extrema Ritz eigenvalues into boundary B-normalization file:  ../Data/wc13_nrm_xy_multiscale_b.nc
+   (Required by Implicit Chebyshev Iterations, CI, Solver)
+
+    - zeta_obc_eigen:             Min =  1.00000603E+00,  Max =  4.81657448E+00
+    - ubar_obc_eigen:             Min =  1.00102758E+00,  Max =  4.82034194E+00
+    - vbar_obc_eigen:             Min =  1.00029446E+00,  Max =  4.79296753E+00
+    - u_obc_eigen:                Min =  1.00000527E+00,  Max =  4.82474216E+00
+    - v_obc_eigen:                Min =  9.99934866E-01,  Max =  4.79310342E+00
+    - temp_obc_eigen:             Min =  1.00000018E+00,  Max =  4.81660071E+00
+    - salt_obc_eigen:             Min =  9.99900892E-01,  Max =  4.81659553E+00
+
+ Writing extrema Ritz eigenvalues into forcing B-normalization file:  ../Data/wc13_nrm_xy_multiscale_f.nc
+   (Required by Implicit Chebyshev Iterations, CI, Solver)
+
+    - sustr_eigen:                Min =  1.00894429E+00,  Max =  6.76156599E+00
+    - svstr_eigen:                Min =  1.00619420E+00,  Max =  6.98312118E+00
+    - shflux_eigen:               Min =  1.00386727E+00,  Max =  6.57858723E+00
+    - ssflux_eigen:               Min =  1.00787196E+00,  Max =  6.57883654E+00
+
+ Error Covariance Normalization Factors: Exact Method
+
+    Computing initial conditions 2D normalization factors at RHO-points
+    - zeta:                       Min =  4.18120172E+04,  Max =  1.60976432E+05,  CheckSum = 59441
+       wrote  zeta  normalization factors into record 1, file: ../Data/wc13_nrm_xy_multiscale_i.nc
+    Computing initial conditions 2D normalization factors at   U-points
+    - ubar:                       Min =  4.94156290E+04,  Max =  1.60949973E+05,  CheckSum = 57588
+       wrote  ubar  normalization factors into record 1, file: ../Data/wc13_nrm_xy_multiscale_i.nc
+    Computing initial conditions 2D normalization factors at   V-points
+    - vbar:                       Min =  0.00000000E+00,  Max =  1.61062222E+05,  CheckSum = 57366
+       wrote  vbar  normalization factors into record 1, file: ../Data/wc13_nrm_xy_multiscale_i.nc
+    Computing initial conditions 3D normalization factors at   U-points
+    - u:                          Min =  6.11825521E+05,  Max =  3.59213132E+06,  CheckSum = 1735874
+       wrote  u     normalization factors into record 1, file: ../Data/wc13_nrm_xy_multiscale_i.nc
+    Computing initial conditions 3D normalization factors at   V-points
+    - v:                          Min =  0.00000000E+00,  Max =  3.60136076E+06,  CheckSum = 1729320
+       wrote  v     normalization factors into record 1, file: ../Data/wc13_nrm_xy_multiscale_i.nc
+    Computing initial conditions 3D normalization factors at RHO-points
+    - temp:                       Min =  3.76057116E+05,  Max =  3.60038617E+06,  CheckSum = 1784766
+       wrote  temp  normalization factors into record 1, file: ../Data/wc13_nrm_xy_multiscale_i.nc
+    - salt:                       Min =  3.76057116E+05,  Max =  3.60038617E+06,  CheckSum = 1784766
+       wrote  salt  normalization factors into record 1, file: ../Data/wc13_nrm_xy_multiscale_i.nc
+    Computing boundary conditions 2D normalization factors at RHO-points
+    Computing boundary conditions 2D normalization factors at   U-points
+    Computing boundary conditions 2D normalization factors at   V-points
+    Computing boundary conditions 3D normalization factors at   U-points
+    Computing boundary conditions 3D normalization factors at   V-points
+    Computing boundary conditions 3D normalization factors at RHO-points
+    Computing surface forcing 2D normalization factors at U-stress points
+    - sustr:                      Min =  1.20448125E+05,  Max =  2.62503088E+05,  CheckSum = 59645
+       wrote  sustr normalization factors into record 1, file: ../Data/wc13_nrm_xy_multiscale_f.nc
+    Computing surface forcing 2D normalization factors at V-stress points
+    - svstr:                      Min =  0.00000000E+00,  Max =  2.62175112E+05,  CheckSum = 59381
+       wrote  svstr normalization factors into record 1, file: ../Data/wc13_nrm_xy_multiscale_f.nc
+    Computing surface forcing 2D normalization factors at RHO-points
+    - shflux:                     Min =  9.47511752E+04,  Max =  2.62180464E+05,  CheckSum = 61093
+       wrote  shfluxnormalization factors into record 1, file: ../Data/wc13_nrm_xy_multiscale_f.nc
+    - ssflux:                     Min =  9.47511777E+04,  Max =  2.62180475E+05,  CheckSum = 61107
+       wrote  ssfluxnormalization factors into record 1, file: ../Data/wc13_nrm_xy_multiscale_f.nc
+
+ Dirac Delta Function Perturbations:
+
+ ANA_PERTURB - Tangent tl_ubar perturbed at (i,j) =               15  30
+ ANA_PERTURB - Tangent tl_vbar perturbed at (i,j) =               15  35
+ ANA_PERTURB - Tangent tl_zeta perturbed at (i,j) =               25  20
+ ANA_PERTURB - Tangent tl_ustr perturbed at (i,j,ir) =            18  30   1
+ ANA_PERTURB - Tangent tl_vstr perturbed at (i,j,ir) =            18  35   1
+ ANA_PERTURB - Tangent tl_u perturbed at (i,j,k) =                15  30  30
+ ANA_PERTURB - Tangent tl_v perturbed at (i,j,k) =                15  35  30
+ ANA_PERTURB - Tangent tl_t perturbed at (i,j,k,itrc) =           30  20  30   1
+ ANA_PERTURB - Tangent tl_t perturbed at (i,j,k,itrc) =           20  40  30   2
+ ANA_PERTURB - Tangent tl_tflux perturbed at (i,j,ir,itrc) =      20  15   1   1
+ ANA_PERTURB - Tangent tl_tflux perturbed at (i,j,ir,itrc) =      25  20   1   2
+
+  TL_DEF_HIS_NF90  - creating tangent file,            Grid 01: wc13_tlm.nc
+
+  TL_WRT_HIS_NF90  - writing history     fields (Index=2,2) in record = 1
+    - sustr:                      Min =  3.77757524E-20,  Max =  9.99999727E-01,  CheckSum = 329425
+    - svstr:                      Min =  0.00000000E+00,  Max =  9.99998902E-01,  CheckSum = 328210
+    - shflux:                     Min =  5.56974263E-19,  Max =  1.00000000E+00,  CheckSum = 335735
+    - ssflux:                     Min =  1.54268153E-17,  Max =  1.00000000E+00,  CheckSum = 339280
+    - zeta:                       Min =  3.83914426E-33,  Max =  1.00000000E+00,  CheckSum = 66229
+    - ubar:                       Min =  0.00000000E+00,  Max =  0.00000000E+00,  CheckSum = 0
+    - DU_avg1:                    Min =  0.00000000E+00,  Max =  0.00000000E+00,  CheckSum = 0
+    - DU_avg2:                    Min =  0.00000000E+00,  Max =  0.00000000E+00,  CheckSum = 0
+    - vbar:                       Min =  0.00000000E+00,  Max =  0.00000000E+00,  CheckSum = 0
+    - DV_avg1:                    Min =  0.00000000E+00,  Max =  0.00000000E+00,  CheckSum = 0
+    - DV_avg2:                    Min =  0.00000000E+00,  Max =  0.00000000E+00,  CheckSum = 0
+    - u:                          Min =  5.90631127E-46,  Max =  1.00000000E+00,  CheckSum = 1925886
+    - v:                          Min =  0.00000000E+00,  Max =  1.00000000E+00,  CheckSum = 1917302
+    - temp:                       Min =  2.54954585E-45,  Max =  1.00000000E+00,  CheckSum = 1975336
+    - salt:                       Min =  1.14926279E-52,  Max =  1.00000000E+00,  CheckSum = 1970657
+    - rho:                        Min =  0.00000000E+00,  Max =  0.00000000E+00,  CheckSum = 0
+    - AKv:                        Min =  0.00000000E+00,  Max =  0.00000000E+00,  CheckSum = 0
+    - AKt:                        Min =  0.00000000E+00,  Max =  0.00000000E+00,  CheckSum = 0
+    - AKs:                        Min =  0.00000000E+00,  Max =  0.00000000E+00,  CheckSum = 0
+```
+
+---
+
+### Convergence:
+
+> [!IMPORTANT]  
+> :earth_americas: We recommend activating the **`MULTI_SCALE_DEBUG`** option **only** when computing the normalization factors. Please note that **ROMS** will generate **extensive output** to Fortran Unit 45 (file **`fort.45`**), including detailed information on the convergence of the implicit **CG** algorithm. For example, for the free surface, the output includes:
+
+``` d
+CG_2d: Convergence for 'zeta', B-MultiScale = 1
+
+       K-LAP  => iterDiff = 001  iter = 020  deps =  8.80229E-13
+       K-LAP  => iterDiff = 002  iter = 020  deps =  8.40234E-13
+       K-LAP  => iterDiff = 003  iter = 020  deps =  7.21216E-13
+       K-LAP  => iterDiff = 004  iter = 020  deps =  5.71161E-13
+       K-LAP  => iterDiff = 005  iter = 020  deps =  4.26397E-13
+       K-LAP  => iterDiff = 006  iter = 020  deps =  3.05228E-13
+       K-LAP  => iterDiff = 007  iter = 020  deps =  2.13038E-13
+       K-LAP  => iterDiff = 008  iter = 020  deps =  1.47236E-13
+       K-LAP  => iterDiff = 009  iter = 020  deps =  1.01729E-13
+       K-DIFF => iterDiff = 010  iter = 000  deps =  1.00000E+00
+       K-DIFF => iterDiff = 010  iter = 001  deps =  6.36514E-02
+       K-DIFF => iterDiff = 010  iter = 002  deps =  7.98343E-03
+       K-DIFF => iterDiff = 010  iter = 003  deps =  1.52484E-03
+       K-DIFF => iterDiff = 010  iter = 004  deps =  3.37602E-04
+       K-DIFF => iterDiff = 010  iter = 005  deps =  8.23612E-05
+       K-DIFF => iterDiff = 010  iter = 006  deps =  2.08667E-05
+       K-DIFF => iterDiff = 010  iter = 007  deps =  5.14899E-06
+       K-DIFF => iterDiff = 010  iter = 008  deps =  1.30401E-06
+       K-DIFF => iterDiff = 010  iter = 009  deps =  3.19642E-07
+       K-DIFF => iterDiff = 010  iter = 010  deps =  8.10830E-08
+       K-DIFF => iterDiff = 010  iter = 011  deps =  1.95512E-08
+       K-DIFF => iterDiff = 010  iter = 012  deps =  4.99654E-09
+       K-DIFF => iterDiff = 010  iter = 013  deps =  1.24145E-09
+       K-DIFF => iterDiff = 010  iter = 014  deps =  3.01005E-10
+       K-DIFF => iterDiff = 010  iter = 015  deps =  7.75697E-11
+       K-DIFF => iterDiff = 010  iter = 016  deps =  1.91668E-11
+       K-DIFF => iterDiff = 010  iter = 017  deps =  4.70342E-12
+       K-DIFF => iterDiff = 010  iter = 018  deps =  1.14870E-12
+       K-DIFF => iterDiff = 010  iter = 019  deps =  2.80783E-13
+       K-LAP  => iterDiff = 010  iter = 020  deps =  7.03380E-14
+       K-DIFF => iterDiff = 010  iter = 020  deps =  7.03380E-14
+```	   
+---
 ### References:
 
 Fisher, M. and P. Courtier, **1995**: Estimating the covariance matrices of analysis and forecast error in variational data assimilation, *ECMWF Technical Memoranda*, **220**, [doi:10.21957/1dxrasjit](https://doi.org/10.21957/1dxrasjit).
