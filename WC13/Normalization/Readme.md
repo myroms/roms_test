@@ -226,7 +226,7 @@ The following figures show the **WC13** standard deviation for free surface (m),
    ``` 
 
 > [!IMPORTANT]  
-> :dragon The **`Nmethod=0`** (exact normalization approach) driver requires significant computational resources. For large application grids, **`Nmethod=1`** (approximated randomization approach) is recommended. Typically, the **`LdefNRM`** and **`Cnorm*(is…)`** switches are adjusted, and multiple jobs are submitted to compute normalization factors for each variable in the control vector.
+> :dragon: The **`Nmethod=0`** (exact normalization approach) driver requires significant computational resources. For large application grids, **`Nmethod=1`** (approximated randomization approach) is recommended. Typically, the **`LdefNRM`** and **`Cnorm*(is…)`** switches are adjusted, and multiple jobs are submitted to compute normalization factors for each variable in the control vector.
 >
 >* Initially, submit a job to generate the output files required for computing normalization factors for the free-surface, 2D u-momentum, and 2D v-momentum. Enable **`CnormI(isFsur)`**, **`CnormI(isUbar)`**, and **`CnormI(isVbar)`**, while disabling all other **`Cnorm*`** switches. This step produces the necessary NetCDF files for the prior, model, surface-forcing adjustment, and lateral boundary condition adjustments.
 >* Subsequently, disable all **`LdefNRM`** switches.
