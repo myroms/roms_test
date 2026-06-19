@@ -406,6 +406,7 @@ LtracerSponge == F F                            ! temperature, salinity, inert
 ! Various parameters.
 
        WTYPE == 4
+  BOT_ALBEDO == 0.0d0
      LEVSFRC == 40
      LEVBFRC == 1
 
@@ -574,6 +575,18 @@ Hout(idBath) == F       ! bath               time-dependent bathymetry
 
 Hout(idTvar) == T T     ! temp, salt         temperature and salinity
 
+Hout(idUzsl) == F       ! u_slice            U-velocity depth slices
+Hout(idVzsl) == F       ! v_slice            V-velocity depth slices
+Hout(idUzsE) == F       ! u_eastward_slice   U-eastward  velocity depth slices
+Hout(idVzsN) == F       ! v_northward_slice  V-northward velocity depth slices
+
+Hout(id3dPV) == F       ! pvorticity         potential vorticity at PSI-points
+Hout(id3dRV) == F       ! rvorticity         relative  vorticity at PSI-points
+Hout(idPVzs) == F       ! pvorticity_slice   potential vorticity depth slices
+Hout(idRVzs) == F       ! rvorticity_slice   relative  vorticity depth slices
+
+Hout(idzslT) == F F     ! temp_slice, ...    temperature and salinity depth slices
+
 Hout(idpthR) == F       ! z_rho              time-varying depths of RHO-points
 Hout(idpthU) == F       ! z_u                time-varying depths of U-points
 Hout(idpthV) == F       ! z_v                time-varying depths of V-points
@@ -631,11 +644,11 @@ Hout(idWdis) == F       ! Dissip_roller      wave roller dissipation
 Hout(idWrol) == F       ! roller_action      wave roller action density
 
 Hout(idPair) == F       ! Pair               surface air pressure
-Hout(idTair) == F       ! Tair               surface air temperature
-Hout(idUair) == F       ! Uwind              surface U-wind
-Hout(idVair) == F       ! Vwind              surface V-wind
-Hout(idUaiE) == F       ! Uwind_eastward     surface Eastward  U-wind
-Hout(idVaiN) == F       ! Vwind_northward    surface Northward V-wind
+Hout(idTair) == F       ! Tair               near surface air temperature
+Hout(idUair) == F       ! Uwind              near surface U-wind
+Hout(idVair) == F       ! Vwind              near surface V-wind
+Hout(idUaiE) == F       ! Uwind_eastward     near surface Eastward  U-wind
+Hout(idVaiN) == F       ! Vwind_northward    near surface Northward V-wind
 
 Hout(idTsur) == F F     ! shflux, ssflux     surface net heat and salt flux
 Hout(idLhea) == F       ! latent             latent heat flux
@@ -663,6 +676,7 @@ Hout(idMtls) == F       ! gls                turbulent length scale
 ! switches can be activated using compact parameter specification.
 
  Hout(inert) == T       ! dye_01, ...        inert passive tracers
+ Hout(Znert) == F       ! dye_01_slice, ...  inert tracer constant depth slices
 
 ! Logical switches (TRUE/FALSE) to activate writing of fields into
 ! QUICKSAVE output file.
@@ -682,12 +696,22 @@ Qout(idBath) == F       ! bath               time-dependent bathymetry
 
 Qout(idTvar) == F F     ! temp, salt         temperature and salinity
 
-Qout(idUsur) == T       ! u_sur              surface U-velocity
-Qout(idVsur) == T       ! v_sur              surface V-velocity
-Qout(idUsuE) == T       ! u_sur_eastward     surface U-eastward  velocity
-Qout(idVsuN) == T       ! v_sur_northward    surface V-northward velocity
+Qout(idUsur) == T       ! u_sur              surface level U-velocity
+Qout(idVsur) == T       ! v_sur              surface level V-velocity
+Qout(idUsuE) == T       ! u_sur_eastward     surface level U-eastward  velocity
+Qout(idVsuN) == T       ! v_sur_northward    surface level V-northward velocity
 
-Qout(idsurT) == T T     ! temp_sur, salt_sur surface temperature and salinity
+Qout(idsurT) == T T     ! temp_sur, salt_sur surface level temperature and salinity
+
+Qout(idUzsl) == F       ! u_slice            U-velocity depth slices
+Qout(idVzsl) == F       ! v_slice            V-velocity depth slices
+Qout(idUzsE) == F       ! u_eastward_slice   U-eastward  velocity depth slices
+Qout(idVzsN) == F       ! v_northward_slice  V-northward velocity depth slices
+
+Qout(idPVzs) == F       ! pvorticity_slice   potential vorticity depth slices
+Qout(idRVzs) == F       ! rvorticity_slice   relative vorticity depth slices
+
+Qout(idzslT) == F F     ! temp_slice, ...    temperature and salinity depth slices
 
 Qout(idpthR) == F       ! z_rho              time-varying depths of RHO-points
 Qout(idpthU) == F       ! z_u                time-varying depths of U-points
@@ -746,11 +770,12 @@ Qout(idWdis) == F       ! Dissip_roller      wave roller dissipation
 Qout(idWrol) == F       ! roller_action      wave roller action density
 
 Qout(idPair) == T       ! Pair               surface air pressure
-Qout(idTair) == T       ! Tair               surface air temperature
-Qout(idUair) == T       ! Uair               surface U-wind
-Qout(idVair) == T       ! Vair               surface V-wind
-Qout(idUaiE) == F       ! Uwind_eastward     surface Eastward  U-wind
-Qout(idVaiN) == F       ! Vwind_northward    surface Northward V-wind
+Qout(idPBLh) == F       ! PBLh               atmosphere boundary layer thickness
+Qout(idTair) == T       ! Tair               near surface air temperature
+Qout(idUair) == T       ! Uair               near surface U-wind
+Qout(idVair) == T       ! Vair               near surface V-wind
+Qout(idUaiE) == F       ! Uwind_eastward     near surface Eastward  U-wind
+Qout(idVaiN) == F       ! Vwind_northward    near surface Northward V-wind
 
 Qout(idTsur) == T T     ! shflux, ssflux     surface net heat and salt flux
 Qout(idLhea) == T       ! latent             latent heat flux
@@ -778,6 +803,7 @@ Qout(idMtls) == F       ! gls                turbulent length scale
 ! switches can be activated using compact parameter specification.
 
  Qout(inert) == F       ! dye_01, ...        inert passive tracers
+ Qout(Znert) == F       ! dye_01_slice, ...  inert tracer constant depth slices
  Qout(Snert) == F       ! dye_01_sur, ...    surface inert passive tracers
 
 ! Logical switches (TRUE/FALSE) to activate writing of time-averaged
@@ -849,11 +875,11 @@ Aout(idWdis) == F       ! Dissip_roller      wave roller dissipation
 Aout(idWrol) == F       ! roller_action      wave roller action density
 
 Aout(idPair) == F       ! Pair               surface air pressure
-Aout(idTair) == F       ! Tair               surface air temperature
-Aout(idUair) == F       ! Uwind              surface U-wind
-Aout(idVair) == F       ! Vwind              surface V-wind
-Aout(idUaiE) == F       ! Uwind_eastward     surface Eastward  U-wind
-Aout(idVaiN) == F       ! Vwind_northward    surface Northward V-wind
+Aout(idTair) == F       ! Tair               near surface air temperature
+Aout(idUair) == F       ! Uwind              near surface U-wind
+Aout(idVair) == F       ! Vwind              near surface V-wind
+Aout(idUaiE) == F       ! Uwind_eastward     near surface Eastward  U-wind
+Aout(idVaiN) == F       ! Vwind_northward    near surface Northward V-wind
 
 Aout(idTsur) == T T     ! shflux, ssflux     surface net heat and salt flux
 Aout(idLhea) == T       ! latent             latent heat flux
@@ -972,6 +998,17 @@ Dout(iTxdif) == T T     ! temp_xdiff, ...    horizontal XI-diffusion
 Dout(iTydif) == T T     ! temp_ydiff, ...    horizontal ETA-diffusion
 Dout(iTsdif) == T T     ! temp_sdiff, ...    horizontal S-diffusion
 Dout(iTvdif) == T T     ! temp_vdiff, ...    vertical diffusion
+
+! Number of output field horizontal slices and their depths (negative, m).
+! It is possible to extract selected state fields like temperature, salinity,
+! and velocity components at a constant depth in the QUICKSAVE and HISTORY
+! NetCDF files. Use wise depth values based on dynamics and model bathymetry
+! and make sure that "NSLICE" is small (between 1 and 4) to keep the QUICKSAVE
+! file size manageable. Order "Z_SLICE" in descending values (surface to
+! bottom).
+
+      NSLICE =  0
+     Z_SLICE =  0.0d0 -50.0d0 -100.0d0
 
 ! Generic User parameters, [1:NUSER].
 
@@ -2086,6 +2123,12 @@ PIO_I2C_Preq = 65                 ! Maximum pending I2C requests
 !                7         3        Baltic
 !                8         5        Black Sea
 !                9         7        Dark coastal water
+!
+! BOT_ALBEDO   Bottom albedo coefficient (nondimensional): fraction of
+!                downward solar radiation at the seabed that is reflected.
+!                The length scales of upward absorption follow Jerlov water
+!                type. The unreflected fraction is absorbed by the bed
+!                (effectively modifying bottom tracer flux).
 !
 !------------------------------------------------------------------------------
 ! Body-force parameters. Used when CPP option BODYFORCE is activated.
