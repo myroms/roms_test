@@ -26,26 +26,26 @@ Current System, 1/3 degree resolution, application (**WC13**).
 
 ### Input NetCDF Files:
 ```
-                       Grid File:  ../Data/wc13_grd.nc
+                       Grid File:  ../Data/GRD/wc13_grd.nc
           Nonlinear Initial File:  wc13_ini.nc
-                 Forcing File 01:  ../Data/coamps_wc13_lwrad_down.nc
-                 Forcing File 02:  ../Data/coamps_wc13_Pair.nc
-                 Forcing File 03:  ../Data/coamps_wc13_Qair.nc
-                 Forcing File 04:  ../Data/coamps_wc13_rain.nc
-                 Forcing File 05:  ../Data/coamps_wc13_swrad.nc
-                 Forcing File 06:  ../Data/coamps_wc13_Tair.nc
-                 Forcing File 07:  ../Data/coamps_wc13_wind.nc
-                   Boundary File:  ../Data/wc13_ecco_bry.nc
+                 Forcing File 01:  ../Data/FRC/coamps_wc13_lwrad_down.nc
+                 Forcing File 02:  ../Data/FRC/coamps_wc13_Pair.nc
+                 Forcing File 03:  ../Data/FRC/coamps_wc13_Qair.nc
+                 Forcing File 04:  ../Data/FRC/coamps_wc13_rain.nc
+                 Forcing File 05:  ../Data/FRC/coamps_wc13_swrad.nc
+                 Forcing File 06:  ../Data/FRC/coamps_wc13_Tair.nc
+                 Forcing File 07:  ../Data/FRC/coamps_wc13_wind.nc
+                   Boundary File:  ../Data/FRC/wc13_ecco_bry.nc
 
         Adjoint Sensitivity File:  wc13_ads.nc
-     Initial Conditions STD File:  ../Data/wc13_std_i.nc
-                  Model STD File:  ../Data/wc13_std_m.nc
-    Boundary Conditions STD File:  ../Data/wc13_std_b.nc
-        Surface Forcing STD File:  ../Data/wc13_std_f.nc
-    Initial Conditions Norm File:  ../Data/wc13_nrm_i.nc
-                 Model Norm File:  ../Data/wc13_nrm_m.nc
-   Boundary Conditions Norm File:  ../Data/wc13_nrm_b.nc
-       Surface Forcing Norm File:  ../Data/wc13_nrm_f.nc
+     Initial Conditions STD File:  ../Data/STD/wc13_std_i.nc
+                  Model STD File:  ../Data/STD/wc13_std_m.nc
+    Boundary Conditions STD File:  ../Data/STD/wc13_std_b.nc
+        Surface Forcing STD File:  ../Data/STD/wc13_std_f.nc
+    Initial Conditions Norm File:  ../Data/NRM/wc13_nrm_i.nc
+                 Model Norm File:  ../Data/NRM/wc13_nrm_m.nc
+   Boundary Conditions Norm File:  ../Data/NRM/wc13_nrm_b.nc
+       Surface Forcing Norm File:  ../Data/NRM/wc13_nrm_f.nc
                Observations File:  wc13_obs.nc
             Lanczos Vectors File:  wc13_lcz.nc
 ```
@@ -57,7 +57,7 @@ Current System, 1/3 degree resolution, application (**WC13**).
    build_roms.sh        ROMS GNU make compiling and linking BASH script
    cbuild_roms.csh      ROMS CMake compiling and linking CSH script
    cbuild_roms.sh       ROMS CMake compiling and linking BASH script
-   job_array_modes.csh  job configuration script
+   job_array_modes.sh   job configuration script
    roms_wc13.in         ROMS standard input script for WC13
    s4dvar.in            4D-Var standard input script template
    wc13.h               WC13 header with CPP options
@@ -94,9 +94,9 @@ You need to take the following steps:
 
   - These standard deviations have already been created for you:
     ```
-      ../Data/wc13_std_i.nc     initial conditions
-      ../Data/wc13_std_b.nc     open boundary conditions
-      ../Data/wc13_std_f.nc     surface forcing (wind stress and net heat flux)
+      ../Data/STD/wc13_std_i.nc     initial conditions
+      ../Data/STD/wc13_std_b.nc     open boundary conditions
+      ../Data/STD/wc13_std_f.nc     surface forcing (wind stress and net heat flux)
     ```
 
 - Since we are modeling the error covariance matrix, **D**, we
@@ -161,9 +161,9 @@ You need to take the following steps:
       (see **`../Normalization`**) using the **exact method** since this
       application has a small grid (**54x53x30**):
     ```
-      ../Data/wc13_nrm_i.nc     initial conditions
-      ../Data/wc13_nrm_b.nc     open boundary conditions
-      ../Data/wc13_nrm_f.nc     surface forcing (wind stress and net heat flux)
+      ../Data/NRM/wc13_nrm_i.nc     initial conditions
+      ../Data/NRM/wc13_nrm_b.nc     open boundary conditions
+      ../Data/NRM/wc13_nrm_f.nc     surface forcing (wind stress and net heat flux)
     ```
       Notice that the switches **LdefNRM** and **LwrtNRM** are all **.FALSE.**
       (**F**) since we already computed these coefficients.
@@ -179,7 +179,7 @@ You need to take the following steps:
  - Before you run this application, you need to execute the job
    script:
    ```
-      job_array_modes.csh
+      job_array_modes.sh
    ```
    In **RBL4D-Var** (observation space minimization, dual formulation), the Lanczos
    vectors are stored in output **4D-Var** NetCDF file **wc13_mod.nc**.
@@ -225,7 +225,7 @@ You need to take the following steps:
     in parallel using **MPI**.  This is because of the way that the
     adjoint model is constructed.
 
-  - Customize the configuration script **job_array_modes.csh** and provide
+  - Customize the configuration script **job_array_modes.sh** and provide
     the appropriate place for the **substitute** Perl script:
     ```
       set SUBSTITUTE=${ROMS_ROOT}/ROMS/Bin/substitute
@@ -245,7 +245,7 @@ You need to take the following steps:
     mode. Note that **Nvct** must be assigned a numeric value
     (i.e. **Nvct=10** for the **RBL4D-Var** tutorial).
 
- - Execute the configuration **job_array_modes.csh** `BEFORE` running
+ - Execute the configuration **job_array_modes.sh** `BEFORE` running
    the model.  It copies the required files and creates **r4dvar.in**
    input script from template **s4dvar.in**. This has to be done
    EVERY TIME that you run this application. We need a clean and
