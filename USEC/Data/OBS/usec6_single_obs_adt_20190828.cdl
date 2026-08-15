@@ -1,0 +1,138 @@
+netcdf usec6_single_obs_adt_20190828 {
+dimensions:
+	Location = 2 ;
+	nvars = 1 ;
+	survey = 1 ;
+variables:
+	int Location(Location) ;
+		Location:suggested_chunck_dim = 512 ;
+		Location:_FillValue = -1 ;
+	int nvars(nvars) ;
+		nvars:suggested_chunck_dim = 100 ;
+		nvars:_FillValue = -1 ;
+	int survey(survey) ;
+		survey:suggested_chunck_dim = 100 ;
+		survey:_FillValue = -1 ;
+
+// global attributes:
+		:_ioda_layout = "ObsGroup" ;
+		:_ioda_layout_version = 3 ;
+		:odb_version = 1 ;
+		:roms_grid = 279, 120, 50 ;
+		:date_time = 2019082700. ;
+		:datetimeReference = "2019-08-27T00:00:00Z" ;
+		:description = "Native ROMS 4D-Var observations file converted to IODA" ;
+		:sourceFiles = "usec6_single_obs_adt_20190828.cdl" ;
+		:history = "Created from Matlab script: create_ioda_obs on Friday - August 14, 2026 - 3:47:56.4819 PM" ;
+data:
+
+ Location = 0, 0 ;
+
+ nvars = 0 ;
+
+ survey = 0 ;
+
+group: MetaData {
+  variables:
+  	int64 dateTime(Location) ;
+  		dateTime:long_name = "elapsed observation time since reference" ;
+  		dateTime:units = "seconds since 2019-08-27T00:00:00Z" ;
+  		dateTime:_FillValue = -2147483643LL ;
+  	float latitude(Location) ;
+  		latitude:long_name = "observation latitude" ;
+  		latitude:units = "degrees_north" ;
+  		latitude:_FillValue = 1.e+37f ;
+  	float longitude(Location) ;
+  		longitude:long_name = "observation longitude" ;
+  		longitude:units = "degrees_east" ;
+  		longitude:_FillValue = 1.e+37f ;
+  	int provenance(Location) ;
+  		provenance:long_name = "observation origin identifier" ;
+  		provenance:negative = "repetitive observation at different times and error" ;
+  		provenance:_FillValue = 0 ;
+  	int sequenceNumber(Location) ;
+  		sequenceNumber:long_name = "observation sequence number" ;
+  		sequenceNumber:_FillValue = -1 ;
+  	int stateID(nvars) ;
+  		stateID:long_name = "state variable index" ;
+  		stateID:_FillValue = -1 ;
+  	int surveyIndex(survey) ;
+  		surveyIndex:long_name = "observation survey time indices as they appear in dateTime" ;
+  		surveyIndex:_FillValue = -1 ;
+  	int64 surveyTime(survey) ;
+  		surveyTime:long_name = "observation survey time" ;
+  		surveyTime:units = "seconds since 2019-08-27T00:00:00Z" ;
+  		surveyTime:_FillValue = -2147483643LL ;
+  	string variables_name(nvars) ;
+  		variables_name:long_name = "observation UFO/IODA standard name" ;
+  		string variables_name:_FillValue = "MISSING" ;
+  	float x_grid(Location) ;
+  		x_grid:long_name = "observation fractional x-grid location" ;
+  		x_grid:valid_min = 0.5 ;
+  		x_grid:valid_max = 280 ;
+  		x_grid:_FillValue = 1.e+37f ;
+  	float y_grid(Location) ;
+  		y_grid:long_name = "observation fractional y-grid location" ;
+  		y_grid:valid_min = 0.5 ;
+  		y_grid:valid_max = 121 ;
+  		y_grid:_FillValue = 1.e+37f ;
+  data:
+
+   dateTime = 129600, 129600 ;
+
+   latitude = 39.4944, 43.9322 ;
+
+   longitude = -71.5656, -66.9322 ;
+
+   provenance = 1, 1 ;
+
+   sequenceNumber = 1, 2 ;
+
+   stateID = 1 ;
+
+   surveyIndex = 1 ;
+
+   surveyTime = 129600 ;
+
+   variables_name = "absolute_dynamic_topography" ;
+
+   x_grid = 125.4238, 228.1028 ;
+
+   y_grid = 69.19962, 95.98051 ;
+  } // group MetaData
+
+group: ObsError {
+  variables:
+  	float absoluteDynamicTopography(Location) ;
+  		absoluteDynamicTopography:long_name = "observation error standard deviation" ;
+  		absoluteDynamicTopography:units = "meter" ;
+  		absoluteDynamicTopography:coordinates = "longitude, latitude, dateTime" ;
+  		absoluteDynamicTopography:_FillValue = 1.e+37f ;
+  data:
+
+   absoluteDynamicTopography = 0.06, 0.06 ;
+  } // group ObsError
+
+group: ObsValue {
+  variables:
+  	float absoluteDynamicTopography(Location) ;
+  		absoluteDynamicTopography:long_name = "observation value" ;
+  		absoluteDynamicTopography:units = "meter" ;
+  		absoluteDynamicTopography:coordinates = "longitude, latitude, dateTime" ;
+  		absoluteDynamicTopography:_FillValue = 1.e+37f ;
+  data:
+
+   absoluteDynamicTopography = -0.5306, -2.3824 ;
+  } // group ObsValue
+
+group: PreQC {
+  variables:
+  	int absoluteDynamicTopography(Location) ;
+  		absoluteDynamicTopography:long_name = "observation preset quality control filter identifier" ;
+  		absoluteDynamicTopography:coordinates = "longitude, latitude, dateTime" ;
+  		absoluteDynamicTopography:_FillValue = -1 ;
+  data:
+
+   absoluteDynamicTopography = 0, 0 ;
+  } // group PreQC
+}
