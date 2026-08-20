@@ -1,4 +1,4 @@
-netcdf usec6_single_obs_adt_20190828 {
+netcdf usec6km_single_obs_adt_20190828 {
 dimensions:
 	Location = 2 ;
 	nvars = 1 ;

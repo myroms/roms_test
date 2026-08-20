@@ -1,7 +1,7 @@
-netcdf usec3_single_obs_sst_20190828 {
+netcdf usec6km_single_obs_TS_20190828 {
 dimensions:
 	Location = 1 ;
-	nvars = 1 ;
+	nvars = 2 ;
 	survey = 1 ;
 variables:
 	int Location(Location) ;
@@ -18,17 +18,17 @@ variables:
 		:_ioda_layout = "ObsGroup" ;
 		:_ioda_layout_version = 3 ;
 		:odb_version = 1 ;
-		:roms_grid = 559, 241, 50 ;
+		:roms_grid = 279, 120, 50 ;
 		:date_time = 2019082700. ;
 		:datetimeReference = "2019-08-27T00:00:00Z" ;
 		:description = "Native ROMS 4D-Var observations file converted to IODA" ;
-		:sourceFiles = "usec3_single_obs_sst_20190828.cdl" ;
-		:history = "Created from Matlab script: create_ioda_obs on Friday - August 14, 2026 - 3:46:47.9464 PM" ;
+		:sourceFiles = "usec6_single_obs_TS_20190828.cdl" ;
+		:history = "Created from Matlab script: create_ioda_obs on Friday - August 14, 2026 - 3:48:20.42 PM" ;
 data:
 
  Location = 0 ;
 
- nvars = 0 ;
+ nvars = 0, 0 ;
 
  survey = 0 ;
 
@@ -38,6 +38,11 @@ group: MetaData {
   		dateTime:long_name = "elapsed observation time since reference" ;
   		dateTime:units = "seconds since 2019-08-27T00:00:00Z" ;
   		dateTime:_FillValue = -2147483643LL ;
+  	float depth(Location) ;
+  		depth:long_name = "observation depth below sea level" ;
+  		depth:units = "meter" ;
+  		depth:negative = "downwards" ;
+  		depth:_FillValue = 1.e+37f ;
   	float latitude(Location) ;
   		latitude:long_name = "observation latitude" ;
   		latitude:units = "degrees_north" ;
@@ -54,7 +59,6 @@ group: MetaData {
   		sequenceNumber:_FillValue = -1 ;
   	int stateID(nvars) ;
   		stateID:long_name = "state variable index" ;
-  		stateID:surface_level = 50 ;
   		stateID:_FillValue = -1 ;
   	int surveyIndex(survey) ;
   		surveyIndex:long_name = "observation survey time indices as they appear in dateTime" ;
@@ -69,70 +73,99 @@ group: MetaData {
   	float x_grid(Location) ;
   		x_grid:long_name = "observation fractional x-grid location" ;
   		x_grid:valid_min = 0.5 ;
-  		x_grid:valid_max = 560 ;
+  		x_grid:valid_max = 280 ;
   		x_grid:_FillValue = 1.e+37f ;
   	float y_grid(Location) ;
   		y_grid:long_name = "observation fractional y-grid location" ;
   		y_grid:valid_min = 0.5 ;
-  		y_grid:valid_max = 242 ;
+  		y_grid:valid_max = 121 ;
   		y_grid:_FillValue = 1.e+37f ;
+  	float z_grid(Location) ;
+  		z_grid:long_name = "observation fractional z-grid location" ;
+  		z_grid:valid_min = 1.f ;
+  		z_grid:valid_max = 50.f ;
+  		z_grid:_FillValue = 1.e+37f ;
   data:
 
    dateTime = 129600 ;
 
-   latitude = 39.3108 ;
+   depth = -32.1418 ;
 
-   longitude = -70.4724 ;
+   latitude = 37.2016 ;
 
-   provenance = 2 ;
+   longitude = -74.0274 ;
+
+   provenance = 6 ;
 
    sequenceNumber = 1 ;
 
-   stateID = 60 ;
+   stateID = 7, 6 ;
 
    surveyIndex = 1 ;
 
    surveyTime = 129600 ;
 
-   variables_name = "sea_surface_temperature" ;
+   variables_name = "sea_water_salinity", "sea_water_temperature" ;
 
-   x_grid = 271.273 ;
+   x_grid = 70.78729 ;
 
-   y_grid = 113.2038 ;
+   y_grid = 58.72121 ;
+
+   z_grid = 44.10113 ;
   } // group MetaData
 
 group: ObsError {
   variables:
-  	float seaSurfaceTemperature(Location) ;
-  		seaSurfaceTemperature:long_name = "observation error standard deviation" ;
-  		seaSurfaceTemperature:units = "C" ;
-  		seaSurfaceTemperature:coordinates = "longitude, latitude, dateTime" ;
-  		seaSurfaceTemperature:_FillValue = 1.e+37f ;
+  	float salinity(Location) ;
+  		salinity:long_name = "observation error standard deviation" ;
+  		salinity:units = "dimensionless" ;
+  		salinity:coordinates = "longitude, latitude, depth, dateTime" ;
+  		salinity:_FillValue = 1.e+37f ;
+  	float waterTemperature(Location) ;
+  		waterTemperature:long_name = "observation error standard deviation" ;
+  		waterTemperature:units = "C" ;
+  		waterTemperature:coordinates = "longitude, latitude, depth, dateTime" ;
+  		waterTemperature:_FillValue = 1.e+37f ;
   data:
 
-   seaSurfaceTemperature = 0.6 ;
+   salinity = 0.1858 ;
+
+   waterTemperature = 0.8423 ;
   } // group ObsError
 
 group: ObsValue {
   variables:
-  	float seaSurfaceTemperature(Location) ;
-  		seaSurfaceTemperature:long_name = "observation value" ;
-  		seaSurfaceTemperature:units = "C" ;
-  		seaSurfaceTemperature:coordinates = "longitude, latitude, dateTime" ;
-  		seaSurfaceTemperature:_FillValue = 1.e+37f ;
+  	float salinity(Location) ;
+  		salinity:long_name = "observation value" ;
+  		salinity:units = "dimensionless" ;
+  		salinity:coordinates = "longitude, latitude, depth, dateTime" ;
+  		salinity:_FillValue = 1.e+37f ;
+  	float waterTemperature(Location) ;
+  		waterTemperature:long_name = "observation value" ;
+  		waterTemperature:units = "C" ;
+  		waterTemperature:coordinates = "longitude, latitude, depth, dateTime" ;
+  		waterTemperature:_FillValue = 1.e+37f ;
   data:
 
-   seaSurfaceTemperature = 21.48 ;
+   salinity = 35.3384 ;
+
+   waterTemperature = 14.7574 ;
   } // group ObsValue
 
 group: PreQC {
   variables:
-  	int seaSurfaceTemperature(Location) ;
-  		seaSurfaceTemperature:long_name = "observation preset quality control filter identifier" ;
-  		seaSurfaceTemperature:coordinates = "longitude, latitude, dateTime" ;
-  		seaSurfaceTemperature:_FillValue = -1 ;
+  	int salinity(Location) ;
+  		salinity:long_name = "observation preset quality control filter identifier" ;
+  		salinity:coordinates = "longitude, latitude, depth, dateTime" ;
+  		salinity:_FillValue = -1 ;
+  	int waterTemperature(Location) ;
+  		waterTemperature:long_name = "observation preset quality control filter identifier" ;
+  		waterTemperature:coordinates = "longitude, latitude, depth, dateTime" ;
+  		waterTemperature:_FillValue = -1 ;
   data:
 
-   seaSurfaceTemperature = 0 ;
+   salinity = 0 ;
+
+   waterTemperature = 0 ;
   } // group PreQC
 }
