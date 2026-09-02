@@ -7,7 +7,7 @@
 #   See License_ROMS.md                                                 :::
 #:::::::::::::::::::::::::::::::::::::::::::::::::::::: David Robertson :::
 #                                                                       :::
-# ROMS/TOMS Copyright Update Script                                     :::
+# ROMS Copyright Update Script                                          :::
 #                                                                       :::
 # Script to update the copyright information on 'matlab' source files.  :::
 # This script replaces the copyright string in the test files. It must  :::

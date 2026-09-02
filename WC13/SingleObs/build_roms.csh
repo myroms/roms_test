@@ -4,7 +4,7 @@
 #::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 # Copyright (c) 2002-2026 The ROMS Group                                :::
 #   Licensed under a MIT/X style license                                :::
-#   See License_ROMS.txt                                                :::
+#   See License_ROMS.md                                                 :::
 #::::::::::::::::::::::::::::::::::::::::::::::::::::: Hernan G. Arango :::
 #                                                                       :::
 # ROMS Compiling CSH Script                                             :::
@@ -276,6 +276,7 @@ endif
 #setenv which_MPI           mpich       # compile with MPICH library
 #setenv which_MPI           mpich2      # compile with MPICH2 library
 #setenv which_MPI           mvapich2    # compile with MVAPICH2 library
+#setenv which_MPI           oneapi      # compile with mpiifx library
  setenv which_MPI           openmpi     # compile with OpenMPI library
 
 #setenv USE_OpenMP          on          # shared-memory parallelism
