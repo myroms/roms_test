@@ -266,6 +266,7 @@ fi
 #export         which_MPI=mpich            # compile with MPICH library
 #export         which_MPI=mpich2           # compile with MPICH2 library
 #export         which_MPI=mvapich2         # compile with MVAPICH2 library
+#export         which_MPI=oneapi           # compile with mpiifx library
  export         which_MPI=openmpi          # compile with OpenMPI library
 
 #export              FORT=ifx
@@ -487,6 +488,10 @@ if [[ $dprint -eq 0 && $clean -eq 1 ]]; then
     export CC=mpiicc
     export CXX=mpiicxx
     export FC=mpiifort
+  elif [[ ${which_MPI} == "oneapi" ]]; then
+    export CC=mpiicx
+    export CXX=mpiicpx
+    export FC=mpiifx
   else
     export CC=mpicc
     export CXX=mpicxx

@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# svn $Id$
+# git $Id$
 #######################################################################
 ## Copyright (c) 2002-2026 The ROMS Group                             #
 ##   Licensed under a MIT/X style license                             #

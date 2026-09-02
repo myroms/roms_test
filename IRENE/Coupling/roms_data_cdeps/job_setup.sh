@@ -4,7 +4,7 @@
 #######################################################################
 # Copyright (c) 2002-2026 The ROMS Group                              #
 #   Licensed under a MIT/X style license                              #
-#   See License_ROMS.txt                                              #
+#   See License_ROMS.md                                               #
 #######################################################################
 #                                                                     #
 # ROMS-UFS coupling setup. It needs to be run before excuting the     #

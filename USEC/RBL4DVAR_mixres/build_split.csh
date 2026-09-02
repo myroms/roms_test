@@ -312,6 +312,7 @@ endif
 #setenv which_MPI           mpich       # compile with MPICH library
 #setenv which_MPI           mpich2      # compile with MPICH2 library
 #setenv which_MPI           mvapich2    # compile with MVAPICH2 library
+#setenv which_MPI           oneapi      # compile with mpiifx library
  setenv which_MPI           openmpi     # compile with OpenMPI library
 
 #setenv USE_OpenMP          on          # shared-memory parallelism
@@ -435,6 +436,11 @@ else
     setenv BUILD_DIR        ${MY_PROJECT_DIR}/Build_roms_nl
   endif
 endif
+
+# For backward compatibility, set deprecated SCRATCH_DIR to compile
+# older released versions of ROMS.
+
+setenv SCRATCH_DIR          ${BUILD_DIR}
 
 # If necessary, create ROMS build directory.
 

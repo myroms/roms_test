@@ -115,6 +115,7 @@ done
 #export which_MPI=mpich        # compile with MPICH library
 #export which_MPI=mpich2       # compile with MPICH2 library
 #export which_MPI=mvapich2     # compile with MVAPICH2 library
+#export which_MPI=oneapi       # compile with mpiifx library
  export which_MPI=openmpi      # compile with OpenMPI library
 
  export FORT=ifort
@@ -278,11 +279,14 @@ if [ "$config" -eq "1" ]; then
     exit 1
   fi
 
-# If which_MPI is "intel" then we need to replace DM_FC and DM_CC in configure.wps
+# If which_MPI is "intel" or "oneapi" then we need to replace DM_FC and DM_CC in configure.wps
 
   if [ "${which_MPI}" == "intel" ]; then
     perl -i -pe 's/^DM_FC(\s*)=(\s*)mpif90/DM_FC$1=$2mpiifort/' ${WPS_SRC_DIR}/configure.wps
     perl -i -pe 's/^DM_CC(\s*)=(\s*)mpicc/DM_CC$1=$2mpiicc/' ${WPS_SRC_DIR}/configure.wps
+  elif [ "${which_MPI}" == "oneapi" ]; then
+    perl -i -pe 's/^DM_FC(\s*)=(\s*)mpif90/DM_FC$1=$2mpiifx/' ${WPS_SRC_DIR}/configure.wps
+    perl -i -pe 's/^DM_CC(\s*)=(\s*)mpicc/DM_CC$1=$2mpiicx/' ${WPS_SRC_DIR}/configure.wps
   fi
 fi
 
