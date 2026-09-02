@@ -4,7 +4,7 @@
 #::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 # Copyright (c) 2002-2026 The ROMS Group                                :::
 #   Licensed under a MIT/X style license                                :::
-#   See License_ROMS.txt                                                :::
+#   See License_ROMS.md                                                 :::
 #::::::::::::::::::::::::::::::::::::::::::::::::::::: Hernan G. Arango :::
 #                                                                       :::
 # ROMS Compiling BASH Script: Split Executables Algorithms              :::
@@ -301,6 +301,7 @@ fi
 #export         which_MPI=mpich         # compile with MPICH library
 #export         which_MPI=mpich2        # compile with MPICH2 library
 #export         which_MPI=mvapich2      # compile with MVAPICH2 library
+#export         which_MPI=oneapi        # compile with mpiifx library
  export         which_MPI=openmpi       # compile with OpenMPI library
 
 #export        USE_OpenMP=on            # shared-memory parallelism
@@ -416,21 +417,26 @@ fi
 
 if [ -n "${USE_DEBUG:+1}" ]; then
   if [ $ad_exe -eq 1 ]; then
-    export    SCRATCH_DIR=${MY_PROJECT_DIR}/Build_romsG_ad
+    export      BUILD_DIR=${MY_PROJECT_DIR}/Build_romsG_ad
   elif [ $tl_exe -eq 1 ]; then
-    export    SCRATCH_DIR=${MY_PROJECT_DIR}/Build_romsG_tl
+    export      BUILD_DIR=${MY_PROJECT_DIR}/Build_romsG_tl
   else
-    export    SCRATCH_DIR=${MY_PROJECT_DIR}/Build_romsG_nl
+    export      BUILD_DIR=${MY_PROJECT_DIR}/Build_romsG_nl
   fi
 else
   if [ $ad_exe -eq 1 ]; then
-    export    SCRATCH_DIR=${MY_PROJECT_DIR}/Build_roms_ad
+    export      BUILD_DIR=${MY_PROJECT_DIR}/Build_roms_ad
   elif [ $tl_exe -eq 1 ]; then
-    export    SCRATCH_DIR=${MY_PROJECT_DIR}/Build_roms_tl
+    export      BUILD_DIR=${MY_PROJECT_DIR}/Build_roms_tl
   else
-    export    SCRATCH_DIR=${MY_PROJECT_DIR}/Build_roms_nl
+    export      BUILD_DIR=${MY_PROJECT_DIR}/Build_roms_nl
   fi
 fi
+
+# For backward compatibility, set deprecated SCRATCH_DIR to compile
+# older released versions of ROMS.
+
+export       SCRATCH_DIR=${BUILD_DIR}
 
 # If necessary, create ROMS build directory.
 

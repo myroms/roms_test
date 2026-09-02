@@ -271,6 +271,7 @@ endif
 #setenv which_MPI            mpich           # compile with MPICH library
 #setenv which_MPI            mpich2          # compile with MPICH2 library
 #setenv which_MPI            mvapich2        # compile with MVAPICH2 library
+#setenv which_MPI            oneapi          # compile with mpiifx library
  setenv which_MPI            openmpi         # compile with OpenMPI library
 
 #setenv FORT                 ifx
@@ -506,7 +507,11 @@ if ( $dprint == 0 ) then
     if ( "${which_MPI}" == "intel" ) then
       setenv CC  mpiicc
       setenv CXX mpiicxx
-      setenv FC  mpiif90
+      setenv FC  mpiifort
+    if ( "${which_MPI}" == "oneapi" ) then
+      setenv CC  mpiicx
+      setenv CXX mpiicpx
+      setenv FC  mpiifx
     else
       setenv CC  mpicc
       setenv CXX mpicxx

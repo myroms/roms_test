@@ -263,6 +263,7 @@ fi
 #export         which_MPI=mpich         # compile with MPICH library
 #export         which_MPI=mpich2        # compile with MPICH2 library
 #export         which_MPI=mvapich2      # compile with MVAPICH2 library
+#export         which_MPI=oneapi        # compile with mpiifx library
  export         which_MPI=openmpi       # compile with OpenMPI library
 
 #export        USE_OpenMP=on            # shared-memory parallelism
@@ -371,6 +372,11 @@ else
     export      BUILD_DIR=${MY_PROJECT_DIR}/Build_roms
   fi
 fi
+
+# For backward compatibility, set deprecated SCRATCH_DIR to compile
+# older released versions of ROMS.
+
+export       SCRATCH_DIR=${BUILD_DIR}
 
 # If necessary, create ROMS build directory.
 
