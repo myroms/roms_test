@@ -21,6 +21,7 @@ To configure, compile, and run the **ROMS-JEDI** framework for the **USEC** 6km 
    % git clone https://github.com/myroms/roms-jedi.git         !> It creates the roms-jedi subdirectory)
    % cd roms-jedi                                              !> ROMS-JEDI interface root directory
    ```
+
 2. Generate **JEDI** input **YAML** files from templates using the [**`template2yaml.pl`**](https://github.com/myroms/roms-jedi/blob/develop/tools/workflow/Readme.md#creating-roms-jedi-input-yaml-files-template2yaml) **Perl** script. They are located in the `testinput` subdirectory.
 
    ``` d
@@ -29,7 +30,8 @@ To configure, compile, and run the **ROMS-JEDI** framework for the **USEC** 6km 
    % template2yaml.pl usec6km_yaml_parameters.dat <MySourceCodeRootDir>/roms-jedi -notest -obs t,s,sst,sss,uv_codar,adt
    ```
    Notice that I am linking the [**`template2yaml.pl`**](https://github.com/myroms/roms-jedi/blob/develop/tools/workflow/Readme.md#creating-roms-jedi-input-yaml-files-template2yaml) **Perl** script to my **<MyHomeRootDir>/bin**, so I can execute it from anywhere.
-6km. To configure **USEC6KM** application for **JEDI**, use the **`jedi_config.csh`** or **`jedi_config.sh`** scripts. In this context, **USEC6KM** is the CPP option that identifies this **ROMS** application. The **JEDI** configuration script also requires additional arguments for the **`ecbuild`** command in general **ROMS** applications. For more details, please refer to the [**`jedi_config`** script documentation](https://github.com/myroms/roms-jedi/tree/develop/tools/workflow/Readme.md#jedi-configuration-script-jedi_config).
+
+3. To configure **USEC6KM** application for **JEDI**, use the **`jedi_config.csh`** or **`jedi_config.sh`** scripts. In this context, **USEC6KM** is the CPP option that identifies this **ROMS** application. The **JEDI** configuration script also requires additional arguments for the **`ecbuild`** command in general **ROMS** applications. For more details, please refer to the [**`jedi_config`** script documentation](https://github.com/myroms/roms-jedi/tree/develop/tools/workflow/Readme.md#jedi-configuration-script-jedi_config).
    ``` d
    % jedi_config.sh usec6km -a USEC6KM <MyConfigRootDir>/ROMS/JediApps/usec6km -n 12 -n_min 4
 
