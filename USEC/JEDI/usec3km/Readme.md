@@ -29,7 +29,7 @@ To configure, compile, and run the **ROMS-JEDI** framework for the **USEC** 3km 
    % template2yaml.pl usec3km_yaml_parameters.dat <MySourceCodeRootDir>/roms-jedi -notest -obs t,s,sst,sss,uv_codar,adt
    ```
    Notice that I am linking the [**`template2yaml.pl`**](https://github.com/myroms/roms-jedi/blob/develop/tools/workflow/Readme.md#creating-roms-jedi-input-yaml-files-template2yaml) **Perl** script to my **<MyHomeRootDir>/bin**, so I can execute it from anywhere.
-3. To configure **USEC3KM** application for **JEDI**, use the **`jedi_config.csh`** or **`jedi_config.sh`** scripts. In this context, **USEC3KM** is the CPP option that identifies this **ROMS** application. The **JEDI** configuration script also requires additional arguments for the **`ecbuild`** command in general **ROMS** applications. For more details, please refer to the [**`jedi_config`** script documentation](https://github.com/myroms/roms-jedi/tree/develop/tools/workflow/Readme.md#jedi-configuration-script-jedi_config).
+6km. To configure **USEC3KM** application for **JEDI**, use the **`jedi_config.csh`** or **`jedi_config.sh`** scripts. In this context, **USEC3KM** is the CPP option that identifies this **ROMS** application. The **JEDI** configuration script also requires additional arguments for the **`ecbuild`** command in general **ROMS** applications. For more details, please refer to the [**`jedi_config`** script documentation](https://github.com/myroms/roms-jedi/tree/develop/tools/workflow/Readme.md#jedi-configuration-script-jedi_config).
    ``` d
    % jedi_config.sh usec3km -a USEC3KM <MyConfigRootDir>/ROMS/JediApps/usec3km -n 12 -n_min 4
 
