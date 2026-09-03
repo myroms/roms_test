@@ -47,7 +47,7 @@ To configure, compile, and run the **ROMS-JEDI** framework for the **USEC** 6km 
    To configure 'ecbuild' with the 'Release' build, you need to type or copy and paste:
 
    cd build_usec6km;
-   ecbuild -DMPIEXEC_EXECUTABLE=$MPIRUN -DMPIEXEC_NUMPROC_FLAG="-n" -DMPIEXEC_NUMPROC=16 -DPython3_EXECUTABLE="`which python3`" -DROMS_APP=USEC6KM -DROMS_APP_DIR=<MyConfigRootDir>/ROMS/JediApps/usec6km -DCMAKE_BUILD_TYPE=Release ../Bundle_usec6km
+   ecbuild -DMPIEXEC_EXECUTABLE=$MPIRUN -DMPIEXEC_NUMPROC_FLAG="-n" -DMPIEXEC_NUMPROC_MIN=4 -DMPIEXEC_NUMPROC=12 -DPython3_EXECUTABLE="`which python3`" -DROMS_APP=USEC6KM -DROMS_APP_DIR=<MyConfigRootDir>/ROMS/JediApps/usec6km -DCMAKE_BUILD_TYPE=Release ../Bundle_usec6km
    <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
    ```
 > [!CAUTION]
