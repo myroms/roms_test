@@ -1,2 +1,56 @@
 <img width="824" alt="image" src="https://github.com/user-attachments/assets/d15ec2a4-70e3-410f-a2ae-d09682a9f0f2">
 
+### Instructions
+
+To configure, compile, and run the **ROMS-JEDI** framework for the **USEC** 3km grid, we use the **Generic** Application strategy delineated in the [tutorial](https://github.com/myroms/roms-jedi/wiki/ROMS%E2%80%90JEDI-Tutorial):
+
+1. Clone the **ROMS-JEDI** interface from its public repository at https://github.com/myroms. Please note that only the **develop** branch is accessible. The research branches are private and in the **JCSDA** internal repositories, restricted to **JEDI** developers and partners. You only need to download **ROMS-JEDI** once per computer, but you must update it frequently with **`git pull`**. This is necessary because the **JEDI** abstract building blocks and model interfaces continually evolve and improve. As a result, the private and public **develop** branches are often updated.
+
+   ``` d
+   % cd MySourceCodeRootDir
+   % git clone https://github.com/myroms/roms-jedi.git         !> it creates the roms-jedi subdirectory)
+   % cd roms-jedi                                              !> ROMS-JEDI interface root directory
+   ```
+2. Generate **JEDI** input **YAML** files from templates using the [**`template2yaml.pl`**](https://github.com/myroms/roms-jedi/blob/develop/tools/workflow/Readme.md#creating-roms-jedi-input-yaml-files-template2yaml) **Perl** script. They are located in the `testinput` subdirectory.
+
+   ``` d
+   % ln -s <MySoureCodeRootDir>/roms-jedi/tools/workflow/template2yaml.pl <MyHomeRootDir>/bin
+   % rehash
+   % template2yaml.pl usec3km_yaml_parameters.dat <MySourceCodeRootDir>/roms-jedi -notest -obs t,s,sst,sss,uv_codar,adt
+   ```
+   Notice that I am linking the [**`template2yaml.pl`**](https://github.com/myroms/roms-jedi/blob/develop/tools/workflow/Readme.md#creating-roms-jedi-input-yaml-files-template2yaml) **Perl** script to my **<MyHomeRootDir>/bin**, so I can execute it from anywhere.
+3. To configure **USEC3KM** application for **JEDI**, use the **`jedi_config.csh`** or **`jedi_config.sh`** scripts. In this context, **USEC3KM** is the CPP option that identifies this **ROMS** application. The **JEDI** configuration script also requires additional arguments for the **`ecbuild`** command in general **ROMS** applications. For more details, please refer to the [**`jedi_config`** script documentation](https://github.com/myroms/roms-jedi/tree/develop/tools/workflow/Readme.md#jedi-configuration-script-jedi_config).
+   ``` d
+   % jedi_config.sh usec3km -a USEC3KM <MyConfigRootDir>/ROMS/JediApps/usec3km -n 12 -n_min 4
+
+   Current directory: <MySourceCodeRootDir>/roms-jedi
+
+   Created sub-diretory: Bundle_usec3km
+   Created sub-diretory: build_usec3km
+
+   'bundle/.gitignore' -> 'Bundle_usec3km/.gitignore'
+   'bundle/CMakeLists.txt' -> 'Bundle_usec3km/CMakeLists.txt'
+
+   <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
+   To configure 'ecbuild' with 'Release' build, you need to type or copy and paste:
+
+   cd build_usec3km;
+   ecbuild -DMPIEXEC_EXECUTABLE=$MPIRUN -DMPIEXEC_NUMPROC_FLAG="-n" -DMPIEXEC_NUMPROC=16 -DPython3_EXECUTABLE="`which python3`" -DROMS_APP=USEC3KM -DROMS_APP_DIR=<MyConfigRootDir>/ROMS/JediApps/usec3km -DCMAKE_BUILD_TYPE=Release ../Bundle_usec3km
+   <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
+   ```
+> [!CAUTION]
+> We recommend placing the source code **`<MySourceCodeRootDir>`** path and application configuration **`<MyConfigRootDir>`** path, containing the necessary input NetCDF files, in different locations to avoid messy, confusing setups. The source code is managed under **Git**. The **JEDI** framework works with partial paths and generates all the appropiate file links to run from **`<MySourceCodeRootDir>/roms-jedi/build_usec3km/roms-jedi/test`**.
+
+4. To compile and link your generic **ROMS-JEDI** application, use the following **CMake** command from **`<MySourceRootDir>/roms-jedi/build_usec3km`** sub-directory:
+
+   ``` d
+   % make -j 10
+   ```
+   Compiling/linking the entire system will take around **30 minutes**. The code is primarily written in **C++** and **Fortran 2003**.
+
+5. Run the **ROMS-JEDI** application. Using the **batch_tests.sh** or **slurm_tests.sh** script, as designed for the **Default Application**, you can run all available interface unit tests. Optionally, you may run specific data assimilation algorithms individually in an operational data assimilation environment.
+
+   ``` d
+   % cd roms-jedi/test
+   % batch_test.sh
+   ```
