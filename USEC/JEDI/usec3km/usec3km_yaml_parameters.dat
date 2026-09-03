@@ -1,0 +1,221 @@
+#################################################################
+# USEC3KM application configuration parameters used to generate #
+# ROMS-JEDI input YAML files from templates.                    #
+#################################################################
+#                                                               #
+# Please change the MYAPP and myapp keywords to match your      #
+# application descriptors. MYAPP refers to the ROMS application #
+# CPP option in uppercase, while myapp signifies its equivalent #
+# in lowercase.                                                 #
+#                                                               #
+# Then, choose the appropriate parameters values.               #
+#                                                               #
+#################################################################
+
+# ROMS Application: tile and file prefix.
+
+__ROMS_APPLICATION__           USEC3KM Application
+__ROMS_APP__                   usec3km
+
+# Date-Time parameters for the start of the data assimilation
+# cycle: year, month, day, hour, minutes, and seconds.
+
+YYYY                           2019
+MM                             08
+DD                             27
+hh                             00
+mm                             00
+ss                             00
+
+# Project directory relative to ROMS-JEDI execution.
+
+__PROJECT_DIR__                Data/usec3km
+
+# ROMS application input field (NetCDF files) directory.
+
+__FIELDS_DIR__                 Data/usec3km/input
+
+# ROMS application standard input file.
+
+__ROMS_STDINP__                roms_usec3km_era5_YYYYMMDD.in
+__ROMS_STDINP_MAX__            roms_usec3km_era5_YYYYMMDD_max.in
+
+# ROMS application forecast length and timestep. It uses
+# ISO 8601 standard duration syntax.
+#
+# Notice that the USEC3 application is configured to run for 72 hours
+# (3 days). However, it is possible to use a smaller interval for the
+# 'forecast length' provided it is an integer multiple the timestep
+# (120 s). Then, ROMS internal parameters are changed to the desired
+# interval via the 'simulation length' property.
+
+__FORECAST_LENGTH__            PT72H
+__ROMS_TIMESTEP__              PT120S
+__TRAJECTORY_TIMESTEP__        PT1H
+
+# ROMS application linear models (TLM/ADM) forecast length for the
+# symmetry Unit Test only. To accelerate the test, it can be less than
+# the value PT72H specified above.
+
+__TLAD_FORECAST_LENGTH__       PT6H
+
+# Data assimilation cycle initial and final date-time, which
+# uses the ISO 8601 standard. The MIDDLE and FINAL values are
+# are computed using the INITIAL date and forecast length by
+# the replacement processing script that generates the YAML
+# files from the template.
+
+__INITIAL_DATE__               YYYY-MM-DDThh:mm:ssZ
+__MIDDLE_DATE__                MID_DATE
+__FINAL_DATE__                 FINAL_DATE
+
+# ROMS output file date-time suffix for ensemble members.
+
+__INI_DATETIME__               YYYY-MM-DD-hh.mm.ss
+
+# Number of ensemble members to generate.
+
+__MEMBERS__                    10
+__NMEMBERS__                   10
+
+# Number of variational data assimilation inner loops.
+
+__NINNER__                     10
+__4DVAR_NINNER__               16
+
+# ROMS initial filenames and associated time records for the
+# prior/background state vector. The uppercase "YYYYMMDD" key
+# identifies the initial date of the data assimilation cycle.
+
+__ROMS_INI_PRIOR__             INI/usec3km_roms_ini_YYYYMMDD.nc4
+__INI_PRIOR_RECORD__           1
+
+# ROMS middle filenames and associated time records for the
+# prior/background state vector. The lowercase "yyyymmdd" key
+# identifies the date at the middle of data assimilation cycle.
+# (1.5 days later)
+
+__ROMS_MID_PRIOR__             INI/usec3km_roms_ini_20190828.nc4
+__MID_PRIOR_RECORD__           37
+
+# ROMS standard deviation file for background error covariance
+# modeling.
+
+__ROMS_PRIOR_STD__             STD/usec3km_roms_std_i_YYYYMMDD.nc4
+
+# ROMS-JEDI data assimilation NetCDF-4 (IODA Version 3) for the
+# input observations. They are separated by observation type and
+# platform to facilitate the various UFO operators for processing
+
+__OBSERVATIONS__               T,S,SST,ADT
+
+__ADT_OBS__                    Data/usec3km/obs/usec3km_obs_adt_YYYYMMDD.nc4
+__SALINITY_OBS__               Data/usec3km/obs/usec3km_obs_salt_YYYYMMDD.nc4
+__SSS_OBS__                    Data/usec3km/obs/usec3km_obs_sss_YYYYMMDD.nc4
+__SST_OBS__                    Data/usec3km/obs/usec3km_obs_sst_YYYYMMDD.nc4
+__TEMPERATURE_OBS__            Data/usec3km/obs/usec3km_obs_temp_YYYYMMDD.nc4
+__TS_GLIDER_OBS__              Data/usec3km/obs/usec3km_obs_TS_glider_YYYYMMDD.nc4
+__TS_OBS__                     Data/usec3km/obs/usec3km_obs_TS_YYYYMMDD.nc4
+__UV_CODAR_OBS__               Data/usec3km/obs/usec3km_obs_uv_codar_YYYYMMDD.nc4
+
+# ROMS-JEDI single obsercations data assimilation files NetCDF-4 used
+# for testing of the data assimilation algorithms. Notice that it uses
+# the lowercase "yyyymmdd" date for the middle data assimilation cycle.
+
+__ADT_SINGLE_OBS__             Data/usec3km/obs/usec3km_single_obs_adt_yyyymmdd.nc4
+__SST_SINGLE_OBS__             Data/usec3km/obs/usec3km_single_obs_sst_yyyymmdd.nc4
+__TS_SINGLE_OBS__              Data/usec3km/obs/usec3km_single_obs_TS_yyyymmdd.nc4
+
+# Static horizontal and vertical correlations (m) for background error
+# covariance modeling using BUMP/NICAS and hybrid weights.
+#
+# In SABER, by default, all the length scales are defined as the half-witdh
+# Gaspari-Cohn (1999) support radius, c/2. The relationship with the Daley (1991)
+# correlation Gaussian length, L, is:  L = SQRT(0.3) * c/2   and
+#                                      c = 2 * L / SQRT(0.3)
+# Lh=40e+3 km  c=146.06e+3  native
+# Lh=50e+3 km  c=182.57e+3
+# Lh=60e+3 km  c=219.09e+3
+# Lh=70e+3 km  c=255.603+3
+# Lh=80e+3 km  c=292.12e+3
+#
+# Lv=10 m   c=36.51         native
+# Lv=20 m   c=73.03
+# Lv=50 m   c=182.57
+# Lv=100 m  c-365.15
+
+__STATIC_B_HCORRELATION_SSH__   219.09e+3
+__STATIC_B_HCORRELATION_UVOCN__ 219.09e+3
+__STATIC_B_HCORRELATION_TOCN__  219.09e+3
+__STATIC_B_HCORRELATION_SOCN__  219.09e+3
+
+__STATIC_B_VCORRELATION_SSH__   5000
+__STATIC_B_VCORRELATION_UVOCN__ 182.57
+__STATIC_B_VCORRELATION_TOCN__  182.57
+__STATIC_B_VCORRELATION_SOCN__  182.57
+
+__STATIC_B_WEIGHT__             0.4
+__ENSEMBLE_WEIGHT__             0.6
+
+# Static horizontal correlations (m) for background error
+# covariance modeling using SABER diffusion operator
+#
+# The diffusion operator is defined in terms of the Gausian length, L.
+
+__SSH_HCOR__          60.0e+3
+__PATH_SSH_HCOR__     Data/diffusion/usec3km_diffusion_ssh_hcor
+
+__UVEL_HCOR__         60.0e+3
+__PATH_UVEL_HCOR__    Data/diffusion/usec3km_diffusion_uvel_hcor
+
+__VVEL_HCOR__         60.0e+3
+__PATH_VVEL_HCOR__    Data/diffusion/usec3km_diffusion_vvel_hcor
+
+__TEMP_HCOR__         60.0e+3
+__PATH_TEMP_HCOR__    Data/diffusion/usec3km_diffusion_temp_hcor
+
+__SALT_HCOR__         60.0e+3
+__PATH_SALT_HCOR__    Data/diffusion/usec3km_diffusion_salt_hcor
+
+# Static vertical correlations (number of levels) for background error
+# covariance modeling using SABER diffusion operator. Currently, the
+# vertical scale units are ad number for vertical levels from surface.
+# Let's hope that vertical scales is in meters in the future.
+
+__UVEL_VCOR__         4.0
+__PATH_UVEL_VCOR__    Data/diffusion/usec3km_diffusion_uvel_vcor
+
+__VVEL_VCOR__         4.0
+__PATH_VVEL_VCOR__    Data/diffusion/usec3km_diffusion_vvel_vcor
+
+__TEMP_VCOR__         4.0
+__PATH_TEMP_VCOR__    Data/diffusion/usec3km_diffusion_temp_vcor
+
+__SALT_VCOR__         4.0
+__PATH_SALT_VCOR__    Data/diffusion/usec3km_diffusion_salt_vcor
+
+# Number of application vertical levels.  It is used in the
+# SABER diffusion operator.
+
+__NLEVELS__           50
+
+# Ensemble horizontal and vertical correlations for localization.
+# (half-witdh Gaspari-Cohn support radius scales)
+
+__LOCALIZATION_HCORRELATION__  219.09e+3
+__LOCALIZATION_VCORRELATION__  182.57
+
+# LETKF observation distribution parameter.
+
+__OBS_DISTRIBUTION__           3500.0e+3
+
+# ROMS output file policy and frequency. It creates new output NetCDF
+# files every "file_policy" interval. For example, if file_policy = PT1H
+# (same as output frequency) creates 73 files over the 3-day window.
+# We can also create a single file (usec3_roms_fct_2019-08-27-00.00.00.nc)
+# with 73 records. In this case, it is advisable for file_policy > PT96H,
+# to avoid the last record being in a single file. See the logic routine
+# in "roms_fields_write", module "roms_fields_mod.F90".
+
+__OUTPUT_FILE_POLICY__         PT73H
+__OUTPUT_FREQUENCY__           PT1H
