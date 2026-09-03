@@ -1,6 +1,16 @@
 <img width="824" alt="image" src="https://github.com/user-attachments/assets/d15ec2a4-70e3-410f-a2ae-d09682a9f0f2">
 
-### Instructions
+## ROMS-JEDI Data Assimilation Framework: Regional U.S. East Coast 3km Application
+
+This directory shows how to configure the **ROMS-JEDI** Data Assimilation framework on a regional **ROMS** application. It uses our Coupled Forecast Framework (**CFF**) configuration of the :us: U.S. East Coast (**USEC**) at 3 km grid resolution during the Hurricane Dorian period (Aug 27-Sep 2, 2019). This configuration is very complex and intended for advanced users familiar with **ROMS**, **JEDI**, and data assimilation. Please check the following [ROMS-JEDI Tutorial](https://github.com/myroms/roms-jedi/wiki/ROMS%E2%80%90JEDI-Tutorial) for more information.
+
+The **ROMS-JEDI** interface utilizes the public Joint Effort for Data Assimilation Integration (**JEDI**) framework, a set of model-agnostic building blocks hosted in the Joint Center for Satellite Data Assimilation (**JCSDA**) GitHub repositories. You do not need to download the **JEDI** repositories, as they are cloned during configuration. For more information about **JEDI**, please visit https://www.jcsda.org/jedi-academies.
+
+| CFF-USEC 3 km    |  Mesh Zoom               |         
+:-----------------:|:-------------------------:
+|<a href="https://github.com/user-attachments/assets/80feced9-8733-4850-85d1-0596d7f68a1c"><img width="800" alt="USEC3km" src="https://github.com/user-attachments/assets/80feced9-8733-4850-85d1-0596d7f68a1c" /></ a> | <a href="https://github.com/user-attachments/assets/0b7af6bd-9dbd-45e2-bc38-f0df90067ae9"><img width="800" alt="USEC3km_zoom" src="https://github.com/user-attachments/assets/0b7af6bd-9dbd-45e2-bc38-f0df90067ae9" /></a> |
+
+## Instructions
 
 To configure, compile, and run the **ROMS-JEDI** framework for the **USEC** 3km grid, we use the **Generic** Application strategy delineated in the [tutorial](https://github.com/myroms/roms-jedi/wiki/ROMS%E2%80%90JEDI-Tutorial):
 
@@ -8,7 +18,7 @@ To configure, compile, and run the **ROMS-JEDI** framework for the **USEC** 3km 
 
    ``` d
    % cd MySourceCodeRootDir
-   % git clone https://github.com/myroms/roms-jedi.git         !> it creates the roms-jedi subdirectory)
+   % git clone https://github.com/myroms/roms-jedi.git         !> It creates the roms-jedi subdirectory)
    % cd roms-jedi                                              !> ROMS-JEDI interface root directory
    ```
 2. Generate **JEDI** input **YAML** files from templates using the [**`template2yaml.pl`**](https://github.com/myroms/roms-jedi/blob/develop/tools/workflow/Readme.md#creating-roms-jedi-input-yaml-files-template2yaml) **Perl** script. They are located in the `testinput` subdirectory.
@@ -25,21 +35,21 @@ To configure, compile, and run the **ROMS-JEDI** framework for the **USEC** 3km 
 
    Current directory: <MySourceCodeRootDir>/roms-jedi
 
-   Created sub-diretory: Bundle_usec3km
-   Created sub-diretory: build_usec3km
+   Created subdirectory: Bundle_usec3km
+   Created subdirectory: build_usec3km
 
    'bundle/.gitignore' -> 'Bundle_usec3km/.gitignore'
    'bundle/CMakeLists.txt' -> 'Bundle_usec3km/CMakeLists.txt'
 
    <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
-   To configure 'ecbuild' with 'Release' build, you need to type or copy and paste:
+   To configure 'ecbuild' with the 'Release' build, you need to type or copy and paste:
 
    cd build_usec3km;
    ecbuild -DMPIEXEC_EXECUTABLE=$MPIRUN -DMPIEXEC_NUMPROC_FLAG="-n" -DMPIEXEC_NUMPROC=16 -DPython3_EXECUTABLE="`which python3`" -DROMS_APP=USEC3KM -DROMS_APP_DIR=<MyConfigRootDir>/ROMS/JediApps/usec3km -DCMAKE_BUILD_TYPE=Release ../Bundle_usec3km
    <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
    ```
 > [!CAUTION]
-> We recommend placing the source code **`<MySourceCodeRootDir>`** path and application configuration **`<MyConfigRootDir>`** path, containing the necessary input NetCDF files, in different locations to avoid messy, confusing setups. The source code is managed under **Git**. The **JEDI** framework works with partial paths and generates all the appropiate file links to run from **`<MySourceCodeRootDir>/roms-jedi/build_usec3km/roms-jedi/test`**.
+> We recommend placing the source code **`<MySourceCodeRootDir>`** path and application configuration **`<MyConfigRootDir>`** path, containing the necessary input NetCDF files, in different locations to avoid messy, confusing setups. The source code is managed under **Git**. The **JEDI** framework works with partial paths and generates all the appropriate file links to run from **`<MySourceCodeRootDir>/roms-jedi/build_usec3km/roms-jedi/test`**.
 
 4. To compile and link your generic **ROMS-JEDI** application, use the following **CMake** command from **`<MySourceRootDir>/roms-jedi/build_usec3km`** sub-directory:
 
