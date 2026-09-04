@@ -66,7 +66,7 @@ To configure, compile, and run the **ROMS-JEDI** framework for the **USEC** 3km 
    ``` d
    % make -j 10
    ```
-   Compiling/linking the entire system will take around **30 minutes**. The code is primarily written in **C++** and **Fortran 2003**.
+   Compiling/linking the entire system will take around **20 minutes**. The code is primarily written in **C++** and **Fortran 2003**.
 
 5. Run the **ROMS-JEDI** application. Using the **batch_tests.sh** or **slurm_tests.sh** script, as designed for the **Default Application**, you can run all available interface unit tests. Optionally, you may run specific data assimilation algorithms individually in an operational data assimilation environment.
 
