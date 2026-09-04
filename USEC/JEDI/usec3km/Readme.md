@@ -49,6 +49,15 @@ To configure, compile, and run the **ROMS-JEDI** framework for the **USEC** 3km 
    ecbuild -DMPIEXEC_EXECUTABLE=$MPIRUN -DMPIEXEC_NUMPROC_FLAG="-n" -DMPIEXEC_NUMPROC_MIN=4 -DMPIEXEC_NUMPROC=12 -DPython3_EXECUTABLE="`which python3`" -DROMS_APP=USEC3KM -DROMS_APP_DIR=<MyConfigRootDir>/ROMS/JediApps/usec3km -DCMAKE_BUILD_TYPE=Release ../Bundle_usec3km
    <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
    ```
+> [!NOTE]
+> We can create as many **`Bundle_SUFFIX`** and **`build_SUFFIX`** subdirectory configurations as we want, provided the **`SUFFIX`** represents a non-existent one, like **`usec3km_debug`** and so on, to avoid the **`jedi_config.sh`** script removing subdirectory configurations that you want to preserve:
+>
+> **jedi_config.sh `usec3km_debug`** -d -a **USEC3KM** `<MyConfigRootDir>/ROMS/JediApps/usec3km` **-n** `12` **-n_min** `4`
+>
+> The **-d** option will configure the **ROMS-JEDI** application CMAKE debug flags, **`-DCMAKE_BUILD_TYPE=Debug`**.
+>
+> The User also may wants to change the minimum (**-n_min**) and maximum (**-n**) number of MPI processors used when running **ROMS-JEDI** drivers.
+
 > [!CAUTION]
 > We recommend placing the source code **`<MySourceCodeRootDir>`** path and application configuration **`<MyConfigRootDir>`** path, containing the necessary input NetCDF files, in different locations to avoid messy, confusing setups. The source code is managed under **Git**. The **JEDI** framework works with partial paths and generates all the appropriate file links to run from **`<MySourceCodeRootDir>/roms-jedi/build_usec3km/roms-jedi/test`**.
 
