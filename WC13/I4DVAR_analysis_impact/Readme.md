@@ -21,24 +21,24 @@ Current System, 1/3 degree resolution, application (**WC13**).
 
 ### Input NetCDF Files:
 ```
-                       Grid File:  ../Data/wc13_grd.nc
+                       Grid File:  ../Data/GRD/wc13_grd.nc
           Nonlinear Initial File:  wc13_ini.nc
-                 Forcing File 01:  ../Data/coamps_wc13_lwrad_down.nc
-                 Forcing File 02:  ../Data/coamps_wc13_Pair.nc
-                 Forcing File 03:  ../Data/coamps_wc13_Qair.nc
-                 Forcing File 04:  ../Data/coamps_wc13_rain.nc
-                 Forcing File 05:  ../Data/coamps_wc13_swrad.nc
-                 Forcing File 06:  ../Data/coamps_wc13_Tair.nc
-                 Forcing File 07:  ../Data/coamps_wc13_wind.nc
-                   Boundary File:  ../Data/wc13_ecco_bry.nc
+                 Forcing File 01:  ../Data/FRC/coamps_wc13_lwrad_down.nc
+                 Forcing File 02:  ../Data/FRC/coamps_wc13_Pair.nc
+                 Forcing File 03:  ../Data/FRC/coamps_wc13_Qair.nc
+                 Forcing File 04:  ../Data/FRC/coamps_wc13_rain.nc
+                 Forcing File 05:  ../Data/FRC/coamps_wc13_swrad.nc
+                 Forcing File 06:  ../Data/FRC/coamps_wc13_Tair.nc
+                 Forcing File 07:  ../Data/FRC/coamps_wc13_wind.nc
+                   Boundary File:  ../Data/BRY/wc13_ecco_bry.nc
 
         Adjoint Sensitivity File:  wc13_ads.nc
-     Initial Conditions STD File:  ../Data/wc13_std_i.nc
-    Boundary Conditions STD File:  ../Data/wc13_std_b.nc
-        Surface Forcing STD File:  ../Data/wc13_std_f.nc
-    Initial Conditions Norm File:  ../Data/wc13_nrm_i.nc
-   Boundary Conditions Norm File:  ../Data/wc13_nrm_b.nc
-       Surface Forcing Norm File:  ../Data/wc13_nrm_f.nc
+     Initial Conditions STD File:  ../Data/STD/wc13_std_i.nc
+    Boundary Conditions STD File:  ../Data/STD/wc13_std_b.nc
+        Surface Forcing STD File:  ../Data/STD/wc13_std_f.nc
+    Initial Conditions Norm File:  ../Data/NRM/wc13_nrm_i.nc
+   Boundary Conditions Norm File:  ../Data/NRM/wc13_nrm_b.nc
+       Surface Forcing Norm File:  ../Data/NRM/wc13_nrm_f.nc
                Observations File:  wc13_obs.nc
             Lanczos Vectors File:  wc13_lcz.nc
 ```
@@ -197,7 +197,7 @@ Current System, 1/3 degree resolution, application (**WC13**).
 
 - Before you run this application, you need to run the standard
   **I4D-Var** (**`../I4DVAR`** directory) since we need the Lanczos vectors.
-  Notice that in **job_is4dvar_sen.csh** we have the following operation:
+  Notice that in **job_is4dvar_sen.sh** we have the following operation:
   ```
       cp -p ${Dir}/I4DVAR/wc13_adj_001.nc wc13_lcz.nc
   ```
@@ -255,7 +255,7 @@ Current System, 1/3 degree resolution, application (**WC13**).
     in parallel using **MPI**.  This is because of the way that the
     adjoint model is constructed.
 
-  - Customize the configuration script **job_array_modes.csh** and provide
+  - Customize the configuration script **job_array_modes.sh** and provide
     the appropriate place for the **substitute** Perl script:
     ```
       set SUBSTITUTE=${ROMS_ROOT}/ROMS/Bin/substitute
@@ -268,7 +268,7 @@ Current System, 1/3 degree resolution, application (**WC13**).
       setenv ROMS_ROOT ${HOME}/ocean/repository/git/roms
     ```
 
- - Execute the configuration **job_i4dvar_sen.csh** `BEFORE` running
+ - Execute the configuration **job_i4dvar_sen.sh** `BEFORE` running
    the model.  It copies the required files and creates **i4dvar.in**
    input script from template **s4dvar.in**. This has to be done
    EVERY TIME that you run this application. We need a clean and

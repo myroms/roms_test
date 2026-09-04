@@ -340,7 +340,7 @@ LtracerSponge == T T                            ! temperature, salinity, inert
 
      AKV_BAK == 1.0d-5                          ! m2/s
 
-  ad_AKV_fac == 1.0d0  1.0d0                    ! nondimensional
+  ad_AKV_fac == 1.0d0                           ! nondimensional
 
 ! Upper threshold values to limit vertical mixing coefficients computed
 ! from vertical mixing parameterizations. Although this is an engineering
@@ -563,8 +563,8 @@ SO_sdev(isTsur) == 1.0d0 1.0d0             ! NT surface tracers flux
 
 Hout(idUvel) == T       ! u                  3D U-velocity
 Hout(idVvel) == T       ! v                  3D V-velocity
-Hout(idu3dE) == F       ! u_eastward         3D U-eastward  at RHO-points
-Hout(idv3dN) == F       ! v_northward        3D V-northward at RHO-points
+Hout(idu3dE) == T       ! u_eastward         3D U-eastward  at RHO-points
+Hout(idv3dN) == T       ! v_northward        3D V-northward at RHO-points
 Hout(idWvel) == T       ! w                  3D W-velocity
 Hout(idOvel) == T       ! omega              omega vertical velocity
 Hout(idOvil) == F       ! omega_implicit     omega implicit vertical velocity
@@ -661,10 +661,10 @@ Hout(idEmPf) == T       ! EminusP            E-P flux
 Hout(idevap) == T       ! evaporation        evaporation rate
 Hout(idrain) == T       ! rain               precipitation rate
 
-Hout(idDano) == T       ! rho                density anomaly
-Hout(idVvis) == F       ! AKv                vertical viscosity
-Hout(idTdif) == F       ! AKt                vertical T-diffusion
-Hout(idSdif) == F       ! AKs                vertical Salinity diffusion
+Hout(idDano) == F       ! rho                density anomaly
+Hout(idVvis) == T       ! AKv                vertical viscosity
+Hout(idTdif) == T       ! AKt                vertical T-diffusion
+Hout(idSdif) == T       ! AKs                vertical Salinity diffusion
 Hout(idHsbl) == F       ! Hsbl               depth of surface boundary layer
 Hout(idHbbl) == F       ! Hbbl               depth of bottom boundary layer
 Hout(idMtke) == F       ! tke                turbulent kinetic energy
@@ -694,7 +694,7 @@ Qout(idVbar) == T       ! vbar               2D V-velocity
 Qout(idu2dE) == F       ! ubar_eastward      2D U-eastward  at RHO-points
 Qout(idv2dN) == F       ! vbar_northward     2D V-northward at RHO-points
 Qout(idFsur) == T       ! zeta               free-surface
-Qout(idBath) == T       ! bath               time-dependent bathymetry
+Qout(idBath) == F       ! bath               time-dependent bathymetry
 
 Qout(idTvar) == F F     ! temp, salt         temperature and salinity
 
@@ -1038,7 +1038,7 @@ Dout(iTvdif) == T T     ! temp_vdiff, ...    vertical diffusion
 ! PIO library MPI processes set-up:
 
  PIO_IOTASKS =  1                 ! number of I/O tasks to define
-  PIO_STRIDE =  1                 ! stride in the MPI-ran between I/O tasks
+  PIO_STRIDE =  1                 ! stride in the MPI-rank between I/O tasks
     PIO_BASE =  0                 ! offset for the first I/O task
   PIO_AGGREG =  1                 ! number of MPI-aggregators to use
 
@@ -1056,7 +1056,7 @@ Dout(iTvdif) == T T     ! temp_vdiff, ...    vertical diffusion
 !   [0] Point-to-Point (low-level communications)
 !   [1] Collective (high-level grouped communications)
 
-PIO_REARRCOM =  0
+PIO_REARRCOM =  1
 
 ! PIO library rearranger flow control direction flag for MPI communications
 ! between computational and I/O processes:
@@ -1107,7 +1107,7 @@ PIO_I2C_Preq = 65                 ! Maximum pending I2C requests
 
 ! Input NetCDF file names, [1:Ngrids].
 
-     GRDNAME == ../Data/wc13_grd.nc
+     GRDNAME == ../Data/GRD/wc13_grd.nc
      ININAME == wc13_ini.nc
      ITLNAME == wc13_itl.nc
      IRPNAME == wc13_irp.nc
@@ -1150,7 +1150,7 @@ PIO_I2C_Preq = 65                 ! Maximum pending I2C requests
 
     NBCFILES == 1                          ! number of boundary files
 
-     BRYNAME == ../Data/wc13_ecco_bry.nc
+     BRYNAME == ../Data/BRY/wc13_ecco_bry.nc
 
 ! Input climatology file names. The USER has the option to separate the
 ! climatology variables into individual NetCDF files (NCLMFILES > 1),
@@ -1162,7 +1162,7 @@ PIO_I2C_Preq = 65                 ! Maximum pending I2C requests
 
    NCLMFILES == 1                          ! number of climatology files
 
-     CLMNAME == ../Data/wc13_ecco_bry.nc
+     CLMNAME == wc13_clm.nc
 
 ! Input climatology nudging coefficients file name.
 
@@ -1196,13 +1196,13 @@ PIO_I2C_Preq = 65                 ! Maximum pending I2C requests
 
      NFFILES == 7                          ! number of unique forcing files
 
-     FRCNAME == ../Data/coamps_wc13_lwrad_down.nc \
-                ../Data/coamps_wc13_Pair.nc \
-                ../Data/coamps_wc13_Qair.nc \
-                ../Data/coamps_wc13_rain.nc \
-                ../Data/coamps_wc13_swrad.nc \
-                ../Data/coamps_wc13_Tair.nc \
-                ../Data/coamps_wc13_wind.nc
+     FRCNAME == ../Data/FRC/coamps_wc13_lwrad_down.nc \
+                ../Data/FRC/coamps_wc13_Pair.nc \
+                ../Data/FRC/coamps_wc13_Qair.nc \
+                ../Data/FRC/coamps_wc13_rain.nc \
+                ../Data/FRC/coamps_wc13_swrad.nc \
+                ../Data/FRC/coamps_wc13_Tair.nc \
+                ../Data/FRC/coamps_wc13_wind.nc
 
 ! Output NetCDF file names, [1:Ngrids].
 
