@@ -74,3 +74,61 @@ To configure, compile, and run the **ROMS-JEDI** framework for the **USEC** 3km 
    % cd roms-jedi/test
    % batch_test.sh
    ```
+> [!WARNING]  
+> In generic configurations, we don't recommend running all available unit tests for the **ROMS-JEDI** interface; instead, run the minimum set of cases needed to run a particular data assimilation algorithm. However, check **`batch_tests.sh`** or **`slurm_test.sh`** to find information and instructions on how to run individual cases.
+>
+
+> [!IMPORTANT]
+> Regardless of the modeling method for **B** selected in the **SABER** block, its training must be computed first. This process can be computationally intensive. Fortunately, if the horizontal and vertical correlation scales remain unchanged, you can run training less frequently. **BUMP** in **SABER** must be run with the same number of processes as the data assimilation algorithm, since the training is written in a single NetCDF file per **MPI** task. The global NetCDF file option doesn't currently work. It has parallel partition bugs.
+
+The following table shows the minimum set of algorithms that need to be executed from **`<MySourceCodeRootDir>/build_usec3km/roms-jedi/test`** before running any of the data assimilation drivers:
+
+| Executable Command: `mpirun -n NCPUS`               | Input YAML File                |
+|-----------------------------------------------------|--------------------------------|
+| **`../../bin/romsjedi_hofx3d.x`**                   | _testinput/hofx_3d.yaml_       |
+| **`../../bin/romsjedi_hofx4d.x`**                   | _testinput/hofx_4d.yaml_       |
+| **`../../bin/romsjedi_forecast.x`**                 | _testinput/forecast_roms.yaml_ |
+|  |  |
+| **`../../bin/romsjedi_error_covariance_toolbox.x`** | _testinput/parameters_bump_cor_nicas_max.yaml_ |
+| **`../../bin/romsjedi_error_covariance_toolbox.x`** | _testinput/parameters_diffusion.yaml_ |
+| **`../../bin/romsjedi_error_covariance_toolbox.x`** | _testinput/parameters_bump_loc_cor_nicas_max.yaml_ |
+|  |  |
+|**`../../bin/romsjedi_error_covariance_toolbox.x`**  | _testinput/dirac_cov_nicas.yaml_  |
+|**`../../bin/romsjedi_error_covariance_toolbox.x`**  | _testinput/dirac_diffusion.yaml_  |
+|**`../../bin/romsjedi_ens_pert.x`**                  | _testinput/ens_perturbation.yaml_ |
+|  |  |
+|**`../../bin/romsjedi_var.x`**                       | _testinput/3dfgat_singleObs.yaml_ |
+|**`../../bin/romsjedi_var.x`**                       | _testinput/4dfgat_singleObs.yaml_ |
+|**`../../bin/romsjedi_var.x`**                       | _testinput/4dvar_singleObs_bump.yaml_ |
+|**`../../bin/romsjedi_var.x`**                       | _testinput/4dvar_singleObs_diffusion.yaml_ |
+
+Then, to run the **ROMS-JEDI `4D-Var`** algorithm with **SABER/BUMP-NICAS** or **SABER/Diffusion** training and all available observations, use:
+
+``` d
+% cd <MySourceCodeRootDir>/build_usec3km/roms-jedi/test
+
+% mpirun -n NCPUS ../../bin/romsjedi_var.x testinput/4dvar_bump.yaml
+
+or
+
+% mpirun -n NCPUS ../../bin/romsjedi_var.x testinput/4dvar_diffusion.yaml
+```
+
+## ROMS-JEDI Configuration and Data Subdirectories:
+
+In generic **ROMS** applications, the configuration and data are separated from the **ROMS-JEDI** source code and located at your specified **`<MyConfigRootDir>/ROMS/JediApps/usec3km`** subdirectory path. The latest ROMS-JEDI framework, **develop** Git branch, is cloned to **`<MySourceCodeRootDir>/Bundle_SUFFIX`** by **JEDI's `ecbuild`** function. The generic configuration must have the following structure:
+
+| Directory or File                      | Description                 |
+|----------------------------------------|-----------------------------|
+| **input/**                             | **ROMS** application input NetCDF files sub-directory |
+| **obs/**                               | **ROMS-JEDI** input observation **IODA-type** NetCDF-4 files subdirectory |
+| **testinput/**                         | **ROMS-JEDI** Unit Tests input **YAML** configuration files subdirectory|
+| **testref/**                           | **ROMS-JEDI** Unit Tests regression reference files subdirectory |
+| **roms_usec3km_era5_20190827.in**      | **ROMS** standard input for **USEC3KM**, **1x4** tile partition |
+| **roms_usec3km_era5_20190827_max.in**  | **ROMS** standard input for **USEC3KM**, **3x4** tile partition for costly computations |
+| **varinfo.yaml**                       | **ROMS** input I/O metadata configuration file |
+| **usec3km.h**                          | **ROMS** header file, **WC13** application |
+| **usec3km_yaml_parameters.dat**        | **ROMS-JEDI** ASCII parameter data to generate **YAML** files from templates |
+
+> [!NOTE]
+> All the input **ROMS-JEDI** NetCDF-4 files in this application are partial links from the **`roms_test/USEC/Data`** Git repository root. This avoids duplicating files. The **`template2yaml.pl`** Perl script (**step 2 above**) will generate all the **ROMS-JEDI** input **YAML** files from templates and load them into the **`testinput`** subdirectory.
