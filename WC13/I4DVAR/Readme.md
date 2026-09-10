@@ -23,23 +23,23 @@ System, 1/3 degree resolution, application (**WC13**).
 
 ### Input NetCDF Files:
 ```
-                       Grid File:  ../Data/wc13_grd.nc
+                       Grid File:  ../Data/GRD/wc13_grd.nc
           Nonlinear Initial File:  wc13_ini.nc
-                 Forcing File 01:  ../Data/coamps_wc13_lwrad_down.nc
-                 Forcing File 02:  ../Data/coamps_wc13_Pair.nc
-                 Forcing File 03:  ../Data/coamps_wc13_Qair.nc
-                 Forcing File 04:  ../Data/coamps_wc13_rain.nc
-                 Forcing File 05:  ../Data/coamps_wc13_swrad.nc
-                 Forcing File 06:  ../Data/coamps_wc13_Tair.nc
-                 Forcing File 07:  ../Data/coamps_wc13_wind.nc
-                   Boundary File:  ../Data/wc13_ecco_bry.nc
+                 Forcing File 01:  ../Data/FRC/coamps_wc13_lwrad_down.nc
+                 Forcing File 02:  ../Data/FRC/coamps_wc13_Pair.nc
+                 Forcing File 03:  ../Data/FRC/coamps_wc13_Qair.nc
+                 Forcing File 04:  ../Data/FRC/coamps_wc13_rain.nc
+                 Forcing File 05:  ../Data/FRC/coamps_wc13_swrad.nc
+                 Forcing File 06:  ../Data/FRC/coamps_wc13_Tair.nc
+                 Forcing File 07:  ../Data/FRC/coamps_wc13_wind.nc
+                   Boundary File:  ../Data/BRY/wc13_ecco_bry.nc
 
-     Initial Conditions STD File:  ../Data/wc13_std_i.nc
-    Boundary Conditions STD File:  ../Data/wc13_std_b.nc
-        Surface Forcing STD File:  ../Data/wc13_std_f.nc
-    Initial Conditions Norm File:  ../Data/wc13_nrm_i.nc
-   Boundary Conditions Norm File:  ../Data/wc13_nrm_b.nc
-       Surface Forcing Norm File:  ../Data/wc13_nrm_f.nc
+     Initial Conditions STD File:  ../Data/STD/wc13_std_i.nc
+    Boundary Conditions STD File:  ../Data/STD/wc13_std_b.nc
+        Surface Forcing STD File:  ../Data/STD/wc13_std_f.nc
+    Initial Conditions Norm File:  ../Data/NRM/wc13_nrm_i.nc
+   Boundary Conditions Norm File:  ../Data/NRM/wc13_nrm_b.nc
+       Surface Forcing Norm File:  ../Data/NRM/wc13_nrm_f.nc
                Observations File:  wc13_obs.nc
 ```
 
@@ -208,7 +208,7 @@ You need to take the following steps:
   in parallel using **MPI**.  This is because of the way that the
   adjoint model is constructed.
 
-- Customize the configuration script **job_i4dvar.csh** and provide
+- Customize the configuration script **job_i4dvar.sh** and provide
   the appropriate place for the **substitute** Perl script:
   ```
       set SUBSTITUTE=${ROMS_ROOT}/ROMS/Bin/substitute
@@ -220,7 +220,7 @@ You need to take the following steps:
      setenv ROMS_ROOT ${HOME}/ocean/repository/git/roms
   ```
 
-- Execute the configuration **job_i4dvar.csh** `BEFORE` running
+- Execute the configuration **job_i4dvar.sh** `BEFORE` running
   the model.  It copies the required files and creates **i4dvar.in**
   input script from template **s4dvar.in**. This has to be done
   EVERY TIME that you run this application. We need a clean and
