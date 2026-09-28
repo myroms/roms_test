@@ -5,13 +5,13 @@ dimensions:
 	survey = 1 ;
 variables:
 	int Location(Location) ;
-		Location:suggested_chunck_dim = 512 ;
+		Location:suggested_chunk_dim = 1 ;
 		Location:_FillValue = -1 ;
 	int nvars(nvars) ;
-		nvars:suggested_chunck_dim = 100 ;
+		nvars:suggested_chunk_dim = 2 ;
 		nvars:_FillValue = -1 ;
 	int survey(survey) ;
-		survey:suggested_chunck_dim = 100 ;
+		survey:suggested_chunk_dim = 1 ;
 		survey:_FillValue = -1 ;
 
 // global attributes:
